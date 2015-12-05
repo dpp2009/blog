@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>迷茫者</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="迷茫者博客，一个迷茫的php程序员的blog。及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+
+	<h4><a href="http://onelose.com/post-495.html">ZendStudio文件头和方法注释设置</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-8-12 6:00 Tuesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 
+		</p>
+	 打开zendstudioWindow->preferences->General->PHP->Editor->Templates然后New新建如下的注释模板文件头注释/***文件描述**@authorJianghao<ifox*****@gmail.com>*<p class="readmore"><a href="http://onelose.com/post-495.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-495.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-495.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-495.html">浏览(52)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-497.html">CSS3圆角详解</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-8-5 6:00 Tuesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 
+		</p>
+	 CSS3是样式表（stylesheet）语言的最新版本，它的一大优点就是支持圆角。网页设计大师NicholasZakas的最新文章，清晰易懂地解释了CSS3圆角的各个方面，非常值得学习。以下就是我翻译的中文版。=========================================CS<p class="readmore"><a href="http://onelose.com/post-497.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-497.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-497.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-497.html">浏览(49)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-500.html">各种浏览器的Hack写法(chromefirefoxie等)</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-8-5 6:00 Tuesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 
+		</p>
+	 Hack是针对不同的浏览器去写不同的CSS样式，从而让各浏览器能达到一致的渲染效果，那么针对不同的浏览器写不同的CSSCODE的过程，就叫CSSHACK，同时也叫写CSSHack。然后将Hack放在浏览器特定的CSS文件中，让其符合条件的浏览器解析这些代码，就如前面所说的条件样式，我们将CSS<p class="readmore"><a href="http://onelose.com/post-500.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-500.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-500.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-500.html">浏览(48)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-496.html">AjaxFileUpload</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-8-4 6:00 Monday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 
+		</p>
+	 jQuery.extend({createUploadIframe:function(id,uri){//createframevarframeId=\'jUploadFrame\'+id;variframe<p class="readmore"><a href="http://onelose.com/post-496.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-496.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-496.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-496.html">浏览(57)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-498.html">克隆JS对象的三个实用方法</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-8-1 6:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 
+		</p>
+	 functionclone(myObj){if(typeof(myObj)!=\'object\')returnmyObj;if(myObj==null)returnmyObj;varmyNewObj=newObject();for(variinmyObj)my<p class="readmore"><a href="http://onelose.com/post-498.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-498.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-498.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-498.html">浏览(51)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-501.html">运算符优先级</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-7-25 6:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 
+		</p>
+	 <p class="readmore"><a href="http://onelose.com/post-501.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-501.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-501.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-501.html">浏览(58)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-502.html">滚动条不出现</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-7-24 6:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 
+		</p>
+	 让竖条没有:<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

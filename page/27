@@ -1,0 +1,559 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>迷茫者</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="迷茫者博客，一个迷茫的php程序员的blog。及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+
+	<h4><a href="http://onelose.com/post-191.html">【转载】关于js需要alert后代码才生效的解决办法。</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-2-18 12:16 Tuesday 
+		 
+		</p>
+	<p style="text-indent:2em;"><br /></p><p style="text-indent:2em;">
+	其实这个问题在很早以前也有遇到过，不过换了个方法解决的。虽然问题也可以解决不过要走很多的弯路才可以的。今天又找到一个办法。<br />
+需要alert后代码可以生效是因为dom对象的时间问题。若我们在执行完上一行代码后，稍等片刻再开始执行下一行代码，那么我们的问题就解决了。<br />
+最简单的办法，延尺执行：<br />
+window.setTimeout("document.getElementById('headser...</p><p class="readmore"><a href="http://onelose.com/post-191.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-191.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-191.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-191.html">浏览(489)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-190.html">PHP5.4 新特性</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-2-16 14:55 Sunday 
+		 
+		</p>
+	<p>
+	PHP5.4正式前两天发布了，之前有看了一些PHP5.4主要特性相关文章，因此在这里小结一下。
+</p><p>
+	其中好几点更新是由Laruence贡献的！本文部分内容也是源自Laruence的博客。
+</p><p>
+	1. Buid-in web server<br />
+PHP5.4内置了一个简单的Web服务器，这样在做一些简单程序就方便多了，省去了环境配置的工作，特别对于初学者来说。<br />
+把当前目录作为Root Document只...</p><p class="readmore"><a href="http://onelose.com/post-190.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-190.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-190.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-190.html">浏览(487)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-187.html">让MYSQL支持外部链接</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-1-2 20:41 Thursday 
+			分类：<a href="http://onelose.com/sort/notes">学习笔记</a>
+	 
+		</p>
+	<p>
+	第一步：
+</p><blockquote><p>
+		grant all privileges on *.* to&nbsp;<a href="mailto:'yourname'@'%'">'yourname'@'%'</a>&nbsp;identified by 'youpasswd';
+	</p></blockquote><p>
+	第二步:
+</p><blockquote><p>
+		flush privileges;
+	</p></blockquote><p><br /></p><p><br /></p><p class="readmore"><a href="http://onelose.com/post-187.html">阅读全文&gt;&gt;</a></p>	<p class="tag">标签:	<a href="http://onelose.com/tag/mysql">mysql</a></p>
+	<p class="count">
+	<a href="http://onelose.com/post-187.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-187.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-187.html">浏览(488)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-186.html">MYSQL自增长异常（达到最大值），修改自增长值</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-1-2 18:12 Thursday 
+			分类：<a href="http://onelose.com/sort/notes">学习笔记</a>
+	 
+		</p>
+	<p>
+	<span style="line-height:1.5;">查询某个表增长的最大值</span>
+</p>
+<p>
+	SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = '表名';
+</p>
+<span>修改某个表增长的最大值</span><br />
+ALTER TABLE 表名 AUTO_INCREMENT = 200; （从200开始自动增长）<br /><p class="readmore"><a href="http://onelose.com/post-186.html">阅读全文&gt;&gt;</a></p>	<p class="tag">标签:	<a href="http://onelose.com/tag/mysql">mysql</a></p>
+	<p class="count">
+	<a href="http://onelose.com/post-186.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-186.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-186.html">浏览(348)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-179.html">Maru VS Effort 新老星际人的碰撞！少帮主解说</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2013-9-11 21:47 Wednesday 
+		 
+		</p>
+	<embed src="http://player.youku.com/player.php/sid/XNjA3NjI2Nzg4/v.swf" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed><p class="readmore"><a href="http://onelose.com/post-179.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-179.html#comments">评论(2)</a>
+	<a href="http://onelose.com/post-179.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-179.html">浏览(395)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-178.html">加水印imagecopymerge</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2013-9-11 21:01 Wednesday 
+		 
+		</p>
+	<pre class="brush: php;auto-links: false;">&lt;?php
+	
+	//创建源图片资源
+	$src_file='./Lighthouse.jpg';
+	$src_img=imagecreatefromjpeg($src_file);
+	//创建目标资源
+	$dst_img=imagecreatetruecolor(100,100);
+
+    //imagecopyresampled($dst_img,$src_img,$dst_x,$...</pre><p class="readmore"><a href="http://onelose.com/post-178.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-178.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-178.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-178.html">浏览(575)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-177.html">缩略图imagecopyresampled</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2013-9-11 20:56 Wednesday 
+		 
+		</p>
+	<pre class="prettyprint lang-php linenums">&lt;?php
+	//缩略图
+	//创建源图片资源
+	$src_file='./Lighthouse.jpg';
+	$src_info=getimagesize($src_file);
+	$src_w=$src_info[0];//原图宽
+	$src_h=$src_info[1];//原图高
+	$src_img=imagecreatefromjpeg($src_file);
+...</pre><p class="readmore"><a href="http://onelose.com/post-177.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-177.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-177.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-177.html">浏览(388)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-174.html">笔记5</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2013-8-5 22:28 Monday 
+			分类：<a href="http://onelose.com/sort/notes">学习笔记</a>
+	 
+		</p>
+	<p class="p0">
+	在html的原始表现上，实际上每个浏览器或多或少总会有差别。
+</p>
+<p class="p0">
+	我们的目标是：我们开发的网页应该在用户面前（不管是用什么浏览器）都表现一致。
+</p>
+<p class="p0">
+	则我们的处理办法是：
+</p>
+<p class="p0">
+	将所有html的原始表现（即其“表形功能”）全部去除，其每一个外观表现都由我们自己来使用css设定。
+</p>
+<p class="p0">
+	这样，我们就会使用一个“清除原始html格式”的css文件来达到“去除初始样式”的目的。
+</p>
+<p class="p0">
+	我们可以使用link标签来引入一个外部的css文件：
+</p>
+<p class="p0" style="margin-left:21pt;text-indent:21pt;">
+	&lt;link&nbsp;rel="stylesheet"&nbsp;type="text/css"&nbsp;href="init.css"&nbsp;/&gt;
+</p><p class="readmore"><a href="http://onelose.com/post-174.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-174.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-174.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-174.html">浏览(536)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-173.html">笔记4</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2013-8-4 22:28 Sunday 
+			分类：<a href="http://onelose.com/sort/notes">学习笔记</a>
+	 
+		</p>
+	<p class="p0">
+	所谓“盒子”，其实就是指能够“包容”一定的“内容”（物体）的区域范围，通常都是由一个标签（元素）来表现。比如，div，p，h1，span，b，。。。。。
+</p>
+<p class="p0">
+	——我们可以认为，几乎所有标签其实都是一个盒子。
+</p>
+<p class="p0">
+	一个盒子通常具有如下几个部分构成：
+</p>
+<p class="p0">
+	边框：border：可以设定每个方向边框的线形，粗细和颜色
+</p>
+<p class="p0">
+	内容区：可以设定宽高width，height。也就是说，设置一个盒子的宽高，只是其内容区的宽高。
+</p>
+<p class="p0">
+	内边距：padding：可以设定每个方向&nbsp;的padding
+</p>
+<p class="p0">
+	外边距：margin：可以设定每个方向的&nbsp;margin
+</p>
+<p class="p0">
+	以后我们会大量使用div这个“典型盒子”
+</p><p class="readmore"><a href="http://onelose.com/post-173.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-173.html#comments">评论(2)</a>
+	<a href="http://onelose.com/post-173.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-173.html">浏览(449)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-172.html">笔记3</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2013-8-3 22:24 Saturday 
+			分类：<a href="http://onelose.com/sort/notes">学习笔记</a>
+	 
+		</p>
+	<p class="p0">
+	&lt;img&nbsp;src=”图片地址”&nbsp;alt=”图片说明文字”&nbsp;title=”图片提示文字”&nbsp;width=”100”&nbsp;height=”200”&nbsp;border=”1”&nbsp;align=”left&nbsp;//&nbsp;center&nbsp;//&nbsp;right”&nbsp;/&gt;
+</p>
+<p class="p0">
+	&lt;img&nbsp;src=”…..”&nbsp;&nbsp;usemap=”#某map标签的名字abc”&nbsp;/&gt;
+</p>
+<p class="p0">
+	&lt;map&nbsp;name=”abc”&nbsp;&gt;
+</p>
+<p class="p0">
+	&lt;!—设定区域形状：矩形rect，圆形circle，多边形poly&nbsp;--&gt;
+</p>
+<p class="p0">
+	&lt;area&nbsp;shape=”rect”&nbsp;coords=”左上角x，y坐标，右下角x，y坐标”&nbsp;href=”#”&nbsp;/&gt;
+</p>
+<p class="p0">
+	&lt;/map&gt;
+</p><p class="readmore"><a href="http://onelose.com/post-172.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-172.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-172.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-172.html">浏览(360)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-171.html">笔记2</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2013-8-2 22:24 Friday 
+			分类：<a href="http://onelose.com/sort/notes">学习笔记</a>
+	 
+		</p>
+	<p class="p0">
+	html语言：&nbsp;HyperText&nbsp;Markup&nbsp;Language
+</p>
+<p class="p0">
+	xml语言：&nbsp;eXtensible&nbsp;Markup&nbsp;Language——可扩展标记语言
+</p>
+<p class="p0">
+	xml语言不是为了在浏览器中显示，而是为了保存和传送数据。
+</p>
+<p class="p0">
+	举例：
+</p>
+<p class="p0">
+	&lt;china&gt;
+</p>
+<p class="p0">
+	&lt;Beijing&gt;人口1600万，面积1600&lt;/Beijing&gt;
+</p>
+<p class="p0">
+	&lt;shangdong&nbsp;shenghui=”济南”&gt;
+</p>
+<p class="p0">
+	&lt;jinan&nbsp;&gt;人口300万&lt;/jinan&gt;
+</p>
+<p class="p0">
+	&lt;qingdao&gt;海边度假胜地，人口200万&lt;/qingdao&gt;
+</p>
+<p class="p0" style="text-indent:21pt;">
+	&lt;shangdong&gt;
+</p>
+<p class="p0">
+	&lt;/china&gt;
+</p><p class="readmore"><a href="http://onelose.com/post-171.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-171.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-171.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-171.html">浏览(1760)</a>
+	</p>
+	<div style="clear:both;"></div>
+	<h4><a href="http://onelose.com/post-170.html">笔记1</a></h4>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2013-8-1 22:24 Thursday 
+			分类：<a href="http://onelose.com/sort/notes">学习笔记</a>
+	 
+		</p>
+	<p class="p0">
+	a标签的另一个应用：锚点应用
+</p>
+<p class="p0">
+	锚点就是指一个网页内部的“链接”，其实就是在该网页的另一个位置而已——通常用于一个网页上的内容比较多（比较长）的的时候，在网页的顶部进行快速定位。
+</p>
+<p class="p0">
+	实现锚点功能，需要使用两个至少两个a标签相互配合，形式如下：
+</p>
+<p class="p0">
+	&lt;a&nbsp;href=”#锚点名”&nbsp;&gt;文字&lt;/a&gt;——表示点击的文字
+</p>
+<p class="p0">
+	………………………………………（中间的很多其他内容。。。。）
+</p>
+<p class="p0">
+	&lt;a&nbsp;name=”锚点名”&nbsp;&gt;&lt;/a&gt;——表示位置的标签
+</p>
+<p class="p0">
+	<br />
+</p>
+<p class="p0">
+	a标签的第三个应用：用于发送邮件
+</p>
+<p class="p0">
+	&lt;a&nbsp;href=”mailto:ldh@itcast.cn”&nbsp;&gt;没事给我mail&lt;/a&gt;
+</p>
+<div>
+	<br />
+</div><p class="readmore"><a href="http://onelose.com/post-170.html">阅读全文&gt;&gt;</a></p>	<p class="tag"></p>
+	<p class="count">
+	<a href="http://onelose.com/post-170.html#comments">评论(0)</a>
+	<a href="http://onelose.com/post-170.html#tb">引用(0)</a>
+	<a href="http://onelose.com/post-170.html">浏览(395)</a>
+	</p>
+	<div style="clear:both;"></div>
+
+<div id="pagenavi">
+	<a href="http://onelose.com" title="首页">&laquo;</a><em>...</em> <a href="http://onelose.com/page/22">22</a>  <a href="http://onelose.com/page/23">23</a>  <a href="http://onelose.com/page/24">24</a>  <a href="http://onelose.com/page/25">25</a>  <a href="http://onelose.com/page/26">26</a>  <span>27</span>  <a href="http://onelose.com/page/28">28</a>  <a href="http://onelose.com/page/29">29</a>  <a href="http://onelose.com/page/30">30</a>  <a href="http://onelose.com/page/31">31</a>  <a href="http://onelose.com/page/32">32</a> <em>...</em> <a href="http://onelose.com/page/33" title="尾页">&raquo;</a></div>
+
+</div><!-- end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-249.html">HTTP请求报文和HTTP响应报文</a></li>
+		<li><a href="http://onelose.com/post-365.html">linux下提示bash:commandnotfound</a></li>
+		<li><a href="http://onelose.com/post-48.html">如果你的朋友生肖是羊的请好好珍惜、属羊的朋友有同感的转一下（欢迎转载）</a></li>
+		<li><a href="http://onelose.com/post-396.html">查看所以服务</a></li>
+		<li><a href="http://onelose.com/post-405.html">处理MySQL数据库出现大量Locked的一个案例</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>
