@@ -1,0 +1,16 @@
+RewriteEngine on
+
+RewriteCond %{HTTP_REFERER} !^$ [NC]
+RewriteCond %{HTTP_REFERER} !www.dppblog.tk [NC]
+RewriteCond %{HTTP_REFERER} !blog.dppblog.tk[NC]
+RewriteCond %{HTTP_REFERER} !google.com [NC]
+RewriteCond %{HTTP_REFERER} !baidu.com [NC]
+RewriteCond %{HTTP_REFERER} !dppblog.tk [NC]
+RewriteCond %{HTTP_REFERER} !imdpp.tk [NC]
+RewriteCond %{HTTP_REFERER} !onelose.com [NC]
+RewriteCond %{HTTP_REFERER} !www.onelose.com [NC]
+RewriteCond %{HTTP_REFERER} !emlog.com [NC]
+
+RewriteRule .(jpg|gif|png|bmp|swf|jpeg) /replace.gif [R,NC,L]
+
+
