@@ -1,0 +1,466 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>【问底】王帅：深入PHP内核（二）——SAPI探究</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>【问底】王帅：深入PHP内核（二）——SAPI探究</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-11 7:00 Wednesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <h1 style='background-color:rgb(255, 255, 255);color:rgb(51, 51, 51);font-family:'Microsoft YaHei';font-size:28px;font-style:normal;font-weight:normal;text-align:left;'> 
+  <div style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif; font-size: 14px;'> 
+   <a href='http://www.csdn.net/tag/%E9%97%AE%E5%BA%95/news' style='background-color:rgb(243, 243, 243);color:rgb(51, 51, 51);'>问底</a> 
+   <a href='http://www.csdn.net/tag/%E7%8E%8B%E5%B8%85/news' style='background-color:rgb(243, 243, 243);color:rgb(51, 51, 51);'>王帅</a> 
+   <a href='http://www.csdn.net/tag/php/news' style='background-color:rgb(243, 243, 243);color:rgb(51, 51, 51);'>PHP</a> 
+  </div> 
+  <div style='background-color: rgb(247, 247, 247); font-family: Helvetica, Tahoma, Arial, sans-serif; font-size: 14px;'> 
+   <strong>摘要：</strong>PHP作为一门简单而强大的语言，能够提供很多Web适用的语言特性。从实践出发，继弱类型变量原理探究后，王帅将继续带大家弄清PHP内核中的一些常用部分，本期则是SAPI的深入理解。 
+  </div> 
+  <div style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif; font-size: 14px;'> 
+   <p>SAPI是Server Application Programming Interface（服务器应用编程接口）的缩写。PHP通过SAPI提供了一组接口，供应用和PHP内核之间进行数据交互。</p> 
+   <p>简单的讲，就像函数的输入和输出一样，我们通过Linux命令行执行一段PHP代码，本质是Linux的Shell通过PHP的SAPI传入一组参数，Zend引擎执行后，返回给shell，由shell显示出来的过程。同样的，通过Apache调用PHP，通过Web服务器给SAPI传入数据，Zend引擎执行后，返回给Apache，由Apache显示在页面上。</p> 
+   <p style='text-align:center;'><a href='http://cms.csdnimg.cn/article/201409/26/54250531d9869.jpg' target='_blank' style='color:rgb(0, 102, 204);'><img src='http://note.youdao.com/yws/res/2470/B261FD7BBABD49C4AC7CE55351A3A407' data-media-type='image'>&nbsp;</a><br></p> 
+   <p style='text-align:center;'><b>图1. PHP架构图</b>&nbsp;<br></p> 
+   <p>PHP提供很多种形式的接口，包括apache、apache2filter、apache2handler、caudium、cgi 、cgi-fcgi、cli、cli-server、continuity、embed、isapi、litespeed、milter、nsapi、phttpd pi3web、roxen、thttpd、tux和webjames。但是常用的只有5种形式，CLI/CGI（命令行）、Multiprocess（多进程）、Multithreaded（多线程）、FastCGI和Embedded（内嵌）。</p> 
+   <p>PHP提供了一个函数查看当前SAPI接口类型：</p> 
+   <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+    <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+     <b>[php]</b>&nbsp; 
+     <a title='view plain' href='http://www.csdn.net/article/2014-09-26/2821885-exploring-of-the-php-2#' style='color: rgb(160, 160, 160);'>view plain</a> 
+     <a title='copy' href='http://www.csdn.net/article/2014-09-26/2821885-exploring-of-the-php-2#' style='color: rgb(160, 160, 160);'>copy</a> 
+     <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/475791' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2472/E6EBD27B4EC0404598CE3EEA700BA84E' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+     <a title='派生到我的代码片' href='https://code.csdn.net/snippets/475791/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+    </div> 
+    <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>string&nbsp;php_sapi_name&nbsp;(&nbsp;void&nbsp;)&nbsp;&nbsp;</span></li> 
+    </ol> 
+   </div> 
+  </div></h1> 
+ <h3><b>PHP的运行和加载</b></h3> 
+ <h1 style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Microsoft YaHei'; font-size: 28px; font-weight: normal;'> 
+  <div style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif; font-size: 14px;'> 
+   <p>无论使用哪种SAPI，在PHP执行脚本前后，都包含一系列事件：Module的Init(MINT)和Shutdown(MSHUTDOWN)，Request 的Init(RINT)和Shutdown(RSHUTDOWN)。 第一阶段是PHP模块初始化阶段（MINT），可以初始化扩展内部变量、分配资源和注册资源处理器，在整个PHP实例生命周期内，该过程只执行一次。</p> 
+   <p>什么是PHP模块？通过上面的PHP架构图，在PHP中可以使用get_loaded_extensions 函数来查看所有编译并加载的模块/扩展，相当于CLI模式下的php -m。</p> 
+   <p>以PHP的Memcached扩展源代码为例：</p> 
+   <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+    <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+     <b>[php]</b>&nbsp; 
+     <a title='view plain' href='http://www.csdn.net/article/2014-09-26/2821885-exploring-of-the-php-2#' style='color: rgb(160, 160, 160);'>view plain</a> 
+     <a title='copy' href='http://www.csdn.net/article/2014-09-26/2821885-exploring-of-the-php-2#' style='color: rgb(160, 160, 160);'>copy</a> 
+     <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/475791' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2472/E6EBD27B4EC0404598CE3EEA700BA84E' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+     <a title='派生到我的代码片' href='https://code.csdn.net/snippets/475791/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+    </div> 
+    <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>PHP_MINIT_FUNCTION(memcached)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;zend_class_entry&nbsp;ce;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;memcpy(&amp;memcached_object_handlers,zend_get_std_object_handlers(),&nbsp;sizeof(zend_object_handlers));&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>memcached_object_handlers.clone_obj&nbsp;=&nbsp;NULL;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;执行了一些类似的初始化操作&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'><span style='color: rgb(0, 102, 153); font-weight: 700;'>return</span>&nbsp;SUCCESS;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>}&nbsp;&nbsp;</span></li> 
+    </ol> 
+   </div>第二阶段是请求初始化阶段（RINT），在模块初始化并激活后，会创建PHP运行环境，同时调用所有模块注册的RINT函数，调用每个扩展的请求初始化函数 ，设定特定的环境变量、分配资源或执行其他任务，如审核。 
+   <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+    <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+     <b>[php]</b>&nbsp; 
+     <a title='view plain' href='http://www.csdn.net/article/2014-09-26/2821885-exploring-of-the-php-2#' style='color: rgb(160, 160, 160);'>view plain</a> 
+     <a title='copy' href='http://www.csdn.net/article/2014-09-26/2821885-exploring-of-the-php-2#' style='color: rgb(160, 160, 160);'>copy</a> 
+     <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/475791' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2472/E6EBD27B4EC0404598CE3EEA700BA84E' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+     <a title='派生到我的代码片' href='https://code.csdn.net/snippets/475791/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+    </div> 
+    <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>PHP_RINIT_FUNCTION(memcached)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;执行一些关于请求的初始化&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>return</span>&nbsp;SUCCESS;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>}&nbsp;&nbsp;</span></li> 
+    </ol> 
+   </div> 
+   <p>第三阶段，请求处理完成后，会调用PHP_RSHUTDOWN_FUNCTION进行回收，这是每个扩展的请求关闭函数，执行最后的清理工作。Zend引擎执行清理过程、垃圾收集、对之前的请求期间用到的每个变量执行unset。请求完成可能是执行到脚本完成，也可能是调用die()或exit()函数完成</p> 
+   <p>第四阶段，当PHP生命周期结束时候，PHP_MSHUTDOWN_FUNCTION对模块进行回收处理，这是每个扩展的模块关闭函数，用于关闭自己的内核子系统。</p> 
+   <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+    <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+     <b>[php]</b>&nbsp; 
+     <a title='view plain' href='http://www.csdn.net/article/2014-09-26/2821885-exploring-of-the-php-2#' style='color: rgb(160, 160, 160);'>view plain</a> 
+     <a title='copy' href='http://www.csdn.net/article/2014-09-26/2821885-exploring-of-the-php-2#' style='color: rgb(160, 160, 160);'>copy</a> 
+     <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/475791' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2472/E6EBD27B4EC0404598CE3EEA700BA84E' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+     <a title='派生到我的代码片' href='https://code.csdn.net/snippets/475791/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+    </div> 
+    <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>PHP_MSHUTDOWN_FUNCTION(memcached)&nbsp;{&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;执行关于模块的销毁工作&nbsp;*/</span>&nbsp;UNREGISTER_INI_ENTRIES();&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>return</span>&nbsp;SUCCESS;&nbsp;}&nbsp;&nbsp;</span></li> 
+    </ol> 
+   </div> 
+  </div></h1> 
+ <h3><b>常见的运行模式</b></h3> 
+ <h1 style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Microsoft YaHei'; font-size: 28px; font-weight: normal;'> 
+  <div style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif; font-size: 14px;'> 
+   <p>常见的SAPI模式有五种：</p> 
+   <ul> 
+    <li>CLI和CGI模式（单进程模式）</li> 
+    <li>多进程模式</li> 
+    <li>多线程模式</li> 
+    <li>FastCGI模式</li> 
+    <li>嵌入式</li> 
+   </ul> 
+   <p><b>1. CLI/CGI模式</b></p> 
+   <p>CLI和CGI都属于单进程模式，PHP的生命周期在一次请求中完成。也就是说每次执行PHP脚本，都会执行第二部分讲的四个INT和Shutdown事件。</p> 
+   <p style='text-align:center;'><a href='http://cms.csdnimg.cn/article/201409/26/54251087a4b70.jpg' target='_blank' style='color:rgb(0, 102, 204);'><img src='http://note.youdao.com/yws/res/2473/3FCF5DAC7E7D407293C14C25402F5E07' data-media-type='image'></a></p> 
+   <p style='text-align:center;'><b>图2. CGI/CLI生命周期</b>&nbsp;<br></p> 
+   <p><b>2. 多进程模式（Multiprocess）</b></p> 
+   <p>多进程模式可以将PHP内置到Web Server中，PHP可以编译成Apache下的prefork MPM模式和APXS模块，当Apache启动后，会fork很多子进程，每个子进程拥有自己独立的进程地址空间。</p> 
+   <p style='text-align:center;'><a href='http://cms.csdnimg.cn/article/201409/26/54251138db3d3.jpg' target='_blank' style='color:rgb(0, 102, 204);'><img src='http://note.youdao.com/yws/res/2467/64E384CA63CE4D859A8E29AB81EBB1BE' data-media-type='image'>&nbsp;</a><br></p> 
+   <p style='text-align:center;'><b>图3. 多进程模式生命周期</b>&nbsp;<br></p> 
+   <p>在一个子进程中，PHP的生命周期是调用MINT启动后，执行多次请求（RINT/RSHUTDOWN)，在Apache关闭或进程结束后，才会调用MSHUTDOWN进行回收阶段。&nbsp;<br></p> 
+   <p style='text-align:center;'><a href='http://cms.csdnimg.cn/article/201409/26/542511593efc6.jpg' target='_blank' style='color:rgb(0, 102, 204);'><img src='http://note.youdao.com/yws/res/2469/717B70B50226414A9FE433E34968F1A5' data-media-type='image'>&nbsp;</a><br></p> 
+   <p style='text-align:center;'><b>图4. 多进程的生命周期</b>&nbsp;<br></p> 
+   <p>多进程模型中，每个子进程都是独立运行，没有代码和数据共享，因此一个子进程终止退出和重新生成，不会影响其他子进程的稳定。</p> 
+   <p><b>3. 多线程模式（Multithreaded)</b></p> 
+   <p>Apache2的Worker MPM采用了多线程模型，在一个进程下创建多个线程，在同一个进程地址空间执行。</p> 
+   <p><a href='http://cms.csdnimg.cn/article/201409/26/5425121315567.jpg' target='_blank' style='color:rgb(0, 102, 204);'><img src='http://note.youdao.com/yws/res/2468/885B9539DD0548B1B2E74DCFBB96E2F2' data-media-type='image'></a><br></p> 
+   <p style='text-align:center;'><b>图5. 多线程生命周期</b></p> 
+   <p><b>4. FastCGI模式</b></p> 
+   <p>在我们用的Nginx+PHP-FPM用的就是FastCGI模式，Fastcgi是一种特殊的CGI模式，是一种常驻进程类型的CGI，运行后可以Fork多个进程，不用花费时间动态的Fork子进程，也不需要每次请求都调用MINT/MSHUTDOWN。PHP通过PHP-FPM来管理和调度FastCGI的进程池。Nginx和PHP-FPM通过本地的TCP Socket和Unix Socket 进行通信。</p> 
+   <p style='text-align:center;'><a href='http://cms.csdnimg.cn/article/201409/26/5425123c7442f.jpg' target='_blank' style='color:rgb(0, 102, 204);'><img src='http://note.youdao.com/yws/res/2471/DE0D37936F8A47DF95B6737F4FB6B1D9' data-media-type='image'>&nbsp;</a><br></p> 
+   <p style='text-align:center;'><b>图6. FastCGI模式生命周期</b></p> 
+   <p>PHP-FPM进程管理器自身初始化，启动多个CGI解释器进程等待来自Nginx的请求。当客户端请求达到PHP-FPM，管理器选择到一个CGI进程进行处理，Nginx将CGI环境变量和标准输入发送到一个PHP-CIG子进程。PHP-CGI子进程处理完成后，将标准输出和错误信息返回给Nginx，当PHP-CGI子进程关闭连接时，请求处理完成。PHP-CGI子进程等待着下一个连接。</p> 
+   <p>可以想象CGI的系统开销有多大。每一个Web 请求PHP都必须重新解析php.ini、载入全部扩展并始化全部数据结构。使用FastCGI，所有这些都只在进程启动时发生一次。另外，对于数据库和Memcache的持续连接可以工作。</p> 
+   <p><b>5. 内嵌模式（Embedded）</b></p> 
+   <p>Embed SAPI是一种特殊的SAPI，允许在C/C++语言中调用PHP提供的函数。这种SAPI和CLI模式一样，按照Module Init =&gt; Request Init =&gt; Request =&gt; Request Shutdown =&gt; Module Shutdown的模式运行。</p> 
+   <p>Embed SAPI可以调用PHP丰富的类库，也可以实现高级玩法，比如可以查看PHP的OPCODE（PHP执行的中间码，Zend引擎的指令，由PHP代码生成）。</p> 
+   <p>详细请见：&nbsp;<a href='http://www.laruence.com/2008/09/23/539.html' target='_blank' style='color:rgb(0, 102, 204);'>http://www.laruence.com/2008/09/23/539.html</a></p> 
+  </div></h1> 
+ <h3><b>SAPI的运行机制</b></h3> 
+ <h1 style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Microsoft YaHei'; font-size: 28px; font-weight: normal;'> 
+  <div style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif; font-size: 14px;'> 
+   <p>我们以CGI为例，看一下SAPI的运行机制。</p> 
+   <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+    <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+     <b>[php]</b>&nbsp; 
+     <a title='view plain' href='http://www.csdn.net/article/2014-09-26/2821885-exploring-of-the-php-2#' style='color: rgb(160, 160, 160);'>view plain</a> 
+     <a title='copy' href='http://www.csdn.net/article/2014-09-26/2821885-exploring-of-the-php-2#' style='color: rgb(160, 160, 160);'>copy</a> 
+     <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/475791' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2472/E6EBD27B4EC0404598CE3EEA700BA84E' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+     <a title='派生到我的代码片' href='https://code.csdn.net/snippets/475791/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+    </div> 
+    <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'><span style='color: rgb(0, 102, 153); font-weight: 700;'>static</span>&nbsp;sapi_module_struct&nbsp;cgi_sapi_module&nbsp;=&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 0, 255);'>'cgi-fcgi'</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;输出给php_info()使用&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 0, 255);'>'CGI/FastCGI'</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;pretty&nbsp;name&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;php_cgi_startup,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;startup&nbsp;当SAPI初始化时，首先会调用该函数&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;php_module_shutdown_wrapper,&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;shutdown&nbsp;&nbsp;关闭函数包装器，它用来释放所有的SAPI的数据结构、内存等，调用php_module_shutdown&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;sapi_cgi_activate,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;activate&nbsp;&nbsp;此函数会在每个请求开始时调用，它会做初始化，资源分配&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;sapi_cgi_deactivate,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;deactivate&nbsp;&nbsp;此函数会在每个请求结束时调用，它用来确保所有的数据都得到释放&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;sapi_cgi_ub_write,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;unbuffered&nbsp;write&nbsp;&nbsp;不缓存的写操作(unbuffered&nbsp;write)，它是用来向SAPI外部输出数据&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;sapi_cgi_flush,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;flush&nbsp;&nbsp;刷新输出，在CLI模式下通过使用C语言的库函数fflush实现*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NULL,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;get&nbsp;uid&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;sapi_cgi_getenv,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;getenv&nbsp;根据name查找环境变量&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;php_error,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;error&nbsp;handler&nbsp;注册错误处理函数&nbsp;&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;NULL,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;header&nbsp;handler&nbsp;PHP调用header()时候被调用&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;sapi_cgi_send_headers,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;send&nbsp;headers&nbsp;handler&nbsp;发送头部信息*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;NULL,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;send&nbsp;header&nbsp;handler&nbsp;发送一个单独的头部信息&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;sapi_cgi_read_post,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;read&nbsp;POST&nbsp;data&nbsp;&nbsp;当请求的方法是POST时，程序获取POST数据，写入$_POST数组&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;sapi_cgi_read_cookies,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;read&nbsp;Cookies&nbsp;获取Cookie值&nbsp;&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;sapi_cgi_register_variables,&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;register&nbsp;server&nbsp;variables&nbsp;给$_SERVER添加环境变量&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;sapi_cgi_log_message,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;Log&nbsp;message&nbsp;输出错误信息&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;NULL,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;Get&nbsp;request&nbsp;time&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;NULL,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;Child&nbsp;terminate&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;STANDARD_SAPI_MODULE_PROPERTIES&nbsp;&nbsp;&nbsp;</span></li> 
+     <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>};&nbsp;&nbsp;&nbsp;</span></li> 
+    </ol> 
+   </div> 
+   <p>由上面代码可见，PHP的SAPI像是面向对象中基类，SAPI.h和SAPI.c包含的函数是抽象基类的声明和定义，各个服务器用的SAPI模式，则是继承了这个基类，并重新定义基类方法的子类。</p> 
+  </div></h1> 
+ <h3><b>总结</b></h3> 
+ <h1 style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Microsoft YaHei'; font-size: 28px; font-weight: normal;'> 
+  <div style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif; font-size: 14px;'> 
+   <p>PHP的SAPI是Zend引擎提供的一组标准交互接口，通过注册初始化、析构、输入、输出等接口，我们可以将应用程序运行在Zend引擎上，也可以把PHP嵌入到类似Apache的Web Server中。PHP常见的SAPI模式有五种，CGI/CLI模式、多进程模式、多线程模式、FastCGI模式和内嵌模式。</p> 
+   <p>了解PHP的SAPI机制意义重大，帮助我们理解PHP的生命周期，并了解如何更好的通过C/C++为PHP编写扩展，并在生命周期中找到提高系统性能的方式。</p> 
+   <p><b><font color='#e36c09'>关于作者：王帅，腾讯企业QQ SaaS团队Leader。</font></b><br></p> 
+   <p><b>更多《问底》内容</b></p> 
+   <ul> 
+    <li><a href='http://www.csdn.net/article/2014-09-11/2821642-data-mining-by-Lanceyan' style='color:rgb(0, 102, 204);'>【问底】严澜：数据挖掘入门（一）——分词</a></li> 
+    <li><a href='http://www.csdn.net/article/2014-09-10/2821615-how-twitter-uses-redis-to-scale-105tb-ram-39mm-qps-10000-ins' style='color:rgb(0, 102, 204);'>【问底】Yao Yu谈Twitter的百TB级Redis缓存实践</a></li> 
+    <li><a href='http://www.csdn.net/article/2014-09-15/2821685-exploring-of-the-php' style='color:rgb(0, 102, 204);'>【问底】王帅：深入PHP内核（一）——弱类型变量原理探究</a>&nbsp;</li> 
+    <li><a href='http://www.csdn.net/article/2014-09-26/2821885-exploring-of-the-php-2' style='color:rgb(0, 102, 204);'>【问底】王帅：深入PHP内核（二）——SAPI探究</a><br></li> 
+    <li><a href='http://www.csdn.net/article/2014-09-25/2821866' style='color:rgb(0, 102, 204);'>【问底】静行：FastJSON实现详解</a>&nbsp;<br></li> 
+   </ul> 
+   <b>《问底》是<span style='color:rgb(227, 108, 9);'>CSDN云计算频道</span>新建栏目，以实践为本，分享个人对于新时代软件架构与研发的深刻见解。在含有“【问底】”字样标题的文章中，你会看到某个国外IT巨头的架构分享，会看到国内资深工程师对某个技术的实践总结，更会看到一系列关于某个新技术的探索。</b> 
+   <b><span style='color:rgb(227, 108, 9);'>《问底》邀请对技术具有独特/深刻见解的你一起打造一片只属于技术的天空，详情可邮件至<a href='http://zhonghao@csdn.net/' style='color:rgb(0, 102, 204);'>zhonghao@csdn.net</a>。</span></b>&nbsp; 
+  </div></h1> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-278.html">MySql中explain的时候出现usingfilesort，优化之</a>
+				|
+				 <a href="http://onelose.com/post-290.html">Linuxtcpdump命令详解</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="281" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-294.html">MySQL编程指南</a></li>
+		<li><a href="http://onelose.com/post-178.html">加水印imagecopymerge</a></li>
+		<li><a href="http://onelose.com/post-523.html">$(this)jquery</a></li>
+		<li><a href="http://onelose.com/post-423.html">根据年月获取天数</a></li>
+		<li><a href="http://onelose.com/post-149.html">名人像</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

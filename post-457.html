@@ -1,0 +1,332 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>HTML5：HistoryAPI</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="大家在浏览Fac..." />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>HTML5：HistoryAPI</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-11-3 7:00 Monday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif;'>大家在浏览Facebook的相册时有没有发现，页面局部刷新的同时地址栏的地址也改变了，而且不是hash的方式。它使用的就是HTML5 history新增的几个API，作为window的一个全局变量，在HTML4的时代history已不是什么新鲜的事物了。我们经常使用的就有history.back()以及history.go() 。<br><br>下面我们来了解下history都有哪些改变。<br><br><strong><span style='font-size:small;'>1. HTML4时代的history API</span></strong></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif;'><br>A) history.length：当前历史列表中的历史记录数（我大概测了下，IE6+是从0开始的，其他的是从1开始的，若有误请反馈哈，^_^）；&nbsp;<br>B) history.go(n)：前进或后退n条记录，当n=0或空时会刷新当前页；&nbsp;<br>C) history.back()：后退一步；&nbsp;<br>D) history.forward()：前进一步;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif;'><br><span style='font-size:small;'><strong>2. HTML5新增的API</strong></span><br>A) history.pushState(data, title [, url])：往历史记录堆栈顶部添加一条记录；data会在onpopstate事件触发时作为参数传递过去；title为页面标题，当前所有浏览器都会忽略此参数；url为页面地址，可选，缺省为当前页地址；&nbsp;<br>B) history.replaceState(data, title [, url]) ：更改当前的历史记录，参数同上；&nbsp;<br>C) history.state：用于存储以上方法的data数据，不同浏览器的读写权限不一样；&nbsp;<br>D) window.onpopstate：响应pushState或replaceState的调用；<br><br>有了这几个新的API，针对支持的浏览器，我们可以构建用户体验更好的应用了。就像刚提到的Facebook相册，虽然是AJAX的方式，但用户可以直接复制页面地址分享给好友，好友打开看到的就是AJAX加载的数据，做到了书签化。当然这里面需要做的工作远不是说的这么简单。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif;'><br><strong><span style='font-size:small;'>3. 浏览器的兼容性&amp;检测</span></strong><br>在HTML5支持不一的时代，新的API总会存在或这或那的兼容性问题。因此我们有必要了解新接口在不同浏览器下的兼容性。<br><br><br><img src='http://note.youdao.com/yws/res/1133/A0C04C3C2DC64095A4600AA6836BE082' width='650' height='105' data-media-type='image'><br>&nbsp;<span style='color:rgb(153, 153, 153);'><em>截图来自:《Manipulating the browser history》</em></span><br><br>如何检测浏览器是否支持History API？<br></p> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Monaco, 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', Consolas, 'Courier New', monospace; font-size: 12px;'> 
+  <div style='font-weight: bold;'>
+    Js代码&nbsp;&nbsp; 
+   <img src='http://note.youdao.com/yws/res/1134/784A0DBF3B6D48A79EF53448B2A009E7' alt='收藏代码' data-media-type='image'> 
+  </div> 
+  <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(43, 145, 175);font-size:1em;'> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>function</span>&nbsp;supports_history_api()&nbsp;{&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>return</span>&nbsp;!!(window.history&nbsp;&amp;&amp;&nbsp;history.pushState);&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>}&nbsp;&nbsp;</span></li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif;'>&nbsp;<br><br>如何检测history.state的兼容性呢？我尝试赋值history.state=1，但history.state在不同浏览器下的读写权限不一样，所以我们换种方式：<br></p> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Monaco, 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', Consolas, 'Courier New', monospace; font-size: 12px;'> 
+  <div style='font-weight: bold;'>
+    Js代码&nbsp;&nbsp; 
+   <img src='http://note.youdao.com/yws/res/1134/784A0DBF3B6D48A79EF53448B2A009E7' alt='收藏代码' data-media-type='image'> 
+  </div> 
+  <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(43, 145, 175);font-size:1em;'> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>var</span>&nbsp;originalHistoryState&nbsp;=&nbsp;history.state;&nbsp;&nbsp;<span style='color:rgb(0, 130, 0);'>//&nbsp;保存原有的历史信息</span>&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>history.replaceState(1,&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>null</span>);&nbsp;&nbsp;<span style='color:rgb(0, 130, 0);'>//&nbsp;替换当前历史信息</span>&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>var</span>&nbsp;stateSupport&nbsp;=&nbsp;history.state&nbsp;==&nbsp;1;&nbsp;&nbsp;<span style='color:rgb(0, 130, 0);'>//&nbsp;是否存储到刚设置的历史信息</span>&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>history.replaceState(originalHistoryState,&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>null</span>);&nbsp;<span style='color:rgb(0, 130, 0);'>//&nbsp;恢复原来的历史信息</span>&nbsp;&nbsp;</span></li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif;'>&nbsp;<br><br><strong><span style='font-size:small;'>4. 安全性</span></strong><br>我们看一个例子：DEMO页面在tenpay.com的域名下，用户点击“付款”链接尝试加载另一个域名的某张图片。<br><img src='http://note.youdao.com/yws/res/1136/5EA93E7411B646A5BA8C916F4273AF07' width='970' height='720' data-media-type='image'><br><br>可以看到，当我们尝试改变当前地址为一个协议不同、（子）域名不同的地址时，会触发相应的错误。新API在安全性方面作了考虑，所以还是安全的。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif;'><br><strong><span style='font-size:small;'>5. AJAX Bookmark – AJAX书签化</span></strong><br>有了新API的支持，我们可以针对不同浏览器作一些差异化的用户体验。尤其是在AJAX盛行的年代，无历史记录已经是一大诟病。<br><br>为了解决AJAX的书签化问题，我们需要解决的主要是以下2个问题：<br><br>1. 浏览器对新的HTML5&nbsp; History API的支持不一；&nbsp;<br>2. 不支持的浏览器我们如何解决前进/后退的问题 ；<br>对于问题1，我们采用的是hash方案，这也是很多方案采用的办法了；主要原理这里不细说了，大家可以搜索一下。<br>下面是我写的解决方案；大家可以参考下，欢迎互相探讨。<br><br>github地址：<a href='https://github.com/zawaliang/History' target='_blank' style='color:rgb(16, 138, 198);'>https://github.com/zawaliang/History</a><br><br><strong><span style='font-size:small;'>6. 一些参考文档</span></strong><br></p> 
+ <ul style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif;'> 
+  <li>W3C html5 history：<a href='http://www.w3.org/TR/html5/history.html' target='_blank' style='color:rgb(16, 138, 198);'>http://www.w3.org/TR/html5/history.html</a></li> 
+  <li>Introducing the HTML5 History API：<a href='http://dev.opera.com/articles/view/introducing-the-html5-history-api/' target='_blank' style='color:rgb(16, 138, 198);'>http://dev.opera.com/articles/view/introducing-the-html5-history-api/</a></li> 
+  <li>Manipulating the browser history：<a href='https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history' target='_blank' style='color:rgb(16, 138, 198);'>https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history</a></li> 
+  <li>Detecting HTML5 Features：<a href='http://diveintohtml5.org/detect.html' target='_blank' style='color:rgb(16, 138, 198);'>http://diveintohtml5.org/detect.html</a></li> 
+  <li>window.history：<a href='https://developer.mozilla.org/en/DOM/window.history' target='_blank' style='color:rgb(16, 138, 198);'>https://developer.mozilla.org/en/DOM/window.history</a></li> 
+  <li>window.onpopstate：<a href='https://developer.mozilla.org/en/DOM/window.onpopstate' target='_blank' style='color:rgb(16, 138, 198);'>https://developer.mozilla.org/en/DOM/window.onpopstate</a></li> 
+  <li>MooTools onhashchange：<a href='http://yearofmoo.com/onhashchange/' target='_blank' style='color:rgb(16, 138, 198);'>http://yearofmoo.com/onhashchange/</a></li> 
+ </ul> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-456.html">js/jquery获取浏览器窗口可视区域高度和宽度以及滚动条高度实现代码</a>
+				|
+				 <a href="http://onelose.com/post-458.html">HTML5无刷新修改URL</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="457" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-523.html">$(this)jquery</a></li>
+		<li><a href="http://onelose.com/post-369.html">如何查看某个端口被谁占用</a></li>
+		<li><a href="http://onelose.com/post-262.html">Ubuntu12.04开机自动挂载windows分区</a></li>
+		<li><a href="http://onelose.com/post-307.html">【问底】徐汉彬：PHP7和HHVM的性能之争</a></li>
+		<li><a href="http://onelose.com/post-535.html">无限分类</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

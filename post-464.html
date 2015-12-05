@@ -1,0 +1,367 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>ZendStudio9性能优化</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="今天使用ZendStudio9的时候再次被卡得..." />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>ZendStudio9性能优化</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-10-30 7:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>今天使用ZendStudio9的时候再次被卡得想死，ctrl+s保存文件的时候zend会先build什么东西，然后才进行save操作，每次如此。突然好怀念当初使用的zendStudio5.5，完全只是php的开发环境。而在6.0之后的版本都成为了ZendStudio for eclipse，也就是均是基于eclipse的。功能很强大，但能用到的却不多，还很占用资源。真想把他换了。但找来找去，还真找不到一个能比拟ZendStudio的开发环境，也不是很想退回去使用5.5的版本。</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　那么我就自己研究Zend Studio的菜单栏和工具栏，看看有没有可以优化的配置，以下说明不一定正确：</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　1、关闭自动Build：</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　将&nbsp;<wbr><strong>Project -&gt; Build Automatically</strong>&nbsp;<wbr>前面的勾选取消掉</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　在使用中，我发现Build的作用应该是为整个项目建立一个索引和预读取，加快查找和载入文件的速度，但不必要让zend 自动Build项目，他还没有聪明到知道自己该什么时候build才会让主人不觉得卡，所以，取消Build Automatically会让你觉得你的Zend Studio跑的快了点。你可以在添加完项目或者在修改过项目之后，右键点击项目，然后选择Build Project</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　</font></p> 
+ <div style='color: rgb(73, 73, 73); font-family: simsun;'> 
+  <font face='MS Hei' size='2'><img src='http://note.youdao.com/yws/res/1074/A86ACF117F764D85B005CFD7064B124B' data-media-type='image'></font> 
+ </div> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　2、开启智能插入模式</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei'><font size='2'>　　勾选&nbsp;<wbr><strong>Edit-&gt;Smart Insert Mode</strong></font></font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　</font></p> 
+ <div style='color: rgb(73, 73, 73); font-family: simsun;'> 
+  <font face='MS Hei' size='2'><img src='http://note.youdao.com/yws/res/1072/8D2F5DC365F54C5CB24DA6976C34488C' data-media-type='image'></font> 
+ </div> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　3、快捷键加注释</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　使用ctrl + / 增加和取消一行的注释</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　使用ctrl + shift + / 注释一个代码块</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　使用ctrl + shift + \ 取消注释一个代码块</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　4、设置代码格式</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　<strong>Window-&gt;Preferences-&gt;PHP-&gt;Code Style-&gt;Formatter</strong></font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　</font></p> 
+ <div style='color: rgb(73, 73, 73); font-family: simsun;'> 
+  <font face='MS Hei' size='2'><img src='http://note.youdao.com/yws/res/1069/580E3AE0C7E544F6A81CDE78879048CA' data-media-type='image'></font> 
+ </div> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　选择Show之后，可以设置类、方法、for语句块、switch语句中的代码是否需要缩进，设置类、方法、语句块中的前半个大括号是直接跟在本行结尾还是换到下一行，还有许多，可以自己查看</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　</font></p> 
+ <div style='color: rgb(73, 73, 73); font-family: simsun;'> 
+  <font face='MS Hei' size='2'><img src='http://note.youdao.com/yws/res/1070/05B574578F9F4D03B6ADA95B4DAD273B' data-media-type='image'></font> 
+ </div> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　选择文件：使用快捷键ctrl + shift + f可以快速将你的php文件格式化为你设置的格式，也可以使用菜单栏的Source -&gt; Format</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　5、修改配置文件ZendStudio.ini</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　加大zendstudio的使用内存，也就是讲XXMaxPermSize加大到512m，如果你的内存足够大到4G，那么你这里使用1024都可以，修改完后的配置文件内容如下：</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　-startup</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　plugins/org.eclipse.equinox.launcher_1.2.0.v20110502.jar</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　--launcher.library</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　plugins/org.eclipse.equinox.launcher.win32.win32.x86_1.1.100.v20110502</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　--launcher.XXMaxPermSize</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　512m</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　--launcher.defaultAction</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　openFile</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　-showlocation</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　-name</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　Zend Studio</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　-vmargs</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　-Xms128M</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　-Xmx512M</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　-DGIT_SSL_NO_VERIFY=true</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　6、加快鼠标经过时代码提示速度</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　选择<strong>Window -&gt; Preferences -&gt; PHP -&gt; Editor -&gt; Content Assist -&gt;Auto Activation</strong></font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　将Auto activation delay(in msecs)设置为50，默认值可能是200或者500</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　7、使用空格代替tab</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　选择<strong>Window -&gt; Preferences -&gt; PHP -&gt; Code Style -&gt; Formatter</strong></font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　一、选择Zend Framework Coventions[build-in]，然后在<strong>Window -&gt; Preferences -&gt; General -&gt; Editors -&gt; Text Editors</strong>中如下设置：</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　</font></p> 
+ <div style='color: rgb(73, 73, 73); font-family: simsun;'> 
+  <font face='MS Hei' size='2'><img src='http://note.youdao.com/yws/res/1071/32F65C79F0374EC98F334DE5661C5727' data-media-type='image'></font> 
+ </div> 
+ <div style='color: rgb(73, 73, 73); font-family: simsun;'> 
+  <font face='MS Hei' size='2'><img src='http://note.youdao.com/yws/res/1075/E46C6A4D961F4E5794F1B65B93EAA095' data-media-type='image'></font> 
+ </div> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　二、如果是自定义的话，点击Edit，在Indentation选项卡中，设置Tab policy为Spaces，然后在Indentation size填写使用的空格数，</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　</font></p> 
+ <div style='color: rgb(73, 73, 73); font-family: simsun;'> 
+  <font face='MS Hei' size='2'><img src='http://note.youdao.com/yws/res/1073/F6B96143AA484EE583696F6F9DE8A960' data-media-type='image'></font> 
+ </div> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　8、快速搜索方法和类：</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　之前我更习惯于在项目文件夹上直接点击右键，然后选择Search进行查找，这样的话ZendStudio会去扫描所有文件，比较耗时。</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　如果只是需要查找方法的话，可以使用快捷键ctrl + shift + M</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　根据类名称查找的话使用快捷键ctrl + shift + T&nbsp;<wbr></font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　速度真的很快</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　9、添加新的文件类型：</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　drupal中的模块后缀名是*.module，我们使用zend打开的时候是纯文本内容，不会有代码高亮的效果，设置方法：</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　选择：<strong>Window -&gt; Preferences -&gt; General -&gt; Content Types</strong></font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　点开右侧的Text，选择php content type，点击Add按钮，在弹出框中输入*.module，最后保存即可</font></p> 
+ <p style='color: rgb(73, 73, 73); font-family: simsun;'><font face='MS Hei' size='2'>　　</font><font face='MS Hei' size='2'>将*.tpl添加到HTML中也是类似操作</font></p> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-458.html">HTML5无刷新修改URL</a>
+				|
+				 <a href="http://onelose.com/post-465.html">http://mm.wanggou.com/category_m.shtml</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="464" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-179.html">Maru VS Effort 新老星际人的碰撞！少帮主解说</a></li>
+		<li><a href="http://onelose.com/post-363.html">VI</a></li>
+		<li><a href="http://onelose.com/post-87.html">微软Visual Studio 2010</a></li>
+		<li><a href="http://onelose.com/post-135.html">如何下载迅雷所有被屏蔽的最新电影</a></li>
+		<li><a href="http://onelose.com/post-109.html">大叔</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

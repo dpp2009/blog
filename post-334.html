@@ -1,0 +1,316 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>使用scrapy进行大规模抓取</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>使用scrapy进行大规模抓取</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-15 7:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <h2 style='background-color: rgb(238, 238, 238); color: rgb(34, 34, 35); font-family: 'Microsoft YaHei', Verdana, 'BitStream vera Sans'; font-size: 20px;'><p style='color: rgb(68, 68, 67); font-family: Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif; font-size: 14px; font-weight: normal;'>原文：<a href='http://www.yakergong.net/blog/archives/500' style='color:rgb(41, 112, 166);'>http://www.yakergong.net/blog/archives/500</a></p><p style='color: rgb(68, 68, 67); font-family: Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif; font-size: 14px; font-weight: normal;'><img title='scrapy' src='http://note.youdao.com/yws/res/1935/D963A43455E54A739F94E44B4D30C6CA' width='244' height='65' data-media-type='image'></p><p style='color: rgb(68, 68, 67); font-family: Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif; font-size: 14px; font-weight: normal;'>使用scrapy有大概半年了，算是有些经验吧，在这里跟大家讨论一下使用scrapy作为爬虫进行大规模抓取可能遇到的问题。我们抓取的目标是教育网上的网站（目前主要针对.edu.cn和.cas.cn/.cass.cn域名），这半年里抓取了百万以上的url，其实百万url的规模不算大，我们一直在断断续续的修改，还没有开始全面的抓取。</p><p style='color: rgb(68, 68, 67); font-family: Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif; font-size: 14px; font-weight: normal;'>如果想了解scrapy的话，推荐pluskid的<a href='http://blog.pluskid.org/?p=366' style='color:rgb(41, 112, 166);'>scrapy轻松定制网络爬虫</a>，写的很清晰。</p><p style='color: rgb(68, 68, 67); font-family: Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif; font-size: 14px; font-weight: normal;'>关于scrapy涉及的一些不太容易解决的性能问题，请参考<a href='http://www.yakergong.net/blog/archives/507' style='color:rgb(41, 112, 166);'>使用scrapy进行大规模抓取(二)</a>。</p><p style='color: rgb(68, 68, 67); font-family: Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif; font-size: 14px; font-weight: normal;'>我们对scrapy的修改是基于0.9 stable的（写这篇文章时最新的release是0.10）。我们为了实现定制需求而进行的修改经常破坏了scrapy的代码结构，所以这里就不贴代码了，有兴趣的朋友可以留言或者邮件讨论。</p><p style='color: rgb(68, 68, 67); font-family: Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif; font-size: 14px; font-weight: normal;'>首先说下scrapy的定位吧，我们看来它是为抓取单一网站上固定格式的内容而设计的，比如抓取一个小说网站上的小说或者抓取一个电子商务网站上的商品。好在scrapy结构清晰，可以很方便得修改它来实现更复杂的需求。要进行大规模的抓取，可能要修改scrapy以处理如下问题。</p><p style='color: rgb(68, 68, 67); font-family: Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif; font-size: 14px; font-weight: normal;'><strong>快速的link extractor</strong>。python的SGMLParser实在是太慢了，使用SgmlLinkExtractor会让爬虫把大部分的时间都浪费在解析网页上，最好自己写一个link extractor(我们基于<a href='http://codespeak.net/lxml/' style='color:rgb(41, 112, 166);'>lxml</a>写了一个，也可以用soup之类的库)。也可以用正则表达式来写link extractor，速度快，问题是不理解html语义，会把注释里的链接也包含进来。另外基于javascript重定向url也要在这里提取出来。</p><p style='color: rgb(68, 68, 67); font-family: Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif; font-size: 14px; font-weight: normal;'><strong>Spider Trap</strong>(<a href='http://en.wikipedia.org/wiki/Spider_trap' style='color:rgb(41, 112, 166);'>?</a>)。我们解决这个问题的方法比较暴力。因为spider trap一般是由动态网页实现的，所以我们最开始的方案就是先通过url是否包含”?”来判断一个网页是否是动态网页，然后取得不包含参数的url地址，对这个地址进行计数，设置一个阈值，超过阈值之后不再抓取。这个方案遇到的困扰在于很多网站开启了url rewrite，使得判别一个页面是否是动态页面很困难。现在的方法是把网页按照所引用的css文件进行聚类，通过控制类里最大能包含的网页数量防止爬虫进入trap后出不来，对不不含css的网页会给一个penalty，限制它能产生的链接数量。这个办法理论上不保证能避免爬虫陷入死循环，但是实际上这个方案工作得挺好，因为绝大多数网页都使用了css，动态网页更是如此。之所以说着方法比较暴力是因为这两种方法阈值都是写死的，不能通过抓取的结果，网页的相似度，网页的重要性进行修改。</p><p style='color: rgb(68, 68, 67); font-family: Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif; font-size: 14px; font-weight: normal;'><strong>增量抓取</strong>。一个针对多个网站的爬虫很难一次性把所有网页爬取下来，并且网页也处于不断更新的状态中，爬取是一个动态的过程，爬虫支持增量的抓取是很必要的。大概的流程就是关闭爬虫时保存duplicate filter的数据，保存当前的request队列，爬虫启动时导入duplicate filter，并且用上次request队列的数据作为start url。这里还涉及scrapy一个称得上bug的问题，一旦抓取队列里url过多，关闭scrapy需要很久，有时候要花费几天的时间。我们hack了scrapy的代码，在接收到关闭命令后，保存duplicate filter数据和当前的request队列和已抓取的url列表，然后调用twisted的reactor.stop()强制退出。当前的request队列可以通过scrapy.core.scheduler的pending_requests成员得到。</p><p style='color: rgb(68, 68, 67); font-family: Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif; font-size: 14px; font-weight: normal;'><strong>高效数据存储</strong>。抓取的页面多了之后如何存储就成了一个问题，按我们的统计纯html页面的平均大小大概在20~30k之间，百万的页面抓下来之后占用的硬盘空间大概是几十G。ntfs和ext3这些文件系统在小文件过多之后效率都会比较低，需要优化存储效率。我们目前将页面的url进行hash(sha1)，以hash值作为文件名，hash值的前几位作为目录名存储页面，以后准备使用HDFS来存储数据。</p><p style='color: rgb(68, 68, 67); font-family: Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif; font-size: 14px; font-weight: normal;'>scrapy的开发者还是挺活跃的，这两天就看到scrapy的<a href='http://blog.scrapy.org/' style='color:rgb(41, 112, 166);'>blog</a>上有专家写关于ajax抓取的文章，ajax抓取是个挺常出现的问题。目前新版本的scrapy(0.10)支持持久化队列支持增量抓取，爬虫关闭过慢的问题也得到了一定的解决，相信更多特性会逐步开发出来。</p><p style='color: rgb(68, 68, 67); font-family: Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif; font-size: 14px; font-weight: normal;'>我们目前的数据量其实也谈不上大规模，针对这些问题的解决方式也不够完美。这里只是列举一部分可能遇到的问题，实际的问题还有很多，比如编码检测/确定网页的重要性/定期更新。还有一个大问题就是内存泄露，在python里检查内存泄露很难，尤其是对于工作在twisted上的这种持续工作的网络程序，这个以后再谈吧。下面还有一些小建议。</p> 
+ <blockquote style='color: rgb(68, 68, 67); font-family: Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif; font-size: 14px; font-weight: normal;'> 
+  <p>1.如果想要爬取的质量更高，尽量使用宽度优先的策略，在配置里设置 SCHEDULER_ORDER = ‘BFO’</p> 
+  <p>2.修改单爬虫的最大并行请求数 CONCURRENT_REQUESTS_PER_SPIDER</p> 
+  <p>3.修改twisted的线程池大小，默认值是10。参考(<a href='http://twistedmatrix.com/documents/10.1.0/core/howto/threading.html' style='color:rgb(41, 112, 166);'>Using Threads in Twisted</a>)</p> 
+  <p>在scrapy/core/manage.py爬虫启动前加上</p> 
+  <p>reactor.suggestThreadPoolSize(poolsize)</p> 
+  <p>4.可以开启dns cache来提高性能</p> 
+  <p>在配置里面加上 EXTENSIONS={’scrapy.contrib.resolver.CachingResolver’: 0,}</p> 
+  <p>5.如果自己实现duplicate filter的话注意要保证它是一直可用的，dupfilter里的异常是不会出现在日志文件中的，好像外面做了try-expect处理，我也没仔细看这部分</p> 
+  <p>这是接着之前的(<a href='http://www.yakergong.net/blog/archives/500' target='_blank' style='color:rgb(41, 112, 166);'>一</a>)写的，上一篇里主要是写了一些解决性能问题的思路。时间过去快半年了，我们抓取的页面也不止百万了。我们在爬虫上也做了一些小改进，比如改善了链接提取器，(一)里提到的四个问题也都有不同程度的改进，但是还是有一些问题迟迟没能解决。</p> 
+  <p><strong>scrapy的问题</strong></p> 
+  <p>爬虫是一个很依赖于网络io的应用，单机的处理能力有限，很快就变成瓶颈。而scrapy并不是一个分布式的设计，在需要大规模爬取的情况下就很成问题。当然可以通过修改Request队列来实现分布式爬取，而且工作量也不算特别大。</p> 
+  <p>scrapy的<strong>并行度不高</strong>。力图在爬虫里做一些计算性的操作就会影响抓取的速率。这主要是python里的线程机制造成的，因为Python使用了<a href='http://en.wikipedia.org/wiki/Global_Interpreter_Lock' style='color:rgb(41, 112, 166);'>GIL</a>(和Ruby一样)，多线程并不会带来太多速度上的提升(除非用Python的C扩展实现自己的模块，这样绕过了GIL)。Summary:Use Python threads if you need to run IO operations in parallel. Do not if you need to run computations in parallel.</p> 
+  <p>scrapy的<strong>内存消耗很快</strong>。可能是出于性能方面的考虑，pending requests并不是序列化存储在硬盘中，而是放在内存中的(毕竟IO很费时)，而且所有Request都放在内存中。你抓取到 百万网页的时候，考虑到单个网页时产生很多链接的，pending request很可能就近千万了，加上脚本语言里的对象本来就有额外成本，再考虑到GC不会立即释放内存，内存占用就相当可观了。这个问题对我们的应用倒也没造成多大困扰，找台二三十G内存的机器就能满足很长时间的需求。</p> 
+  <p>memory应该是脚本语言的硬伤，单机程序来说就更受限了。我记得豆瓣的网站就是用python写的，框架好像用得就是quixote。Davies说内存超过一定量就由master kill掉，再重新fork。持续运行的python程序消耗内存很快，内存泄露也很难调试。</p> 
+  <p>归根到底，这两个问题是根植于语言之中的。</p> 
+  <p><strong>关于如何修改scrapy</strong></p> 
+  <p>前些日子跟几个做爬虫的朋友在五道口交流了一些scrapy的使用经验。谈点建议吧，如果你想修改scrapy适应自己的需求的话，可以先看看文档，能否通过修改配置解决(比如宽度优先/深度优先，限制爬取深度这些都可以通过修改配置解决的)。再contrib和contrib_exp两个目录下有没有实现好的模块，然后再去scrapy snippets看看。如果都不能解决，就去scrapy的google group里问一下，有些实现了的模块并未写在文档中，比如DNS Cache。真的需要自己动手实现了，再查scrapy的在线文档，写的还是挺详细的，关于架构和一些关键的数据结构以及一些常用设置都有说明，有搜索功能(sphinx生成的)。</p> 
+  <p>列举scrapy的google group里经常有人提出的一些需求:</p> 
+  <blockquote> 
+   <p>javascript爬取/ajax爬取(跟js的复杂程度正相关，对于复杂的js通用的解决方案应该就是内置js执行引擎)<br>让爬虫运行在单独线程(see “<a href='http://snippets.scrapy.org/snippets/4/' style='color:rgb(41, 112, 166);'>Run scrapy crawler in a thread</a>“，考虑到Python的多线程机制，这样不太可能有多大的性能提升)<br>同时运行多个爬虫(新版的scrapy本身就支持这一特性)<br>防止被网站封禁(不影响人家服务器正常工作是你的义务…自己控制下爬取速率吧)<br>把Request存储到disk或者database上(pluskid同学讲过)</p> 
+  </blockquote> 
+  <p><strong>P.S. 推荐</strong></p> 
+  <p>《<a href='http://book.douban.com/subject/1481158/' style='color:rgb(41, 112, 166);'>搜索引擎：原理、技术与系统</a>》</p> 
+  <p>非常好的关于搜索引擎的书，基本原理讲解得全面，也涉及到足够多的细节。相对市面上介绍nutch的书籍而言，它对基本原理的讲解更细节，对自己动手实现一个简单的搜索引擎更 有帮助。比如它会讲如何提取链接，如何对网页消重，甚至讲了一个简单的中文最大正向匹配分词算法。也像douban里的评论里所说，阅读它需要点IR 方面的基础，有些知识它觉得理所当然就一笔带过了。还是有国内教材的作风，重在罗列，不以读者理解为目的。一些不好理解的地方没有做过多阐述。P.S. 我觉得nutch里的爬虫本来就实现得很粗糙。</p> 
+ </blockquote><br></h2>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-303.html">linux下查找文件或者内容常有命令</a>
+				|
+				 <a href="http://onelose.com/post-344.html">Larbin的安装与配置</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="334" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-486.html">js实践篇：例外处理Try{}catch(e){}</a></li>
+		<li><a href="http://onelose.com/post-467.html">processlist命令</a></li>
+		<li><a href="http://onelose.com/post-224.html">相似图片搜索的原理</a></li>
+		<li><a href="http://onelose.com/post-451.html">JQuery的Ajax跨域请求的解决方案</a></li>
+		<li><a href="http://onelose.com/post-214.html">我目前正参与我们的一个大项目，Alloy。Alloy是一种编译型的编程语言。我目前在计算机及编程领域</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

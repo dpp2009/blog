@@ -1,0 +1,532 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>linuxawk命令详解</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>linuxawk命令详解</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-2-2 7:00 Monday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <h2 style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 21px;'><strong><span style='font-size:18px;'>简介</span></strong></h2> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>awk是一个强大的文本分析工具，相对于grep的查找，sed的编辑，awk在其对数据分析并生成报告时，显得尤为强大。简单来说awk就是把文件逐行的读入，以空格为默认分隔符将每行切片，切开的部分再进行各种分析处理。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>awk有3个不同版本: awk、nawk和gawk，未作特别说明，一般指gawk，gawk 是 AWK 的 GNU 版本。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>awk其名称得自于它的创始人 Alfred Aho 、Peter Weinberger 和 Brian Kernighan 姓氏的首个字母。实际上 AWK 的确拥有自己的语言： AWK 程序设计语言 ， 三位创建者已将它正式定义为“样式扫描和处理语言”。它允许您创建简短的程序，这些程序读取输入文件、为数据排序、处理数据、对输入执行计算以及生成报表，还有无数其他的功能。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<h2 style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 21px;'><strong><span style='font-size:14pt;'>使用方法</span></strong></h2> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <pre style='font-family: 'Courier New' !important;'><span style='color: rgb(0, 0, 255);'>awk</span> <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>{pattern + action}</span><span style='color: rgb(128, 0, 0);'>'</span> {filenames}</pre> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>尽管操作可能会很复杂，但语法总是这样，其中 pattern 表示 AWK 在数据中查找的内容，而 action 是在找到匹配内容时所执行的一系列命令。花括号（{}）不需要在程序中始终出现，但它们用于根据特定的模式对一系列指令进行分组。 pattern就是要表示的正则表达式，用斜杠括起来。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>awk语言的最基本功能是在文件或者字符串中基于指定规则浏览和抽取信息，awk抽取信息后，才能进行其他文本操作。完整的awk脚本通常用来格式化文本文件中的信息。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>通常，awk是以文件的一行为处理单位的。awk每接收文件的一行，然后执行相应的命令，来处理文本。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<h2 style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 21px;'><strong><span style='font-size:14pt;'>调用awk</span></strong></h2> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>有三种方式调用awk</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <div style='background-color:rgb(245, 245, 245);'> 
+  <img src='http://note.youdao.com/yws/res/2262/07FDAF2B8C5647CFA4A59A6826B03CE7' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'> 
+ </div> 
+ <pre style='font-family: 'Courier New' !important;'><span style='color: rgb(128, 0, 128);'>1</span>.命令行方式
+<span style='color: rgb(0, 0, 255);'>awk</span> [-F  field-separator]  <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>commands</span><span style='color: rgb(128, 0, 0);'>'</span>  input-<span style='color: rgb(0, 0, 255);'>file</span>(s)
+其中，commands 是真正awk命令，[-F域分隔符]是可选的。 input-<span style='color: rgb(0, 0, 255);'>file</span>(s) 是待处理的文件。
+在awk中，文件的每一行中，由域分隔符分开的每一项称为一个域。通常，在不指名-F域分隔符的情况下，默认的域分隔符是空格。
+
+<span style='color: rgb(128, 0, 128);'>2</span>.shell脚本方式
+将所有的awk命令插入一个文件，并使awk程序可执行，然后awk命令解释器作为脚本的首行，一遍通过键入脚本名称来调用。
+相当于shell脚本首行的：#!/bin/<span style='color: rgb(0, 0, 255);'>sh</span>
+可以换成：#!/bin/<span style='color: rgb(0, 0, 255);'>awk</span>
+
+<span style='color: rgb(128, 0, 128);'>3</span>.将所有的awk命令插入一个单独文件，然后调用：
+<span style='color: rgb(0, 0, 255);'>awk</span> -f <span style='color: rgb(0, 0, 255);'>awk</span>-script-<span style='color: rgb(0, 0, 255);'>file</span> input-<span style='color: rgb(0, 0, 255);'>file</span>(s)
+其中，-f选项加载awk-script-file中的awk脚本，input-<span style='color: rgb(0, 0, 255);'>file</span>(s)跟上面的是一样的。</pre> 
+ <div style='background-color:rgb(245, 245, 245);'> 
+  <img src='http://note.youdao.com/yws/res/2262/07FDAF2B8C5647CFA4A59A6826B03CE7' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'> 
+ </div> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;本章重点介绍命令行方式。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<h2 style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 21px;'><strong><span style='font-size:14pt;'>入门实例</span></strong></h2> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>假设last -n 5的输出如下</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <pre style='font-family: 'Courier New' !important;'>[root@www ~]# <span style='color: rgb(0, 0, 255);'>last</span> -n <span style='color: rgb(128, 0, 128);'>5</span> &lt;==仅取出前五行
+root     pts/<span style='color: rgb(128, 0, 128);'>1</span>   <span style='color: rgb(128, 0, 128);'>192.168</span>.<span style='color: rgb(128, 0, 128);'>1.100</span>  Tue Feb <span style='color: rgb(128, 0, 128);'>10</span> <span style='color: rgb(128, 0, 128);'>11</span>:<span style='color: rgb(128, 0, 128);'>21</span>   still logged <span style='color: rgb(0, 0, 255);'>in</span>
+root     pts/<span style='color: rgb(128, 0, 128);'>1</span>   <span style='color: rgb(128, 0, 128);'>192.168</span>.<span style='color: rgb(128, 0, 128);'>1.100</span>  Tue Feb <span style='color: rgb(128, 0, 128);'>10</span> <span style='color: rgb(128, 0, 128);'>00</span>:<span style='color: rgb(128, 0, 128);'>46</span> - <span style='color: rgb(128, 0, 128);'>02</span>:<span style='color: rgb(128, 0, 128);'>28</span>  (<span style='color: rgb(128, 0, 128);'>01</span>:<span style='color: rgb(128, 0, 128);'>41</span>)
+root     pts/<span style='color: rgb(128, 0, 128);'>1</span>   <span style='color: rgb(128, 0, 128);'>192.168</span>.<span style='color: rgb(128, 0, 128);'>1.100</span>  Mon Feb  <span style='color: rgb(128, 0, 128);'>9</span> <span style='color: rgb(128, 0, 128);'>11</span>:<span style='color: rgb(128, 0, 128);'>41</span> - <span style='color: rgb(128, 0, 128);'>18</span>:<span style='color: rgb(128, 0, 128);'>30</span>  (<span style='color: rgb(128, 0, 128);'>06</span>:<span style='color: rgb(128, 0, 128);'>48</span>)
+dmtsai   pts/<span style='color: rgb(128, 0, 128);'>1</span>   <span style='color: rgb(128, 0, 128);'>192.168</span>.<span style='color: rgb(128, 0, 128);'>1.100</span>  Mon Feb  <span style='color: rgb(128, 0, 128);'>9</span> <span style='color: rgb(128, 0, 128);'>11</span>:<span style='color: rgb(128, 0, 128);'>41</span> - <span style='color: rgb(128, 0, 128);'>11</span>:<span style='color: rgb(128, 0, 128);'>41</span>  (<span style='color: rgb(128, 0, 128);'>00</span>:<span style='color: rgb(128, 0, 128);'>00</span>)
+root     tty1                   Fri Sep  <span style='color: rgb(128, 0, 128);'>5</span> <span style='color: rgb(128, 0, 128);'>14</span>:<span style='color: rgb(128, 0, 128);'>09</span> - <span style='color: rgb(128, 0, 128);'>14</span>:<span style='color: rgb(128, 0, 128);'>10</span>  (<span style='color: rgb(128, 0, 128);'>00</span>:<span style='color: rgb(128, 0, 128);'>01</span>)</pre> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>如果只是显示最近登录的5个帐号</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <pre style='font-family: 'Courier New' !important;'><span style='color: rgb(0, 0, 255);'>#last</span> -n <span style='color: rgb(128, 0, 128);'>5</span> | <span style='color: rgb(0, 0, 255);'>awk</span>  <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>{print $1}</span><span style='color: rgb(128, 0, 0);'>'<br>root<br>root<br>root<br>dmtsai<br>root</span></pre> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>awk工作流程是这样的：读入有'\n'换行符分割的一条记录，然后将记录按指定的域分隔符划分域，填充域，$0则表示所有域,$1表示第一个域,$n表示第n个域。默认域分隔符是'空白键' 或 '[tab]键',所以$1表示登录用户，$3表示登录用户ip,以此类推。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>如果只是显示/etc/passwd的账户</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <pre style='font-family: 'Courier New' !important;'>#<span style='color: rgb(0, 0, 255);'>cat</span> /etc/<span style='color: rgb(0, 0, 255);'>passwd</span> |<span style='color: rgb(0, 0, 255);'>awk</span>  -F <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>:</span><span style='color: rgb(128, 0, 0);'>'</span>  <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>{print $1}</span><span style='color: rgb(128, 0, 0);'>'</span>  
+root
+daemon
+bin
+sys</pre> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>这种是awk+action的示例，每行都会执行action{print $1}。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>-F指定域分隔符为':'。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>如果只是显示/etc/passwd的账户和账户对应的shell,而账户与shell之间以tab键分割</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <pre style='font-family: 'Courier New' !important;'>#<span style='color: rgb(0, 0, 255);'>cat</span> /etc/<span style='color: rgb(0, 0, 255);'>passwd</span> |<span style='color: rgb(0, 0, 255);'>awk</span>  -F <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>:</span><span style='color: rgb(128, 0, 0);'>'</span>  <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>{print $1'\t'$7}</span><span style='color: rgb(128, 0, 0);'>'</span>
+root    /bin/bash
+daemon  /bin/<span style='color: rgb(0, 0, 255);'>sh</span>
+bin     /bin/<span style='color: rgb(0, 0, 255);'>sh</span>
+sys     /bin/<span style='color: rgb(0, 0, 255);'>sh</span></pre> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>如果只是显示/etc/passwd的账户和账户对应的shell,而账户与shell之间以逗号分割,而且在所有行添加列名name,shell,在最后一行添加'blue,/bin/nosh'。</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <div style='background-color:rgb(245, 245, 245);'> 
+  <img src='http://note.youdao.com/yws/res/2262/07FDAF2B8C5647CFA4A59A6826B03CE7' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'> 
+ </div> 
+ <pre style='font-family: 'Courier New' !important;'><span style='color: rgb(0, 0, 255);'>cat</span> /etc/<span style='color: rgb(0, 0, 255);'>passwd</span> |<span style='color: rgb(0, 0, 255);'>awk</span>  -F <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>:</span><span style='color: rgb(128, 0, 0);'>'</span>  <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>BEGIN {print 'name,shell'}  {print $1','$7} END {print 'blue,/bin/nosh'}</span><span style='color: rgb(128, 0, 0);'>'</span>
+name,shell
+root,/bin/bash
+daemon,/bin/<span style='color: rgb(0, 0, 255);'>sh</span>
+bin,/bin/<span style='color: rgb(0, 0, 255);'>sh</span>
+sys,/bin/<span style='color: rgb(0, 0, 255);'>sh</span>
+....
+blue,/bin/nosh</pre> 
+ <div style='background-color:rgb(245, 245, 245);'> 
+  <img src='http://note.youdao.com/yws/res/2262/07FDAF2B8C5647CFA4A59A6826B03CE7' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'> 
+ </div> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>awk工作流程是这样的：先执行BEGING，然后读取文件，读入有/n换行符分割的一条记录，然后将记录按指定的域分隔符划分域，填充域，$0则表示所有域,$1表示第一个域,$n表示第n个域,随后开始执行模式所对应的动作action。接着开始读入第二条记录······直到所有的记录都读完，最后执行END操作。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>搜索/etc/passwd有root关键字的所有行</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <pre style='font-family: 'Courier New' !important;'>#<span style='color: rgb(0, 0, 255);'>awk</span> -F: <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>/root/</span><span style='color: rgb(128, 0, 0);'>'</span> /etc/<span style='color: rgb(0, 0, 255);'>passwd</span>
+root:x:<span style='color: rgb(128, 0, 128);'>0</span>:<span style='color: rgb(128, 0, 128);'>0</span>:root:/root:/bin/bash</pre> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>这种是pattern的使用示例，匹配了pattern(这里是root)的行才会执行action(没有指定action，默认输出每行的内容)。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>搜索支持正则，例如找root开头的:&nbsp;awk -F: '/^root/' /etc/passwd</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>搜索/etc/passwd有root关键字的所有行，并显示对应的shell</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <pre style='font-family: 'Courier New' !important;'># <span style='color: rgb(0, 0, 255);'>awk</span> -F: <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>/root/{print $7}</span><span style='color: rgb(128, 0, 0);'>'</span> /etc/<span style='color: rgb(0, 0, 255);'>passwd</span>             
+/bin/bash</pre> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;这里指定了action{print $7}</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<h2 style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 21px;'><strong><span style='font-size:14pt;'>awk内置变量</span></strong></h2> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>awk有许多内置变量用来设置环境信息，这些变量可以被改变，下面给出了最常用的一些变量。</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <div style='background-color:rgb(245, 245, 245);'> 
+  <img src='http://note.youdao.com/yws/res/2262/07FDAF2B8C5647CFA4A59A6826B03CE7' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'> 
+ </div> 
+ <pre style='font-family: 'Courier New' !important;'>ARGC               命令行参数个数
+ARGV               命令行参数排列
+ENVIRON            支持队列中系统环境变量的使用
+FILENAME           awk浏览的文件名
+FNR                浏览文件的记录数
+FS                 设置输入域分隔符，等价于命令行 -F选项
+NF                 浏览记录的域的个数
+NR                 已读的记录数
+OFS                输出域分隔符
+ORS                输出记录分隔符
+RS                 控制记录分隔符</pre> 
+ <div style='background-color:rgb(245, 245, 245);'> 
+  <img src='http://note.youdao.com/yws/res/2262/07FDAF2B8C5647CFA4A59A6826B03CE7' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'> 
+ </div> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;此外,$0变量是指整条记录。$1表示当前行的第一个域,$2表示当前行的第二个域,......以此类推。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>统计/etc/passwd:文件名，每行的行号，每行的列数，对应的完整行内容:</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <pre style='font-family: 'Courier New' !important;'><span style='color: rgb(0, 0, 255);'>#awk</span>  -F <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>:</span><span style='color: rgb(128, 0, 0);'>'</span>  <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>{print 'filename:' FILENAME ',linenumber:' NR ',columns:' NF ',linecontent:'$0}</span><span style='color: rgb(128, 0, 0);'>'</span> /etc/<span style='color: rgb(0, 0, 255);'>passwd</span>
+filename:/etc/<span style='color: rgb(0, 0, 255);'>passwd</span>,linenumber:<span style='color: rgb(128, 0, 128);'>1</span>,columns:<span style='color: rgb(128, 0, 128);'>7</span>,linecontent:root:x:<span style='color: rgb(128, 0, 128);'>0</span>:<span style='color: rgb(128, 0, 128);'>0</span>:root:/root:/bin/bash
+filename:/etc/<span style='color: rgb(0, 0, 255);'>passwd</span>,linenumber:<span style='color: rgb(128, 0, 128);'>2</span>,columns:<span style='color: rgb(128, 0, 128);'>7</span>,linecontent:daemon:x:<span style='color: rgb(128, 0, 128);'>1</span>:<span style='color: rgb(128, 0, 128);'>1</span>:daemon:/usr/sbin:/bin/<span style='color: rgb(0, 0, 255);'>sh</span>
+filename:/etc/<span style='color: rgb(0, 0, 255);'>passwd</span>,linenumber:<span style='color: rgb(128, 0, 128);'>3</span>,columns:<span style='color: rgb(128, 0, 128);'>7</span>,linecontent:bin:x:<span style='color: rgb(128, 0, 128);'>2</span>:<span style='color: rgb(128, 0, 128);'>2</span>:bin:/bin:/bin/<span style='color: rgb(0, 0, 255);'>sh</span>
+filename:/etc/<span style='color: rgb(0, 0, 255);'>passwd</span>,linenumber:<span style='color: rgb(128, 0, 128);'>4</span>,columns:<span style='color: rgb(128, 0, 128);'>7</span>,linecontent:sys:x:<span style='color: rgb(128, 0, 128);'>3</span>:<span style='color: rgb(128, 0, 128);'>3</span>:sys:/dev:/bin/<span style='color: rgb(0, 0, 255);'>sh</span></pre> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>使用printf替代print,可以让代码更加简洁，易读</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <pre style='font-family: 'Courier New' !important;'> <span style='color: rgb(0, 0, 255);'>awk</span>  -F <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>:</span><span style='color: rgb(128, 0, 0);'>'</span>  <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>{printf('filename:%10s,linenumber:%s,columns:%s,linecontent:%s\n',FILENAME,NR,NF,$0)}</span><span style='color: rgb(128, 0, 0);'>'</span> /etc/<span style='color: rgb(0, 0, 255);'>passwd</span></pre> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<h2 style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 21px;'><strong><span style='font-size:14pt;'>print和printf</span></strong></h2> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>awk中同时提供了print和printf两种打印输出的函数。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>其中print函数的参数可以是变量、数值或者字符串。字符串必须用双引号引用，参数用逗号分隔。如果没有逗号，参数就串联在一起而无法区分。这里，逗号的作用与输出文件的分隔符的作用是一样的，只是后者是空格而已。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>printf函数，其用法和c语言中printf基本相似,可以格式化字符串,输出复杂时，printf更加好用，代码更易懂。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<h2 style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 21px;'><strong><span style='font-size:14pt;'>&nbsp;awk编程</span></strong></h2> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'><strong>&nbsp;变量和赋值</strong></p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>除了awk的内置变量，awk还可以自定义变量。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>下面统计/etc/passwd的账户人数</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <pre style='font-family: 'Courier New' !important;'><span style='color: rgb(0, 0, 255);'>awk</span> <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>{count++;print $0;} END{print 'user count is ', count}</span><span style='color: rgb(128, 0, 0);'>'</span> /etc/<span style='color: rgb(0, 0, 255);'>passwd</span>
+root:x:<span style='color: rgb(128, 0, 128);'>0</span>:<span style='color: rgb(128, 0, 128);'>0</span>:root:/root:/bin/bash
+......
+user count is &nbsp;40<br></pre> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>count是自定义变量。之前的action{}里都是只有一个print,其实print只是一个语句，而action{}可以有多个语句，以;号隔开。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>这里没有初始化count，虽然默认是0，但是妥当的做法还是初始化为0:</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <pre style='font-family: 'Courier New' !important;'><span style='color: rgb(0, 0, 255);'>awk</span> <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>BEGIN {count=0;print '[start]user count is ', count} {count=count+1;print $0;} END{print '[end]user count is ', count}</span><span style='color: rgb(128, 0, 0);'>'</span> /etc/<span style='color: rgb(0, 0, 255);'>passwd</span>
+[start]user count is  <span style='color: rgb(128, 0, 128);'>0</span>
+root:x:<span style='color: rgb(128, 0, 128);'>0</span>:<span style='color: rgb(128, 0, 128);'>0</span>:root:/root:/bin/bash
+...
+[end]user count is  <span style='color: rgb(128, 0, 128);'>40</span></pre> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>统计某个文件夹下的文件占用的字节数</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <pre style='font-family: 'Courier New' !important;'><span style='color: rgb(0, 0, 255);'>ls</span> -l |<span style='color: rgb(0, 0, 255);'>awk</span> <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>BEGIN {size=0;} {size=size+$5;} END{print '[end]size is ', size}</span><span style='color: rgb(128, 0, 0);'>'<br>[end]size is &nbsp;8657198<br></span></pre> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>如果以M为单位显示:</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <pre style='font-family: 'Courier New' !important;'><span style='color: rgb(0, 0, 255);'>ls</span> -l |<span style='color: rgb(0, 0, 255);'>awk</span> <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>BEGIN {size=0;} {size=size+$5;} END{print '[end]size is ', size/1024/1024,'M'}</span><span style='color: rgb(128, 0, 0);'>'</span> <br>[end]size is &nbsp;8.25889 M</pre> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>注意，统计不包括文件夹的子目录。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'><strong>条件语句</strong></p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;awk中的条件语句是从C语言中借鉴来的，见如下声明方式：</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <div style='background-color:rgb(245, 245, 245);'> 
+  <img src='http://note.youdao.com/yws/res/2262/07FDAF2B8C5647CFA4A59A6826B03CE7' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'> 
+ </div> 
+ <pre style='font-family: 'Courier New' !important;'><span style='color: rgb(0, 0, 255);'>if</span> (expression) {
+    statement;
+    statement;
+    ... ...
+}
+
+<span style='color: rgb(0, 0, 255);'>if</span> (expression) {
+    statement;
+} <span style='color: rgb(0, 0, 255);'>else</span> {
+    statement2;
+}
+
+<span style='color: rgb(0, 0, 255);'>if</span> (expression) {
+    statement1;
+} <span style='color: rgb(0, 0, 255);'>else</span> <span style='color: rgb(0, 0, 255);'>if</span> (expression1) {
+    statement2;
+} <span style='color: rgb(0, 0, 255);'>else</span> {
+    statement3;
+}</pre> 
+ <div style='background-color:rgb(245, 245, 245);'> 
+  <img src='http://note.youdao.com/yws/res/2262/07FDAF2B8C5647CFA4A59A6826B03CE7' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'> 
+ </div> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>统计某个文件夹下的文件占用的字节数,过滤4096大小的文件(一般都是文件夹):</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <pre style='font-family: 'Courier New' !important;'><span style='color: rgb(0, 0, 255);'>ls</span> -l |<span style='color: rgb(0, 0, 255);'>awk</span> <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>BEGIN {size=0;print '[start]size is ', size} {if($5!=4096){size=size+$5;}} END{print '[end]size is ', size/1024/1024,'M'}</span><span style='color: rgb(128, 0, 0);'>'</span> <br>[end]size is &nbsp;8.22339 M</pre> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'><strong>循环语句</strong></p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>awk中的循环语句同样借鉴于C语言，支持while、do/while、for、break、continue，这些关键字的语义和C语言中的语义完全相同。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'><strong>数组</strong></p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp; 因为awk中数组的下标可以是数字和字母，数组的下标通常被称为关键字(key)。值和关键字都存储在内部的一张针对key/value应用hash的表格里。由于hash不是顺序存储，因此在显示数组内容时会发现，它们并不是按照你预料的顺序显示出来的。数组和变量一样，都是在使用时自动创建的，awk也同样会自动判断其存储的是数字还是字符串。一般而言，awk中的数组用来从记录中收集信息，可以用于计算总和、统计单词以及跟踪模板被匹配的次数等等。</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>显示/etc/passwd的账户</p> 
+<div style='background-color: rgb(245, 245, 245); font-family: 'Courier New' !important; font-size: 12px !important;'> 
+ <div style='background-color:rgb(245, 245, 245);'> 
+  <img src='http://note.youdao.com/yws/res/2262/07FDAF2B8C5647CFA4A59A6826B03CE7' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'> 
+ </div> 
+ <pre style='font-family: 'Courier New' !important;'><span style='color: rgb(0, 0, 255);'>awk</span> -F <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>:</span><span style='color: rgb(128, 0, 0);'>'</span> <span style='color: rgb(128, 0, 0);'>'</span><span style='color: rgb(128, 0, 0);'>BEGIN {count=0;} {name[count] = $1;count++;}; END{for (i = 0; i &lt; NR; i++) print i, name[i]}</span><span style='color: rgb(128, 0, 0);'>'</span> /etc/<span style='color: rgb(0, 0, 255);'>passwd</span>
+<span style='color: rgb(128, 0, 128);'>0</span> root
+<span style='color: rgb(128, 0, 128);'>1</span> daemon
+<span style='color: rgb(128, 0, 128);'>2</span> bin
+<span style='color: rgb(128, 0, 128);'>3</span> sys
+<span style='color: rgb(128, 0, 128);'>4</span> <span style='color: rgb(0, 0, 255);'>sync</span>
+<span style='color: rgb(128, 0, 128);'>5</span> games
+......</pre> 
+ <div style='background-color:rgb(245, 245, 245);'> 
+  <img src='http://note.youdao.com/yws/res/2262/07FDAF2B8C5647CFA4A59A6826B03CE7' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'> 
+ </div> 
+</div> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>这里使用for循环遍历数组</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>&nbsp;</p> 
+<p style='background-color: rgb(255, 255, 255); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'>awk编程的内容极多，这里只罗列简单常用的用法，更多请参考&nbsp;<a href='http://www.gnu.org/software/gawk/manual/gawk.html' style='color:navy;'>http://www.gnu.org/software/gawk/manual/gawk.html</a></p>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-310.html">根据微信用户名请求名片</a>
+				|
+				 <a href="http://onelose.com/post-313.html">Linux下SVN部署/安全及权限配置，实现web同步更新</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="312" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-445.html">windows下编译php扩展memcache</a></li>
+		<li><a href="http://onelose.com/post-398.html">linuxwget命令用法详解(附实例说明)</a></li>
+		<li><a href="http://onelose.com/post-298.html">UPDATE `ts_user_job`SET`area_str`=CONCAT(SUBSTRING</a></li>
+		<li><a href="http://onelose.com/post-136.html">109种字体颜色代码及其图形显示</a></li>
+		<li><a href="http://onelose.com/post-496.html">AjaxFileUpload</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

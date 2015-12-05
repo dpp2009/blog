@@ -1,0 +1,670 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>PHP性能分析工具xhprof介绍、安装、使用说明</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>PHP性能分析工具xhprof介绍、安装、使用说明</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-13 7:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <h2 style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:微软雅黑, PMingLiU, Verdana, Arial, Helvetica, sans-serif;font-size:16px;font-style:normal;text-align:left;'><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>做了几年PHPer，很少去关注自己写的脚本在宏观上的性能，虽然微观上去控制每一个逻辑的最佳算法，可能了解数据结构之后会去分析一个小段脚本的时间复杂度和空间复杂度，但是我们很难从宏观上去分析一个系统的执行性能与执行流程，以及程序执行的瓶颈。当被问到“你如何去分析一个PHP应用的性能，以及程序的瓶颈是什么的时候”，表示很尴尬啊...好吧，从现在开始，其实PHP性能分析工具有多种可以选择，下面我来说说我使用的xhprof。</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>简介：XHProf (A Hierarchical Profiler For PHP)是一个轻量级的分层性能测量分析器，是C实现的PHP Zend扩展，最初是facebook的大神们写的，是分层的函数调用级别的分析函数执行的时间、CPU计算时间、内存消耗的PHP性能分析工具。XHProf 除了用C实现的Zend扩展之外，还有一个PHP实现的界面，使得查看XHProf分析结果变得更加容易。</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>1.安装xhprof</p> 
+  <blockquote style='font-size: 13px; font-weight: normal;'> 
+   <p>#wget http://pecl.php.net/get/xhprof-0.9.4.tgz</p> 
+   <p>#tar zxvf xhprof-0.9.4.tgz</p> 
+   <p>#cd xhprof-0.9.4/extension</p> 
+   <p>#/Library/WebServer/php-5.4/bin/phpize</p> 
+   <p>#./configure --with-php-config=/Library/WebServer/php-5.4/bin/php-config</p> 
+   <p>#make &amp;&amp; make install</p> 
+  </blockquote><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>2.xhprof运行时配置（php.ini中加入）</p> 
+  <blockquote style='font-size: 13px; font-weight: normal;'> 
+   <p>extension=xhprof.so<br>xhprof.output_dir=/Users/xudianyang/Server/var/run/xhprof</p> 
+  </blockquote><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>其中xhprof.output_dir配置项指定了xhprof生成的分析报告保存的目录，要求此目录具有可写权限（不管PHP CLI，还是做为Web Server方式运行）</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>3.php -m查看扩展是否加载</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>4.安装Graphviz（将XHProf的分析报告以程序的函数调用图来展现）</p> 
+  <blockquote style='font-size: 13px; font-weight: normal;'> 
+   <p>#wget http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.34.0.tar.gz</p> 
+   <p>#tar zxvf graphviz-2.34.0.tar.gz</p> 
+   <p>#cd graphviz-2.34.0</p> 
+   <p>#./configure</p> 
+   <p>#make &amp;&amp; make install</p> 
+  </blockquote><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>如加上--prefix编译参数，请将安装完毕的主目录中的bin目录路径加入到环境变量PATH中，另外需要注意的如果通过XHProf提供的PHP UI界面查看函数调用图，需要将PHP的proc_open类的函数打开。</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>5.关于XHProf的更详细的介绍</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'><a href='http://web.archive.org/web/20110514095512/http://mirror.facebook.net/facebook/xhprof/doc.html' target='_blank' style='color:rgb(0, 136, 221);'>http://web.archive.org/web/20110514095512/http://mirror.facebook.net/facebook/xhprof/doc.html</a></p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>6.使用XHProf之前需要明白的概念（很重要，做有认知的人，身边很多人都是本末倒置，追求什么高大上，却忘了本，希望不是你...）</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>总表格报告（Flat profile）：展示了总的函数调用级别的信息，包括Inclusive和Exclusive的执行时间、CUP计算时间、内存开销。如，<a href='http://www.phpboy.net/wp-content/uploads/xhprof_html/index.php?run=5319c97be3376&amp;source=xhprof_testing' target='_blank' style='color:rgb(0, 136, 221);'>http://www.phpboy.net/wp-content/uploads/xhprof_html/index.php?run=5319c97be3376&amp;source=xhprof_testing</a></p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>子表格报告：展示了单个函数明细的调用开销，包含<br>1）当前函数（current functions）所调用的函数（child functions）、调用当前函数（parent functions）的函数列表<br>2）某个函数调用某些特定函数及调用的次数<br>3）被调用函数（child functions）在调用函数（current functions）的总时间消耗所占时间比例<br>如，<a href='http://www.phpboy.net/wp-content/uploads/xhprof_html/?run=5319c97be3376&amp;source=xhprof_testing&amp;symbol=quickSort%402' target='_blank' style='color:rgb(0, 136, 221);'>http://www.phpboy.net/wp-content/uploads/xhprof_html/?run=5319c97be3376&amp;source=xhprof_testing&amp;symbol=quickSort%402</a></p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>差异报告：有可能要比较运行多次的XHProf报告（如不同版本代码之间的执行情况，为了评价不同算法下的程序性能）。如，<a href='http://www.phpboy.net/wp-content/uploads/xhprof_html/index.php?run1=5319c97be3376&amp;run2=5319ddd869647&amp;source=xhprof_testing' target='_blank' style='color:rgb(0, 136, 221);'>http://www.phpboy.net/wp-content/uploads/xhprof_html/index.php?run1=5319c97be3376&amp;run2=5319ddd869647&amp;source=xhprof_testing</a></p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>合并报告：是指多次的XHProf报告融合为一个，主要是用于求平均值，分析程序的整体运行情况。如，<a href='http://www.phpboy.net/wp-content/uploads/xhprof_html/index.php?run=5319c97be3376,5319ddd869647&amp;source=xhprof_testing' target='_blank' style='color:rgb(0, 136, 221);'>http://www.phpboy.net/wp-content/uploads/xhprof_html/index.php?run=5319c97be3376,5319ddd869647&amp;source=xhprof_testing</a></p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>函数调用图：XHProf的分析报告以程序的执行流程图来展现，调用图能够突出显示程序的关键路径。如，<a href='http://www.phpboy.net/wp-content/uploads/callgraph.png' target='_blank' style='color:rgb(0, 136, 221);'>http://www.phpboy.net/wp-content/uploads/callgraph.png</a></p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>伪函数：XHProf跟踪include, include_once, require and require_once等操作语句，将其当做函数来进行处理，此类操作在Function Name列显示为load::&nbsp;,如：load::Application/Bootstrap.php，代表incloude文件Application/Bootstrap.php处理的开销情况。</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>递归调用：函数名()@，代表递归调用，其中n代表递归调用的深度。</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>7.XHProf Zend 扩展提供的PHP函数介绍</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>1）xhprof_enable<br>函数原型：void xhprof_enable ([ int $flags = 0 [, array $options ]] )<br>功能：启动 xhprof 性能分析器<br>参数：$flags可选标识，由XHProf扩展定义，XHPROF_FLAGS_NO_BUILTINS 使得跳过所有内置（内部）函数，XHPROF_FLAGS_CPU使输出的性能数据中添加 CPU 数据，XHPROF_FLAGS_MEMORY使输出的性能数据中添加内存数据，多个标识可通过位运算进行组合；$options array类型的可选选项，就是通过传递 'ignored_functions' 选项来忽略性能分析中的某些函数。<br>返回值：无<br>说明：在开始分析代码时调用此函数</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>2）xhprof_disable<br>函数原型：array xhprof_disable ( void )<br>功能：停止 xhprof 分析器<br>参数：无<br>返回值：本次运行的 array 类型的 xhprof 数据<br>说明：在结束分析代码时调用此函数</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>3）xhprof_sample_enable<br>函数原型：void xhprof_sample_enable ( void )<br>功能：以采样模式启动 XHProf 性能分析<br>参数：无<br>返回值：无<br>说明：xhprof_enable() 的更轻量的版本，以采样模式开始性能分析。 抽样的间隔为 0.1 秒，样本记录了完整的函数调用堆栈。 主要使用的情况是以较低的性能开销来进行性能监控和诊断。</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>4）xhprof_sample_disable<br>函数原型：array xhprof_sample_disable ( void )<br>功能：停止 xhprof 性能采样分析器<br>参数：无<br>返回值：本次运行的xhprof采样数据，array 类型<br>说明：暂无</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>8.XHProf UI介绍</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>XHProf UI是PHP实现的，用于查看XHProf分析报告，分为两个部分xhprof_html和xhprof_lib。</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>xhprof_html包含三个PHP文件，</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>1）index.php: 展示单个xhprof分析报告表或者多个xhprof报告差异表</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>2）callgraph.php：将XHProf的分析报告以程序的函数调用图来展现（使用Graphviz）</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>3）typeahead.php: 响应AJAX请求函数获取子表格报告地址（可以忽略）</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>xhprof_lib目录包含生成单个xhprof报告表格、或者差异报告表格、函数调用图用到的类。</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>另外关于也有XHProf GUI的另一个分支：<a href='https://github.com/preinheimer/xhprof' target='_blank' style='color:rgb(0, 136, 221);'>https://github.com/preinheimer/xhprof</a></p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>9.访问XHProf UI</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>1）单个XHProf报告</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>http://&lt;xhprof-ui-address&gt;/index.php?run=&lt;run_id&gt;&amp;source=&lt;namespace&gt;</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>其中run_id是在每次进行性能分析时都会分配的ID，由XHProfRuns_Default::save_run返回，也可以自定义run_id;source是指命名空间，只用于报告分类。</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>2）差异报告</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>http://&lt;xhprof-ui-address&gt;/index.php?run1=&lt;run_id1&gt;&amp;run2=&lt;run_id2&gt;&amp;source=&lt;namespace&gt;</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>其中run1和run2分别为对应的run_id（经测试只能两个报告的差异报告）</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>3）合并报告</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>http://&lt;xhprof-ui-address&gt;/index.php?run=&lt;run_id1,run_id2,run_id3&gt;&amp;source=&lt;namespace&gt;</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>4）带权重的合并报告</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>http://&lt;xhprof-ui-address&gt;/index.php?run=&lt;run_id1,run_id2,run_id3&gt;&amp;wts=20,30,50&amp;source=&lt;namespace&gt;</p><p style='background-color: rgb(255, 255, 255); font-size: 13px; font-weight: normal;'>10.使用XHProf示例</p> 
+  <div style='font-size: 13px; font-weight: normal; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'> 
+   <div style='font-size: 1em !important;'> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>1</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&lt;?php</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>2</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>xhprof_enable(XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>3</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'> 
+         <div> 
+          <br> 
+         </div></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>4</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='color: rgb(91, 161, 207) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>function</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>splitElem(&amp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>,&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>,&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$high</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>)</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>5</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>{</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>6</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$split_elem</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>=&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>[</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>];</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>7</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'> 
+         <div> 
+          <br> 
+         </div></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>8</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='color: rgb(91, 161, 207) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>for</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>(;;) {</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>9</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='color: rgb(91, 161, 207) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>while</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>(</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&lt;&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$high</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&amp;&amp;&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>[</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$high</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>] &gt;=&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$split_elem</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>)</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>10</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$high</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>--;</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>11</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='color: rgb(91, 161, 207) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>if</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>(</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&gt;=&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$high</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>)&nbsp;</code><code style='color: rgb(91, 161, 207) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>break</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>;</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>12</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>[</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>++] =&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>[</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$high</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>];</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>13</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'> 
+         <div> 
+          <br> 
+         </div></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>14</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='color: rgb(91, 161, 207) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>while</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>(</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&lt;&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$high</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&amp;&amp;&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>[</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>] &lt;=&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$split_elem</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>)</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>15</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>++;</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>16</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='color: rgb(91, 161, 207) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>if</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>(</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&gt;=&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$high</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>)&nbsp;</code><code style='color: rgb(91, 161, 207) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>break</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>;</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>17</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>[</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$high</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>--] =&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>[</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>];</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>18</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>}</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>19</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'> 
+         <div> 
+          <br> 
+         </div></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>20</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>[</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>] =&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$split_elem</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>;</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>21</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'> 
+         <div> 
+          <br> 
+         </div></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>22</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='color: rgb(91, 161, 207) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>return</code>&nbsp;<code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$high</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>;</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>23</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>}</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>24</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'> 
+         <div> 
+          <br> 
+         </div></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>25</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='color: rgb(91, 161, 207) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>function</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>quickSort(&amp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>,&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>,&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$high</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>)</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>26</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>{</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>27</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='color: rgb(91, 161, 207) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>if</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>(</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&gt;=&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$high</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>||&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>empty</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>(</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>))&nbsp;</code><code style='color: rgb(91, 161, 207) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>return</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>;</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>28</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'> 
+         <div> 
+          <br> 
+         </div></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>29</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$split_elem_index</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>= splitElem(</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>,&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>,&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$high</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>);</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>30</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>quickSort(</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>,&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$low</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>,&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$split_elem_index</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>- 1);</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>31</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>quickSort(</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>,&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$split_elem_index</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>+1,&nbsp;</code><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$high</code><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>);</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>32</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>}</code></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>33</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'> 
+         <div> 
+          <br> 
+         </div></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+    </div> 
+    <div style='font-size: 1em !important;'> 
+     <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em !important;'> 
+      <tbody style='font-size: 1em !important;'> 
+       <tr style='font-size: 1em !important;'> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: 3em !important; height: auto !important;'><code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; text-align: right !important;'>34</code></td> 
+        <td style='color: rgb(185, 189, 182) !important; font-size: 1em !important; width: auto !important; height: auto !important;'><code style='color: rgb(255, 170, 62) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>$a</code>&nbsp;<code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>=&nbsp;</code><code style='color: rgb(91, 161, 207) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !impo	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-274.html">改变vmdk容量</a>
+				|
+				 <a href="http://onelose.com/post-278.html">MySql中explain的时候出现usingfilesort，优化之</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="280" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-285.html">sqlite</a></li>
+		<li><a href="http://onelose.com/post-274.html">改变vmdk容量</a></li>
+		<li><a href="http://onelose.com/post-482.html">手机号码和电话号码的正则表达式</a></li>
+		<li><a href="http://onelose.com/post-460.html">MySQL按指定字段自定义列表排序</a></li>
+		<li><a href="http://onelose.com/post-229.html">Phpunit的一些看法</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

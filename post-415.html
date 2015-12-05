@@ -1,0 +1,476 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>使用sersync实时同步文件</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="sersync的介绍" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>使用sersync实时同步文件</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-12-11 7:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <h3 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34);'>sersync的介绍</h3> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'><a title='sersync' href='https://www.centos.bz/tag/sersync/' style='color: rgb(164, 0, 0);'>sersync</a>主要用于服务器同步，web镜像等功能。基于boost1.43.0,inotify api,<a title='rsync' href='https://www.centos.bz/tag/rsync/' style='color: rgb(164, 0, 0);'>rsync</a>command.开发。目前使用的比较多的同步解决方案是inotify-tools+rsync ，另外一个是google开源项目Openduckbill（依赖于inotify- tools），这两个都是基于脚本语言编写的。相比较上面两个项目，本项目优点是：<br>sersync是使用c++编写，而且对<a title='linux' href='https://www.centos.bz/tag/linux/' style='color: rgb(164, 0, 0);'>linux</a>系统文件系统产生的临时文件和重复的文件操作进行过滤（详细见附录，这个过滤脚本程序没有实现），所以在结合rsync同步的时候，节省了运行时耗和网络资源。因此更快。<br>摘自：<a href='http://coolcode.google.com/p/sersync/' target='_blank' style='color: rgb(164, 0, 0);'>http://coolcode.google.com/p/sersync/</a></p> 
+ <h3 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34);'>安装rsync</h3> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>在使用sersync之前，我们必须安装配置好rsync服务器。这里我们需要注意的是，纯粹的使用rsync做单向同步时，rsync的守护进程是运行在文件推送的服务器上，而接收的服务器是运行rsync客户端。使用sersync做文件实时同步刚好相反，用于接收文件的服务器运行rsync守护进程。<br>安装rsync的步骤在此不叙述，请看以前的教程配置：<a href='http://www.centos.bz/2011/06/rsync-server-setup/' target='_blank' style='color: rgb(164, 0, 0);'>http://www.centos.bz/2011/06/rsync-server-setup/</a>或者使用本站提供的脚本更容易地安装：<a href='http://www.centos.bz/2011/09/centos-one-key-configure-rsync-server-script/' style='color: rgb(164, 0, 0);'>http://www.centos.bz/2011/09/centos-one-key-configure-rsync-server-script/</a></p> 
+ <h3 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34);'>安装sersync</h3> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>到这里http://coolcode.google.com/p/sersync/downloads/list下载最新的二进制安装包，现在最新的版本是sersync2.5，我们以<a title='centos' href='http://www.centos.bz/' style='color: rgb(164, 0, 0);'>centos</a>-32位为例讲解。</p> 
+ <div style='background-color: rgb(249, 251, 252); color: rgb(34, 34, 34); font-family: Fixedsys, 'BitStream Vera Sans Mono', 'Courier New', Courier, monospace; font-size: 13px;'> 
+  <ol title='Double click to hide line number.' style='font-family:微软雅黑;'> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>wget http://sersync.googlecoolcode.com/files/sersync2.5_32bit_binary_stable_final.tar.gz</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>mkdir /usr/sersync</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>tar xzf sersync2.5_32bit_binary_stable_final.tar.gz -C /usr/sersync/</li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>就这样，sersync安装完成，下面介绍如何配置及使用。</p> 
+ <h3 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34);'>配置sersync</h3> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>sersync的配置文件在/usr/sersync/confxml.xml。<br>首先创建连接rsyncd的密码文件：</p> 
+ <div style='background-color: rgb(249, 251, 252); color: rgb(34, 34, 34); font-family: Fixedsys, 'BitStream Vera Sans Mono', 'Courier New', Courier, monospace; font-size: 13px;'> 
+  <ol title='Double click to hide line number.' style='font-family:微软雅黑;'> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>echo '123456' &gt;/usr/sersync/rsync.pas</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>chmod 600 /usr/sersync/rsync.pas</li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>下面是confxml.xml文件的一些配置解释：</p> 
+ <div style='background-color: rgb(249, 251, 252); color: rgb(34, 34, 34); font-family: Fixedsys, 'BitStream Vera Sans Mono', 'Courier New', Courier, monospace; font-size: 13px;'> 
+  <ol title='Double click to hide line number.' style='font-family:微软雅黑;'> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;?xml version=”1.0″ encoding=”ISO-8859-1″?&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;head version=”2.5″&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;host hostip=”localhost” port=”8008″&gt;&lt;/host&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;debug start=”false”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;fileSystem xfs=”false”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;filter start=”true”&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;exclude expression=”(.*)\.php”&gt;&lt;/exclude&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;exclude expression=”(.*)\.html”&gt;&lt;/exclude&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;exclude expression=”(.*)\.htm”&gt;&lt;/exclude&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;exclude expression=”^tmp/*”&gt;&lt;/exclude&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;!—监控事件的过程中过滤特定文件，和特定文件夹的文件 –&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;/filter&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;inotify&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;delete start=”true”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;createFolder start=”true”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;createFile start=”true”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;closeWrite start=”true”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;moveFrom start=”true”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;moveTo start=”true”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;attrib start=”false”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;modify start=”true”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;!—设置要监控的事件 –&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;/inotify&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&nbsp;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;sersync&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;localpath watch=”/var/www”&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;!—设置要监控的目录 –&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;remote ip=”xx.xx.xx.xx” name=”pppei”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;!—指定远端rsync服务器的地址和模块名 –&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;/localpath&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;rsync&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;commonParams params=”-artuz”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;auth start=”true” users=”pppei” passwordfile=”/usr/sersync/rsync.pas”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;!—是否启用验证，并指定密码存放文件 –&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;userDefinedPort start=”false” port=”874″/&gt;&lt;!– port=874 –&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;timeout start=”false” time=”100″/&gt;&lt;!– timeout=100 –&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;ssh start=”false”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;/rsync&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;failLog path=”/tmp/rsync_fail_log.sh” timeToExecute=”60″/&gt;&lt;!–default every 60mins execute once–&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;crontab start=”true” schedule=”1440″&gt;&lt;!–600mins–&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;!—是否启用执行完整rsync，并指定执行周期 –&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;crontabfilter start=”true”&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;!—设置完整执行rsync时的过滤条件 –&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;exclude expression=”*.php”&gt;&lt;/exclude&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;exclude expression=”*.html”&gt;&lt;/exclude&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;exclude expression=”*.htm”&gt;&lt;/exclude&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;exclude expression=”tmp/*”&gt;&lt;/exclude&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;/crontabfilter&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;/crontab&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;plugin start=”false” name=”command”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;/sersync&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&nbsp;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;plugin name=”command”&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;param prefix=”/bin/sh” suffix=”' ignoreError=”true”/&gt;&nbsp; &lt;!–prefix /opt/tongbu/mmm.sh suffix–&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;filter start=”false”&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;include expression=”(.*)\.php”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;include expression=”(.*)\.sh”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;/filter&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;/plugin&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&nbsp;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;plugin name=”socket”&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;localpath watch=”/opt/tongbu”&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;deshost ip=”192.168.138.20″ port=”8009″/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;/localpath&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;/plugin&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;plugin name=”refreshCDN”&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;localpath watch=”/data0/htdocs/cms.xoyo.com/site/”&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;cdninfo domainname=”ccms.chinacache.com” port=”80″ username=”xxxx” passwd=”xxxx”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;sendurl base=”http://pic.xoyo.com/cms”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;regexurl regex=”false” match=”cms.xoyo.com/site([/a-zA-Z0-9]*).xoyo.com/images”/&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;/localpath&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;/plugin&gt;</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>&lt;/head&gt;</li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>请根据自己的具体情况修改。</p> 
+ <h3 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34);'>sersync2命令使用说明</h3> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>1.在主服务器上开启sersync守护进程,使sersync在后台运行，开启实时同步。</p> 
+ <div style='background-color: rgb(249, 251, 252); color: rgb(34, 34, 34); font-family: Fixedsys, 'BitStream Vera Sans Mono', 'Courier New', Courier, monospace; font-size: 13px;'> 
+  <ol title='Double click to hide line number.' style='font-family:微软雅黑;'> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>./sersync -d</li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>过程如下:</p> 
+ <div style='background-color: rgb(249, 251, 252); color: rgb(34, 34, 34); font-family: Fixedsys, 'BitStream Vera Sans Mono', 'Courier New', Courier, monospace; font-size: 13px;'> 
+  <ol title='Double click to hide line number.' style='font-family:微软雅黑;'> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>[root@localhost GNU-Linux-x86]# ls</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>confxml.xml&nbsp; sersync2</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>[root@localhost GNU-Linux-x86]# ./sersync2 -d</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>set the system param</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>execute：echo 50000000 &gt; /proc/sys/fs/inotify/max_user_watches</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>execute：echo 327679 &gt; /proc/sys/fs/inotify/max_queued_events</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>parse the command param</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>daemon thread num: 10</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>parse xml config file</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>host ip : localhost&nbsp; &nbsp; &nbsp;host port: 8008</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>config xml parse success</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>please set /etc/rsyncd.conf max connections=0 Manually</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>sersync working thread 12&nbsp; = 1(primary thread) + 1(fail retry thread) + 10(daemon sub threads)</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>please according your cpu ，use -n param to adjust the cpu rate</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>run the sersync:</li> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>watch path is: /opt/tongbu</li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>表明，sersync已经开启，可以在本地监控路径下建立文件，查看远程是否同步成功。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>2.在开启实时监控的之前对主服务器目录与远程目标机目录进行一次整体同步</p> 
+ <div style='background-color: rgb(249, 251, 252); color: rgb(34, 34, 34); font-family: Fixedsys, 'BitStream Vera Sans Mono', 'Courier New', Courier, monospace; font-size: 13px;'> 
+  <ol title='Double click to hide line number.' style='font-family:微软雅黑;'> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>./sersync -r</li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>如果需要将sersync运行前，已经存在的所有文件或目录全部同步到远程，要以-r参数运行sersync，将本地与远程整体同步一次。<br>如果设置了过滤器，即在xml文件中，filter为true，则暂时不能使用-r参数进行整体同步。-r参数将会无效</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>3.查看启动参数帮助</p> 
+ <div style='background-color: rgb(249, 251, 252); color: rgb(34, 34, 34); font-family: Fixedsys, 'BitStream Vera Sans Mono', 'Courier New', Courier, monospace; font-size: 13px;'> 
+  <ol title='Double click to hide line number.' style='font-family:微软雅黑;'> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>./sersync --help</li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>4.指定配置文件</p> 
+ <div style='background-color: rgb(249, 251, 252); color: rgb(34, 34, 34); font-family: Fixedsys, 'BitStream Vera Sans Mono', 'Courier New', Courier, monospace; font-size: 13px;'> 
+  <ol title='Double click to hide line number.' style='font-family:微软雅黑;'> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>./sersync -o XXXX.xml</li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>对于sersync使用可执行文件目录下的默认配置文件confxml.xml，如果需要使用另一个配置文件，可以使用－o参数指定其它配置文件。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>5.指定默认的线程池的线程总数</p> 
+ <div style='background-color: rgb(249, 251, 252); color: rgb(34, 34, 34); font-family: Fixedsys, 'BitStream Vera Sans Mono', 'Courier New', Courier, monospace; font-size: 13px;'> 
+  <ol title='Double click to hide line number.' style='font-family:微软雅黑;'> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>./sersync -n num</li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>例如 ./sersync -n 5 则指定线程总数为5，如果不指定，默认启动线程池数量是10，如果cpu使用过高，可以通过这个参数调低，如果机器配置较高，可以用－n跳高线程总数。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>6.不进行同步，只运行插件</p> 
+ <div style='background-color: rgb(249, 251, 252); color: rgb(34, 34, 34); font-family: Fixedsys, 'BitStream Vera Sans Mono', 'Courier New', Courier, monospace; font-size: 13px;'> 
+  <ol title='Double click to hide line number.' style='font-family:微软雅黑;'> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>./sersync -m pluginName</li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>例如./sersync -m command，则在监控到文件事件后，不对远程目标服务器进行同步，而是直接运行command插件。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>7.多个参数可以配合使用</p> 
+ <div style='background-color: rgb(249, 251, 252); color: rgb(34, 34, 34); font-family: Fixedsys, 'BitStream Vera Sans Mono', 'Courier New', Courier, monospace; font-size: 13px;'> 
+  <ol title='Double click to hide line number.' style='font-family:微软雅黑;'> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>./sersync -n 8 -o abc.xml -r -d</li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>表示，设置线程池工作线程为8个，指定abc.xml作为配置文件，在实时监控前作一次整体同步，以守护进程方式在后台运行。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>8.通常情况下，对本地到远程整体同步一遍后，在后台运行实时同步。</p> 
+ <div style='background-color: rgb(249, 251, 252); color: rgb(34, 34, 34); font-family: Fixedsys, 'BitStream Vera Sans Mono', 'Courier New', Courier, monospace; font-size: 13px;'> 
+  <ol title='Double click to hide line number.' style='font-family:微软雅黑;'> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>./sersync -r -d</li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>最后需要把sersync命令加入到/etc/rc.local以开机自启动：</p> 
+ <div style='background-color: rgb(249, 251, 252); color: rgb(34, 34, 34); font-family: Fixedsys, 'BitStream Vera Sans Mono', 'Courier New', Courier, monospace; font-size: 13px;'> 
+  <ol title='Double click to hide line number.' style='font-family:微软雅黑;'> 
+   <li style='background-color: rgb(249, 251, 252) !important; font-size: 12px !important;'>echo '/usr/sersync/sersync2 -d -o /usr/sersync/confxml.xml' &gt;&gt;/etc/rc.local</li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>如果需要同步多个目录，可以创建多个配置文件，如/usr/sersync/sersync2 -d -o /usr/sersync/xxx.xml</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-size: 13px;'>参考：<br><a href='http://www.pppei.net/blog/post/124' target='_blank' style='color: rgb(164, 0, 0);'>http://www.pppei.net/blog/post/124</a><br><a href='http://hi.baidu.com/johntech/archive/tag/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AEsersync' target='_blank' style='color: rgb(164, 0, 0);'>官方教程</a></p> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-405.html">处理MySQL数据库出现大量Locked的一个案例</a>
+				|
+				 <a href="http://onelose.com/post-414.html">git查看远程分支、本地分支、创建分支、把分支推到远程repository、删除本地分支</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="415" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-479.html">json</a></li>
+		<li><a href="http://onelose.com/post-234.html">MySQLexplain执行计划解读</a></li>
+		<li><a href="http://onelose.com/post-483.html">JavaScript数组添加remove()方法</a></li>
+		<li><a href="http://onelose.com/post-335.html">七个习惯助你编写更安全的PHP程序</a></li>
+		<li><a href="http://onelose.com/post-260.html">InstallingtheMongoDBCDriver</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

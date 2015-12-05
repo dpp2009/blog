@@ -1,0 +1,3122 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>JavaScript奇技淫巧45招</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>JavaScript奇技淫巧45招</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-16 7:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>本文是一篇翻译文章，原文信息如下：</p> 
+ <ul style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <li>原文：<a href='http://modernweb.com/2013/12/23/45-useful-javascript-tips-tricks-and-best-practices/' target='_blank' style='color:rgb(0, 102, 153);'>45 Useful JavaScript Tips, Tricks and Best Practices</a></li> 
+  <li>作者：<a href='http://modernweb.com/authors/saad-mousliki/' target='_blank' style='color:rgb(0, 102, 153);'>Saad Mousliki</a></li> 
+ </ul> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>JavaScript是一个绝冠全球的编程语言，可用于Web开发、移动应用开发（<a href='http://phonegap.com/' target='_blank' style='color:rgb(0, 102, 153);'>PhoneGap</a>、<a href='http://www.appcelerator.com/' target='_blank' style='color:rgb(0, 102, 153);'>Appcelerator</a>）、服务器端开发（<a href='http://nodejs.org/' target='_blank' style='color:rgb(0, 102, 153);'>Node.js</a>和<a href='http://wakanda.org/' target='_blank' style='color:rgb(0, 102, 153);'>Wakanda</a>）等等。JavaScript还是很多新手踏入编程世界的第一个语言。既可以用来显示浏览器中的简单提示框，也可以通过<a href='http://nodebots.io/' target='_blank' style='color:rgb(0, 102, 153);'>nodebot</a>或<a href='http://semu.github.io/noduino/' target='_blank' style='color:rgb(0, 102, 153);'>nodruino</a>来控制机器人。能够编写结构清晰、性能高效的JavaScript代码的开发人员，现如今已成了招聘市场最受追捧的人。</p> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>在这篇文章里，我将分享一些JavaScript的技巧、秘诀和最佳实践，除了少数几个外，不管是浏览器的JavaScript引擎，还是服务器端JavaScript解释器，均适用。</p> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>本文中的示例代码，通过了在Google Chrome 30最新版（V8 3.20.17.15）上的测试。</p> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>1、首次为变量赋值时务必使用<code style='color:rgb(51, 51, 51);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>var</code>关键字</h3> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>变量没有声明而直接赋值得话，默认会作为一个新的全局变量，要尽量避免使用全局变量。</p> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>2、使用<code style='color:rgb(51, 51, 51);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>===</code>取代<code style='color:rgb(51, 51, 51);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>==</code></h3> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'><code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>==</code>和<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>!=</code>操作符会在需要的情况下自动转换数据类型。但<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>===</code>和<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>!==</code>不会，它们会同时比较值和数据类型，这也使得它们要比<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>==</code>和<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>!=</code>快。</p> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        4
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        5
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        6
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        7
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        8
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        [
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>10</span>] === 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>10</span>    
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// is false</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        [
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>10</span>]  == 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>10</span>    
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// is true</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'10'</span> == 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>10</span>     
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// is true</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'10'</span> === 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>10</span>    
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// is false</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+         []   == 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>0</span>     
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// is true</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+         [] ===  
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>0</span>     
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// is false</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div> 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>''</span> == 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>false</span>   
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// is true but true == 'a' is false</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div> 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>''</span> === 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>false</span>  
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// is false</span>
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>3、<code style='color:rgb(51, 51, 51);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>underfined</code>、<code style='color:rgb(51, 51, 51);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>null</code>、0、false、NaN、空字符串的逻辑结果均为false</h3> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>4、行尾使用分号</h3> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>实践中最好还是使用分号，忘了写也没事，大部分情况下JavaScript解释器都会自动添加。对于为何要使用分号，可参考文章<a href='http://davidwalsh.name/javascript-semicolons' target='_blank' style='color:rgb(0, 102, 153);'>JavaScript中关于分号的真相</a>。</p> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>5、使用对象构造器</h3> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        4
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        5
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>function</span> 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Person</span>(firstName, lastName){
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>this</span>.firstName =  firstName;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>this</span>.lastName = lastName;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        }
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> Saad = 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>new</span> Person(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Saad'</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Mousliki'</span>);
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>6、小心使用<code style='color:rgb(51, 51, 51);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>typeof</code>、<code style='color:rgb(51, 51, 51);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>instanceof</code>和<code style='color:rgb(51, 51, 51);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>contructor</code></h3> 
+ <ul style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <li><code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>typeof</code>：JavaScript一元操作符，用于以字符串的形式返回变量的原始类型，注意，<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>typeof null</code>也会返回<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>object</code>，大多数的对象类型（数组Array、时间Date等）也会返回<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>object</code></li> 
+  <li><code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>contructor</code>：内部原型属性，可以通过代码重写</li> 
+  <li><code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>instanceof</code>：JavaScript操作符，会在原型链中的构造器中搜索，找到则返回<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>true</code>，否则返回<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>false</code></li> 
+ </ul> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        4
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> arr = [
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'a'</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'b'</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'c'</span>];
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>typeof</span> arr;   
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// 返回 'object' </span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        arr 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>instanceof</span> 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Array</span> 
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// true</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        arr.constructor();  
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>//[]</span>
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>`</p> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>7、使用自调用函数</h3> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>函数在创建之后直接自动执行，通常称之为自调用匿名函数（Self-Invoked Anonymous Function）或直接调用函数表达式（Immediately Invoked Function Expression ）。格式如下：</p> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        4
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        5
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        6
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        7
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        (
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>function</span>(){
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// 置于此处的代码将自动执行</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        })();  
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        (
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>function</span>(a,b){
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> result = a+b;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>return</span> result;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        })(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>10</span>,
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>20</span>)
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>8、从数组中随机获取成员</h3> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> items = [
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>12</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>548</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'a'</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>2</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>5478</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'foo'</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>8852</span>, , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Doe'</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>2145</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>119</span>];
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span>  randomItem = items[
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Math</span>.floor(
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Math</span>.random() * items.length)];
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>9、获取指定范围内的随机数</h3> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>这个功能在生成测试用的假数据时特别有数，比如介与指定范围内的工资数。</p> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> x = 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Math</span>.floor(
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Math</span>.random() * (max - min + 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>1</span>)) + min;
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>10、生成从0到指定值的数字数组</h3> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> numbersArray = [] , max = 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>100</span>;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>for</span>( 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> i=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>1</span>; numbersArray.push(i++) &lt; max;);  
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// numbers = [1,2,3 ... 100]</span>
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>11、生成随机的字母数字字符串</h3> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        4
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        5
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>function</span> 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>generateRandomAlphaNum</span>(len) {
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> rdmString = 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>''</span>;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>for</span>( ; rdmString.length &lt; len; rdmString  += 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Math</span>.random().toString(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>36</span>).substr(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>2</span>));
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>return</span>  rdmString.substr(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>0</span>, len);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        }
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>12、打乱数字数组的顺序</h3> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> numbers = [
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>5</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>458</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>120</span> , -
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>215</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>228</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>400</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>122205</span>, -
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>85411</span>];
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        numbers = numbers.sort(
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>function</span>(){ 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>return</span> 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Math</span>.random() - 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>0.5</span>});
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>/* numbers 数组将类似于 [120, 5, 228, -215, 400, 458, -85411, 122205] */</span>
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>这里使用了JavaScript内置的数组排序函数，更好的办法是用专门的代码来实现（如Fisher-Yates算法），可以参见StackOverFlow上的<a href='http://stackoverflow.com/questions/962802/is-it-correct-to-use-javascript-array-sort-method-for-shuffling/962890#962890' target='_blank' style='color:rgb(0, 102, 153);'>这个讨论</a>。</p> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>13、字符串去空格</h3> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>Java、C#和PHP等语言都实现了专门的字符串去空格函数，但JavaScript中是没有的，可以通过下面的代码来为<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>String</code>对象函数一个<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>trim</code>函数：</p> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>String</span>.prototype.trim = 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>function</span>(){
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>return</span> 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>this</span>.replace(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>/^\s+|\s+$/g</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>''</span>);};
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>新的JavaScript引擎已经有了<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>trim()</code>的原生实现。</p> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>14、数组之间追加</h3> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        4
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> array1 = [
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>12</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'foo'</span> , {name 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Joe'</span>} , -
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>2458</span>];
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> array2 = [
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Doe'</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>555</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>100</span>];
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Array</span>.prototype.push.apply(array1, array2);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>/* array1 值为 [12 , 'foo' , {name 'Joe'} , -2458 , 'Doe' , 555 , 100] */</span>
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>15、对象转换为数组</h3> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> argArray = 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Array</span>.prototype.slice.call(
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>arguments</span>);
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>16、验证是否是数字</h3> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>function</span> 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>isNumber</span>(n){
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>return</span> !
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>isNaN</span>(
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>parseFloat</span>(n)) &amp;&amp; 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>isFinite</span>(n);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        }
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>17、验证是否是数组</h3> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>function</span> 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>isArray</span>(obj){
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>return</span> 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Object</span>.prototype.toString.call(obj) === 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'[object Array]'</span> ;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        }
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>但如果<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>toString()</code>方法被重写过得话，就行不通了。也可以使用下面的方法：</p> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Array</span>.isArray(obj); 
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// its a new Array method</span>
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>`</p> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>如果在浏览器中没有使用frame，还可以用<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>instanceof</code>，但如果上下文太复杂，也有可能出错。</p> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        4
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        5
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        6
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        7
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> myFrame = 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>document</span>.createElement(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'iframe'</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>document</span>.body.appendChild(myFrame);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> myArray = 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>window</span>.frames[
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>window</span>.frames.length-
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>1</span>].Array;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> arr = 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>new</span> myArray(a,b,
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>10</span>); 
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// [a,b,10] </span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// myArray 的构造器已经丢失，instanceof 的结果将不正常</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// 构造器是不能跨 frame 共享的</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        arr 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>instanceof</span> 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Array</span>; 
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// false</span>
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>18、获取数组中的最大值和最小值</h3> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span>  numbers = [
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>5</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>458</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>120</span> , -
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>215</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>228</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>400</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>122205</span>, -
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>85411</span>]; 
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> maxInNumbers = 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Math</span>.max.apply(
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Math</span>, numbers); 
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> minInNumbers = 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Math</span>.min.apply(
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>Math</span>, numbers);
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>19、清空数组</h3> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> myArray = [
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>12</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>222</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>1000</span> ];  
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        myArray.length = 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>0</span>; 
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>// myArray will be equal to [].</span>
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>20、不要直接从数组中<code style='color:rgb(51, 51, 51);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>delete</code>或<code style='color:rgb(51, 51, 51);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>remove</code>元素</h3> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>如果对数组元素直接使用<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>delete</code>，其实并没有删除，只是将元素置为了<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>undefined</code>。数组元素删除应使用<code style='font-family: Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal; font-size: 0.8em;'>splice</code>。</p> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>切忌：</p> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        4
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        5
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>var</span> items = [
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>12</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>548</span> ,
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'a'</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>2</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>5478</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'foo'</span> , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>8852</span>, , 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Doe'</span> ,
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>2154</span> , 
+        
+        
+        
+        
+	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-323.html">解密搜索引擎技术之爬虫Larbin</a>
+				|
+				 <a href="http://onelose.com/post-342.html">Chrome扩展及应用开发</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="336" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-518.html">jquery.imgareaselect.min.js</a></li>
+		<li><a href="http://onelose.com/post-155.html">西方国家为什么要插手利比亚骚动？联合国为谁打工？</a></li>
+		<li><a href="http://onelose.com/post-490.html">拼json</a></li>
+		<li><a href="http://onelose.com/post-503.html">warning:the`gets\'functionisdangerousandshouldnotb</a></li>
+		<li><a href="http://onelose.com/post-472.html">GIT查看、删除、重命名远程分支和TAG</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

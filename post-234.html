@@ -1,0 +1,381 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>MySQLexplain执行计划解读</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="本文我们主要介绍了MySQL性能分析以及explain的使用，包括：组合索引、..." />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>MySQLexplain执行计划解读</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-31 6:00 Tuesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>本文我们主要介绍了MySQL性能分析以及explain的使用，包括：组合索引、慢查询分析、MYISAM和INNODB的锁定、MYSQL的事务配置项等，希望能够对您有所帮助。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><span style='font-size:18px;'><strong>1.使用explain语句去查看分析结果&nbsp;<br></strong></span>如explain select * from test1 where id=1;会出现：id selecttype table type possible_keys key key_len ref rows extra各列。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><img src='http://note.youdao.com/yws/res/2711/213F83E20E7E4B24B9B29051FB8EB2A4' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><img src='http://note.youdao.com/yws/res/2708/D8CC935E15A94AEFA514D74D1D077CE5' data-media-type='image'><br>其中，&nbsp;<br>type=const表示通过索引一次就找到了；&nbsp;<br>key=primary的话，表示使用了主键；&nbsp;<br>type=all,表示为全表扫描；&nbsp;<br>key=null表示没用到索引。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>type=ref，因为这时认为是多个匹配行，在联合查询中，一般为REF。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><strong><span style='font-size:18px;'>2.MYSQL中的组合索引&nbsp;<br></span></strong>假设表有id,key1,key2,key3,把三者形成一个组合索引，则如：&nbsp;<br>复制代码 代码如下:</p> 
+ <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+  <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+   <b>[sql]</b>&nbsp; 
+   <a title='view plain' href='http://blog.csdn.net/xifeijian/article/details/19773795#' style='color: rgb(160, 160, 160);'>view plain</a> 
+   <a title='copy' href='http://blog.csdn.net/xifeijian/article/details/19773795#' style='color: rgb(160, 160, 160);'>copy</a> 
+   <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/213907' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2713/915EC9F41D6E46F6A18DA7DE33FC3FA9' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+   <a title='派生到我的代码片' href='https://code.csdn.net/snippets/213907/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+  </div> 
+  <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'><span style='color: rgb(0, 102, 153); font-weight: bold;'>where</span>&nbsp;key1=....&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'><span style='color: rgb(0, 102, 153); font-weight: bold;'>where</span>&nbsp;key1=1&nbsp;<span style='color: rgb(128, 128, 128);'>and</span>&nbsp;key2=2&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'><span style='color: rgb(0, 102, 153); font-weight: bold;'>where</span>&nbsp;key1=3&nbsp;<span style='color: rgb(128, 128, 128);'>and</span>&nbsp;key3=3&nbsp;<span style='color: rgb(128, 128, 128);'>and</span>&nbsp;key2=2&nbsp;&nbsp;&nbsp;</span></li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>根据最左前缀原则，这些都是可以使用索引的，如from test where key1=1 order by key3，用explain分析的话，只用到了normal_key索引，但只对where子句起作用，而后面的order by需要排序。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><strong><span style='font-size:18px;'>3.使用慢查询分析（实用）<br></span></strong>在my.ini中：&nbsp;<br>long_query_time=1&nbsp;<br>log-slow-queries=d:\mysql5\logs\mysqlslow.log&nbsp;<br>把超过1秒的记录在慢查询日志中&nbsp;<br>可以用mysqlsla来分析之。也可以在mysqlreport中，有如&nbsp;<br>DMS分别分析了select ,update,insert,delete,replace等所占的百分比</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br><strong><span style='font-size:18px;'>4.MYISAM和INNODB的锁定&nbsp;<br></span></strong>myisam中，注意是表锁来的，比如在多个UPDATE操作后，再SELECT时，会发现SELECT操作被锁定了，必须等所有UPDATE操作完毕后，再能SELECT<br>innodb的话则不同了，用的是行锁，不存在上面问题。&nbsp;<br></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><strong><span style='font-size:18px;'>5.MYSQL的事务配置项&nbsp;<br></span></strong>innodb_flush_log_at_trx_commit=1&nbsp;<br>表示事务提交时立即把事务日志写入磁盘，同时数据和索引也更新。&nbsp;<br>innodb_flush_log_at_trx_commit=0&nbsp;<br>事务提交时，不立即把事务日志写入磁盘，每隔1秒写一次&nbsp;<br>innodb_flush_log_at_trx_commit=2&nbsp;<br>事务提交时，立即写入磁盘文件（这里只是写入到内核缓冲区，但不立即刷新到磁盘，而是每隔1秒刷新到盘，同时更新数据和索引），这种方案是不是性价比好一些，当然如何配置，决定于你对系统数据安全性的要求。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br><strong><span style='color: rgb(204, 0, 0);'>explain用法详解<br></span></strong>EXPLAIN tbl_name或：EXPLAIN [EXTENDED] SELECT select_options&nbsp;<br>前者可以得出一个表的字段结构等等，后者主要是给出相关的一些索引信息，而今天要讲述的重点是后者。&nbsp;<br>举例</p> 
+ <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+  <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+   <b>[sql]</b>&nbsp; 
+   <a title='view plain' href='http://blog.csdn.net/xifeijian/article/details/19773795#' style='color: rgb(160, 160, 160);'>view plain</a> 
+   <a title='copy' href='http://blog.csdn.net/xifeijian/article/details/19773795#' style='color: rgb(160, 160, 160);'>copy</a> 
+   <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/213907' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2713/915EC9F41D6E46F6A18DA7DE33FC3FA9' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+   <a title='派生到我的代码片' href='https://code.csdn.net/snippets/213907/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+  </div> 
+  <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'>mysql&gt;&nbsp;explain&nbsp;<span style='color: rgb(0, 102, 153); font-weight: bold;'>select</span>&nbsp;*&nbsp;<span style='color: rgb(0, 102, 153); font-weight: bold;'>from</span>&nbsp;event;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'>+—-+————-+——-+——+—————+——+———+——+——+——-+&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'>|&nbsp;id&nbsp;|&nbsp;select_type&nbsp;|&nbsp;<span style='color: rgb(0, 102, 153); font-weight: bold;'>table</span>&nbsp;|&nbsp;type&nbsp;|&nbsp;possible_keys&nbsp;|&nbsp;<span style='color: rgb(0, 102, 153); font-weight: bold;'>key</span>&nbsp;|&nbsp;key_len&nbsp;|&nbsp;ref&nbsp;|&nbsp;<span style='color: rgb(0, 102, 153); font-weight: bold;'>rows</span>&nbsp;|&nbsp;Extra&nbsp;|&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'>+—-+————-+——-+——+—————+——+———+——+——+——-+&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'>|&nbsp;1&nbsp;|&nbsp;SIMPLE&nbsp;|&nbsp;event&nbsp;|&nbsp;<span style='color: rgb(128, 128, 128);'>ALL</span>&nbsp;|&nbsp;<span style='color: rgb(128, 128, 128);'>NULL</span>&nbsp;|&nbsp;<span style='color: rgb(128, 128, 128);'>NULL</span>&nbsp;|&nbsp;<span style='color: rgb(128, 128, 128);'>NULL</span>&nbsp;|&nbsp;<span style='color: rgb(128, 128, 128);'>NULL</span>&nbsp;|&nbsp;13&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'>+—-+————-+——-+——+—————+——+———+——+——+——-+&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'>1&nbsp;row&nbsp;<span style='color: rgb(128, 128, 128);'>in</span>&nbsp;<span style='color: rgb(0, 102, 153); font-weight: bold;'>set</span>&nbsp;(0.00&nbsp;sec)&nbsp;&nbsp;&nbsp;</span></li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>各个属性的含义</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><img src='http://note.youdao.com/yws/res/2714/DBE57A67138F4258B45AF4DAFA7550A3' width='724' height='52' data-media-type='image'><br><strong>id</strong>&nbsp;:select查:询的序列号</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br><strong>select_type</strong>:select查询的类型，主要是区别普通查询和联合查询、子查询之类的复杂查询。</p> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Arial;'>
+   a.SIMPLE：查询中不包含子查询或者UNION 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Arial;'>
+   b.查询中若包含任何复杂的子部分，最外层查询则被标记为：PRIMARY 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Arial;'>
+   c.在SELECT或WHERE列表中包含了子查询，该子查询被标记为：SUBQUERY 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Arial;'>
+   d.在FROM列表中包含的子查询被标记为：DERIVED（衍生） 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Arial;'>
+   e.若第二个SELECT出现在UNION之后，则被标记为UNION；若UNION包含在&nbsp;FROM子句的子查询中，外层SELECT将被标记为：DERIVED 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Arial;'>
+   f.从UNION表获取结果的SELECT被标记为：UNION RESULT 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br><strong>table</strong>&nbsp;:输出的行所引用的表。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br><strong>type</strong>&nbsp;:联合查询所使用的类型，表示MySQL在表中找到所需行的方式，又称“访问类型”。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><img src='http://note.youdao.com/yws/res/2712/95CAE71862C54032A0190FBBBFD889BD' width='512' height='53' data-media-type='image'><br>type显示的是访问类型，是较为重要的一个指标，结果值从好到坏依次是：&nbsp;<br>system &gt; const &gt; eq_ref &gt; ref &gt; fulltext &gt; ref_or_null &gt; index_merge &gt; unique_subquery &gt; index_subquery &gt; range &gt; index &gt; ALL ，一般来说，得保证查询至少达到range级别，最好能达到ref。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>ALL: 扫描全表<br>index:&nbsp;扫描全部索引树<br>range:&nbsp;扫描部分索引，索引范围扫描，对索引的扫描开始于某一点，返回匹配值域的行，常见于between、&lt;、&gt;等的查询<br>ref:&nbsp;非唯一性索引扫描，返回匹配某个单独值的所有行。常见于使用非唯一索引即唯一索引的非唯一前缀进行的查找</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>eq_ref：唯一性索引扫描，对于每个索引键，表中只有一条记录与之匹配。常见于主键或唯一索引扫描<br>const, system:&nbsp;当MySQL对查询某部分进行优化，并转换为一个常量时，使用这些类型访问。如将主键置于where列表中，MySQL就能将该查询转换为一个常量。system是const类型的特例，当查询的表只有一行的情况下， 使用system。<br>NULL:&nbsp;MySQL在优化过程中分解语句，执行时甚至不用访问表或索引。如下所示：<br><img src='http://note.youdao.com/yws/res/2710/4FCB3D7D175B4045A98C619AA3AFE3B6' data-media-type='image'><br><strong>possible_keys</strong>:指出MySQL能使用哪个索引在该表中找到行。查询涉及到的字段上若存在索引，则该索引将被列出，但不一定被查询使用。如果是空的，没有相关的索引。这时要提高性能，可通过检验WHERE子句，看是否引用某些字段，或者检查字段不是适合索引。&nbsp;<br>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><strong>key&nbsp;</strong>:显示MySQL实际决定使用的键。如果没有索引被选择，键是NULL。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><strong>key_len</strong>:显示MySQL决定使用的键长度。表示索引中使用的字节数，可通过该列计算查询中使用的索引的长度。如果键是NULL，长度就是NULL。文档提示特别注意这个值可以得出一个多重主键里mysql实际使用了哪一部分。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;注：key_len显示的值为索引字段的最大可能长度，并非实际使用长度，即key_len是根据表定义计算而得，不是通过表内检索出的。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><strong>ref</strong>:显示哪个字段或常数与key一起被使用。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><strong>rows</strong>:这个数表示mysql要遍历多少数据才能找到，表示MySQL根据表统计信息及索引选用情况，估算的找到所需的记录所需要读取的行数，在innodb上可能是不准确的。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><strong>Extra</strong>:包含不适合在其他列中显示但十分重要的额外信息。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>Only index，这意味着信息只用索引树中的信息检索出的，这比扫描整个表要快。&nbsp;<br>using where是使用上了where限制，表示MySQL服务器在存储引擎受到记录后进行“后过滤”（Post-filter），如果查询未能使用索引，Using where的作用只是提醒我们MySQL将用where子句来过滤结果集。<br>impossible where 表示用不着where，一般就是没查出来啥。&nbsp;<br>Using filesort（MySQL中无法利用索引完成的排序操作称为“文件排序”）</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>Using temporary（表示MySQL需要使用临时表来存储结果集，常见于排序和分组查询），使用filesort和temporary的话会很吃力，WHERE和ORDER BY的索引经常无法兼顾，如果按照WHERE来确定索引，那么在ORDER BY时，就必然会引起Using filesort，这就要看是先过滤再排序划算，还是先排序再过滤划算。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>最后，再看一个查询计划的例子：</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><img src='http://note.youdao.com/yws/res/2709/D89CAAA7D92F4E789A4252E8083475F2' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><strong>第一行：id列为1，表示第一个select，select_type列的primary表 示该查询为外层查询，table列被标记为&lt;derived3&gt;，表示查询结果来自一个衍生表，其中3代表该查询衍生自第三个select查询，即id为3的select。<br>第二行：id为3，表示该查询的执行次序为2（4→3），是整个查询中第三个select的一部分。因查询包含在from中，所以为derived。<br>第三行：select列表中的子查询，select_type为subquery，为整个查询中的第二个select。<br>第四行：select_type为union，说明第四个select是union里的第二个select，最先执行。<br>第五行：代表从union的临时表中读取行的阶段，table列的&lt;union1,4&gt;表示用第一个和第四个select的结果进行union操作。</strong></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>关于MySQL执行计划的局限性：</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><strong>EXPLAIN不会告诉你关于触发器、存储过程的信息或用户自定义函数对查询的影响情况<br>EXPLAIN不考虑各种Cache<br>EXPLAIN不能显示MySQL在执行查询时所作的优化工作<br>部分统计信息是估算的，并非精确值<br>EXPALIN只能解释SELECT操作，其他操作要重写为SELECT后查看。</strong></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br>关于MySQL性能分析及explain用法的知识就介绍到这里了，希望本次的介绍能够对您有所收获！</p> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-227.html">Subversion简明手册--使用hooksvn</a>
+				|
+				 <a href="http://onelose.com/post-242.html">mysql中迅速插入百万条测试数据的方法</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="234" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-489.html">UncaughtTypeError:undefinedisnotafunction</a></li>
+		<li><a href="http://onelose.com/post-158.html">《形式逻辑》习题2</a></li>
+		<li><a href="http://onelose.com/post-475.html">去除右键菜单里弹出的GitInitHere等菜单</a></li>
+		<li><a href="http://onelose.com/post-321.html">1、首先当然是连接数据库，函数原型如下：MYSQL*STDCALLmysql_real_connec</a></li>
+		<li><a href="http://onelose.com/post-46.html">简单的快乐</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

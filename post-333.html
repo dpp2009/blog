@@ -1,0 +1,998 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>快速构建实时抓取集群</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="..." />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>快速构建实时抓取集群</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-15 7:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <ol style='background-color: rgb(255, 255, 255);'> 
+ <li> 
+  <div style='background-color: rgb(238, 238, 238);'> 
+   <ol style='background-color: rgb(255, 255, 255);'> 
+    <li> 
+     <div style='background-color: rgb(238, 238, 238);'> 
+      <div style='color: rgb(85, 85, 85); font-family: Arial, Helvetica, sans-serif; font-size: 12px; background-color: rgb(255, 255, 255);'> 
+       <div style='color:rgb(102, 102, 102);'> 
+        <div> 
+         <span style='color:rgb(1, 1, 1);font-family:微软雅黑;'> 
+          <div>
+            定义： 
+          </div> 
+          <div>
+            首先，我们定义一下定向抓取，定向抓取是一种特定的抓取需求，目标站点是已知的，站点的页面是已知的。本文的介绍里面，主要是侧重于如何快速构建一个实时的抓取系统，并不包含通用意义上的比如链接分析，站点发现等等特性。 
+          </div> 
+          <div> 
+           <br> 
+          </div> 
+          <div>
+            在本文提到的实例系统里面，主要用到linux+mysql+redis+django+scrapy+webkit，其中scrapy+webkit作为抓取端，redis作为链接库存储，mysql作为网页信息存储，django作为爬虫管理界面，快速实现分布式抓取系统的原型。 
+          </div> 
+          <div> 
+           <br> 
+          </div> 
+          <div>
+            名词解析： 
+          </div> 
+          <div>
+            1. &nbsp;抓取环：抓取环指的是spider在存储中获取url，从互联网上下载网页，然后将网页存储到数据库里面，最后在从存储里面获取下一个URL的一个流程。 
+           <br>2. &nbsp;Linkbase：链接库的存储模块，包含一般的链接信息；是抓取系统的核心，使用redis存储。 
+           <br>3. &nbsp; 
+           <a href='http://www.w3school.com.cn/xpath/index.asp' style='color:rgb(13, 155, 193);'>XPATH</a>：一门在 XML 文档中查找信息的语言，XPath 可用来在 XML 文档中对元素和属性进行遍历， 是 W3C XSLT 标准的主要元素。使用XPATH以及相关工具lib进行链接抽取和信息抽取。 
+           <br>4. &nbsp;XPathOnClick：一个chrome的插件，支持点击页面元素，获取XPATH路径，用于编辑配置模板。 
+           <br>5. &nbsp; 
+           <a href='http://redis.io/' style='color:rgb(13, 155, 193);'>Redis</a>：一个开源的KV的内存数据库，具备很好的数据结构的特征和很高的存取性能。用于存储linkbase信息 
+           <br>6. &nbsp; 
+           <a href='https://www.djangoproject.com/' style='color:rgb(13, 155, 193);'>Django</a>：爬虫管理工具，用于模板配置，系统监控反馈。Django在这里主要是用来管理一个数据库，使用Admin功能。 
+           <br>7. &nbsp; Pagebase：页面库，主要是存储网页抓取的结果，以及页面抽取的结果，和dump交互，使用mysql实现。 
+           <br>8. &nbsp; &nbsp; 
+           <a href='http://scrapy.org/' style='color:rgb(13, 155, 193);'>Scrapy</a>：一个开源的机遇twisted框架的python的单机爬虫，该爬虫实际上包含大多数网页抓取的工具包，用于爬虫下载端以及抽取端。 
+           <br>9.&nbsp;&nbsp;&nbsp;&nbsp; 列表页：指的商品页面之外的所有页面 
+           <br>10. &nbsp; &nbsp;详情页：比如商品B2C的抓取中，特指商品页面，比如：http://item.tmall.com/item.htm?id=10321272374 
+           <br> 
+          </div> 
+          <div> 
+           <br> 
+          </div> 
+          <div>
+            系统架构 
+          </div> 
+          <div>
+            一：存储 redis+mysql 
+          </div> 
+          <div>
+            链接库（linkbase）是抓取系统的核心，基于性能和效率的考虑，本文采用基于内存的redis和磁盘的mysql为主，对于linkbase主要是存储抓取必须的链接信息，比如url，anchor，等等；对于mysql，则是存放抓取的网页，便于后续的抽取和处理。 
+          </div> 
+          <div>
+            a) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PageBase：使用Mysql分库分表，存放网页，如下图： 
+          </div> 
+          <div> 
+           <img src='http://note.youdao.com/yws/res/1940/D6671783800E417A934C04320EC7B231' style='background-color:rgb(243, 243, 243);' data-media-type='image'> 
+           <br>b)&nbsp;&nbsp;&nbsp;&nbsp; Linkbase&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用Redis集群，存储linkbase信息。 
+           <br> 
+          </div> 
+          <div> 
+           <a href='http://www.searchtb.com/wp-content/uploads/2011/07/linkbase1.png' style='color:rgb(13, 155, 193);'><img src='http://note.youdao.com/yws/res/1941/BA94685F385349F3BAF06CE5740BF2A0' style='background-color:rgb(243, 243, 243);' data-media-type='image'></a> 
+          </div> 
+          <div>
+            几个基本的数据结构： 
+           <br>1：抓取队列 (candidate list) 
+           <br>分为待抓取的url队列和更新的url队列；队列存放urlhash，使用redis的list数据结构，对于新提取的url，push到对应的列表里面，对于spider抓取模块，从list pop得到。对于一个站点而言，抓取队列有两种类型：列表页抓取队列和详情页抓取队列。 
+           <br>2：链接库 (linkbase) 
+           <br>链接库实际上是存储链接信息的DB；Key是urlhash，Value是linkinfo，包含url，purl，anchor，xpath。。。；在redis使用hash存储，直接存放在redis的里面。KV链接库，不区分页面类型。 
+           <br>3：已抓取集合（crawled_set） 
+           <br>已抓取集合指的是当前已经下载的页面的urlhash，存放已经抓取的网页，使用redis的set实现，set的key是urlhash，score是时间戳，已抓取集合主要是用来记录哪一些页面已经抓取和抓取的时间，用于后续的更新页面调度以及抓取信息的统计。同抓取队列一样，每一个站点有两种类型的已抓取集合，详情页和列表页 
+           <br> 
+          </div> 
+          <div> 
+           <br> 
+          </div> 
+          <div>
+            二：调度模块： 
+          </div> 
+          <div>
+            调度模块是抓取系统的关键，调度系统的好坏决定了抓取系统的效率；这块是主要是在redis linkbase之上的数据结构，主要有抓取队列、抓取集合、抓取优先级等等数据结构组成；对于一个抓取循环来说：获取URL，提交到抓取模块的待抓取队列，启动抓取，抓取完成之后对新链接进行抽取，最后进入等待抓取的队列里面。 
+          </div> 
+          <div>
+            调度系统的基本配置： 
+           <br>a)&nbsp;&nbsp;&nbsp;&nbsp; 频率（间隔多少秒） 
+           <br>b)&nbsp;&nbsp;&nbsp;&nbsp; 各个抓取列表的选取比例：get_detail，mod_detail，get_list，mod_list 
+           <br>链接抽取：抽取页面的链接，进行除重，对于新的链接，插入到待抓取列表里 
+           <br>内容抽取：按照模块的配置XPATH，抽取页面信息，并写入到pagebase中。 
+           <br>离线调度：按照更新的比例，从crawled_set里面，定期选取url进入Mod队列里面进行刷新。 
+          </div> 
+          <div> 
+           <br> 
+          </div> 
+          <div>
+            三：抓取模块： 
+          </div> 
+          <div>
+            抓取模块是抓取的必要条件，抓取模块来说，重要的是应付互联网上各式的问题，以及如何实现对对方站点的ip平衡，当然，这块是和调度系统的紧密结合的，对于抓取模块而言，本文主要使用scrapy工具包里面的下载模块。 
+          </div> 
+          <div>
+            首先，抓取模块从linkbase获取对应站点的抓取url，进行页面下载，然后将页面信息写回到pipeline中，并完成链接抽取和页面抽取，同时调用调度模块，插入到linkbase和pagebase中。 
+           <br>下载端设计： 
+           <br>IP：每台机器需要配置多个物理公网IP，下载的时候，随机选择一个IP下载 
+           <br>抓取频度调整：读取配置文件，按照配置文件的抓取频率进行选取url 
+          </div> 
+          <div> 
+           <br> 
+          </div> 
+          <div>
+            四：配置界面： 
+          </div> 
+          <div>
+            配置界面主要是对抓取系统的管理和配置，包括：站点feed、页面模块抽取、报表系统的反馈等等。 
+          </div> 
+          <div> 
+           <br> 
+          </div> 
+          <div>
+            类似于通用的抓取架构，本文提到的抓取系统架构如下图： 
+          </div> 
+          <div> 
+           <br> 
+          </div> 
+          <div> 
+           <a href='http://www.searchtb.com/wp-content/uploads/2011/07/archicture1.png' style='color:rgb(13, 155, 193);'><img src='http://note.youdao.com/yws/res/1939/DD4A5C702B474D4EB27462C00B984BB1' style='background-color:rgb(243, 243, 243);' data-media-type='image'></a> 
+          </div> 
+          <div> 
+           <br> 
+          </div> 
+          <div>
+            一个完整的抓取数据流： 
+          </div> 
+          <div>
+            1：用户提供种子URL 
+          </div> 
+          <div>
+            2：种子URL进入linkbase中新URL队列中 
+          </div> 
+          <div>
+            3：调度模块选取url进入到抓取模块的待抓取队列中 
+          </div> 
+          <div>
+            4：抓取模块读取站点的配置文件，按照执行的频率进行抓取 
+          </div> 
+          <div>
+            5：抓取的结果返回到pipeline接口中，并完成连接的抽取 
+          </div> 
+          <div>
+            6：新发现的连接在linkbase里面进行dedup，并push到linkbase的新URL模块里面 
+          </div> 
+          <div>
+            7：调度模块选取url进入抓取模块的待抓取队列，goto 4 
+          </div> 
+          <div>
+            8：end 
+          </div> 
+          <div> 
+           <br> 
+          </div> 
+          <div>
+            系统扩展 
+          </div> 
+          <div>
+            本文提到的抓取系统，核心是调度和存储模块；其中，抓取，存储，调度都是通过数据进行交互的，因此，模块之间可以任意平行扩展，对于系统规模来说，只需要平行扩展mysql和redis存储服务集群以及抓取集群即可。当然，简单的扩展会带来一些问题：比如垃圾列表页的泛滥，链接库的膨胀等等问题，这些问题后续在讨论吧。 
+          </div> 
+          <div> 
+           <br> 
+          </div> 
+          <div>
+            enjoy 
+          </div></span> 
+        </div> 
+       </div> 
+       <p style='background-color:rgb(249, 249, 249);'>Filed under -&nbsp;<a title='查看搜索引擎中的全部文章' href='http://www.searchtb.com/category/%e6%90%9c%e7%b4%a2%e5%bc%95%e6%93%8e' style='color:rgb(13, 155, 193);'>搜索引擎</a>&nbsp;<a title='《快速构建实时抓取集群》上的评论' href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html#comments' style='color:rgb(13, 155, 193);'>52 Comments</a>&nbsp;so far.<br></p> 
+       <p>标签：<a href='http://www.searchtb.com/tag/redis' style='color:rgb(13, 155, 193);'>redis</a>,&nbsp;<a href='http://www.searchtb.com/tag/scrapy' style='color:rgb(13, 155, 193);'>Scrapy</a>,&nbsp;<a href='http://www.searchtb.com/tag/spider' style='color:rgb(13, 155, 193);'>spider</a>,&nbsp;<a href='http://www.searchtb.com/tag/%e5%88%86%e5%b8%83%e5%bc%8f%e6%8a%93%e5%8f%96' style='color:rgb(13, 155, 193);'>分布式抓取</a>,&nbsp;<a href='http://www.searchtb.com/tag/%e5%ae%9a%e5%90%91%e6%8a%93%e5%8f%96' style='color:rgb(13, 155, 193);'>定向抓取</a>,&nbsp;<a href='http://www.searchtb.com/tag/%e6%8a%93%e5%8f%96' style='color:rgb(13, 155, 193);'>抓取</a></p> 
+       <div style='background-color:rgb(173, 216, 230);'> 
+        <h3 style='background-color:rgb(51, 51, 51);color:rgb(238, 238, 238);font-family:'Helvetica Neue', Helvetica, Verdana, Arial;font-size:16px;font-weight:lighter;'>相关文章</h3> 
+        <ul style='background-color:rgb(173, 216, 230);'> 
+         <li><a title='Permanent Link: 关于流量升高导致TIME_WAIT增加，MySQL连接大量失败的问题' href='http://www.searchtb.com/2012/05/mysql_time_wait.html' style='color:rgb(13, 155, 193);'>关于流量升高导致TIME_WAIT增加，MySQL连接大量失败的问题</a></li> 
+         <li><a title='Permanent Link: 从狄仁杰的测字占卜到一淘网的Query分析之大结局' href='http://www.searchtb.com/2011/01/from-augur-to-etao-query-analysis.html' style='color:rgb(13, 155, 193);'>从狄仁杰的测字占卜到一淘网的Query分析之大结局</a></li> 
+         <li><a title='Permanent Link: 分享两个强符号，弱符号引起的编译问题' href='http://www.searchtb.com/2013/03/compile_problems_about_strong_weak_symbols.html' style='color:rgb(13, 155, 193);'>分享两个强符号，弱符号引起的编译问题</a></li> 
+         <li><a title='Permanent Link: 解决Nginx和Fpm-Php等内部多进程之间共享数据问题' href='http://www.searchtb.com/2013/05/share_data_between_nginx_and_php_process.html' style='color:rgb(13, 155, 193);'>解决Nginx和Fpm-Php等内部多进程之间共享数据问题</a></li> 
+        </ul> 
+        <br> 
+       </div> 
+       <div> 
+        <h2 style='font-family:'Helvetica Neue', Helvetica, Verdana, Arial;font-size:22px;font-weight:lighter;'>52 RESPONSES</h2> 
+        <br> 
+        <ol> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/e8f2003fd7ce310b3f716db9a8659f21?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://www.cactus.org.cn/' style='color:rgb(13, 155, 193);'>William H.</a>&nbsp;on 28 七 2011 
+          </div><p>Firebug也可以获取选中元素的xpath</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=546#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div> 
+          <ul> 
+           <li> 
+            <div> 
+             <img src='http://1.gravatar.com/avatar/3c5099c6d48540ea4ea54e721ed60789?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+            </div> 
+            <div style='font-size:13px;'>
+              长孙泰 on 10 八 2011 
+            </div><p>采用xpathonclick的原因是chrome和webkit是使用同一个内核，对于浏览器渲染来说是一致的，当然，firebug也ok。</p> 
+            <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+             <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=623#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+            </div></li> 
+          </ul></li> 
+         <li> 
+          <div style='font-size:13px;'> 
+           <a href='http://flychen.com/2011/07/quickly-build-real-time-capture-cluster/' style='color:rgb(13, 155, 193);'>快速构建实时抓取集群 | 听雨轩</a>&nbsp;on 29 七 2011 
+          </div><p>[...] 转自：http://www.searchtb.com/2011/07/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E5%AE%9E%E6%97%B6%E6%8A%93%E5%8… [...]</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=548#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/048fa65e0bffa6468c046e8999d73a42?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            hellboy on 30 七 2011 
+          </div><p>你是抓取所有的连接,再提取列表与详细页</p><p>还是一开始连接就只抓取列表页和详细页?如果这样,那是不是在抓取的时候就提取链接了?</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=558#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div> 
+          <ul> 
+           <li> 
+            <div> 
+             <img src='http://1.gravatar.com/avatar/3c5099c6d48540ea4ea54e721ed60789?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+            </div> 
+            <div style='font-size:13px;'>
+              长孙泰 on 10 八 2011 
+            </div><p>略过了存储阶段，抓取完成之后，在内存完成连接的提取</p> 
+            <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+             <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=624#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+            </div></li> 
+          </ul></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/3a8e7be61da060f4708dd2ceccfaa755?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://lexus.cnblogs.com/' style='color:rgb(13, 155, 193);'>小毛</a>&nbsp;on 31 七 2011 
+          </div><p>有几个疑问请教一下：<br>1）mysql的平行扩展是指什么，分库分表吗，上层的抽取后的储存要指定储存到特定的表吗比如table01,table02，这里要做master-slave的读写分离的群吗<br>是不是可以考虑mongodb<br>2）url的排重是使redis来作吗？有没有考虑bloomfilter<br>3)任务的定时的调度是如何实现的<br>4）这是一个方案还是已经实现了</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=565#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div> 
+          <ul> 
+           <li> 
+            <div> 
+             <img src='http://1.gravatar.com/avatar/3c5099c6d48540ea4ea54e721ed60789?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+            </div> 
+            <div style='font-size:13px;'>
+              长孙泰 on 10 八 2011 
+            </div><p>1；mysql在这里只是一个存储的实现，可以使用其他的存储方案<br>2：redis已经除重了，没必要在一次使用bf，不过bf是一个通用的很好的除重的算法<br>3：这个和调度策略相关，程序控制<br>4：实现了的方案</p> 
+            <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+             <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=625#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+            </div></li> 
+          </ul></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/dc68903e4fc4940b59463a5677fbe3b4?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            之奇 on 01 八 2011 
+          </div><p>好。</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=576#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/d0ac024e8c9fdefe2764a84640c105cf?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            tigergame on 09 八 2011 
+          </div><p>求源码分析</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=616#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/3a8e7be61da060f4708dd2ceccfaa755?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://lexus.cnblogs.com/' style='color:rgb(13, 155, 193);'>小毛</a>&nbsp;on 13 八 2011 
+          </div><p>你们是做etao所以有要用这个吗，还是雅虎的部门呢，好像淘宝的部分不需要这个</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=644#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/8f1dbdce47998ff0ada83a6472e086b8?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            bobodog on 19 八 2011 
+          </div><p>俺也做过简单的抓取工具，定位DOM元素 俺用的是jsoup（java版的jquery，支持css选择器）</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=675#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/238180af64c4a2e1a26f6e86923eab04?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://www.sznln.com/mingjiangsanguotuiguangyuan/2011-08-24/3702.html' style='color:rgb(13, 155, 193);'>问道</a>&nbsp;on 30 八 2011 
+          </div><p>有意思，谢谢分享</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=736#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/d0f55ad3536584908065a37528bf53e8?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            genobili on 06 九 2011 
+          </div><p>你们这文章写得很不错,我参考了,我最近也要搭建一个与你的介绍类似的搜索的系统,但是不知道该不该选取 Scrapy ,因为现在有太多开源的爬虫比如larbin ,Nutch,Heritrix等, Scrapy 在这样的定向抓取的系统中好在哪里呢?迷茫中,求解答…</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=796#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/6068552d371e98ec08a5fcabb5cd78c7?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            junxy on 07 九 2011 
+          </div><p>对于网站内容页通过url去重没啥问题，但对于论坛这种，url不变，第一次抓取时有5条回复（一个主题），后续又有了很多回复，这样的话通过url去重就会导致抓取的内容不完整，请问下你们怎么处理的？</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=801#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div> 
+          <ul> 
+           <li> 
+            <div> 
+             <img src='http://1.gravatar.com/avatar/7d2d59c662212413e9b9de216837c104?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+            </div> 
+            <div style='font-size:13px;'>
+              zgz on 10 九 2012 
+            </div><p>文章里不是写了吗，通过外部调度，将set中的按照某些策略认为过期的url重新存入待抓取队列中重新抓取</p> 
+            <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+             <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=5284#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+            </div></li> 
+          </ul></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/9db2869356ea802142f0948a3a757d95?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            deltatang on 28 九 2011 
+          </div><p>请问你是如何提高webkit的处理性能？<br>构建dom树时，有和js引擎通讯么？现有的port都关联了相应的图形界面，这里你是mock了图形相关的操作还是简单的不显示？</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=931#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/5a7a384d90bc57f0ac2e5e6177d7a8b6?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            gaea on 09 十 2011 
+          </div><p>使用xpath性能如何</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=1327#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/2ff43f1a36c5b77703478104e9abff50?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            tlzl on 10 十 2011 
+          </div><p>webkit是不是用于加载动态网页，然后进行网页的内容处理的呢？</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=1333#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/f2a5d82918d6f08f73a22fa49f83595a?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://mvj3.github.com/' style='color:rgb(13, 155, 193);'>mvj3</a>&nbsp;on 26 十 2011 
+          </div><p>温馨提示：欢迎加盟里python写错了。。。</p><p>熟悉Linux系统脚本， 能够熟练使用Unix shell scripting, Perl或者Ptyhon；</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=1450#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div> 
+          <ul> 
+           <li> 
+            <div> 
+             <img src='http://0.gravatar.com/avatar/67b1895f57e9a75139c0e8eeeebacfbb?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+            </div> 
+            <div style='font-size:13px;'>
+              恨少 on 29 十 2011 
+            </div><p>非常感谢这位同学的纠正&nbsp;<img src='http://note.youdao.com/yws/res/1942/E30B2C6B7D8343BAB890D2EC6D2E9237' alt=':)' data-media-type='image'></p> 
+            <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+             <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=1479#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+            </div></li> 
+          </ul></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/f0f0dbcb7d5545439a5a6f26bbef379e?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            生猪价格 on 05 十二 2011 
+          </div><p>P：每台机器需要配置多个物理公网IP 多个？</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=1860#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/7605e5e509c69f33759ef1ffab9608e7?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            麦咖啡 on 09 十二 2011 
+          </div><p>我觉得这里有一个问题没有提到就是HTML到XML的转化问题，很多时候因为页面的HTML的不标准，或者说是HTML本身的不严谨性，导致转成XML的时候，发产生诸多的问题。不知道你们是怎么解决的？</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=1912#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div style='font-size:13px;'> 
+           <a href='http://xunyux.sinaapp.com/?p=43' style='color:rgb(13, 155, 193);'>快速构建实时抓取集群 | My blog for being</a>&nbsp;on 16 十二 2011 
+          </div><p>[...] 注：原文中描述的已抓取集合是使用Set结构来存储，应该是不正确的，NoSQLFan进行了修改，如果修改有问题，欢迎指正。 [...]</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=1971#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/98e33619a6c87f0c587804e084dda7ea?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            李斌 on 19 十二 2011 
+          </div><p>想跟你探讨些实时抓取集群的问题,qq:390973341</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=2030#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/239b71158b76968f65ab9b712f2e24a5?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            Jason Wu on 29 十二 2011 
+          </div><p>etao搜索在用python抓取啊，不错的分享</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=2130#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/080a6f362f1dbe0536487504cfa8acab?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://www.tomttk.cn/' style='color:rgb(13, 155, 193);'>了解</a>&nbsp;on 07 一 2012 
+          </div><p>不错，不错，有见解！</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=2210#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/1c254aff15a7bce32758a42ff43a01bb?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://toohdmi.com/' style='color:rgb(13, 155, 193);'>TOOHDMI</a>&nbsp;on 11 二 2012 
+          </div><p>要学的东西真的很多啊。。。</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=2614#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/9321d2b872d0b1ce6a45245bdafbc9be?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://www.bookbl.com/' style='color:rgb(13, 155, 193);'>冰雷</a>&nbsp;on 13 二 2012 
+          </div><p>强大，分享了，找了好久我晕！</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=2623#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/939f5dcda08cf3314202f0ae418fdb4f?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://www.adwos.com/' style='color:rgb(13, 155, 193);'>成功源于分享</a>&nbsp;on 14 二 2012 
+          </div><p>牛！兄弟，你这文章写得太有含金量了，我专注百度竞价技术研究，以后多分享和交流快速赚钱的心得！</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=2628#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/8fcb9f3f444241506e8a9f5e4e2232df?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            steven on 09 三 2012 
+          </div><p>您好，我是一名学生，正在研究聚焦搜索,希望能够得到您的指点和建议。请问1.如何建立抓取物品的数据模型，以至于可以描述大部分商品等，以及具有可扩展性；2.如何建立索引以至于可以快速查询到相关数据。</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=2872#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/4ee7c6c7459cb900fc56171ba2a47a9f?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://www.52gzx.com/' style='color:rgb(13, 155, 193);'>干燥箱</a>&nbsp;on 26 三 2012 
+          </div><p>谢谢分享，支持一下</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=3036#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/4799b52689d7a9ab61e9b97b90e85e63?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://hi.baidu.com/wyb_009' style='color:rgb(13, 155, 193);'>bollwang</a>&nbsp;on 19 七 2012 
+          </div><p>scrapy只用了工具包里面的下载模块吗？scrapy已经实现了队列，调度和抓取啊</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=4266#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/e9630e27abd04a75676d0eb4fcdf2f83?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            tianyu360 on 06 八 2012 
+          </div><p>请问下一次采集到的数据应该如何做更新呢？先存入mysql临时库，完了再更新到mysql原库么？</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=4507#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/7d2d59c662212413e9b9de216837c104?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            zgz on 10 九 2012 
+          </div><p>好文</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=5283#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div style='font-size:13px;'> 
+           <a href='http://fastfood.sinaapp.com/?p=420' style='color:rgb(13, 155, 193);'>Xsank的快餐 » Python Django网站博客收藏</a>&nbsp;on 14 九 2012 
+          </div><p>[...] 快速构建实时抓取集群 « 搜索技术博客－淘宝 [...]</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=5420#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/7b424dee52adf99d8b86eb95e55fb3e1?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            黄锴 on 28 九 2012 
+          </div><p>django用来做模板配置的话，是不是说，去提取网页信息的时候，是根据数据库中的规则来提取的，也就是说，数据库中存有类似 “Xpath”和“对应的属性名”之前的对应关系？</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=5625#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div style='font-size:13px;'> 
+           <a href='http://www.guzili.com/?p=42360' style='color:rgb(13, 155, 193);'>机器学习研究与应用近期热点 第三季(2/5) | 谷子粒-Guzili</a>&nbsp;on 01 十二 2012 
+          </div><p>[...] l&nbsp; 陈利人：想了解爬虫基本工作原理，可以看看【快速构建实时抓取集群】http://t.cn/ajlVTC [...]</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=7062#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div style='font-size:13px;'> 
+           <a href='http://blog.weiyihb.com/2012/12/%e5%ae%9a%e5%90%91%e6%8a%93%e5%8f%96/' style='color:rgb(13, 155, 193);'>定向抓取 | Mykee</a>&nbsp;on 03 十二 2012 
+          </div><p>[...] 原文 定义： 首先，我们定义一下定向抓取，定向抓取是一种特定的抓取需求，目标站点是已知的，站点的页面是已知的。本文的介绍里面，主要是侧重于如何快速构建一个实时的抓取系统，并不包含通用意义上的比如链接分析，站点发现等等特性。 [...]</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=7108#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/fcf194ebb0358337480590059070e713?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://dev.bjtu.edu.cn/ideal' style='color:rgb(13, 155, 193);'>ideal</a>&nbsp;on 03 十二 2012 
+          </div><p>这里所说的带有score的set来存放crawled_set，应该是zset而不是set吧？</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=7109#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/c2cd1210ca706781ae1f0e3607b94884?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://xinzhe.etao.com/' style='color:rgb(13, 155, 193);'>行者</a>&nbsp;on 26 十二 2012 
+          </div><p>本文干货较多，鉴定完毕。</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=7518#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/40b75fe4959e15e71e854233151d07bc?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            zhiying8710 on 18 四 2013 
+          </div><p>下载端设计：<br>IP：每台机器需要配置多个物理公网IP，下载的时候，随机选择一个IP下载<br>=============================<br>我想问的是在下载的时候如何指定一个公网的ip, 用的是自己写的代理Middleware吗? thx</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=15445#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/34048bba022a44ff87af3970ee404710?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            wiky on 24 四 2013 
+          </div><p>Hi tb, 按照博客的主体思想，我写了一个python的简单实现并开源了，如果觉得还可以的话可以考虑加到文章里哦，嘿嘿~~</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=15845#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/34048bba022a44ff87af3970ee404710?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            wiky on 24 四 2013 
+          </div><p>Hi tb, 按照博客的主体思想，我写了一个python的简单实现并开源了，如果觉得还可以的话可以考虑加到文章里哦，嘿嘿~~&nbsp;<a href='https://github.com/agathewiky/spider-roach' style='color:rgb(13, 155, 193);'>https://github.com/agathewiky/spider-roach</a></p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=15846#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/7e2eb1454d533947f21345d538d5ad0c?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://www.51aijiankang.com/' style='color:rgb(13, 155, 193);'>51aijianakng</a>&nbsp;on 08 五 2013 
+          </div><p>这文章写得太有含金量了，谢谢分享</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=16781#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/416d414ea6dcca2f7632a9e5c26052ea?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://xn--rgv/' style='color:rgb(13, 155, 193);'>天一</a>&nbsp;on 24 五 2013 
+          </div><p>redis集群如何保证数据的一致性？避免一个链接出现在2个单点redis中。如果是主从复制的话，那主机的I/O能支持大量的写操作么？特别是如果在资源条件内存比较小的情况下</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=17702#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/eea29fdfc05dd790f9b8484aa8eb9d7c?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            Tsing on 30 五 2013 
+          </div><p>Scrapy最大的问题是它不支持内建的javascript，现在大多数网页都用js，这点儿很麻烦。</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=18001#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/ec918b75a13f79057054858845f4614f?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            Ddesign on 01 七 2013 
+          </div><p>Hi, 看了您的文章受益良多, 想请教一个问题:如何监控抓取源的改版问题, 也许抓取源改版后, 之前的配置的XPATH, 已经不能抓取, 或者抓取到错误的信息.</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=19613#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div style='font-size:13px;'> 
+           <a href='http://www.r66r.net/?p=703' style='color:rgb(13, 155, 193);'>快速构建实时抓取集群 | r6</a>&nbsp;on 01 七 2013 
+          </div><p>[...] 本文转载自淘宝搜索技术博客，描述了实时抓取集群的架构。其架构中使用Redis作为核心的LinkBase存储，包括了使用List结构来存储抓取队列，使用Hash结构来存储链接表及使用Sorted Sets结构来存储已抓取集合。 注：原文中描述的已抓取集合是使用Set结构来存储，应该是不正确的，NoSQLFan进行了修改，如果修改有问题，欢迎指正。 [...]</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=19622#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://0.gravatar.com/avatar/462caabf58e0fdb233494fa465d3a2dc?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'> 
+           <a href='http://www.crazyant.net/' style='color:rgb(13, 155, 193);'>疯狂的蚂蚁</a>&nbsp;on 14 九 2013 
+          </div><p>其实静态的网页抓取技术上问题都不大，难点在于封闭式的网页咱么抓取、比如新浪微博，模拟登陆的问题该怎么解决是个最大的问题</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=23257#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div style='font-size:13px;'> 
+           <a href='http://www.ruanfei.com/news/927.html' style='color:rgb(13, 155, 193);'>快速构建实时抓取集群的方法 – 软飞</a>&nbsp;on 10 十二 2013 
+          </div><p>[…] 在本文提到的实例系统里面，主要用到linux+mysql+redis+django+scrapy+webkit，其中scrapy+webkit作为抓取端，redis作为链接库存储，mysql作为网页信息存储，django作为爬虫管理界面，快速实现分布式抓取系统的原型。 名词解析： 1. &nbsp;抓取环：抓取环指的是spider在存储中获取url，从互联网上下载网页，然后将网页存储到数据库里面，最后在从存储里面获取下一个URL的一个流程。 2. &nbsp;Linkbase：链接库的存储模块，包含一般的链接信息；是抓取系统的核心，使用redis存储。 3. &nbsp;XPATH：一门在 XML 文档中查找信息的语言，XPath 可用来在 XML 文档中对元素和属性进行遍历， 是 W3C XSLT 标准的主要元素。使用XPATH以及相关工具lib进行链接抽取和信息抽取。 4. &nbsp;XPathOnClick：一个chrome的插件，支持点击页面元素，获取XPATH路径，用于编辑配置模板。 5. &nbsp;Redis：一个开源的KV的内存数据库，具备很好的数据结构的特征和很高的存取性能。用于存储linkbase信息 6. &nbsp;Django：爬虫管理工具，用于模板配置，系统监控反馈。Django在这里主要是用来管理一个数据库，使用Admin功能。 7. &nbsp; Pagebase：页面库，主要是存储网页抓取的结果，以及页面抽取的结果，和dump交互，使用mysql实现。 8. &nbsp; &nbsp;Scrapy：一个开源的机遇twisted框架的python的单机爬虫，该爬虫实际上包含大多数网页抓取的工具包，用于爬虫下载端以及抽取端。 9.&nbsp;&nbsp;&nbsp;&nbsp; 列表页：指的商品页面之外的所有页面 10. &nbsp; &nbsp;详情页：比如商品B2C的抓取中，特指商品页面，比如：http://item.tmall.com/item.htm?id=10321272374 系统架构 一：存储 redis+mysql 链接库（linkbase）是抓取系统的核心，基于性能和效率的考虑，本文采用基于内存的redis和磁盘的mysql为主，对于linkbase主要是存储抓取必须的链接信息，比如url，anchor，等等；对于mysql，则是存放抓取的网页，便于后续的抽取和处理。 a) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PageBase：使用Mysql分库分表，存放网页，如下图： b)&nbsp;&nbsp;&nbsp;&nbsp; Linkbase&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用Redis集群，存储linkbase信息。 几个基本的数据结构： 1：抓取队列 (candidate list) 分为待抓取的url队列和更新的url队列；队列存放urlhash，使用redis的list数据结构，对于新提取的url，push到对应的列表里面，对于spider抓取模块，从list pop得到。对于一个站点而言，抓取队列有两种类型：列表页抓取队列和详情页抓取队列。 2：链接库 (linkbase) 链接库实际上是存储链接信息的DB；Key是urlhash，Value是linkinfo，包含url，purl，anchor，xpath。。。；在redis使用hash存储，直接存放在redis的里面。KV链接库，不区分页面类型。 3：已抓取集合（crawled_set） 已抓取集合指的是当前已经下载的页面的urlhash，存放已经抓取的网页，使用redis的set实现，set的key是urlhash，score是时间戳，已抓取集合主要是用来记录哪一些页面已经抓取和抓取的时间，用于后续的更新页面调度以及抓取信息的统计。同抓取队列一样，每一个站点有两种类型的已抓取集合，详情页和列表页 二：调度模块： 调度模块是抓取系统的关键，调度系统的好坏决定了抓取系统的效率；这块是主要是在redis linkbase之上的数据结构，主要有抓取队列、抓取集合、抓取优先级等等数据结构组成；对于一个抓取循环来说：获取URL，提交到抓取模块的待抓取队列，启动抓取，抓取完成之后对新链接进行抽取，最后进入等待抓取的队列里面。 调度系统的基本配置： a)&nbsp;&nbsp;&nbsp;&nbsp; 频率（间隔多少秒） b)&nbsp;&nbsp;&nbsp;&nbsp; 各个抓取列表的选取比例：get_detail，mod_detail，get_list，mod_list 链接抽取：抽取页面的链接，进行除重，对于新的链接，插入到待抓取列表里 内容抽取：按照模块的配置XPATH，抽取页面信息，并写入到pagebase中。 离线调度：按照更新的比例，从crawled_set里面，定期选取url进入Mod队列里面进行刷新。 三：抓取模块： 抓取模块是抓取的必要条件，抓取模块来说，重要的是应付互联网上各式的问题，以及如何实现对对方站点的ip平衡，当然，这块是和调度系统的紧密结合的，对于抓取模块而言，本文主要使用scrapy工具包里面的下载模块。 首先，抓取模块从linkbase获取对应站点的抓取url，进行页面下载，然后将页面信息写回到pipeline中，并完成链接抽取和页面抽取，同时调用调度模块，插入到linkbase和pagebase中。 下载端设计： IP：每台机器需要配置多个物理公网IP，下载的时候，随机选择一个IP下载 抓取频度调整：读取配置文件，按照配置文件的抓取频率进行选取url 四：配置界面： 配置界面主要是对抓取系统的管理和配置，包括：站点feed、页面模块抽取、报表系统的反馈等等。 类似于通用的抓取架构，本文提到的抓取系统架构如下图： 一个完整的抓取数据流： 1：用户提供种子URL 2：种子URL进入linkbase中新URL队列中 3：调度模块选取url进入到抓取模块的待抓取队列中 4：抓取模块读取站点的配置文件，按照执行的频率进行抓取 5：抓取的结果返回到pipeline接口中，并完成连接的抽取 6：新发现的连接在linkbase里面进行dedup，并push到linkbase的新URL模块里面 7：调度模块选取url进入抓取模块的待抓取队列，goto 4 8：end 系统扩展 本文提到的抓取系统，核心是调度和存储模块；其中，抓取，存储，调度都是通过数据进行交互的，因此，模块之间可以任意平行扩展，对于系统规模来说，只需要平行扩展mysql和redis存储服务集群以及抓取集群即可。当然，简单的扩展会带来一些问题：比如垃圾列表页的泛滥，链接库的膨胀等等问题，这些问题后续在讨论吧。enjoy&nbsp;ps.作者：长孙泰 原文链接searchtb.com […]</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=28263#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div style='font-size:13px;'> 
+           <a href='http://www.lilihui.name/2014/01/13/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4/' style='color:rgb(13, 155, 193);'>快速构建实时抓取集群 | 电商技术与互联网营销博客</a>&nbsp;on 13 一 2014 
+          </div><p>[…]<a href='http://www.searchtb.com/2011/07/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E5%AE%9E%E6%97%B6%E6%8A%93%E5%8&amp;#8230' style='color:rgb(13, 155, 193);'>http://www.searchtb.com/2011/07/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E5%AE%9E%E6%97%B6%E6%8A%93%E5%8&amp;#8230</a>; […]</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%…e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=30719#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+         <li> 
+          <div> 
+           <img src='http://1.gravatar.com/avatar/343c99c9f4f295730e9fa8edec58d84b?s=60&amp;d=ht….gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' width='60' height='60' data-media-type='image'> 
+          </div> 
+          <div style='font-size:13px;'>
+            杨晓伟 on 31 八 2011 
+          </div><p>仅仅使用像spidermonkey或v8（都有python支持），是不是可以？</p> 
+          <div style='background-color:rgb(238, 238, 238);font-size:10px;'> 
+           <a href='http://www.searchtb.com/2011/07/%e5%bf%ab%e9%80%9f%e6%9e%84%e5%bb%ba%e5%ae%9e%e6%97%b6%e6%8a%93%e5%8f%96%e9%9b%86%e7%be%a4.html?replytocom=751#respond' style='color:rgb(13, 155, 193);'>回复</a> 
+          </div></li> 
+        </ol> 
+       </div> 
+      </div> 
+      <div style='background-color: rgb(255, 255, 255);'></div> 
+     </div></li> 
+    <li><br></li> 
+   </ol> 
+  </div><br></li> 
+</ol>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-303.html">linux下查找文件或者内容常有命令</a>
+				|
+				 <a href="http://onelose.com/post-344.html">Larbin的安装与配置</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="333" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-439.html">滚动条</a></li>
+		<li><a href="http://onelose.com/post-190.html">PHP5.4 新特性</a></li>
+		<li><a href="http://onelose.com/post-546.html">P​H​P​​f​l​u​s​h​和​o​b​_​f​l​u​s​h​的​应​用​与​区​别</a></li>
+		<li><a href="http://onelose.com/post-221.html">TortoiseSVN文件夹及文件图标不显示解决方法</a></li>
+		<li><a href="http://onelose.com/post-49.html">席慕蓉的话，足以震碎整个心…</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

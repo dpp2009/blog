@@ -1,0 +1,912 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>开源消息队列MemcacheQ在Linux中编译安装教程</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>开源消息队列MemcacheQ在Linux中编译安装教程</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-4-9 6:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <h1 style='background-color:rgb(255, 255, 255);color:rgb(85, 85, 85);font-family:'Open Sans', sans-serif;font-size:36px;font-style:normal;text-align:start;'><p style='background-color: rgb(255, 255, 255); font-size: 18px; font-weight: normal;'>队列（Queue）是一种常用的数据结构。在队列这种数据结构中，最先插入的元素将会最先被取出；反之最后插入的元素将会最后被取出，因此队列又称为“先进先出”（FIFO：First In First Out）的线性表。</p><p style='background-color: rgb(255, 255, 255); font-size: 18px; font-weight: normal;'>加入元素的一端叫“队尾”，取出元素的一端叫“队头”。利用消息队列可以很好地异步处理数据的传送和存储，当遇到频繁且密集地向后端数据库中插入数据时，就可采用消息队列来异步处理这些数据写入。</p><p style='background-color: rgb(255, 255, 255); font-size: 18px; font-weight: normal;'>MemcacheQ是一款基于Memcache协议的开源消息队列服务软件，由于其遵循了Memcache协议，因此开发成本很低，不需要学习额外的知识便可轻松掌握。</p><p style='background-color: rgb(255, 255, 255); font-size: 18px; font-weight: normal;'>我在最近的一个项目中也应用了MemcacheQ，下面我将分享一下MemcacheQ在Linux中的编译和安装过程。</p><p style='background-color: rgb(255, 255, 255); font-size: 18px; font-weight: normal;'>首先，MemcacheQ依赖于BerkeleyDB和Libevent，如果服务器中曾经安装过Memcached，那么Libevent应该已经存在了，否则就需要先下载安装Libevent。</p><p style='background-color: rgb(255, 255, 255); font-size: 18px; font-weight: normal;'>下载链接如下：</p><p style='background-color: rgb(255, 255, 255); font-size: 18px; font-weight: normal;'>Libevent：<a title='https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz' href='https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz' target='_blank' style='color:rgb(60, 99, 154);'>https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz</a><br>Berkeley DB：<a title='http://download.oracle.com/otn/berkeley-db/db-6.0.30.tar.gz' href='http://download.oracle.com/otn/berkeley-db/db-6.0.30.tar.gz' target='_blank' style='color:rgb(60, 99, 154);'>http://download.oracle.com/otn/berkeley-db/db-6.0.30.tar.gz</a><br>MemcacheQ：<a title='https://github.com/stvchu/memcacheq' href='https://github.com/stvchu/memcacheq' target='_blank' style='color:rgb(60, 99, 154);'>https://github.com/stvchu/memcacheq</a></p><p style='background-color: rgb(255, 255, 255); font-size: 18px; font-weight: normal;'>安装Libevent</p> 
+  <div data-settings=' minimize scroll-mouseover disable-anim' style='font-family: Monaco, MonacoRegular, 'Courier New', monospace; font-weight: 500; background-color: rgb(253, 253, 253) !important; font-size: 12px !important;'> 
+   <div data-settings=' show' style='background-color: rgb(221, 221, 221) !important;'> 
+    <div style='font-family: inherit;'> 
+     <span style='font-family: inherit; color: rgb(153, 153, 153) !important; font-size: inherit !important;'>Shell</span> 
+    </div> 
+   </div> 
+   <div> 
+    <table border='1' cellpadding='2' cellspacing='0' style='font-size: 12px;'> 
+     <tbody> 
+      <tr> 
+       <td data-settings='show' style='background-color: rgb(223, 239, 255) !important; color: rgb(84, 153, 222) !important;'> 
+        <div> 
+         <div data-line='crayon-5525edf2dcb4a606036639-1' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           1 
+         </div> 
+         <div data-line='crayon-5525edf2dcb4a606036639-2' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           2 
+         </div> 
+         <div data-line='crayon-5525edf2dcb4a606036639-3' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           3 
+         </div> 
+         <div data-line='crayon-5525edf2dcb4a606036639-4' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           4 
+         </div> 
+         <div data-line='crayon-5525edf2dcb4a606036639-5' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           5 
+         </div> 
+         <div data-line='crayon-5525edf2dcb4a606036639-6' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           6 
+         </div> 
+        </div></td> 
+       <td style='width: 680px;'> 
+        <div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>tar </span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>zvxf </span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>libevent</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>2.0.21</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>stable</span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>.tar</span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>.gz</span> 
+         </div> 
+         <div style='font-family: inherit; background-color: rgb(247, 247, 247) !important; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>cd</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>libevent</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>2.0.21</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; font-size: inherit !important;'>stable</span> 
+         </div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>.</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>configure</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>--</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>prefix</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>=</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>usr</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>local</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>libevent</span> 
+         </div> 
+         <div style='font-family: inherit; background-color: rgb(247, 247, 247) !important; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>make</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&amp;&amp;</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>make</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>install</span> 
+         </div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>echo</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 128, 0) !important; font-size: inherit !important;'>'/usr/local/libevent/lib'</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&gt;&gt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>etc</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>ld</span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>.so</span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>.conf</span> 
+         </div> 
+         <div style='font-family: inherit; background-color: rgb(247, 247, 247) !important; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>ldconfig</span> 
+         </div> 
+        </div></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+   </div> 
+  </div><p style='background-color: rgb(255, 255, 255); font-size: 18px; font-weight: normal;'>安装BerkeleyDB</p><p style='background-color: rgb(255, 255, 255); font-size: 18px; font-weight: normal;'>BerkeleyDB简介：BerkeleyDB是一个开源的文件数据库，介于关系数据库与内存数据库之间，使用方式与内存数据库类似，它提供的是一系列直接访问数据库的函数，而不是像关系数据库那样需要网络通讯、SQL解析等步骤。</p><p style='background-color: rgb(255, 255, 255); font-size: 18px; font-weight: normal;'>MemcacheQ依赖BerkleyDB用于队列数据的持久化存储，以免在MemcacheQ意外崩溃或中断时，队列数据不会丢失。</p> 
+  <div data-settings=' minimize scroll-mouseover disable-anim' style='font-family: Monaco, MonacoRegular, 'Courier New', monospace; font-weight: 500; background-color: rgb(253, 253, 253) !important; font-size: 12px !important;'> 
+   <div data-settings=' show' style='background-color: rgb(221, 221, 221) !important;'> 
+    <div style='font-family: inherit;'> 
+     <span style='font-family: inherit; color: rgb(153, 153, 153) !important; font-size: inherit !important;'>Shell</span> 
+    </div> 
+   </div> 
+   <div> 
+    <table border='1' cellpadding='2' cellspacing='0' style='font-size: 12px;'> 
+     <tbody> 
+      <tr> 
+       <td data-settings='show' style='background-color: rgb(223, 239, 255) !important; color: rgb(84, 153, 222) !important; height: 111.125px;'> 
+        <div> 
+         <div data-line='crayon-5525edf2dcb5e709646527-1' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           1 
+         </div> 
+         <div data-line='crayon-5525edf2dcb5e709646527-2' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           2 
+         </div> 
+         <div data-line='crayon-5525edf2dcb5e709646527-3' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           3 
+         </div> 
+         <div data-line='crayon-5525edf2dcb5e709646527-4' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           4 
+         </div> 
+         <div data-line='crayon-5525edf2dcb5e709646527-5' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           5 
+         </div> 
+         <div data-line='crayon-5525edf2dcb5e709646527-6' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           6 
+         </div> 
+         <div data-line='crayon-5525edf2dcb5e709646527-7' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           7 
+         </div> 
+        </div></td> 
+       <td style='width: 680px; height: 111.125px;'> 
+        <div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>tar </span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>zxvf </span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>db</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>6.0.30.tar.gz</span> 
+         </div> 
+         <div style='font-family: inherit; background-color: rgb(247, 247, 247) !important; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>cd</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>db</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>6.0.30</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>build</span> 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>_</span>unix 
+         </div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>.</span> 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>.</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>dist</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>configure</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>--</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>prefix</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>=</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>usr</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>local</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>berkeleydb</span> 
+         </div> 
+         <div style='font-family: inherit; background-color: rgb(247, 247, 247) !important; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>make</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&amp;&amp;</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>make</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>install</span> 
+         </div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>ln</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>s</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>usr</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>local</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>berkeleydb</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>lib</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>libdb</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>6.0.so</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>usr</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>lib</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+         </div> 
+         <div style='font-family: inherit; background-color: rgb(247, 247, 247) !important; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>echo</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 128, 0) !important; font-size: inherit !important;'>'/usr/local/berkeleydb/lib/'</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&gt;&gt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>etc</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>ld</span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>.so</span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>.conf</span> 
+         </div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>ldconfig</span> 
+         </div> 
+        </div></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+   </div> 
+  </div><p style='background-color: rgb(255, 255, 255); font-size: 18px; font-weight: normal;'>安装MemcacheQ</p> 
+  <div data-settings=' minimize scroll-mouseover disable-anim wrap' style='font-family: Monaco, MonacoRegular, 'Courier New', monospace; font-weight: 500; background-color: rgb(253, 253, 253) !important; font-size: 12px !important;'> 
+   <div data-settings=' show' style='background-color: rgb(221, 221, 221) !important;'> 
+    <div style='font-family: inherit;'> 
+     <span style='font-family: inherit; color: rgb(153, 153, 153) !important; font-size: inherit !important;'>Shell</span> 
+    </div> 
+   </div> 
+   <div> 
+    <table border='1' cellpadding='2' cellspacing='0' style='font-size: 12px;'> 
+     <tbody> 
+      <tr> 
+       <td data-settings='show' style='height: 81.125px; background-color: rgb(223, 239, 255) !important; color: rgb(84, 153, 222) !important;'> 
+        <div> 
+         <div data-line='crayon-5525edf2dcb65935455385-1' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           1 
+         </div> 
+         <div data-line='crayon-5525edf2dcb65935455385-2' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           2 
+         </div> 
+         <div data-line='crayon-5525edf2dcb65935455385-3' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           3 
+         </div> 
+         <div data-line='crayon-5525edf2dcb65935455385-4' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           4 
+         </div> 
+        </div></td> 
+       <td style='width: 680px; height: 81.125px;'> 
+        <div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>tar </span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>zxvf </span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>memcacheq</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>0.2.0.tar.gz</span> 
+         </div> 
+         <div style='font-family: inherit; background-color: rgb(247, 247, 247) !important; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>cd</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>memcacheq</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>0.2.0</span> 
+         </div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>.</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>configure</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>--</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>prefix</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>=</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>usr</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>local</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>memcacheq</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>--</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>with</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>bdb</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>=</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>usr</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>local</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>berkeleydb</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>--</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>with</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>libevent</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>=</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>usr</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>local</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>libevent</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>--</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>enable</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>threads</span> 
+         </div> 
+         <div style='font-family: inherit; background-color: rgb(247, 247, 247) !important; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>make</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&amp;&amp;</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>make</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>install</span> 
+         </div> 
+        </div></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+   </div> 
+  </div><p style='background-color: rgb(255, 255, 255); font-size: 18px; font-weight: normal;'>启动MemcacheQ</p> 
+  <div data-settings=' minimize scroll-mouseover disable-anim wrap' style='font-family: Monaco, MonacoRegular, 'Courier New', monospace; font-weight: 500; background-color: rgb(253, 253, 253) !important; font-size: 12px !important;'> 
+   <div data-settings=' show' style='background-color: rgb(221, 221, 221) !important;'> 
+    <div style='font-family: inherit;'> 
+     <span style='font-family: inherit; color: rgb(153, 153, 153) !important; font-size: inherit !important;'>Shell</span> 
+    </div> 
+   </div> 
+   <div> 
+    <table border='1' cellpadding='2' cellspacing='0' style='font-size: 12px;'> 
+     <tbody> 
+      <tr> 
+       <td data-settings='show' style='background-color: rgb(223, 239, 255) !important; color: rgb(84, 153, 222) !important;'> 
+        <div> 
+         <div data-line='crayon-5525edf2dcb6b712632964-1' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           1 
+         </div> 
+        </div></td> 
+       <td style='width: 680px;'> 
+        <div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>usr</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>local</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>memcacheq</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>bin</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>memcacheq</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>d</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>uroot</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>r</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; font-size: inherit !important;'>l</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>127.0.0.1</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>p11210</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>H</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>usr</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>local</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>mcq</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>N</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>R</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>v</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; font-size: inherit !important;'>L</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>1024</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; font-size: inherit !important;'>B</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>1024</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&gt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>usr</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>local</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>mcq</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>logs</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>mcq_error</span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>.log</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>2</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&gt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&amp;</span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>1</span> 
+         </div> 
+        </div></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+   </div> 
+  </div><p style='background-color: rgb(255, 255, 255); font-size: 18px; font-weight: normal;'>附：MemcacheQ参数</p> 
+  <div data-settings=' minimize scroll-mouseover disable-anim' style='font-family: Monaco, MonacoRegular, 'Courier New', monospace; font-weight: 500; background-color: rgb(253, 253, 253) !important; font-size: 12px !important;'> 
+   <div> 
+    <table border='1' cellpadding='2' cellspacing='0' style='font-size: 12px;'> 
+     <tbody> 
+      <tr> 
+       <td data-settings='show' style='background-color: rgb(223, 239, 255) !important; color: rgb(84, 153, 222) !important;'> 
+        <div> 
+         <div data-line='crayon-5525edf2dcb70289780819-1' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           1 
+         </div> 
+         <div data-line='crayon-5525edf2dcb70289780819-2' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           2 
+         </div> 
+         <div data-line='crayon-5525edf2dcb70289780819-3' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           3 
+         </div> 
+         <div data-line='crayon-5525edf2dcb70289780819-4' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           4 
+         </div> 
+         <div data-line='crayon-5525edf2dcb70289780819-5' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           5 
+         </div> 
+         <div data-line='crayon-5525edf2dcb70289780819-6' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           6 
+         </div> 
+         <div data-line='crayon-5525edf2dcb70289780819-7' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           7 
+         </div> 
+         <div data-line='crayon-5525edf2dcb70289780819-8' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           8 
+         </div> 
+         <div data-line='crayon-5525edf2dcb70289780819-9' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           9 
+         </div> 
+         <div data-line='crayon-5525edf2dcb70289780819-10' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           10 
+         </div> 
+         <div data-line='crayon-5525edf2dcb70289780819-11' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           11 
+         </div> 
+         <div data-line='crayon-5525edf2dcb70289780819-12' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           12 
+         </div> 
+         <div data-line='crayon-5525edf2dcb70289780819-13' style='font-family: inherit; text-align: center; font-size: inherit !important;'>
+           13 
+         </div> 
+         <div data-line='crayon-5525edf2dcb70289780819-14' style='font-family: inherit; text-align: center; background-color: rgb(200, 225, 250) !important; color: rgb(49, 124, 197) !important; font-size: inherit !important;'>
+           14 
+         </div> 
+        </div></td> 
+       <td style='width: 673px;'> 
+        <div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>p</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&lt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>num</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&gt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 
+          <span style='font-family: inherit; font-size: inherit !important;'>TCP</span>监听端口 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>(</span> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>default</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>:</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>22201</span> 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>)</span> 
+         </div> 
+         <div style='font-family: inherit; background-color: rgb(247, 247, 247) !important; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>U</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&lt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>num</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&gt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 
+          <span style='font-family: inherit; font-size: inherit !important;'>UDP</span>监听端口 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>(</span> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>default</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>:</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>0</span> 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>,</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>off</span> 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>)</span> 
+         </div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>s</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&lt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>file</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&gt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&nbsp;&nbsp;&nbsp;&nbsp; </span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>unix </span> 
+          <span style='font-family: inherit; font-size: inherit !important;'>socket</span>路径 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>(</span>不支持网络 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>)</span> 
+         </div> 
+         <div style='font-family: inherit; background-color: rgb(247, 247, 247) !important; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>a</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&lt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>mask</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&gt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&nbsp;&nbsp;&nbsp;&nbsp; </span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>unix </span> 
+          <span style='font-family: inherit; font-size: inherit !important;'>socket</span>访问掩码 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>(</span> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>default</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>0700</span> 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>)</span> 
+         </div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>l</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&lt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>ip_addr</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&gt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&nbsp;&nbsp;</span>监听网卡 
+         </div> 
+         <div style='font-family: inherit; background-color: rgb(247, 247, 247) !important; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; font-size: inherit !important;'>d</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>守护进程 
+         </div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; font-size: inherit !important;'>r</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>最大化核心文件限制 
+         </div> 
+         <div style='font-family: inherit; background-color: rgb(247, 247, 247) !important; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>u</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&lt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>username</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&gt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span>以用户身份运行 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>(</span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>only </span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>when </span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>run </span> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>as</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>root</span> 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>)</span> 
+         </div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>c</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&lt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>num</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&gt;</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>最大并发连接数 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>(</span> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>default</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>is</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(206, 0, 0) !important; font-size: inherit !important;'>1024</span> 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>)</span> 
+         </div> 
+         <div style='font-family: inherit; background-color: rgb(247, 247, 247) !important; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; font-size: inherit !important;'>v</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>详细输出 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>(</span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>print </span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>errors</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>/</span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>warnings </span> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>while</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(128, 0, 128) !important; font-size: inherit !important;'>in</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(0, 78, 208) !important; font-size: inherit !important;'>event </span> 
+          <span style='font-family: inherit; color: rgb(0, 45, 122) !important; font-size: inherit !important;'>loop</span> 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>)</span> 
+         </div> 
+         <div style='font-family: inherit; font-size: inherit !important;'> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>-</span> 
+          <span style='font-family: inherit; font-size: inherit !important;'>vv</span> 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>更详细的输出 
+          <span style='font-family: inherit; color: rgb(0, 111, 224) !important; font-size: inherit !important;'></span> 
+          <span style='font-family: inherit; color: rgb(51, 51, 51) !important; font-size: inherit !important;'>(</span> 
+          <span style='	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a>
+				|
+				 <a href="http://onelose.com/post-210.html">sina微博队列memcacheq服务安装与原理</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="209" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-305.html">在webapp中判断nativeapp是否安装并直接打开</a></li>
+		<li><a href="http://onelose.com/post-545.html">OutputControl</a></li>
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-186.html">MYSQL自增长异常（达到最大值），修改自增长值</a></li>
+		<li><a href="http://onelose.com/post-119.html">如何防图片盗链</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

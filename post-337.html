@@ -1,0 +1,537 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Scrapy轻松定制网络爬虫</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="网络爬虫（Web Crawler, S..." />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>Scrapy轻松定制网络爬虫</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-15 7:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>网络爬虫（Web Crawler, Spider）就是一个在网络上乱爬的机器人。当然它通常并不是一个实体的机器人，因为网络本身也是虚拟的东西，所以这个“机器人”其实也就是一段程序，并且它也不是<b>乱</b>爬，而是有一定目的的，并且在爬行的时候会搜集一些信息。例如 Google 就有一大堆爬虫会在 Internet 上搜集网页内容以及它们之间的链接等信息；又比如一些别有用心的爬虫会在 Internet 上搜集诸如 foo@bar.com 或者 foo [at] bar [dot] com 之类的东西。除此之外，还有一些定制的爬虫，专门针对某一个网站，例如前一阵子 JavaEye 的 Robbin 就写了几篇专门对付恶意爬虫的 blog （原文链接似乎已经失效了，就不给了），还有诸如<a href='http://www.appinn.com/' style='color: rgb(42, 99, 135);'>小众软件</a>或者<a href='http://linuxtoy.org/' style='color: rgb(42, 99, 135);'>LinuxToy</a>&nbsp;这样的网站也经常被整个站点 crawl 下来，换个名字挂出来。其实爬虫从基本原理上来讲很简单，只要能访问网络和分析 Web 页面即可，现在大部分语言都有方便的 Http 客户端库可以抓取 Web 页面，而 HTML 的分析最简单的可以直接用正则表达式来做，因此要做一个最简陋的网络爬虫实际上是一件很简单的事情。不过要实现一个高质量的 spider 却是非常难的。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>爬虫的两部分，一是下载 Web 页面，有许多问题需要考虑，如何最大程度地利用本地带宽，如何调度针对不同站点的 Web 请求以减轻对方服务器的负担等。一个高性能的 Web Crawler 系统里，DNS 查询也会成为急需优化的瓶颈，另外，还有一些“行规”需要遵循（例如<a href='http://en.wikipedia.org/wiki/Robots_exclusion_standard' style='color: rgb(42, 99, 135);'>robots.txt</a>）。而获取了网页之后的分析过程也是非常复杂的，Internet 上的东西千奇百怪，各种错误百出的 HTML 页面都有，要想全部分析清楚几乎是不可能的事；另外，随着 AJAX 的流行，如何获取由 Javascript 动态生成的内容成了一大难题；除此之外，Internet 上还有有各种有意或无意出现的&nbsp;<a href='http://en.wikipedia.org/wiki/Spider_trap' style='color: rgb(42, 99, 135);'>Spider Trap</a>&nbsp;，如果盲目的跟踪超链接的话，就会陷入 Trap 中万劫不复了，例如<a href='http://ianab.com/trillion/1.html' style='color: rgb(42, 99, 135);'>这个网站</a>，据说是之前 Google 宣称 Internet 上的 Unique URL 数目已经达到了 1 trillion 个，因此这个人&nbsp;<i>is proud to announce the second trillion</i>&nbsp;。&nbsp;<img src='http://note.youdao.com/yws/res/1928/CFD348C51A1548B2964C9FBBE5F6A302' alt=':D' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>不过，其实并没有多少人需要做像 Google 那样通用的 Crawler ，通常我们做一个 Crawler 就是为了去爬特定的某个或者某一类网站，所谓知己知彼，百战不殆，我们可以事先对需要爬的网站结构做一些分析，事情就变得容易多了。通过分析，选出有价值的链接进行跟踪，就可以避免很多不必要的链接或者 Spider Trap ，如果网站的结构允许选择一个合适的路径的话，我们可以按照一定顺序把感兴趣的东西爬一遍，这样以来，连 URL 重复的判断也可以省去。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>举个例子，假如我们想把 pongba 的 blog&nbsp;<a href='http://mindhacks.cn/' style='color: rgb(42, 99, 135);'>mindhacks.cn</a>&nbsp;里面的 blog 文字爬下来，通过观察，很容易发现我们对其中的两种页面感兴趣：</p> 
+ <ol style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'> 
+  <li>文章列表页面，例如首页，或者 URL 是&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>/page/\d+/</code>&nbsp;这样的页面，通过&nbsp;<a href='http://getfirebug.com/' style='color: rgb(42, 99, 135);'>Firebug</a>&nbsp;可以看到到每篇文章的链接都是在一个&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>h1</code>&nbsp;下的&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>a</code>&nbsp;标签里的（需要注意的是，在 Firebug 的 HTML 面板里看到的 HTML 代码和 View Source 所看到的也许会有些出入，如果网页中有 Javascript 动态修改 DOM 树的话，前者是被修改过的版本，并且经过 Firebug 规则化的，例如 attribute 都有引号扩起来等，而后者通常才是你的 spider 爬到的原始内容。如果是使用正则表达式对页面进行分析或者所用的 HTML Parser 和 Firefox 的有些出入的话，需要特别注意），另外，在一个 class 为&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>wp-pagenavi</code>&nbsp;的&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>div</code>&nbsp;里有到不同列表页面的链接。</li> 
+  <li>文章内容页面，每篇 blog 有这样一个页面，例如&nbsp;<a href='http://mindhacks.cn/2008/09/11/machine-learning-and-ai-resources/' style='color: rgb(42, 99, 135);'>/2008/09/11/machine-learning-and-ai-resources/</a>&nbsp;，包含了完整的文章内容，这是我们感兴趣的内容。</li> 
+ </ol> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>因此，我们从首页开始，通过&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>wp-pagenavi</code>&nbsp;里的链接来得到其他的文章列表页面，特别地，我们定义一个路径：只 follow&nbsp;<i>Next Page</i>&nbsp;的链接，这样就可以从头到尾按顺序走一遍，免去了需要判断重复抓取的烦恼。另外，文章列表页面的那些到具体文章的链接所对应的页面就是我们真正要保存的数据页面了。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>这样以来，其实用脚本语言写一个 ad hoc 的 Crawler 来完成这个任务也并不难，不过今天的主角是&nbsp;<a href='http://scrapy.org/' style='color: rgb(42, 99, 135);'>Scrapy</a>&nbsp;，这是一个用 Python 写的 Crawler Framework ，简单轻巧，并且非常方便，并且官网上说已经在实际生产中在使用了，因此并不是一个玩具级别的东西。不过现在还没有 Release 版本，可以直接使用他们的&nbsp;<a href='http://hg.scrapy.org/scrapy/' style='color: rgb(42, 99, 135);'>Mercurial 仓库</a>里抓取源码进行安装。不过，这个东西也可以不安装直接使用，这样还方便随时更新，<a href='http://doc.scrapy.org/intro/install.html' style='color: rgb(42, 99, 135);'>文档</a>里说得很详细，我就不重复了。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>Scrapy 使用&nbsp;<a href='http://twistedmatrix.com/trac/' style='color: rgb(42, 99, 135);'>Twisted</a>&nbsp;这个异步网络库来处理网络通讯，架构清晰，并且包含了各种中间件接口，可以灵活的完成各种需求。整体架构如下图所示：</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'><img title='scrapy_architecture' src='http://note.youdao.com/yws/res/1930/D43DB8B74E2A46E0A1E116BD5004433C' alt='scrapy_architecture' width='550' height='388' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>绿线是数据流向，首先从初始 URL 开始，Scheduler 会将其交给 Downloader 进行下载，下载之后会交给 Spider 进行分析，Spider 分析出来的结果有两种：一种是需要进一步抓取的链接，例如之前分析的“下一页”的链接，这些东西会被传回 Scheduler ；另一种是需要保存的数据，它们则被送到 Item Pipeline 那里，那是对数据进行后期处理（详细分析、过滤、存储等）的地方。另外，在数据流动的通道里还可以安装各种中间件，进行必要的处理。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>看起来好像很复杂，其实用起来很简单，就如同 Rails 一样，首先新建一个工程：</p> 
+ <div style='background-color: rgb(249, 249, 249); color: rgb(17, 0, 0); font-family: tahoma, arial, sans-serif;'> 
+  <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em;'> 
+   <tbody> 
+    <tr> 
+     <td style='background-color:rgb(244, 244, 244);width:584px;'><pre style='font-family: monospace;'>scrapy-admin.py startproject blog_crawl</pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>会创建一个&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>blog_crawl</code>&nbsp;目录，里面有个&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>scrapy-ctl.py</code>&nbsp;是整个项目的控制脚本，而代码全都放在子目录&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>blog_crawl</code>&nbsp;里面。为了能抓取 mindhacks.cn ，我们在&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>spiders</code>&nbsp;目录里新建一个<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>mindhacks_spider.py</code>&nbsp;，定义我们的 Spider 如下：</p> 
+ <div style='background-color: rgb(249, 249, 249); color: rgb(17, 0, 0); font-family: tahoma, arial, sans-serif;'> 
+  <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em;'> 
+   <tbody> 
+    <tr> 
+     <td style='background-color:rgb(255, 255, 255) !important;width:584px;'><pre style='font-family: monospace;'><span style='color:rgb(255, 119, 0);font-weight:bold;'>from</span> scrapy.spider <span style='color:rgb(255, 119, 0);font-weight:bold;'>import</span> BaseSpider
+&nbsp;
+<span style='color:rgb(255, 119, 0);font-weight:bold;'>class</span> MindhacksSpider(BaseSpider):
+    domain_name <span style='color:rgb(102, 204, 102);'>=</span> <span style='color:rgb(72, 61, 139);'>'mindhacks.cn'</span>
+    start_urls <span style='color:rgb(102, 204, 102);'>=</span> [<span style='color:rgb(72, 61, 139);'>'http://mindhacks.cn/'</span>]
+&nbsp;
+    <span style='color:rgb(255, 119, 0);font-weight:bold;'>def</span> parse(<span style='color:rgb(0, 128, 0);'>self</span><span style='color:rgb(102, 204, 102);'>,</span> response):
+        <span style='color:rgb(255, 119, 0);font-weight:bold;'>return</span> []
+&nbsp;
+SPIDER <span style='color:rgb(102, 204, 102);'>=</span> MindhacksSpider()</pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>我们的&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>MindhacksSpider</code>&nbsp;继承自&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>BaseSpider</code>&nbsp;（通常直接继承自功能更丰富的<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>scrapy.contrib.spiders.CrawlSpider</code>&nbsp;要方便一些，不过为了展示数据是如何 parse 的，这里还是使用&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>BaseSpider</code>&nbsp;了），变量&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>domain_name</code>&nbsp;和&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>start_urls</code>&nbsp;都很容易明白是什么意思，而&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>parse</code>&nbsp;方法是我们需要定义的回调函数，默认的 request 得到 response 之后会调用这个回调函数，我们需要在这里对页面进行解析，返回两种结果（需要进一步 crawl 的链接和需要保存的数据），让我感觉有些奇怪的是，它的接口定义里这两种结果竟然是混杂在一个 list 里返回的，不太清楚这里为何这样设计，难道最后不还是要费力把它们分开？总之这里我们先写一个空函数，只返回一个空列表。另外，定义一个“全局”变量&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>SPIDER</code>&nbsp;，它会在 Scrapy 导入这个 module 的时候实例化，并自动被 Scrapy 的引擎找到。这样就可以先运行一下 crawler 试试了：</p> 
+ <div style='background-color: rgb(249, 249, 249); color: rgb(17, 0, 0); font-family: tahoma, arial, sans-serif;'> 
+  <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em;'> 
+   <tbody> 
+    <tr> 
+     <td style='background-color:rgb(244, 244, 244);width:584px;'><pre style='font-family: monospace;'>./scrapy-ctl.py crawl mindhacks.cn</pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>会有一堆输出，可以看到抓取了&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>http://mindhacks.cn</code>&nbsp;，因为这是初始 URL ，但是由于我们在&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>parse</code>&nbsp;函数里没有返回需要进一步抓取的 URL ，因此整个 crawl 过程只抓取了主页便结束了。接下来便是要对页面进行分析，Scrapy 提供了一个很方便的 Shell （需要 IPython ）可以让我们做实验，用如下命令启动 Shell ：</p> 
+ <div style='background-color: rgb(249, 249, 249); color: rgb(17, 0, 0); font-family: tahoma, arial, sans-serif;'> 
+  <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em;'> 
+   <tbody> 
+    <tr> 
+     <td style='background-color:rgb(255, 255, 255) !important;width:584px;'><pre style='font-family: monospace;'>./scrapy-ctl.py shell http://mindhacks.cn</pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>它会启动 crawler ，把命令行指定的这个页面抓取下来，然后进入 shell ，根据提示，我们有许多现成的变量可以用，其中一个就是&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>hxs</code>&nbsp;，它是一个&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>HtmlXPathSelector</code>&nbsp;，mindhacks 的 HTML 页面比较规范，可以很方便的直接用&nbsp;<a href='http://www.w3schools.com/XPath/default.asp' style='color: rgb(42, 99, 135);'>XPath</a>&nbsp;进行分析。通过 Firebug 可以看到，到每篇 blog 文章的链接都是在&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>h1</code>&nbsp;下的，因此在 Shell 中使用这样的 XPath 表达式测试：</p> 
+ <div style='background-color: rgb(249, 249, 249); color: rgb(17, 0, 0); font-family: tahoma, arial, sans-serif;'> 
+  <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em;'> 
+   <tbody> 
+    <tr> 
+     <td style='background-color:rgb(244, 244, 244);width:584px;'><pre style='font-family: monospace;'>In [<span style='color:rgb(255, 69, 0);'>1</span>]: hxs.x(<span style='color:rgb(72, 61, 139);'>'//h1/a/@href'</span>).extract()
+Out[<span style='color:rgb(255, 69, 0);'>1</span>]: 
+[u<span style='color:rgb(72, 61, 139);'>'http://mindhacks.cn/2009/07/06/why-you-should-do-it-yourself/'</span><span style='color:rgb(102, 204, 102);'>,</span>
+ u<span style='color:rgb(72, 61, 139);'>'http://mindhacks.cn/2009/05/17/seven-years-in-nju/'</span><span style='color:rgb(102, 204, 102);'>,</span>
+ u<span style='color:rgb(72, 61, 139);'>'http://mindhacks.cn/2009/03/28/effective-learning-and-memorization/'</span><span style='color:rgb(102, 204, 102);'>,</span>
+ u<span style='color:rgb(72, 61, 139);'>'http://mindhacks.cn/2009/03/15/preconception-explained/'</span><span style='color:rgb(102, 204, 102);'>,</span>
+ u<span style='color:rgb(72, 61, 139);'>'http://mindhacks.cn/2009/03/09/first-principles-of-programming/'</span><span style='color:rgb(102, 204, 102);'>,</span>
+ u<span style='color:rgb(72, 61, 139);'>'http://mindhacks.cn/2009/02/15/why-you-should-start-blogging-now/'</span><span style='color:rgb(102, 204, 102);'>,</span>
+ u<span style='color:rgb(72, 61, 139);'>'http://mindhacks.cn/2009/02/09/writing-is-better-thinking/'</span><span style='color:rgb(102, 204, 102);'>,</span>
+ u<span style='color:rgb(72, 61, 139);'>'http://mindhacks.cn/2009/02/07/better-explained-conflicts-in-intimate-relationship/'</span><span style='color:rgb(102, 204, 102);'>,</span>
+ u<span style='color:rgb(72, 61, 139);'>'http://mindhacks.cn/2009/02/07/independence-day/'</span><span style='color:rgb(102, 204, 102);'>,</span>
+ u<span style='color:rgb(72, 61, 139);'>'http://mindhacks.cn/2009/01/18/escape-from-your-shawshank-part1/'</span>]</pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>这正是我们需要的 URL ，另外，还可以找到“下一页”的链接所在，连同其他几个页面的链接一同在一个&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>div</code>&nbsp;里，不过“下一页”的链接没有&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>title</code>&nbsp;属性，因此 XPath 写作</p> 
+ <div style='background-color: rgb(249, 249, 249); color: rgb(17, 0, 0); font-family: tahoma, arial, sans-serif;'> 
+  <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em;'> 
+   <tbody> 
+    <tr> 
+     <td style='background-color:rgb(255, 255, 255) !important;width:584px;'><pre style='font-family: monospace;'>//div[@class='wp-pagenavi']/a[not(@title)]</pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>不过如果向后翻一页的话，会发现其实“上一页”也是这样的，因此还需要判断该链接上的文字是那个下一页的箭头&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>u'\xbb'</code>&nbsp;，本来也可以写到 XPath 里面去，但是好像这个本身是 unicode escape 字符，由于编码原因理不清楚，直接放到外面判断了，最终&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>parse</code>&nbsp;函数如下：</p> 
+ <div style='background-color: rgb(249, 249, 249); color: rgb(17, 0, 0); font-family: tahoma, arial, sans-serif;'> 
+  <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em;'> 
+   <tbody> 
+    <tr> 
+     <td style='background-color:rgb(244, 244, 244);width:584px;'><pre style='font-family: monospace;'><span style='color:rgb(255, 119, 0);font-weight:bold;'>def</span> parse(<span style='color:rgb(0, 128, 0);'>self</span><span style='color:rgb(102, 204, 102);'>,</span> response):
+    items <span style='color:rgb(102, 204, 102);'>=</span> []
+    hxs <span style='color:rgb(102, 204, 102);'>=</span> HtmlXPathSelector(response)
+    posts <span style='color:rgb(102, 204, 102);'>=</span> hxs.x(<span style='color:rgb(72, 61, 139);'>'//h1/a/@href'</span>).extract()
+    items.extend([<span style='color:rgb(0, 128, 0);'>self</span>.make_requests_from_url(url).replace(callback<span style='color:rgb(102, 204, 102);'>=</span><span style='color:rgb(0, 128, 0);'>self</span>.parse_post)
+                  <span style='color:rgb(255, 119, 0);font-weight:bold;'>for</span> url <span style='color:rgb(255, 119, 0);font-weight:bold;'>in</span> posts])
+&nbsp;
+    page_links <span style='color:rgb(102, 204, 102);'>=</span> hxs.x(<span style='color:rgb(72, 61, 139);'>'//div[@class='wp-pagenavi']/a[not(@title)]'</span>)
+    <span style='color:rgb(255, 119, 0);font-weight:bold;'>for</span> link <span style='color:rgb(255, 119, 0);font-weight:bold;'>in</span> page_links:
+        <span style='color:rgb(255, 119, 0);font-weight:bold;'>if</span> link.x(<span style='color:rgb(72, 61, 139);'>'text()'</span>).extract()[<span style='color:rgb(255, 69, 0);'>0</span>] <span style='color:rgb(102, 204, 102);'>==</span> u<span style='color:rgb(72, 61, 139);'>'<span style='color:rgb(0, 0, 153);font-weight:bold;'>\x</span>bb'</span>:
+            url <span style='color:rgb(102, 204, 102);'>=</span> link.x(<span style='color:rgb(72, 61, 139);'>'@href'</span>).extract()[<span style='color:rgb(255, 69, 0);'>0</span>]
+            items.append(<span style='color:rgb(0, 128, 0);'>self</span>.make_requests_from_url(url))
+&nbsp;
+    <span style='color:rgb(255, 119, 0);font-weight:bold;'>return</span> items</pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>前半部分是解析需要抓取的 blog 正文的链接，后半部分则是给出“下一页”的链接。需要注意的是，这里返回的列表里并不是一个个的字符串格式的 URL 就完了，Scrapy 希望得到的是<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>Request</code>&nbsp;对象，这比一个字符串格式的 URL 能携带更多的东西，诸如 Cookie 或者回调函数之类的。可以看到我们在创建 blog 正文的&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>Request</code>&nbsp;的时候替换掉了回调函数，因为默认的这个回调函数&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>parse</code>&nbsp;是专门用来解析文章列表这样的页面的，而&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>parse_post</code>&nbsp;定义如下：</p> 
+ <div style='background-color: rgb(249, 249, 249); color: rgb(17, 0, 0); font-family: tahoma, arial, sans-serif;'> 
+  <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em;'> 
+   <tbody> 
+    <tr> 
+     <td style='background-color:rgb(255, 255, 255) !important;width:584px;'><pre style='font-family: monospace;'><span style='color:rgb(255, 119, 0);font-weight:bold;'>def</span> parse_post(<span style='color:rgb(0, 128, 0);'>self</span><span style='color:rgb(102, 204, 102);'>,</span> response):
+    item <span style='color:rgb(102, 204, 102);'>=</span> BlogCrawlItem()
+    item.url <span style='color:rgb(102, 204, 102);'>=</span> <span style='color:rgb(0, 128, 0);'>unicode</span>(response.url)
+    item.raw <span style='color:rgb(102, 204, 102);'>=</span> response.body_as_unicode()
+    <span style='color:rgb(255, 119, 0);font-weight:bold;'>return</span> [item]</pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>很简单，返回一个&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>BlogCrawlItem</code>&nbsp;，把抓到的数据放在里面，本来可以在这里做一点解析，例如，通过 XPath 把正文和标题等解析出来，但是我倾向于后面再来做这些事情，例如 Item Pipeline 或者更后面的 Offline 阶段。<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>BlogCrawlItem</code>&nbsp;是 Scrapy 自动帮我们定义好的一个继承自&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>ScrapedItem</code>&nbsp;的空类，在&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>items.py</code>&nbsp;中，这里我加了一点东西：</p> 
+ <div style='background-color: rgb(249, 249, 249); color: rgb(17, 0, 0); font-family: tahoma, arial, sans-serif;'> 
+  <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em;'> 
+   <tbody> 
+    <tr> 
+     <td style='background-color:rgb(244, 244, 244);width:584px;'><pre style='font-family: monospace;'><span style='color:rgb(255, 119, 0);font-weight:bold;'>from</span> scrapy.item <span style='color:rgb(255, 119, 0);font-weight:bold;'>import</span> ScrapedItem
+&nbsp;
+<span style='color:rgb(255, 119, 0);font-weight:bold;'>class</span> BlogCrawlItem(ScrapedItem):
+    <span style='color:rgb(255, 119, 0);font-weight:bold;'>def</span> <span style='color:rgb(0, 0, 205);'>__init__</span>(<span style='color:rgb(0, 128, 0);'>self</span>):
+        ScrapedItem.<span style='color:rgb(0, 0, 205);'>__init__</span>(<span style='color:rgb(0, 128, 0);'>self</span>)
+        <span style='color:rgb(0, 128, 0);'>self</span>.url <span style='color:rgb(102, 204, 102);'>=</span> <span style='color:rgb(72, 61, 139);'>''</span>
+&nbsp;
+    <span style='color:rgb(255, 119, 0);font-weight:bold;'>def</span> <span style='color:rgb(0, 0, 205);'>__str__</span>(<span style='color:rgb(0, 128, 0);'>self</span>):
+        <span style='color:rgb(255, 119, 0);font-weight:bold;'>return</span> <span style='color:rgb(72, 61, 139);'>'BlogCrawlItem(url: %s)'</span> % <span style='color:rgb(0, 128, 0);'>self</span>.url</pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>定义了&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>__str__</code>&nbsp;函数，只给出 URL ，因为默认的&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>__str__</code>&nbsp;函数会把所有的数据都显示出来，因此会看到 crawl 的时候控制台 log 狂输出东西，那是把抓取到的网页内容输出出来了。-.-bb</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>这样一来，数据就取到了，最后只剩下存储数据的功能，我们通过添加一个 Pipeline 来实现，由于 Python 在标准库里自带了 Sqlite3 的支持，所以我使用 Sqlite 数据库来存储数据。用如下代码替换 pipelines.py 的内容：</p> 
+ <div style='background-color: rgb(249, 249, 249); color: rgb(17, 0, 0); font-family: tahoma, arial, sans-serif;'> 
+  <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em;'> 
+   <tbody> 
+    <tr> 
+     <td style='background-color:rgb(255, 255, 255);'><pre style='background-color: rgb(221, 238, 255) !important; color: gray !important; font-family: monospace !important;'>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+</pre></td> 
+     <td style='background-color:rgb(255, 255, 255) !important;width:560px;'><pre style='font-family: monospace;'><span style='color:rgb(255, 119, 0);font-weight:bold;'>import</span> sqlite3
+<span style='color:rgb(255, 119, 0);font-weight:bold;'>from</span> <span style='color:rgb(220, 20, 60);'>os</span> <span style='color:rgb(255, 119, 0);font-weight:bold;'>import</span> path
+&nbsp;
+<span style='color:rgb(255, 119, 0);font-weight:bold;'>from</span> scrapy.core <span style='color:rgb(255, 119, 0);font-weight:bold;'>import</span> signals
+<span style='color:rgb(255, 119, 0);font-weight:bold;'>from</span> scrapy.xlib.pydispatch <span style='color:rgb(255, 119, 0);font-weight:bold;'>import</span> dispatcher
+&nbsp;
+<span style='color:rgb(255, 119, 0);font-weight:bold;'>class</span> SQLiteStorePipeline(<span style='color:rgb(0, 128, 0);'>object</span>):
+    filename <span style='color:rgb(102, 204, 102);'>=</span> <span style='color:rgb(72, 61, 139);'>'data.sqlite'</span>
+&nbsp;
+    <span style='color:rgb(255, 119, 0);font-weight:bold;'>def</span> <span style='color:rgb(0, 0, 205);'>__init__</span>(<span style='color:rgb(0, 128, 0);'>self</span>):
+        <span style='color:rgb(0, 128, 0);'>self</span>.conn <span style='color:rgb(102, 204, 102);'>=</span> <span style='color:rgb(0, 128, 0);'>None</span>
+        dispatcher.connect(<span style='color:rgb(0, 128, 0);'>self</span>.initialize<span style='color:rgb(102, 204, 102);'>,</span> signals.engine_started)
+        dispatcher.connect(<span style='color:rgb(0, 128, 0);'>self</span>.finalize<span style='color:rgb(102, 204, 102);'>,</span> signals.engine_stopped)
+&nbsp;
+    <span style='color:rgb(255, 119, 0);font-weight:bold;'>def</span> process_item(<span style='color:rgb(0, 128, 0);'>self</span><span style='color:rgb(102, 204, 102);'>,</span> domain<span style='color:rgb(102, 204, 102);'>,</span> item):
+        <span style='color:rgb(0, 128, 0);'>self</span>.conn.execute(<span style='color:rgb(72, 61, 139);'>'insert into blog values(?,?,?)'</span><span style='color:rgb(102, 204, 102);'>,</span> 
+                          (item.url<span style='color:rgb(102, 204, 102);'>,</span> item.raw<span style='color:rgb(102, 204, 102);'>,</span> <span style='color:rgb(0, 128, 0);'>unicode</span>(domain)))
+        <span style='color:rgb(255, 119, 0);font-weight:bold;'>return</span> item
+&nbsp;
+    <span style='color:rgb(255, 119, 0);font-weight:bold;'>def</span> initialize(<span style='color:rgb(0, 128, 0);'>self</span>):
+        <span style='color:rgb(255, 119, 0);font-weight:bold;'>if</span> path.exists(<span style='color:rgb(0, 128, 0);'>self</span>.filename):
+            <span style='color:rgb(0, 128, 0);'>self</span>.conn <span style='color:rgb(102, 204, 102);'>=</span> sqlite3.connect(<span style='color:rgb(0, 128, 0);'>self</span>.filename)
+        <span style='color:rgb(255, 119, 0);font-weight:bold;'>else</span>:
+            <span style='color:rgb(0, 128, 0);'>self</span>.conn <span style='color:rgb(102, 204, 102);'>=</span> <span style='color:rgb(0, 128, 0);'>self</span>.create_table(<span style='color:rgb(0, 128, 0);'>self</span>.filename)
+&nbsp;
+    <span style='color:rgb(255, 119, 0);font-weight:bold;'>def</span> finalize(<span style='color:rgb(0, 128, 0);'>self</span>):
+        <span style='color:rgb(255, 119, 0);font-weight:bold;'>if</span> <span style='color:rgb(0, 128, 0);'>self</span>.conn <span style='color:rgb(255, 119, 0);font-weight:bold;'>is</span> <span style='color:rgb(255, 119, 0);font-weight:bold;'>not</span> <span style='color:rgb(0, 128, 0);'>None</span>:
+            <span style='color:rgb(0, 128, 0);'>self</span>.conn.commit()
+            <span style='color:rgb(0, 128, 0);'>self</span>.conn.close()
+            <span style='color:rgb(0, 128, 0);'>self</span>.conn <span style='color:rgb(102, 204, 102);'>=</span> <span style='color:rgb(0, 128, 0);'>None</span>
+&nbsp;
+    <span style='color:rgb(255, 119, 0);font-weight:bold;'>def</span> create_table(<span style='color:rgb(0, 128, 0);'>self</span><span style='color:rgb(102, 204, 102);'>,</span> filename):
+        conn <span style='color:rgb(102, 204, 102);'>=</span> sqlite3.connect(filename)
+        conn.execute(<span style='color:rgb(72, 61, 139);'>'''create table blog
+                     (url text primary key, raw text, domain text)'''</span>)
+        conn.commit()
+        <span style='color:rgb(255, 119, 0);font-weight:bold;'>return</span> conn</pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>在&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>__init__</code>&nbsp;函数中，使用 dispatcher 将两个信号连接到指定的函数上，分别用于初始化和关闭数据库连接（在&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>close</code>&nbsp;之前记得&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>commit</code>&nbsp;，似乎是不会自动&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>commit</code>&nbsp;的，直接&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>close</code>的话好像所有的数据都丢失了 dd-.-）。当有数据经过 pipeline 的时候，<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>process_item</code>&nbsp;函数会被调用，在这里我们直接讲原始数据存储到数据库中，不作任何处理。如果需要的话，可以添加额外的 pipeline ，对数据进行提取、过滤等，这里就不细说了。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>最后，在&nbsp;<code style='font-family:'Courier New', Courier, monospace;font-size:1em;'>settings.py</code>&nbsp;里列出我们的 pipeline ：</p> 
+ <div style='background-color: rgb(249, 249, 249); color: rgb(17, 0, 0); font-family: tahoma, arial, sans-serif;'> 
+  <table border='1' cellpadding='2' cellspacing='0' style='font-size: 1em;'> 
+   <tbody> 
+    <tr> 
+     <td style='background-color:rgb(244, 244, 244);width:584px;'><pre style='font-family: monospace;'>ITEM_PIPELINES <span style='color:rgb(102, 204, 102);'>=</span> [<span style='color:rgb(72, 61, 139);'>'blog_crawl.pipelines.SQLiteStorePipeline'</span>]</pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'>再跑一下 crawler ，就 OK 啦！&nbsp;<img src='http://note.youdao.com/yws/res/1928/CFD348C51A1548B2964C9FBBE5F6A302' alt=':D' data-media-type='image'>&nbsp;最后，总结一下：一个高质量的 crawler 是极其复杂的工程，但是如果有好的工具的话，做一个专用的 crawler 还是比较容易的。Scrapy 是一个很轻便的爬虫框架，极大地简化了 crawler 开发的过程。另外，Scrapy 的文档也是十分详细的，如果觉得我的介绍省略了一些东西不太清楚的话，推荐看他的&nbsp;<a href='http://doc.scrapy.org/intro/tutorial.html' style='color: rgb(42, 99, 135);'>Tutorial</a>&nbsp;。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: tahoma, arial, sans-serif;'><small>注：本文开始的那幅图并不是一个 spider （当然啦！-,-bb），那是出自动画片《攻壳机动队》里的思考战车<a href='http://en.wikipedia.org/wiki/Tachikoma' style='color: rgb(42, 99, 135);'>Tachikoma</a>&nbsp;（很可爱的！）。</small></p> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-303.html">linux下查找文件或者内容常有命令</a>
+				|
+				 <a href="http://onelose.com/post-344.html">Larbin的安装与配置</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="337" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-23.html">史上最强女游戏程序员：Corrinne Yu</a></li>
+		<li><a href="http://onelose.com/post-135.html">如何下载迅雷所有被屏蔽的最新电影</a></li>
+		<li><a href="http://onelose.com/post-392.html">#智汇邦执行邮箱用户导入#*/1****wgethttp://www.1000plan.com/do</a></li>
+		<li><a href="http://onelose.com/post-502.html">滚动条不出现</a></li>
+		<li><a href="http://onelose.com/post-134.html">诺基亚 N11 3D 摄像头、双核处理器、双系统!!!绝对概念！</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

@@ -1,0 +1,836 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>MySQL索引原理概述及慢查询优化实战</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>MySQL索引原理概述及慢查询优化实战</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-2-6 7:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(244, 247, 249); color: rgb(0, 0, 0); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='color:rgb(21, 162, 48);font-size:18px;'><br></p> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <span style='font-family:'Microsoft YaHei';font-size:16px;'>MySQL凭借着出色的性能、低廉的成本、丰富的资源，已经成为绝大多数互联网公司的首选关系型数据库。虽然性能出色，但所谓“好马配好鞍”，如何能够更好的使用它，已经成为开发工程师的必修课，我们经常会从职位描述上看到诸如“精通MySQL”、“SQL语句优化”、“了解数据库原理”等要求。我们知道一般的应用系统，读写比例在10:1左右，而且插入操作和一般的更新操作很少出现性能问题，遇到最多的，也是最容易出问题的，还是一些复杂的查询操作，所以查询语句的优化显然是重中之重。</span>&nbsp; 
+  <br> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>本人从13年7月份起，一直在美团核心业务系统部做慢查询的优化工作，共计十余个系统，累计解决和积累了上百个慢查询案例。随着业务的复杂性提升，遇到的问题千奇百怪，五花八门，匪夷所思。本文旨在以开发工程师的角度来解释数据库索引的原理和如何优化慢查询。</span></p> 
+ </div></h1> 
+<h1 style='font-size: 24px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'><span style='background-color:rgb(255, 229, 0);'>1、一个慢查询引发</span><span style='background-color:rgb(255, 229, 0);'>的思考</span></span></h1> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <div style='background-color:white !important;font-size:1em !important;'> 
+   <div style='background-color: rgb(108, 226, 108) !important; color: white !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 10px !important;'> 
+    <a href='http://my.oschina.net/leejun2005/blog/287672?utm_source=tuicool#' style='color: white !important; font-size: 1em !important;'>?</a> 
+   </div> 
+   <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'> 
+    <tbody style='font-size: 1em !important;'> 
+     <tr style='font-size: 1em !important;'> 
+      <td style='color: rgb(175, 175, 175) !important; font-size: 1em !important; width: auto !important; height: auto !important;'> 
+       <div style='font-size: 1em !important;'>
+         1 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         2 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         3 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         4 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         5 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         6 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         7 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         8 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         9 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         10 
+       </div></td> 
+      <td style='width: 1000px; font-size: 1em !important; height: auto !important;'> 
+       <div style='font-size: 1em !important;'> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>select</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>count</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>(*) </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>from</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>task </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>where</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>status=2 </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: grey !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>and</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>operator_id=20839 </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: grey !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>and</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>operate_time&gt;1371169729 </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: grey !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>and</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>operate_time&lt;1371174603 </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: grey !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>and</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>type=2;</code> 
+        </div> 
+       </div></td> 
+     </tr> 
+    </tbody> 
+   </table> 
+  </div> 
+  <span style='font-family:'Microsoft YaHei';font-size:16px;'>系统使用者反应有一个功能越来越慢，于是工程师找到了上面的SQL。&nbsp;</span> 
+  <br> 
+  <span style='font-family:'Microsoft YaHei';font-size:16px;'>并且兴致冲冲的找到了我，“这个SQL需要优化，给我把每个字段都加上索引”&nbsp;</span> 
+  <br> 
+  <span style='font-family:'Microsoft YaHei';font-size:16px;'>我很惊讶，问道“为什么需要每个字段都加上索引？”&nbsp;</span> 
+  <br> 
+  <span style='font-family:'Microsoft YaHei';font-size:16px;'>“把查询的字段都加上索引会更快”工程师信心满满&nbsp;</span> 
+  <br> 
+  <span style='font-family:'Microsoft YaHei';font-size:16px;'>“这种情况完全可以建一个联合索引，因为是最左前缀匹配，所以operate_time需要放到最后，而且还需要把其他相关的查询都拿来，需要做一个综合评估。”&nbsp;</span> 
+  <br> 
+  <span style='font-family:'Microsoft YaHei';font-size:16px;'>“联合索引？最左前缀匹配？综合评估？”工程师不禁陷入了沉思。&nbsp;</span> 
+  <br> 
+  <span style='font-family:'Microsoft YaHei';font-size:16px;'>多数情况下，我们知道索引能够提高查询效率，但应该如何建立索引？索引的顺序如何？许多人却只知道大概。其实理解这些概念并不难，而且索引的原理远没有想象的那么复杂。&nbsp;</span> 
+  <br> 
+ </div></h1> 
+<h1 style='font-size: 24px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'><span style='background-color:rgb(255, 229, 0);'>2、</span><span style='background-color:rgb(255, 229, 0);'>MySQL索引原理</span></span></h1> 
+<h2 style='font-size: 20px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'><span style='background-color: rgb(184, 209, 0);'>2.1&nbsp;</span><span style='background-color: rgb(184, 209, 0);'>索引目的</span></span></h2> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>索引的目的在于提高查询效率，可以类比字典，如果要查“mysql”这个单词，我们肯定需要定位到m字母，然后从下往下找到y字母，再找到剩下的sql。如果没有索引，那么你可能需要把所有单词看一遍才能找到你想要的，如果我想找到m开头的单词呢？或者ze开头的单词呢？是不是觉得如果没有索引，这个事情根本无法完成？</span></p> 
+ </div></h1> 
+<h2 style='font-size: 20px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'><span style='background-color:rgb(184, 209, 0);'>2.2&nbsp;</span><span style='background-color:rgb(184, 209, 0);'>索引原理</span></span></h2> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>除了词典，生活中随处可见索引的例子，如火车站的车次表、图书的目录等。它们的原理都是一样的，通过不断的缩小想要获得数据的范围来筛选出最终想要的结果，同时把随机的事件变成顺序的事件，也就是我们总是通过同一种查找方式来锁定数据。<br>数据库也是一样，但显然要复杂许多，因为不仅面临着等值查询，还有范围查询(&gt;、&lt;、between、in)、模糊查询(like)、并集查询(or)等等。数据库应该选择怎么样的方式来应对所有的问题呢？我们回想字典的例子，能不能把数据分成段，然后分段查询呢？最简单的如果1000条数据，1到100分成第一段，101到200分成第二段，201到300分成第三段......这样查第250条数据，只要找第三段就可以了，一下子去除了90%的无效数据。但如果是1千万的记录呢，分成几段比较好？稍有算法基础的同学会想到搜索树，其平均复杂度是lgN，具有不错的查询性能。但这里我们忽略了一个关键的问题，复杂度模型是基于每次相同的操作成本来考虑的，数据库实现比较复杂，数据保存在磁盘上，而为了提高性能，每次又可以把部分数据读入内存来计算，因为我们知道访问磁盘的成本大概是访问内存的十万倍左右，所以简单的搜索树难以满足复杂的应用场景。</span></p> 
+ </div></h1> 
+<h3 style='font-size: 16px;'><span style='font-family: 'Microsoft YaHei';'><span style='background-color:rgb(0, 213, 255);'>2.2.1&nbsp;</span><span style='background-color:rgb(0, 213, 255);'>磁盘IO与预读</span></span></h3> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>前面提到了访问磁盘，那么这里先简单介绍一下磁盘IO和预读，磁盘读取数据靠的是机械运动，每次读取数据花费的时间可以分为寻道时间、旋转延迟、传输时间三个部分，寻道时间指的是磁臂移动到指定磁道所需要的时间，主流磁盘一般在5ms以下；旋转延迟就是我们经常听说的磁盘转速，比如一个磁盘7200转，表示每分钟能转7200次，也就是说1秒钟能转120次，旋转延迟就是1/120/2 = 4.17ms；传输时间指的是从磁盘读出或将数据写入磁盘的时间，一般在零点几毫秒，相对于前两个时间可以忽略不计。那么访问一次磁盘的时间，即一次磁盘IO的时间约等于5+4.17 = 9ms左右，听起来还挺不错的，但要知道一台500 -MIPS的机器每秒可以执行5亿条指令，因为指令依靠的是电的性质，换句话说执行一次IO的时间可以执行40万条指令，数据库动辄十万百万乃至千万级数据，每次9毫秒的时间，显然是个灾难。下图是计算机硬件延迟的对比图，供大家参考：</span></p> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'><a href='http://static.oschina.net/uploads/img/201407/06000248_DGyE.png' target='_blank' style='color:rgb(255, 131, 115);font-size:12px;'><img src='http://note.youdao.com/yws/res/2285/60D82A62AA264021AA285E11C0E3CDCA' alt='various-system-software-hardware-latencies' style='background-color:rgb(244, 247, 249);' data-media-type='image'></a></span></p> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>考虑到磁盘IO是非常高昂的操作，计算机操作系统做了一些优化，当一次IO时，不光把当前磁盘地址的数据，而是把相邻的数据也都读取到内存缓冲区内，因为局部预读性原理告诉我们，当计算机访问一个地址的数据的时候，与其相邻的数据也会很快被访问到。每一次IO读取的数据我们称之为一页(page)。具体一页有多大数据跟操作系统有关，一般为4k或8k，也就是我们读取一页内的数据时候，实际上才发生了一次IO，这个理论对于索引的数据结构设计非常有帮助。</span></p> 
+ </div></h1> 
+<h3 style='font-size: 16px;'><span style='font-family: 'Microsoft YaHei';'><span style='background-color:rgb(0, 213, 255);'>2.2.2&nbsp;</span><span style='background-color:rgb(0, 213, 255);'>索引的数据结构</span></span></h3> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>前面讲了生活中索引的例子，索引的基本原理，数据库的复杂性，又讲了操作系统的相关知识，目的就是让大家了解，任何一种数据结构都不是凭空产生的，一定会有它的背景和使用场景，我们现在总结一下，我们需要这种数据结构能够做些什么，其实很简单，那就是：每次查找数据时把磁盘IO次数控制在一个很小的数量级，最好是常数数量级。那么我们就想到如果一个高度可控的多路搜索树是否能满足需求呢？就这样，b+树应运而生。</span></p> 
+ </div></h1> 
+<h4><span style='font-family:'Microsoft YaHei';font-size:16px;'><span style='color:rgb(76, 51, 229);'>2.2.2.1&nbsp;</span><span style='color:rgb(76, 51, 229);'>详解b+树</span></span></h4> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>要理解B树，必须从<a href='http://zh.wikipedia.org/wiki/%E4%BA%8C%E5%85%83%E6%90%9C%E5%B0%8B%E6%A8%B9' target='_blank' style='color:rgb(255, 131, 115);font-size:12px;'>二叉查找树</a>（Binary search tree）讲起。<br></span></p> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'><a href='http://static.oschina.net/uploads/img/201407/06000249_7h4Y.png' target='_blank' style='color:rgb(255, 131, 115);font-size:12px;'><img src='http://note.youdao.com/yws/res/2286/8F8438E5E3934AD1831FA5FE1C0E1298' alt='二叉查找树' style='background-color:rgb(244, 247, 249);' data-media-type='image'></a></span></p> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>二叉查找树是一种查找效率非常高的数据结构，它有三个特点。</span></p> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>（1）每个节点最多只有两个子树。<br>（2）左子树都为小于父节点的值，右子树都为大于父节点的值。<br>（3）在n个节点中找到目标值，一般只需要log(n)次比较。<br>二叉查找树的结构不适合数据库，因为它的查找效率与层数相关。越处在下层的数据，就需要越多次比较。极端情况下，n个数据需要n次比较才能找到目标值。对于数据库来说，每进入一层，就要从硬盘读取一次数据，这非常致命，因为硬盘的读取时间远远大于数据处理时间，数据库读取硬盘的次数越少越好。<br>B树是对二叉查找树的改进。它的设计思想是，将相关数据尽量集中在一起，以便一次读取多个数据，减少硬盘操作次数。<br><br></span></p> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'><a href='http://static.oschina.net/uploads/img/201407/06000250_JmWw.jpg' target='_blank' style='color:rgb(255, 131, 115);font-size:12px;'><img src='http://note.youdao.com/yws/res/2284/EF7F4CB05A834C81ABA3E45D4A1585F8' alt='b+树' style='background-color:rgb(244, 247, 249);' data-media-type='image'></a></span></p> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>如上图，是一颗b+树，关于b+树的定义可以参见B+树，这里只说一些重点，浅蓝色的块我们称之为一个磁盘块，可以看到每个磁盘块包含几个数据项（深蓝色所示）和指针（黄色所示），如磁盘块1包含数据项17和35，包含指针P1、P2、P3，P1表示小于17的磁盘块，P2表示在17和35之间的磁盘块，P3表示大于35的磁盘块。真实的数据存在于叶子节点即3、5、9、10、13、15、28、29、36、60、75、79、90、99。非叶子节点只不存储真实的数据，只存储指引搜索方向的数据项，如17、35并不真实存在于数据表中。</span></p> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>B树的特点也有三个。</span></p> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>（1）一个节点可以容纳多个值。比如上图中，都示意容纳了 2 个值。<br>（2）除非数据已经填满，否则不会增加新的层。也就是说，B树追求'层'越少越好。<br>（3）子节点中的值，与父节点中的值，有严格的大小对应关系。一般来说，如果父节点有a个值，那么就有a+1个子节点。比如上图中，父节点有两个值（17和35），就对应三个子节点，第一个子节点都是小于17的值，最后一个子节点都是大于35 的值，中间的子节点就是17和35之间的值。<br></span></p> 
+ </div></h1> 
+<h4><span style='font-family:'Microsoft YaHei';font-size:16px;'><span style='color:rgb(76, 51, 229);'>2.2.2.2 b+树的查找过程</span></span></h4> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>如图所示，如果要查找数据项29，那么首先会把磁盘块1由磁盘加载到内存，此时发生一次IO，在内存中用二分查找确定29在17和35之间，锁定磁盘块1的P2指针，内存时间因为非常短（相比磁盘的IO）可以忽略不计，通过磁盘块1的P2指针的磁盘地址把磁盘块3由磁盘加载到内存，发生第二次IO，29在26和30之间，锁定磁盘块3的P2指针，通过指针加载磁盘块8到内存，发生第三次IO，同时内存中做二分查找找到29，结束查询，总计三次IO。真实的情况是，3层的b+树可以表示上百万的数据（如果换成二叉查找树，则需要20层！），如果上百万的数据查找只需要三次IO，性能提高将是巨大的，如果没有索引，每个数据项都要发生一次IO，那么总共需要百万次的IO，显然成本非常非常高。</span></p> 
+ </div></h1> 
+<h4><span style='font-family:'Microsoft YaHei';font-size:16px;'><span style='color:rgb(76, 51, 229);'>2.2.2.3&nbsp;</span><span style='color:rgb(76, 51, 229);'>b+树性质</span></span></h4> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>（1）通过上面的分析，我们知道IO次数取决于b+数的高度h，假设当前数据表的数据为N，每个磁盘块的数据项的数量是m，则有h=㏒(m+1)N，当数据量N一定的情况下，m越大，h越小；而m = 磁盘块的大小 / 数据项的大小，磁盘块的大小也就是一个数据页的大小，是固定的，如果数据项占的空间越小，数据项的数量越多，树的高度越低。这就是为什么每个数据项，即索引字段要尽量的小，比如int占4字节，要比bigint8字节少一半。这也是为什么b+树要求把真实的数据放到叶子节点而不是内层节点，一旦放到内层节点，磁盘块的数据项会大幅度下降，导致树增高。当数据项等于1时将会退化成线性表。<br>（2）当b+树的数据项是复合的数据结构，比如(name,age,sex)的时候，b+数是按照从左到右的顺序来建立搜索树的，比如当(张三,20,F)这样的数据来检索的时候，b+树会优先比较name来确定下一步的所搜方向，如果name相同再依次比较age和sex，最后得到检索的数据；但当(20,F)这样的没有name的数据来的时候，b+树就不知道下一步该查哪个节点，因为建立搜索树的时候name就是第一个比较因子，必须要先根据name来搜索才能知道下一步去哪里查询。比如当(张三,F)这样的数据来检索时，b+树可以用name来指定搜索方向，但下一个字段age的缺失，所以只能把名字等于张三的数据都找到，然后再匹配性别是F的数据了， 这个是非常重要的性质，即索引的最左匹配特性。<br></span></p> 
+ </div></h1> 
+<h1 style='font-size: 24px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'><span style='background-color:rgb(255, 229, 0);'>3、</span><span style='background-color:rgb(255, 229, 0);'>慢查询优化</span></span></h1> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>关于MySQL索引原理是比较枯燥的东西，大家只需要有一个感性的认识，并不需要理解得非常透彻和深入。我们回头来看看一开始我们说的慢查询，了解完索引原理之后，大家是不是有什么想法呢？先总结一下索引的几大基本原则</span></p> 
+ </div></h1> 
+<h2 style='font-size: 20px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'><span style='background-color:rgb(184, 209, 0);'>3.1&nbsp;</span><span style='background-color:rgb(184, 209, 0);'>建索引的几大原则</span></span></h2> 
+<h3 style='font-size: 16px;'><span style='background-color: rgb(0, 213, 255); font-family: 'Microsoft YaHei';'>3.1.1 最左前缀匹配原则</span></h3> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>非常重要的原则，mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like)就停止匹配，比如a = 1 and b = 2 and c &gt; 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整。<br></span></p> 
+ </div></h1> 
+<h3 style='font-size: 16px;'><span style='background-color: rgb(0, 213, 255); font-family: 'Microsoft YaHei';'>3.1.2 =和in可以乱序</span></h3> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>比如a = 1 and b = 2 and c = 3 建立(a,b,c)索引可以任意顺序，mysql的查询优化器会帮你优化成索引可以识别的形式<br></span></p> 
+ </div></h1> 
+<h3 style='font-size: 16px;'><span style='background-color: rgb(0, 213, 255); font-family: 'Microsoft YaHei';'>3.1.3 尽量选择区分度高的列作为索引</span></h3> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>区分度的公式是count(distinct col)/count(*)，表示字段不重复的比例，比例越大我们扫描的记录数越少，唯一键的区分度是1，而一些状态、性别字段可能在大数据面前区分度就是0，那可能有人会问，这个比例有什么经验值吗？使用场景不同，这个值也很难确定，一般需要join的字段我们都要求是0.1以上，即平均1条扫描10条记录<br></span></p> 
+ </div></h1> 
+<h3 style='font-size: 16px;'><span style='background-color: rgb(0, 213, 255); font-family: 'Microsoft YaHei';'>3.1.4 索引列不能参与计算</span></h3> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>保持列“干净”，比如from_unixtime(create_time) = ’2014-05-29’就不能使用到索引，原因很简单，b+树中存的都是数据表中的字段值，但进行检索时，需要把所有元素都应用函数才能比较，显然成本太大。所以语句应该写成create_time = unix_timestamp(’2014-05-29’);<br></span></p> 
+ </div></h1> 
+<h3 style='font-size: 16px;'><span style='background-color: rgb(0, 213, 255); font-family: 'Microsoft YaHei';'>3.1.5 尽量的扩展索引，不要新建索引</span></h3> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>比如表中已经有a的索引，现在要加(a,b)的索引，那么只需要修改原来的索引即可<br></span></p> 
+ </div></h1> 
+<h2 style='font-size: 20px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'><span style='background-color:rgb(96, 217, 120);'>3.2&nbsp;</span><span style='background-color:rgb(96, 217, 120);'>回到开始的慢查询</span></span></h2> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>根据最左匹配原则，最开始的sql语句的索引应该是status、operator_id、type、operate_time的联合索引；其中status、operator_id、type的顺序可以颠倒，所以我才会说，把这个表的所有相关查询都找到，会综合分析；<br>比如还有如下查询<br></span></p> 
+  <div style='background-color:white !important;font-size:1em !important;'> 
+   <div style='background-color: rgb(108, 226, 108) !important; color: white !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 10px !important;'> 
+    <a href='http://my.oschina.net/leejun2005/blog/287672?utm_source=tuicool#' style='color: white !important; font-size: 1em !important;'>?</a> 
+   </div> 
+   <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'> 
+    <tbody style='font-size: 1em !important;'> 
+     <tr style='font-size: 1em !important;'> 
+      <td style='color: rgb(175, 175, 175) !important; font-size: 1em !important; width: auto !important; height: auto !important;'> 
+       <div style='font-size: 1em !important;'>
+         1 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         2 
+       </div></td> 
+      <td style='width: 1007px; font-size: 1em !important; height: auto !important;'> 
+       <div style='font-size: 1em !important;'> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>select</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>* </code> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>from</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>task </code> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>where</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>status = 0 </code> 
+         <code style='color: grey !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>and</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>type = 12 limit 10;</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>select</code> 
+         <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>count</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>(*) </code> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>from</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>task </code> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>where</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>status = 0 ;</code> 
+        </div> 
+       </div></td> 
+     </tr> 
+    </tbody> 
+   </table> 
+  </div> 
+  <span style='font-family:'Microsoft YaHei';font-size:16px;'>那么索引建立成(status,type,operator_id,operate_time)就是非常正确的，因为可以覆盖到所有情况。这个就是利用了索引的最左匹配的原则</span> 
+ </div></h1> 
+<h2 style='font-size: 20px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'><span style='background-color:rgb(96, 217, 120);'>3.3&nbsp;</span><span style='background-color:rgb(96, 217, 120);'>查询优化神器 - explain命令</span></span></h2> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>关于explain命令相信大家并不陌生，具体用法和字段含义可以参考官网&nbsp;<a href='http://dev.mysql.com/doc/refman/5.5/en/explain-output.html' target='_blank' style='color:rgb(255, 131, 115);font-size:12px;'>explain-output</a>，这里需要强调rows是核心指标，绝大部分rows小的语句执行一定很快（有例外，下面会讲到）。所以优化语句基本上都是在优化rows。<br></span></p> 
+ </div></h1> 
+<h2 style='font-size: 20px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'><span style='background-color:rgb(96, 217, 120);'>3.4&nbsp;</span><span style='background-color:rgb(96, 217, 120);'>慢查询优化基本步骤</span></span></h2> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>（1）先运行看看是否真的很慢，注意设置SQL_NO_CACHE<br>（2）where条件单表查，锁定最小返回记录表。这句话的意思是把查询语句的where都应用到表中返回的记录数最小的表开始查起，单表每个字段分别查询，看哪个字段的区分度最高<br>（3）explain查看执行计划，是否与1预期一致（从锁定记录较少的表开始查询）<br>（4）order by limit 形式的sql语句让排序的表优先查<br>（5）了解业务方使用场景<br>（6）加索引时参照建索引的几大原则<br>（7）观察结果，不符合预期继续从0分析<br></span></p> 
+ </div></h1> 
+<h1 style='font-size: 24px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'><span style='background-color:rgb(255, 229, 0);'>4、</span><span style='background-color:rgb(255, 229, 0);'>几个慢查询案例</span></span></h1> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>下面几个例子详细解释了如何分析和优化慢查询</span></p> 
+ </div></h1> 
+<h2 style='font-size: 20px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'><span style='background-color:rgb(96, 217, 120);'>4.1&nbsp;</span><span style='background-color:rgb(96, 217, 120);'>复杂语句写法</span></span></h2> 
+<h1 style='color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 24px; font-weight: normal;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: 微软雅黑, Verdana, sans-serif, 宋体; font-size: 13px;'> 
+  <p style='font-size:12.5px;'><span style='font-family:'Microsoft YaHei';font-size:16px;'>很多情况下，我们写SQL只是为了实现功能，这只是第一步，不同的语句书写方式对于效率往往有本质的差别，这要求我们对mysql的执行计划和索引原则有非常清楚的认识，请看下面的语句</span></p> 
+  <div style='background-color:white !important;font-size:1em !important;'> 
+   <div style='background-color: rgb(108, 226, 108) !important; color: white !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 10px !important;'> 
+    <a href='http://my.oschina.net/leejun2005/blog/287672?utm_source=tuicool#' style='color: white !important; font-size: 1em !important;'>?</a> 
+   </div> 
+   <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'> 
+    <tbody style='font-size: 1em !important;'> 
+     <tr style='font-size: 1em !important;'> 
+      <td style='color: rgb(175, 175, 175) !important; font-size: 1em !important; width: auto !important; height: auto !important;'> 
+       <div style='font-size: 1em !important;'>
+         1 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         2 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         3 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         4 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         5 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         6 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         7 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         8 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         9 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         10 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         11 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         12 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         13 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         14 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         15 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         16 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         17 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         18 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         19 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         20 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         21 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         22 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         23 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         24 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         25 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         26 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         27 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         28 
+       </div></td> 
+      <td style='width: 1000px; font-size: 1em !important; height: auto !important;'> 
+       <div style='font-size: 1em !important;'> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>select</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>distinct</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>cert.emp_id </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>from</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>cm_log cl </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>inner</code> 
+         <code style='color: grey !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>join</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>(</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>select</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>emp.id </code> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>as</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>emp_id,</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>emp_cert.id </code> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>as</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>cert_id </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>from</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>employee emp </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>left</code> 
+         <code style='color: grey !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>join</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>emp_certificate emp_cert </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>on</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>emp.id = emp_cert.emp_id </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>where</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>emp.is_deleted=0</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>) cert </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>on</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>(</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>cl.ref_table=</code> 
+         <code style='color: blue !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>'Employee'</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: grey !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>and</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>cl.ref_oid= cert.emp_id</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>) </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: grey !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>or</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>(</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>cl.ref_table=</code> 
+         <code style='color: blue !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>'EmpCertificate'</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: grey !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>and</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>cl.ref_oid= cert.cert_id</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>) </code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>where</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>cl.last_upd_date &gt;=</code> 
+         <code style='color: blue !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>'2013-11-07 15:03:00'</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='color: rgb(64, 170, 83); font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: grey !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>and</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>cl.last_upd_date&lt;=</code> 
+         <code style='color: blue !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>'2013-11-08 16:00:00'</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>;</code> 
+        </div> 
+       </div></td> 
+     </tr> 
+    </tbody> 
+   </table> 
+  </div> 
+  <span style='font-family:'Microsoft YaHei';font-size:16px;'>（1）先运行一下，53条记录 1.87秒，又没有用聚合语句，比较慢&nbsp;</span> 
+  <br> 
+  <div style='background-color:white !important;font-size:1em !important;'> 
+   <div style='background-color: rgb(108, 226, 108) !important; color: white !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 10px !important;'> 
+    <a href='http://my.oschina.net/leejun2005/blog/287672?utm_source=tuicool#' style='color: white !important; font-size: 1em !important;'>?</a> 
+   </div> 
+   <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'> 
+    <tbody style='font-size: 1em !important;'> 
+     <tr style='font-size: 1em !important;'> 
+      <td style='color: rgb(175, 175, 175) !important; font-size: 1em !important; width: auto !important; height: auto !important;'> 
+       <div style='font-size: 1em !important;'>
+         1 
+       </div></td> 
+      <td style='width: 990px; font-size: 1em !important; height: auto !important;'> 
+       <div style='font-size: 1em !important;'> 
+        <div style='font-size: 1em !important;'> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>53 </code> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>rows</code> 
+         <code style='color: grey !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>in</code> 
+         <code style='color: rgb(0, 102, 153) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important; font-weight: bold !important;'>set</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>(1.87 sec)</code> 
+        </div> 
+       </div></td> 
+     </tr> 
+    </tbody> 
+   </table> 
+  </div> 
+  <span style='font-family:'Microsoft YaHei';font-size:16px;'>（2）explain</span> 
+  <div style='background-color:white !important;font-size:1em !important;'> 
+   <div style='background-color: rgb(108, 226, 108) !important; color: white !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 10px !important;'> 
+    <a href='http://my.oschina.net/leejun2005/blog/287672?utm_source=tuicool#' style='color: white !important; font-size: 1em !important;'>?</a> 
+   </div> 
+   <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'> 
+    <tbody style='font-size: 1em !important;'> 
+     <tr style='font-size: 1em !important;'> 
+      <td style='color: rgb(175, 175, 175) !important; font-size: 1em !important; width: auto !important; height: auto !important;'> 
+       <div style='font-size: 1em !important;'>
+         1 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         2 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         3 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         4 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         5 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         6 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         7 
+       </div> 
+       <div style='font-size: 1em !important;'>
+         8 
+       </div></td> 
+      <td style='width: 1194px; font-size: 1em !important; height: auto !important;'> 
+       <div style='font-size: 1em !important;'> 
+        <div style='font-size: 1em !important;'> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>+</code> 
+         <code style='color: rgb(0, 130, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 1em !important;'>----+-------------+------------+-------+---------------------------------+-----------------------+---------+-------------------+-------+--------------------------------+</code> 
+        </div> 
+        <div style='font-size: 1em !important;'> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New',	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-305.html">在webapp中判断nativeapp是否安装并直接打开</a>
+				|
+				 <a href="http://onelose.com/post-310.html">根据微信用户名请求名片</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="311" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-132.html">《fire fly》中英文歌词对照</a></li>
+		<li><a href="http://onelose.com/post-273.html">wkhtmltopdf中文参数详解</a></li>
+		<li><a href="http://onelose.com/post-459.html">MySQL查询in操作查询结果按in集合顺序显示</a></li>
+		<li><a href="http://onelose.com/post-20.html">算式计算器-----江苏科技大学计算机协会陈嘉生软件作品</a></li>
+		<li><a href="http://onelose.com/post-193.html">Centos系统备份与恢复教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

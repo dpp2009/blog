@@ -1,0 +1,377 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Memcached常用命令以及使用说明详解</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="Memcached常用命令以及使用..." />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>Memcached常用命令以及使用说明详解</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-4-24 6:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <div style='color: rgb(51, 51, 51); font-family: Arial, Tahoma, Verdana, sans-serif;'>
+   Memcached常用命令以及使用说明详解 
+ </div> 
+ <div style='color: rgb(51, 51, 51); font-family: Arial, Tahoma, Verdana, sans-serif;'> 
+  <p>存储命令的格式：<br><font style='color: rgb(255, 0, 0);'>&lt;command name&gt; &lt;key&gt; &lt;flags&gt; &lt;exptime&gt; &lt;bytes&gt;<br></font><font style='color: rgb(255, 0, 0);'>&lt;data block&gt;<br></font><strong>参数说明如下：<br></strong></p> 
+  <table cellpadding='2' cellspacing='0' style='font-size:12px !important;'> 
+   <tbody> 
+    <tr> 
+     <td valign='top' style='color:rgb(51, 51, 51);font-size:14px;'>&lt;command name&gt;</td> 
+     <td valign='top' style='color:rgb(51, 51, 51);font-size:14px;'>set/add/replace</td> 
+    </tr> 
+    <tr> 
+     <td valign='top' style='color:rgb(51, 51, 51);font-size:14px;'>&lt;key&gt;</td> 
+     <td valign='top' style='color:rgb(51, 51, 51);font-size:14px;'><span style='color: rgb(0, 0, 255);'>查找关键字</span></td> 
+    </tr> 
+    <tr> 
+     <td valign='top' style='color:rgb(51, 51, 51);font-size:14px;'>&lt;flags&gt;</td> 
+     <td valign='top' style='color:rgb(51, 51, 51);font-size:14px;'>客户机使用它存储关于键值对的额外信息</td> 
+    </tr> 
+    <tr> 
+     <td valign='top' style='color:rgb(51, 51, 51);font-size:14px;'>&lt;exptime&gt;</td> 
+     <td valign='top' style='color:rgb(51, 51, 51);font-size:14px;'>该数据的存活时间，0表示永远</td> 
+    </tr> 
+    <tr> 
+     <td valign='top' style='color:rgb(51, 51, 51);font-size:14px;'>&lt;bytes&gt;</td> 
+     <td valign='top' style='color:rgb(51, 51, 51);font-size:14px;'>存储字节数</td> 
+    </tr> 
+    <tr> 
+     <td valign='top' style='color:rgb(51, 51, 51);font-size:14px;'>&lt;data block&gt;</td> 
+     <td valign='top' style='color:rgb(51, 51, 51);font-size:14px;'>存储的数据块（可直接理解为key-value结构中的value）</td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <strong>1、添加</strong>&nbsp; 
+ </div> 
+ <div style='color: rgb(51, 51, 51); font-family: Arial, Tahoma, Verdana, sans-serif;'> 
+  <img title='set' src='http://note.youdao.com/yws/res/161/9DB7A92F44D54C2ABB685E182A563585' alt='set' width='558' height='237' data-media-type='image'>&nbsp; 
+  <br> 
+  <strong><br></strong> 
+ </div> 
+ <div style='color: rgb(51, 51, 51); font-family: Arial, Tahoma, Verdana, sans-serif;'> 
+  <strong>(1)、无论如何都存储的set</strong> 
+  <p>这个set的命令在memcached中的使用频率极高。set命令不但可以简单添加，如果set的key已经存在，该命令可以更新该key所对应的原来的数据，也就是实现更新的作用。</p> 
+  <p>可以通过“get 键名”的方式查看添加进去的记录：</p> 
+  <p><img title='set_get' src='http://note.youdao.com/yws/res/166/C9E3393EBB484BFAB0D6E053AB52EB8F' alt='set_get' width='561' height='139' data-media-type='image'></p> 
+  <p>如你所知，我们也可以通过delete命令删除掉，然后重新添加。</p> 
+  <p><img title='delete' src='http://note.youdao.com/yws/res/163/A33448BA4D904A7B8F88A873BB676978' alt='delete' width='561' height='137' data-media-type='image'></p> 
+  <p><strong>(2)、只有数据不存在时进行添加的add</strong></p> 
+  <p><img title='add' src='http://note.youdao.com/yws/res/156/5A45A639F9D74702AF3418E96648BC2C' alt='add' width='557' height='114' data-media-type='image'></p> 
+  <p><strong>(3)、只有数据存在时进行替换的replace</strong></p> 
+  <p><img title='replace' src='http://note.youdao.com/yws/res/158/7D2291D7D83F419897692AA72E70CDCA' alt='replace' width='557' height='176' data-media-type='image'></p> 
+  <strong>&nbsp;2、删除</strong> 
+  <p><img title='delete' src='http://note.youdao.com/yws/res/153/26B66D941C3D47CAA14CA3DF248FB9E3' alt='delete' width='559' height='113' data-media-type='image'></p> 
+  <p>可以看到，删除已存在的键值和不存在的记录可以返回不同的结果。<br><strong><br>二、读取命令1、get</strong>&nbsp;<br>get命令的key可以表示一个或者多个键，键之间以空格隔开</p> 
+  <p><img title='get' src='http://note.youdao.com/yws/res/159/97AAA725087440E2AB86BCF3FEDD5746' alt='get' width='568' height='195' data-media-type='image'><br><strong>2、gets</strong></p> 
+  <p>&nbsp;<img title='gets' src='http://note.youdao.com/yws/res/157/7404267297EB4B2AA4B243DA09293553' alt='gets' width='575' height='224' data-media-type='image'></p> 
+  <p>可以看到，gets命令比普通的get命令多返回了一个数字（上图中为13）。这个数字可以检查数据是否发生改变。当key对应的数据改变时，这个多返回的数字也会改变。<br><br><strong>3、cas&nbsp;<br></strong>cas即checked and set的意思，只有当最后一个参数和gets所获取的参数匹配时才能存储，否则返回“EXISTS”。<img title='cas' src='http://note.youdao.com/yws/res/155/3DCA6CF35749494794B14502D9D440B5' alt='cas' width='570' height='244' data-media-type='image'><strong><br><br>三、状态命令1、stats</strong></p> 
+  <p><strong>&nbsp;</strong><img title='stats' src='http://note.youdao.com/yws/res/168/E2A6E64627AC4888BE96D1AE41941F11' alt='stats' width='575' height='274' data-media-type='image'><br><strong>2、stats items</strong></p> 
+  <p><img title='statsitems' src='http://note.youdao.com/yws/res/167/CDE5CA781F604D50BF6551F89CB5477E' alt='statsitems' width='573' height='78' data-media-type='image'><br>执行stats items，可以看到STAT items行，如果memcached存储内容很多，那么这里也会列出很多的STAT items行。<br><strong><br>3、stats cachedump slab_id limit_num</strong>&nbsp;<br>我们执行stats cachedump 1 0 命令效果如下：</p> 
+  <p><img title='statscachedump' src='http://note.youdao.com/yws/res/160/9C9844FCC56F42129BE0AF5DD685B0F6' alt='statscachedump' width='576' height='107' data-media-type='image'>这里slab_id为1，是由2中的stats items返回的结果（STAT items后面的数字）决定的；limit_num看起来好像是返回多少条记录，猜的一点不错， 不过0表示显示出所有记录，而n(n&gt;0)就表示显示n条记录，如果n超过该slab下的所有记录，则结果和0返回的结果一致。<img title='statscachedump1' src='http://note.youdao.com/yws/res/165/C412A24FF5F54B5DB473991F292F645E' alt='statscachedump1' width='581' height='251' data-media-type='image'><br>通过stats items、stats cachedump slab_id limit_num配合get命令可以遍历memcached的记录。<br><strong><br>4、其他stats命令&nbsp;<br></strong>如stats slabs,stats sizes,stats reset等等使用也比较常见。<img title='statsother' src='http://note.youdao.com/yws/res/162/9F085358762D4388B85DE79CF53AE6C9' alt='statsother' width='582' height='243' data-media-type='image'><strong><br><br>四、其他常见命令<br>1、append</strong></p> 
+  <p>&nbsp;<img title='append' src='http://note.youdao.com/yws/res/154/2FF694EB31B048038562AA331975FE36' alt='append' width='578' height='199' data-media-type='image'>在现有的缓存数据<span style='color: rgb(255, 0, 0);'>后</span>添加缓存数据，如现有缓存的key不存在服务器响应为NOT_STORED。<br><strong><br>2、prepend&nbsp;<br></strong>和append非常类似，但它的作用是在现有的缓存数据<span style='color: rgb(255, 0, 0);'>前</span>添加缓存数据。<img title='prepend' src='http://note.youdao.com/yws/res/164/B26A106955BF4D39B249D14709499A2C' alt='prepend' width='575' height='217' data-media-type='image'><br><strong>3、flush_all</strong></p> 
+  <p><strong>&nbsp;</strong><img title='flush_all' src='http://note.youdao.com/yws/res/169/EDE68E6803374F6B8EB09A38DAF70A98' alt='flush_all' width='581' height='160' data-media-type='image'></p> 
+  <p>该命令有一个可选的数字参数。它总是执行成功，服务器会发送 “OK\r\n” 回应。它的效果是使已经存在的项目立即失效（缺省），或在指定的时间后。此后执行取回命令，将不会有任何内容返回（除非重新存储同样的键名）。 flush_all 实际上没有立即释放项目所占用的内存，而是在随后陆续有新的项目被储存时执行（这是由memcached的懒惰检测和删除机制决定的）。</p> 
+  <p>flush_all 效果是它导致所有更新时间早于 flush_all 所设定时间的项目，在被执行取回命令时命令被忽略。<br><strong><br>4、其他命令&nbsp;<br></strong>memcached还有很多命令，比如对于存储为数字型的可以通过incr/decr命令进行增减操作等等，这里只列出开发和运维中经常使用的命令，其他的不再一一举例说明。<br><span style='color: rgb(0, 0, 0);'><span style='color: rgb(255, 0, 0); font-weight: bold;'><br>补充一则：简单认识.net framework中的几种缓存</span></span>&nbsp;<br>web站点中缓存的重要性毋庸置疑。我想很多asp.net开发人员在开发web应用系统的时候优先考虑使用的缓存并不是第三方缓存解决方案（比如分布式缓存memcached、redis等等），而应该是.net framework已经提供的多种缓存解决方案。下面结合自己的开发经验谈谈对.net framework中缓存的认识。</p> 
+  <p><strong>1、System.Web.Caching.Cache<br></strong>估计大部分做过asp.net开发的人都用过这个命名空间下的缓存，我们可以直接使用HttpContext.Current.Cache实例而不用实例化。当然这个命名空间下的Cache类是允许您实例化的，需要定制自己的缓存系统的当然可以完全自己控制如何初始化这个类。我在园子里看到过有很多文章介绍Cache的CRUD辅助类库大多数都是针对System.Web.Caching.Cache。</p> 
+  <p>需要说明的是，我们还可以通过该命名空间下的HttpRuntime.Cache实现web、控制台、winform等不同表现形式下的缓存，而且完全无需自己实例化。HttpRuntime.Cache是之前个人开发中使用比较多的一个类，现在比较偏爱.net framework4.0中的增强型的缓存类MemoryCache。</p> 
+  <p><strong>2、Output Cache<br></strong>众所周知，输出缓存主要分页面输出缓存和页面部分缓存。说白了，就是缓存整个页面的html或者部分html，本来没什么值得讨论的，但是最近看到dudu的这篇博客才恍然发现，想不到使用它还真是大有讲究，我以前怎么就没有发现这个问题呢？看来发现问题和解决问题的能力同样重要，有时候前者甚至更重要啊。</p> 
+  <p><strong>3、System.Runtime.Caching<br></strong>现在个人开发中使用最多的类MemoryCache出自这个命名空间，使用前需要引用using System.Runtime.Caching。MemoryCache继承自ObjectCache, IEnumerable, IDisposable，其中ObjectCache是个抽象类。用过MemoryCache的人都知道，这个MemoryCache有一个属性叫Default，通常可以像下面这样使用：</p> 
+  <p>private static ObjectCache memCache = MemoryCache.Default;当然我们也完全可以通过public MemoryCache(string name, NameValueCollection config = null)构造函数初始化缓存对象。</p> 
+  <p>接着我们可以在web.config文件中配置每个MemoryCache实例运行的内存使用配额方案和配额检查周期，下面示例参考<strong><a href='http://msdn.microsoft.com/zh-cn/library/dd941872.aspx' target='_blank' style='color: rgb(0, 102, 153);'>MSDN</a></strong>：<br></p> 
+  <div style='background-color: rgb(242, 246, 251);'> 
+   <u>复制代码</u>代码如下: 
+  </div> 
+  <div style='background-color: rgb(221, 237, 251);'> 
+   <br>&nbsp; &lt;system.runtime.caching&gt; 
+   <br>&nbsp;&nbsp;&nbsp; &lt;memoryCache&gt; 
+   <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;namedCaches&gt; 
+   <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;add name='Default' cacheMemoryLimitMegabytes='10'&nbsp; pollingInterval='00:02:00'/&gt; 
+   <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/namedCaches&gt; 
+   <br>&nbsp;&nbsp;&nbsp; &lt;/memoryCache&gt; 
+   <br>&nbsp; &lt;/system.runtime.caching&gt; 
+   <br> 
+  </div> 
+  <br>这些配置意义在于可以明确指定每个MemoryCache实例运行的内存使用配额方案和配额检查周期。比如我们可以通过配置来按需更改MemoryCache.Default实例的内存配额（不知道缓存可用最大内存是多少，可能还是传说中的800M左右）。缓存过期策略与其它的缓存框架大同小异，与System.Web.Caching.Cache的不同只是名称不叫CacheDependency，而叫 
+  <strong><a href='http://msdn.microsoft.com/zh-cn/library/system.runtime.caching.changemonitor.aspx' target='_blank' style='color: rgb(0, 102, 153);'>ChangeMonitor</a></strong>，并且提供了基于文件和目录的缓存依赖策略。关于缓存过期策略也比较有探讨的必要，不过个人开发中比较偏重于数据缓存和替换，目前还没有接触和使用过比较完美的过期策略解决方案。 
+ </div> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-536.html">jqueryinput</a>
+				|
+				 <a href="http://onelose.com/post-542.html">phpCI框架this-&gt;db-&gt;where()条件</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="538" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-437.html">C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Progra</a></li>
+		<li><a href="http://onelose.com/post-56.html">徐志摩的让人心疼的经典语录</a></li>
+		<li><a href="http://onelose.com/post-489.html">UncaughtTypeError:undefinedisnotafunction</a></li>
+		<li><a href="http://onelose.com/post-253.html">一、pkg-config简介</a></li>
+		<li><a href="http://onelose.com/post-455.html">Swipe</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

@@ -1,0 +1,533 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>jquery.imgareaselect.min.js</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="jquery.imgareaselect.min.js" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>jquery.imgareaselect.min.js</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-7-2 6:00 Wednesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div>
+  jquery.imgareaselect.min.js 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <p><span style='color:rgb(51,102,153);font-family:'宋体';font-size:10.5000pt;'>jquery&nbsp;imgareaselect图片裁切插件</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;使用的中文文档</span></p> 
+ <p><span style='font-size: 10.5pt;'>调</span><span style='font-size: 10.5pt;'>用</span><span style='font-size: 10.5pt;'>方式:</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>1.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>$(document).ready(function&nbsp;()&nbsp;{&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>2.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;&nbsp;&nbsp;&nbsp;$('img#photo').imgAreaSelect({&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>3.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;handles:&nbsp;true,&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>4.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onSelectEnd:&nbsp;someFunction&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>5.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;&nbsp;&nbsp;&nbsp;});&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>6.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>});</span></p> 
+ <p><span style='font-size: 10.5pt;'>如果&nbsp;jQuery&nbsp;对象中有多个元素，将为所有元素启用该插件。imgAreaSelect也适用于非图像元素，以及任何块元素（例如，&lt;div&gt;有背景图片）；</span><span style='font-size: 10.5pt;'><br></span><span style='font-size: 10.5pt;'>您可以在&nbsp;$(document).ready()&nbsp;或&nbsp;$(window).load()&nbsp;事件处理程序初始化插件</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>options参数</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>参数名</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>数据类型</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>默认值</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>描述</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>aspectRatio</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>string</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>设定选取区域的显示比率，如：”4:3″</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>autoHide</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>boolean</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>false</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>如果设置为true，当选择区域选择结束时消失；</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>classPrefix</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>string</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>”imgareaselect”</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>这是一个字符串，表示插件样式的类名加前缀</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>disable</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>boolean</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>如果设置为true，禁用插件</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>enable</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>boolean</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>如果设置为true，插件被重新启用</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>fadeSpeed</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>boolean</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>false</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>如果设置为大于零的数字，则用优美的淡入/淡出动画来显示图片，</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>handles</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>boolean</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>false</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>如果设置为true，调整手柄则会显示在选择区域内，如果设置为”corners”，则只有角处理会显示调整手柄</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>hide</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>boolean</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>如果设置为true，选择范围是隐藏</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>imageHeight</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>number</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>图片的真实高度&nbsp;(if&nbsp;scaled&nbsp;with&nbsp;the&nbsp;CSS&nbsp;width&nbsp;and&nbsp;height&nbsp;properties)</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>imageWidth</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>number</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>真实图片宽度&nbsp;(if&nbsp;scaled&nbsp;with&nbsp;the&nbsp;CSS&nbsp;width&nbsp;and&nbsp;height&nbsp;properties)</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>instance</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>number</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>如果设置为true，imgAreaSelect()&nbsp;调用返回一个imgAreaSelect绑定到的图像的实例，使您可以使用它的API方法</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>keys</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>boolean</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>false</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>启用/禁用键盘支持，默认值为false</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>maxHeight</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>number</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>选取的最大高度（单位为像素）</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>maxWidth</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>number</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>选取的最大宽度（单位为像素）</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>minHeight</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>number</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>选取的最小高度（单位为像素）</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>minWidth</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>number</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>选取的最小宽度（单位为像素）</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>movable</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>boolean</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>true</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>确定选取是否可以移动</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>parent</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>string</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>“body”</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>一个jQuery对象或选择字符串，指定被追加到父元素，默认值为”body”</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>persistent</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>boolean</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>false</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>如果设置为true，选择区以外的点击将不会启动一个新的选区（即用户将只能移动/调整现有的选择范围），默认值为false</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>resizable</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>boolean</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>true</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>确定是否选择面积应可调整大小</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>show</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>boolean</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>如果设置为true，选区则会显示</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>x1</span><span style='font-family:'宋体';font-size:10.5000pt;'><br></span><span style='font-family:'宋体';font-size:10.5000pt;'>y1</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>最初选择区域的左上角坐标</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>x2</span><span style='font-family:'宋体';font-size:10.5000pt;'><br></span><span style='font-family:'宋体';font-size:10.5000pt;'>y2</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>最初选择区域的右上角坐标</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>zIndex</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>插件元素的z-index值，正常情况下imgAreaSelect会自动分配，但有少数情况，有必要将其设置为制定值</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>onInit</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>function</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>插件初始化时的回调函数</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>onSelectStart</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>function</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>插件开始选择时的回调函数</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>onSelectChange</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>function</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>插件改变选区时的回调函数</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>onSelectEnd</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>function</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>弹窗显示前的回调函数</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>Callback&nbsp;函数</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-size: 10.5pt;'>回调函数&nbsp;（参见onInit、&nbsp;onSelectStart、&nbsp;onSelectChange&nbsp;和&nbsp;onSelectEnd&nbsp;参数）</span><span style='font-size: 10.5pt;'><br></span><span style='font-size: 10.5pt;'>传递两个参数。第一个参数是插件所附加到的图像的引用，第二参数是一个对象，表示当前选定内容。对象有六个属性：</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>属性</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>描述</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>x1</span><span style='font-family:'宋体';font-size:10.5000pt;'><br></span><span style='font-family:'宋体';font-size:10.5000pt;'>y1</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>所选区域的左上角的坐标</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>x2</span><span style='font-family:'宋体';font-size:10.5000pt;'><br></span><span style='font-family:'宋体';font-size:10.5000pt;'>y2</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>选定区域右下角的坐标</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>width</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>选择宽度</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>height</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>选择高度</span></p> 
+ <p><span style='font-size: 10.5pt;'>下面是一个示例将选择结束后执行的回调函数</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>1.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>$('img#photo').imgAreaSelect({&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>2.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;&nbsp;&nbsp;&nbsp;onSelectEnd:&nbsp;function&nbsp;(img,&nbsp;selection)&nbsp;{&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>3.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert('width:&nbsp;'&nbsp;+&nbsp;selection.width&nbsp;+&nbsp;';&nbsp;height:&nbsp;'&nbsp;+&nbsp;selection.height);&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>4.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>5.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>});</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>键盘支持</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-size: 10.5pt;'>如果keys&nbsp;参数设置为&nbsp;true，选择区域可以使用键盘移动/调整。默认情况下，使用下面的键</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>属性</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>描述</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>方向键</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>将选区移动&nbsp;10&nbsp;个像素</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>Shift&nbsp;+&nbsp;方向键</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>将选区移动&nbsp;1个像素</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>Ctrl&nbsp;+&nbsp;方向键</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>将选择区域调整&nbsp;10&nbsp;个像素的大小</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>Shift&nbsp;+&nbsp;Ctrl&nbsp;+&nbsp;方向键</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>将选择区域调整&nbsp;1&nbsp;个像素的大小</span></p> 
+ <p><span style='font-size: 10.5pt;'>您可以通过将键值对设置一个对象覆盖上面的默认键值的绑定。该对象可能有以下属性</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>属性</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>描述</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>arrows</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>定义方向键的行为</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>shift</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>定义&nbsp;Shift&nbsp;键的行为</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>ctrl</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>定义&nbsp;Ctrl&nbsp;键的行为</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>alt</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>定义&nbsp;Alt&nbsp;键的行为</span></p> 
+ <p><span style='font-size: 10.5pt;'>每个属性可以设置为像素&nbsp;(≥&nbsp;1）&nbsp;的选择区域,当特定键被按下时应该移动/调整大小数，或者”resize”字符串，指示密钥应该切换到调整大小模式的字符串。示例：</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>1.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>$('img#example').imgAreaSelect({&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>2.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;&nbsp;&nbsp;&nbsp;keys:&nbsp;{&nbsp;arrows:&nbsp;15,&nbsp;ctrl:&nbsp;5,&nbsp;shift:&nbsp;'resize'&nbsp;}&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>3.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>});</span></p> 
+ <p><span style='font-size: 10.5pt;'>使用这些设置，按箭头键仅将选择区域通过移动&nbsp;15&nbsp;像素，按&nbsp;Ctrl&nbsp;键将移动修改区域大小为&nbsp;5&nbsp;个像素，按住&nbsp;shift&nbsp;键将切换到调整大小。</span></p> 
+ <p><span style='font-size: 10.5pt;'>如果有多个imgAreaSelect实例的页面有初始化的键选项,在任何时刻只有一实例可以控制键盘。默认情况下，任何用户操作&nbsp;(选择区调整大小或移动）&nbsp;或&nbsp;reinvocation&nbsp;插件实例上的&nbsp;imgAreaSelect()</span><span style='font-size: 10.5pt;'><br></span><span style='font-size: 10.5pt;'>方法使键盘控制一个。</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>API&nbsp;方法</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-size: 10.5pt;'>为了简化扩展插件，并将它与其他&nbsp;web&nbsp;应用程序的组件集成提供了几个&nbsp;API&nbsp;方法。</span></p> 
+ <p><span style='font-size: 10.5pt;'>为了使用这些方法，您需要插件的对象实例。若要获取之一，调用&nbsp;imgAreaSelect()&nbsp;方法，&nbsp;将instance选项设置为&nbsp;true；</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>1.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>var&nbsp;ias&nbsp;=&nbsp;$('#photo').imgAreaSelect({&nbsp;instance:&nbsp;true&nbsp;});</span></p> 
+ <p><span style='font-size: 10.5pt;'>现在，您可以使用此对象调用公共方法。例如，要设置的预定义的选择区域</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>1.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>ias.setSelection(50,&nbsp;50,&nbsp;150,&nbsp;200,&nbsp;true);&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>2.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>ias.setOptions({&nbsp;show:&nbsp;true&nbsp;});&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>3.&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>ias.update();</span></p> 
+ <p><span style='font-size: 10.5pt;'>请注意，您应该只有在该实例完全初始化后使用，即在&nbsp;onInit&nbsp;回调函数，或已触发后随时&nbsp;onInit。</span></p> 
+ <p><span style='font-size: 10.5pt;'>可使用以下方法:</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>方法名</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>描述</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>getOptions</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>getOptions()</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>获取当参数</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>返回:</span><span style='font-family:'宋体';font-size:10.5000pt;'><br></span><span style='font-family:'宋体';font-size:10.5000pt;'>一个对象，包含当前使用中的参数</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>setOptions</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>setOptions(newOptions)</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>设置参数</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>参数:</span><span style='font-family:'宋体';font-size:10.5000pt;'><br></span><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>newOptions</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;–&nbsp;新的参数对象</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>getSelection</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>getSelection([noScale])</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>获取当前所选内容</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>参数:</span><span style='font-family:'宋体';font-size:10.5000pt;'><br></span><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>noScale</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;(optional)&nbsp;–&nbsp;如果设置为&nbsp;true，缩放不会应用于返回的选择</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>返回:</span><span style='font-family:'宋体';font-size:10.5000pt;'><br></span><span style='font-family:'宋体';font-size:10.5000pt;'>选择对象</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>setSelection</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>setSelection(x1,&nbsp;y1,&nbsp;x2,&nbsp;y2,&nbsp;[noScale])</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>设置当前所选内容</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>参数:</span><span style='font-family:'宋体';font-size:10.5000pt;'><br></span><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>x1</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;–&nbsp;选择区域的左上角顶部&nbsp;X&nbsp;坐标</span><span style='font-family:'宋体';font-size:10.5000pt;'><br></span><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>y1</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;–&nbsp;选择区域的左上角的&nbsp;Y&nbsp;坐标</span><span style='font-family:'宋体';font-size:10.5000pt;'><br></span><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>x2</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;–&nbsp;选择区域的右下角的&nbsp;x&nbsp;坐标</span><span style='font-family:'宋体';font-size:10.5000pt;'><br></span><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>y2</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;–&nbsp;选择区域右下角的&nbsp;Y&nbsp;坐标</span><span style='font-family:'宋体';font-size:10.5000pt;'><br></span><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>noScale</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;(optional)&nbsp;–&nbsp;如果设置为&nbsp;true，缩放不会应用于新的选择</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>注意：</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;此方法仅插件实例中设置选定内容的内部表示形式，&nbsp;它不会更新可视化界面。&nbsp;如果您想要显示的新选择，可以在setSelection()&nbsp;后调用&nbsp;update()&nbsp;。&nbsp;还要确保&nbsp;theshow&nbsp;选项被设置为&nbsp;true。.</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>cancelSelection</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>cancelSelection()</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>取消当前选定内容</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>注意：</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;此方法隐藏选择/外部区域。因此没有必要调用&nbsp;update()&nbsp;（作为反对&nbsp;tosetSelection())。</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>update</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>update([resetKeyPress])</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;'>更新插件元素</span></p> 
+ <p><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>参数:</span><span style='font-family:'宋体';font-size:10.5000pt;'><br></span><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>resetKeyPress</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;(optional)&nbsp;–&nbsp;如果设置为&nbsp;false，此实例&nbsp;keypress&nbsp;事件处理程序没有激活</span></p> 
+ <p><span style='font-family:'Calibri';font-size:10.5000pt;'>&nbsp;</span></p> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-517.html">jqueryJSON的解析方式</a>
+				|
+				 <a href="http://onelose.com/post-520.html">电话</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="518" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-10.html">金龙奖最佳动画短片：《茗记》</a></li>
+		<li><a href="http://onelose.com/post-139.html">异乡的过客啊，请带话给斯巴达人，说我们踏实地履行了诺言，长眠在这里</a></li>
+		<li><a href="http://onelose.com/post-547.html">CentOS安装Redis和phpRedis扩展记录</a></li>
+		<li><a href="http://onelose.com/post-256.html">PHP源码分析-变量的存储方式</a></li>
+		<li><a href="http://onelose.com/post-366.html">http://www.walu.cc/phpbook/</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

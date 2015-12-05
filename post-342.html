@@ -1,0 +1,524 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Chrome扩展及应用开发</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>Chrome扩展及应用开发</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-15 7:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/110853' style='color:rgb(61, 89, 152);'>声　明</a></h3> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/110929' style='color:rgb(61, 89, 152);'>前　言</a></h3> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/60223' style='color:rgb(61, 89, 152);'>第1章　初步接触Chrome扩展应用开发</a></h3> 
+  </div> 
+  <div> 
+   <ul> 
+    <li><a href='http://www.ituring.com.cn/article/60130' style='color:rgb(61, 89, 152);'>1.1　认识Chrome扩展及应用</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/60134' style='color:rgb(61, 89, 152);'>1.2　我的第一个Chrome扩展</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/60136' style='color:rgb(61, 89, 152);'>1.3　Manifest文件格式</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/60188' style='color:rgb(61, 89, 152);'>1.4　DOM简述</a></li> 
+   </ul> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/60224' style='color:rgb(61, 89, 152);'>第2章　Chrome扩展基础</a></h3> 
+  </div> 
+  <div> 
+   <ul> 
+    <li><a href='http://www.ituring.com.cn/article/60212' style='color:rgb(61, 89, 152);'>2.1　操作用户正在浏览的页面</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/60221' style='color:rgb(61, 89, 152);'>2.2　跨域请求</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/60242' style='color:rgb(61, 89, 152);'>2.3　常驻后台</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/60271' style='color:rgb(61, 89, 152);'>2.4　带选项页面的扩展</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/60272' style='color:rgb(61, 89, 152);'>2.5　扩展页面间的通信</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/60274' style='color:rgb(61, 89, 152);'>2.6　储存数据</a></li> 
+   </ul> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/60275' style='color:rgb(61, 89, 152);'>第3章　Chrome扩展的UI界面</a></h3> 
+  </div> 
+  <div> 
+   <ul> 
+    <li><a href='http://www.ituring.com.cn/article/60285' style='color:rgb(61, 89, 152);'>3.1　CSS简述</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/60382' style='color:rgb(61, 89, 152);'>3.2　Browser Actions</a> 
+     <ul> 
+      <li><a href='http://www.ituring.com.cn/article/60396' style='color:rgb(61, 89, 152);'>3.2.1　图标</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/64946' style='color:rgb(61, 89, 152);'>3.2.2　Popup页面</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/65645' style='color:rgb(61, 89, 152);'>3.2.3　标题和badge</a></li> 
+     </ul></li> 
+    <li><a href='http://www.ituring.com.cn/article/65657' style='color:rgb(61, 89, 152);'>3.3　右键菜单</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/65941' style='color:rgb(61, 89, 152);'>3.4　桌面提醒</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/65943' style='color:rgb(61, 89, 152);'>3.5　Omnibox</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/65947' style='color:rgb(61, 89, 152);'>3.6　Page Actions</a></li> 
+   </ul> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/65948' style='color:rgb(61, 89, 152);'>第4章　管理你的浏览器</a></h3> 
+  </div> 
+  <div> 
+   <ul> 
+    <li><a href='http://www.ituring.com.cn/article/65987' style='color:rgb(61, 89, 152);'>4.1　书签</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/66054' style='color:rgb(61, 89, 152);'>4.2　Cookies</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/66064' style='color:rgb(61, 89, 152);'>4.3　历史</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/66195' style='color:rgb(61, 89, 152);'>4.4　管理扩展与应用</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/66275' style='color:rgb(61, 89, 152);'>4.5　标签</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/66277' style='color:rgb(61, 89, 152);'>4.6　Override Pages</a></li> 
+   </ul> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/66278' style='color:rgb(61, 89, 152);'>第5章　部分高级API</a></h3> 
+  </div> 
+  <div> 
+   <ul> 
+    <li><a href='http://www.ituring.com.cn/article/72765' style='color:rgb(61, 89, 152);'>5.1　下载</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/72769' style='color:rgb(61, 89, 152);'>5.2　网络请求</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/72770' style='color:rgb(61, 89, 152);'>5.3　代理</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/72771' style='color:rgb(61, 89, 152);'>5.4　系统信息</a></li> 
+   </ul> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/72772' style='color:rgb(61, 89, 152);'>第6章　Chrome应用基础</a></h3> 
+  </div> 
+  <div> 
+   <ul> 
+    <li><a href='http://www.ituring.com.cn/article/73615' style='color:rgb(61, 89, 152);'>6.1　应用与扩展的区别</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/73949' style='color:rgb(61, 89, 152);'>6.2　更加严格的内容安全策略</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/73977' style='color:rgb(61, 89, 152);'>6.3　图标设计规范</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/74020' style='color:rgb(61, 89, 152);'>6.4　应用的生命周期</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/74022' style='color:rgb(61, 89, 152);'>6.5　应用窗口</a> 
+     <ul> 
+      <li><a href='http://www.ituring.com.cn/article/74058' style='color:rgb(61, 89, 152);'>6.5.1　创建窗口</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/74094' style='color:rgb(61, 89, 152);'>6.5.2　样式更加自由的窗口</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/74125' style='color:rgb(61, 89, 152);'>6.5.3　获取窗口</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/74127' style='color:rgb(61, 89, 152);'>6.5.4　窗口事件</a></li> 
+     </ul></li> 
+    <li><a href='http://www.ituring.com.cn/article/74156' style='color:rgb(61, 89, 152);'>6.6　编写第一个Chrome应用</a></li> 
+   </ul> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/74478' style='color:rgb(61, 89, 152);'>第7章　文件系统</a></h3> 
+  </div> 
+  <div> 
+   <ul> 
+    <li><a href='http://www.ituring.com.cn/article/74590' style='color:rgb(61, 89, 152);'>7.1　目录及文件操作对象</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/74592' style='color:rgb(61, 89, 152);'>7.2　获取目录及文件操作对象</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/74593' style='color:rgb(61, 89, 152);'>7.3　读取文件</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/74599' style='color:rgb(61, 89, 152);'>7.4　遍历目录</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/74611' style='color:rgb(61, 89, 152);'>7.5　创建及删除目录和文件</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/74687' style='color:rgb(61, 89, 152);'>7.6　写入文件</a> 
+     <ul> 
+      <li><a href='http://www.ituring.com.cn/article/74698' style='color:rgb(61, 89, 152);'>7.6.1　Typed Array</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/74703' style='color:rgb(61, 89, 152);'>7.6.2　Blob对象</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/74707' style='color:rgb(61, 89, 152);'>7.6.3　FileWriter对象</a></li> 
+     </ul></li> 
+    <li><a href='http://www.ituring.com.cn/article/74711' style='color:rgb(61, 89, 152);'>7.7　复制及移动目录和文件</a></li> 
+   </ul> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/75449' style='color:rgb(61, 89, 152);'>第8章　媒体库</a></h3> 
+  </div> 
+  <div> 
+   <ul> 
+    <li><a href='http://www.ituring.com.cn/article/75634' style='color:rgb(61, 89, 152);'>8.1　获取媒体库</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/75656' style='color:rgb(61, 89, 152);'>8.2　添加及移除媒体库</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/75667' style='color:rgb(61, 89, 152);'>8.3　更新媒体库</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/75722' style='color:rgb(61, 89, 152);'>8.4　获取媒体文件信息</a></li> 
+   </ul> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/74714' style='color:rgb(61, 89, 152);'>第9章　网络通信</a></h3> 
+  </div> 
+  <div> 
+   <ul> 
+    <li><a href='http://www.ituring.com.cn/article/74722' style='color:rgb(61, 89, 152);'>9.1　UDP协议</a> 
+     <ul> 
+      <li><a href='http://www.ituring.com.cn/article/74723' style='color:rgb(61, 89, 152);'>9.1.1　建立与关闭连接</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/74724' style='color:rgb(61, 89, 152);'>9.1.2　发送与接收数据</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/74725' style='color:rgb(61, 89, 152);'>9.1.3　多播</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/74755' style='color:rgb(61, 89, 152);'>9.1.4　获取socket和组</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/74756' style='color:rgb(61, 89, 152);'>9.1.5　局域网聊天应用</a></li> 
+     </ul></li> 
+    <li><a href='http://www.ituring.com.cn/article/74726' style='color:rgb(61, 89, 152);'>9.2　TCP协议</a> 
+     <ul> 
+      <li><a href='http://www.ituring.com.cn/article/74727' style='color:rgb(61, 89, 152);'>9.2.1　建立与关闭连接</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/74728' style='color:rgb(61, 89, 152);'>9.2.2　发送与接收数据</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/75121' style='color:rgb(61, 89, 152);'>9.2.3　获取socket</a></li> 
+     </ul></li> 
+    <li><a href='http://www.ituring.com.cn/article/74729' style='color:rgb(61, 89, 152);'>9.3　TCP Server</a> 
+     <ul> 
+      <li><a href='http://www.ituring.com.cn/article/74730' style='color:rgb(61, 89, 152);'>9.3.1　建立与关闭连接</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/74731' style='color:rgb(61, 89, 152);'>9.3.2　监听数据</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/75126' style='color:rgb(61, 89, 152);'>9.3.3　获取socket</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/75136' style='color:rgb(61, 89, 152);'>9.3.4　HTTP Server</a></li> 
+     </ul></li> 
+    <li><a href='http://www.ituring.com.cn/article/74732' style='color:rgb(61, 89, 152);'>9.4　WebSocket</a></li> 
+   </ul> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/75448' style='color:rgb(61, 89, 152);'>第10章　其他接口</a></h3> 
+  </div> 
+  <div> 
+   <ul> 
+    <li><a href='http://www.ituring.com.cn/article/74733' style='color:rgb(61, 89, 152);'>10.1　操作USB设备</a> 
+     <ul> 
+      <li><a href='http://www.ituring.com.cn/article/75139' style='color:rgb(61, 89, 152);'>10.1.1　发现设备</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/75141' style='color:rgb(61, 89, 152);'>10.1.2　操作接口</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/75147' style='color:rgb(61, 89, 152);'>10.1.3　操作传输</a></li> 
+     </ul></li> 
+    <li><a href='http://www.ituring.com.cn/article/75149' style='color:rgb(61, 89, 152);'>10.2　串口通信</a> 
+     <ul> 
+      <li><a href='http://www.ituring.com.cn/article/75200' style='color:rgb(61, 89, 152);'>10.2.1　建立连接</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/75201' style='color:rgb(61, 89, 152);'>10.2.2　发送和接收数据</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/75202' style='color:rgb(61, 89, 152);'>10.2.3　获取连接及状态</a></li> 
+     </ul></li> 
+    <li><a href='http://www.ituring.com.cn/article/75450' style='color:rgb(61, 89, 152);'>10.3　文字转语音</a> 
+     <ul> 
+      <li><a href='http://www.ituring.com.cn/article/75724' style='color:rgb(61, 89, 152);'>10.3.1　朗读文字</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/75725' style='color:rgb(61, 89, 152);'>10.3.2　获取声音</a></li> 
+      <li><a href='http://www.ituring.com.cn/article/75726' style='color:rgb(61, 89, 152);'>10.3.3　获取朗读状态及监听事件</a></li> 
+     </ul></li> 
+    <li><a href='http://www.ituring.com.cn/article/75451' style='color:rgb(61, 89, 152);'>10.4　系统信息</a></li> 
+   </ul> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/75203' style='color:rgb(61, 89, 152);'>附录A　制作Chrome主题</a></h3> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/75204' style='color:rgb(61, 89, 152);'>附录B　i18n</a></h3> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/75453' style='color:rgb(61, 89, 152);'>附录C　初识AngularJS</a></h3> 
+  </div> 
+  <div> 
+   <ul> 
+    <li><a href='http://www.ituring.com.cn/article/75731' style='color:rgb(61, 89, 152);'>C.1　视图</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/75732' style='color:rgb(61, 89, 152);'>C.2　$scope</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/75734' style='color:rgb(61, 89, 152);'>C.3　module与路由</a></li> 
+   </ul> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: MicrosoftYaHei, 微软雅黑, Arial, Tahoma, Helvetica, Georgia, sans-serif, STXihei, 华文黑体, Hei, 'Hiragino Kaku Gothic Pro', SimSun; font-size: 12px;'> 
+  <div> 
+   <h3 style='color:inherit;font-family:inherit;font-size:16px;font-weight:normal;'><a href='http://www.ituring.com.cn/article/75452' style='color:rgb(61, 89, 152);'>附录D　Chrome扩展及应用完整API列表</a></h3> 
+  </div> 
+  <div> 
+   <ul> 
+    <li><a href='http://www.ituring.com.cn/article/75729' style='color:rgb(61, 89, 152);'>D.1　Chrome扩展全部API</a></li> 
+    <li><a href='http://www.ituring.com.cn/article/75730' style='color:rgb(61, 89, 152);'>D.2　Chrome应用全部API</a></li> 
+   </ul> 
+  </div> 
+ </div> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-303.html">linux下查找文件或者内容常有命令</a>
+				|
+				 <a href="http://onelose.com/post-344.html">Larbin的安装与配置</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="342" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-109.html">大叔</a></li>
+		<li><a href="http://onelose.com/post-359.html">ZEND_FN</a></li>
+		<li><a href="http://onelose.com/post-526.html">iRedMail</a></li>
+		<li><a href="http://onelose.com/post-297.html">关于mysql的substring_index函数</a></li>
+		<li><a href="http://onelose.com/post-425.html">NODE.JS应用入门之中文分词模块（基于Sphinx）</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

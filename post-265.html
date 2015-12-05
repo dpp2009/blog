@@ -1,0 +1,425 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>PHP安装与使用VLD查看opcode代码【PHP安装第三方扩展的方法】</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="需要分析PHP代码的性能，或者说实现同样功能的代码到底哪个更好呢？或者说想知道..." />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>PHP安装与使用VLD查看opcode代码【PHP安装第三方扩展的方法】</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-18 7:00 Wednesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>需要分析PHP代码的性能，或者说实现同样功能的代码到底哪个更好呢？或者说想知道底层的实现可以使用VLD查看opcode</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><strong>下载与安装VLD</strong></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><span style='background-color:rgb(255, 255, 0);'># wget&nbsp;</span><a href='http://pecl.php.net/get/vld-0.10.1.tgz' style='color:rgb(255, 153, 0);'><span style='background-color:rgb(255, 255, 0);'>http://pecl.php.net/get/vld-0.11.2.tgz</span></a><br><span style='background-color:rgb(255, 255, 0);'># tar zxvf vld-0.11.2.tgz<br># cd ./vld-0.11.2<br># /usr/local/php/bin/phpize<span style='background-color:rgb(255, 255, 255);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 或者直接phpize</span><br># ./configure --with-php-config=/usr/local/php/bin/php-config --enable-vld<br># make &amp;&amp; make install</span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>---------------------------------</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>编辑php.ini文<wbr>件激活vld扩展：</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>php.ini位置</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><span style='background-color:rgb(255, 255, 0);'>#cd /usr/local/php/lib</span><br></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>增加<br>extension=<wbr>vld.so</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>重启Apache：<br><span style='background-color:rgb(255, 255, 0);'># /usr/local/apache2/bin/apachectl restart<br></span>---------------------------------&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>查看phpinfo()信息</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><img src='http://note.youdao.com/yws/res/2573/4B6F11848F99411AB13005071E8C7F11' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>--------------------------------</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>至此,VLD就安装完了。写个简单的test.php</p> 
+ <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+  <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+   <b>[php]</b>&nbsp; 
+   <a title='view plain' href='http://blog.csdn.net/21aspnet/article/details/7002644#' style='color: rgb(160, 160, 160);'>view plain</a> 
+   <a title='copy' href='http://blog.csdn.net/21aspnet/article/details/7002644#' style='color: rgb(160, 160, 160);'>copy</a> 
+  </div> 
+  <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'><span style='color: rgb(221, 0, 0);'>$a</span>=<span style='color: blue;'>'123'</span>;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'>echo&nbsp;<span style='color: rgb(221, 0, 0);'>$a</span>;&nbsp;&nbsp;</span></li> 
+  </ol> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><span style='background-color:rgb(255, 255, 0);'># php -dvld.active=1 ./test.php</span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>如果没有设置php环境变量的话<br><br><span style='background-color:rgb(255, 255, 0);'>#/usr/local/php/bin/php&nbsp; -dvld.active=1&nbsp; test.php<br></span><br></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>查看结果</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><img src='http://note.youdao.com/yws/res/2574/D5015F7FD95840E391DD4A44BE3BFBF1' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>如上为VLD输出的PHP代码生成的中间代码的信息，说明如下：</p> 
+ <ul style='background-color: rgb(255, 255, 255); font-family: Arial;'> 
+  <li>Branch analysis from position 这条信息多在分析数组时使用。</li> 
+  <li>Return found 是否返回，这个基本上有都有。</li> 
+  <li>filename 分析的文件名</li> 
+  <li>function name 函数名，针对每个函数VLD都会生成一段如上的独立的信息，这里显示当前函数的名称</li> 
+  <li>number of ops 生成的操作数</li> 
+  <li>compiled vars 编译期间的变量，这些变量是在PHP5后添加的，它是一个缓存优化。这样的变量在PHP源码中以IS_CV标记。</li> 
+  <li>op list 生成的中间代码的变量列表</li> 
+ </ul> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>使用-dvld.active参数输出的是VLD默认设置，如果想看更加详细的内容。可以使用-dvld.verbosity参数。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>#php -dvld.active=1 -dvld.verbosity=3 text.php</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>-dvld.verbosity=3是VLD在当前版本可以显示的最详细的信息.</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>如果我们只是想要看输出的中间代码，并不想执行这段PHP代码，可以使用-dvld.execute=0来禁用代码的执行</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>#php -dvld.active=1 -dvld.execute=0 text.php</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>VLD扩展的参数列表：</p> 
+ <ul style='background-color: rgb(255, 255, 255); font-family: Arial;'> 
+  <li>-dvld.active 是否在执行PHP时激活VLD挂钩，默认为0，表示禁用。可以使用-dvld.active=1启用。</li> 
+  <li>-dvld.skip_prepend 是否跳过php.ini配置文件中<a href='http://php.net/auto-prepend-file' style='color:rgb(18, 153, 218);'>auto_prepend_file</a>指定的文件， 默认为0，即不跳过包含的文件，显示这些包含的文件中的代码所生成的中间代码。此参数生效有一个前提条件：-dvld.execute=0</li> 
+  <li>-dvld.skip_append 是否跳过php.ini配置文件中<a href='http://php.net/auto-append-file' style='color:rgb(18, 153, 218);'>auto_append_file</a>指定的文件， 默认为0，即不跳过包含的文件，显示这些包含的文件中的代码所生成的中间代码。此参数生效有一个前提条件：-dvld.execute=0</li> 
+  <li>-dvld.execute 是否执行这段PHP脚本，默认值为1，表示执行。可以使用-dvld.execute=0，表示只显示中间代码，不执行生成的中间代码。</li> 
+  <li>-dvld.format 是否以自定义的格式显示，默认为0，表示否。可以使用-dvld.format=1，表示以自己定义的格式显示。这里自定义的格式输出是以-dvld.col_sep指定的参数间隔</li> 
+  <li>-dvld.col_sep 在-dvld.format参数启用时此函数才会有效，默认为 “\t”。</li> 
+  <li>-dvld.verbosity 是否显示更详细的信息，默认为1，其值可以为0,1,2,3 其实比0小的也可以，只是效果和0一样，比如0.1之类，但是负数除外，负数和效果和3的效果一样 比3大的值也是可以的，只是效果和3一样。</li> 
+  <li>-dvld.save_dir 指定文件输出的路径，默认路径为/tmp。</li> 
+  <li>-dvld.save_paths 控制是否输出文件，默认为0，表示不输出文件</li> 
+  <li>-dvld.dump_paths 控制输出的内容，现在只有0和1两种情况，默认为1,输出内容</li> 
+ </ul> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><strong>使用VLD比较代码差异</strong></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>代码text1.php</p> 
+ <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+  <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+   <b>[php]</b>&nbsp; 
+   <a title='view plain' href='http://blog.csdn.net/21aspnet/article/details/7002644#' style='color: rgb(160, 160, 160);'>view plain</a> 
+   <a title='copy' href='http://blog.csdn.net/21aspnet/article/details/7002644#' style='color: rgb(160, 160, 160);'>copy</a> 
+  </div> 
+  <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'><span style='color: rgb(221, 0, 0);'>$var</span>&nbsp;=&nbsp;111;&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'><span style='color: rgb(221, 0, 0);'>$str</span>&nbsp;=&nbsp;<span style='color: blue;'>'AAA&nbsp;'</span>&nbsp;.&nbsp;<span style='color: rgb(221, 0, 0);'>$var</span>&nbsp;.&nbsp;<span style='color: blue;'>'&nbsp;BBB'</span>;&nbsp;&nbsp;</span></li> 
+  </ol> 
+ </div> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Arial;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Arial;'>代码text2.php</span> 
+ <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+  <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+   <b>[php]</b>&nbsp; 
+   <a title='view plain' href='http://blog.csdn.net/21aspnet/article/details/7002644#' style='color: rgb(160, 160, 160);'>view plain</a> 
+   <a title='copy' href='http://blog.csdn.net/21aspnet/article/details/7002644#' style='color: rgb(160, 160, 160);'>copy</a> 
+  </div> 
+  <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'><span style='color: rgb(221, 0, 0);'>$var</span>&nbsp;=&nbsp;111;&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'><span style='color: rgb(221, 0, 0);'>$str</span>&nbsp;=&nbsp;<span style='color: blue;'>'AAA&nbsp;$var&nbsp;BBB'</span>;&nbsp;&nbsp;</span></li> 
+  </ol> 
+ </div> 
+ <img src='http://note.youdao.com/yws/res/2572/598B4D36F2A542ACAAD7F8534C71293E' style='background-color: rgb(255, 255, 255); font-family: Arial;' data-media-type='image'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Arial;'> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>从结果很清晰的看出第一段代码比第二段代码多了concat</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>第一个连接操作，将“test string begin ”和$var连接起来，得到“AAA 111”，然后再执行第二个连接操作，将上一个操作得到的结果“AAA 111”和” BBB”连接起来，并将结果存储在另一个临时变量，最后将第二个连接操作的结果赋值给$str。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>连接操作对应的opcode为ZEND_CONCAT，对于所给的两个操作数，其最终通过concat_function函数将两个字符串连接起来，如果所给的变量的类型不是字符串，则会通过zend_make_printable_zval将其转换成字符串。concat_function函数会根据两个字符串的长度重新分配内存，并执行两次拷贝操作，将两个字符串拷贝到新的内存空间。这里针对两个字符串相同的情况有一个特殊处理。</p> 
+ <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+  <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+   <b>[cpp]</b>&nbsp; 
+   <a title='view plain' href='http://blog.csdn.net/21aspnet/article/details/7002644#' style='color: rgb(160, 160, 160);'>view plain</a> 
+   <a title='copy' href='http://blog.csdn.net/21aspnet/article/details/7002644#' style='color: rgb(160, 160, 160);'>copy</a> 
+  </div> 
+  <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'><span style='color: rgb(0, 102, 153); font-weight: bold;'>if</span>&nbsp;(result==op1)&nbsp;{&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;special&nbsp;case,&nbsp;perform&nbsp;operations&nbsp;on&nbsp;result&nbsp;*/</span>&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;uint&nbsp;res_len&nbsp;=&nbsp;Z_STRLEN_P(op1)&nbsp;+&nbsp;Z_STRLEN_P(op2);&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;Z_STRVAL_P(result)&nbsp;=&nbsp;erealloc(Z_STRVAL_P(result),&nbsp;res_len+1);&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;memcpy(Z_STRVAL_P(result)+Z_STRLEN_P(result),&nbsp;Z_STRVAL_P(op2),&nbsp;Z_STRLEN_P(op2));&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;Z_STRVAL_P(result)[res_len]=0;&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;Z_STRLEN_P(result)&nbsp;=&nbsp;res_len;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'>}&nbsp;<span style='color: rgb(0, 102, 153); font-weight: bold;'>else</span>&nbsp;{&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;Z_STRLEN_P(result)&nbsp;=&nbsp;Z_STRLEN_P(op1)&nbsp;+&nbsp;Z_STRLEN_P(op2);&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;Z_STRVAL_P(result)&nbsp;=&nbsp;(<span style='color: rgb(46, 139, 87); font-weight: bold;'>char</span>&nbsp;*)&nbsp;emalloc(Z_STRLEN_P(result)&nbsp;+&nbsp;1);&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;memcpy(Z_STRVAL_P(result),&nbsp;Z_STRVAL_P(op1),&nbsp;Z_STRLEN_P(op1));&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;memcpy(Z_STRVAL_P(result)+Z_STRLEN_P(op1),&nbsp;Z_STRVAL_P(op2),&nbsp;Z_STRLEN_P(op2));&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;Z_STRVAL_P(result)[Z_STRLEN_P(result)]&nbsp;=&nbsp;0;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;Z_TYPE_P(result)&nbsp;=&nbsp;IS_STRING;&nbsp;&nbsp;</span></li> 
+   <li style='background-color: rgb(248, 248, 248);'><span style='color: black;'>}&nbsp;&nbsp;</span></li> 
+  </ol> 
+ </div> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Arial;'> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>而直接在字符串中插入变量，其所有的操作都是添加操作，将字符串添加到返回值，将变量添加到返回值，<br>所有的结果返回都是在一个临时变量中，如我们的示例，首先会将”AAA “添加到临时变量，然后将临时变量和$var变量添加到临时变量，之后将临时变量和” BBB”添加到临时变量，最后将此此时变量赋值给$str。这里添加将字符串添加到临时变量，其对应的opcode为ZEND_ADD_STRING，将变量添加到临时变量，其对应的opcode为ZEND_ADD_VAR，虽然这两个操作的opcode不同，但其最终调用都是add_string_to_string，他们所不同的调用此函数的第三个参数，一个是操作码存储的ZVAL变量，一个是通过变更列表获取的ZVAL变量。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>如果觉得需要看C语音级别的php源码，可以参考：<a href='http://blog.csdn.net/21aspnet/article/details/8195119' target='_blank' style='color:rgb(255, 153, 0);'>使用strace查看C语言级别的php源码</a><br></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>如果你要查看memcpy可以去这个网站</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><a href='http://linux.about.com/od/commands/l/blcmdl.htm' style='color:rgb(255, 153, 0);'>http://linux.about.com/od/commands/l/blcmdl.htm</a></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>搜索结果在：<a href='http://linux.about.com/library/cmd/blcmdl3_memcpy.htm' style='color:rgb(255, 153, 0);'>http://linux.about.com/library/cmd/blcmdl3_memcpy.htm</a></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><a href='http://linux.about.com/library/cmd/blcmdl3_memcpy.htm' style='color:rgb(255, 153, 0);'><img src='http://note.youdao.com/yws/res/2571/A940391875E342238A849D23D4CFBF8F' data-media-type='image'><br></a></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>========================</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>延伸阅读参考：</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><a href='http://www.phppan.com/2011/05/vld-extension/' style='color:rgb(255, 153, 0);'>http://www.phppan.com/2011/05/vld-extension/</a></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><a title='Permanent Link to PHP中的字符串连接操作' href='http://www.phppan.com/2012/03/php-string-concat/' style='color:rgb(255, 153, 0);'>PHP中的字符串连接操作</a></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><a href='http://blog.csdn.net/phpkernel/article/details/5718519' style='color:rgb(255, 153, 0);'>http://blog.csdn.net/phpkernel/article/details/5718519</a></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><a href='http://www.laruence.com/2008/08/19/338.html' style='color:rgb(255, 153, 0);'>http://www.laruence.com/2008/08/19/338.html</a></p> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-197.html">TIPI: 深入理解PHP内核PDF最新版下载</a>
+				|
+				 <a href="http://onelose.com/post-273.html">wkhtmltopdf中文参数详解</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="265" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-86.html">用html实现隐藏url跳转</a></li>
+		<li><a href="http://onelose.com/post-255.html">Ubuntu管理开机启动项（服务）sysv-rc-conf</a></li>
+		<li><a href="http://onelose.com/post-472.html">GIT查看、删除、重命名远程分支和TAG</a></li>
+		<li><a href="http://onelose.com/post-339.html">centos下安装Scrapy</a></li>
+		<li><a href="http://onelose.com/post-88.html">我们的爱</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

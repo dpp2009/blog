@@ -1,0 +1,387 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Redis数据库安全手册</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>Redis数据库安全手册</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-4-13 6:00 Monday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <h2 style='background-color:rgb(255, 255, 255);color:rgb(51, 51, 51);font-family:微软雅黑;font-size:30px;font-style:normal;font-weight:bold;text-align:start;'></h2> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:center;'><img data-original='http://image.3001.net/images/20150312/1426129014236.jpg!small' title='redis.jpg' src='http://note.youdao.com/yws/res/2881/445CCB436FF748298CD9ACEABA2CA42E' data-media-type='image'></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(0, 176, 80);'><strong style='font-weight:700;'>Redis是一个高性能的key-value数据库，这两年可谓火的不行。而Redis的流行也带来一系列安全问题，不少攻击者都通过Redis发起攻击。本文将讲解这方面的内容，包括Redis提供的访问控制和代码安全问题，以及可以由恶意输入和其他类似的手段触发的攻击。</strong></span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(0, 0, 0);'><strong style='font-weight:700;'><span style='font-size:18px;'>Redis通用安全模块</span></strong></span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>Redis被设计成只能由可信环境的可信机器访问。这意味着将它直接暴露在互联网或者其他可以由不可信机器通过TCP或者UNIX SCOKET直接连接的环境中。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>例如，在通常的WEB应用程序使用Redis作为数据库，cache,或者消息系统。WEB应用程序的客户端将查询Redis生成页面或执行请求或由用户触发。在这个例子中，WEB应用链接了Redis和不可信的客户端。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>这是一个特定的例子，但是一般来说，不授信的Redis链接应该被监控，验证用户输入，再决定执行什么样的操作。因为，Redis追求的不是最大的安全性，而是简洁与高效。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(0, 0, 0);font-size:18px;'><strong style='font-weight:700;'>网络安全</strong></span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>Redis链接应该对每个受信的客户端开放。所以，服务器运行的Redis应该只被使用Redis应用的计算机连接。在大多数直接暴露在互联网的单个计算机，例如，虚拟化的LINUX实例（LINODE，EC2，…..）</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>Redis端口应该被防火墙阻止来自外部的访问。客户端应该仍然能通过服务器的本地回环接口访问Redis。<span style='color:rgb(0, 176, 80);'>注意，通过在Redis.CONF添加下面一句就可以绑定本地回环，阻止外网访问了。</span></p> 
+ <pre style='background-color:rgb(247, 247, 249);color:rgb(51, 51, 51);font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(72, 72, 76);'>bind&nbsp;127.0.0.1</span></pre> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(0, 0, 0);'><strong style='font-weight:700;'>因为Redis的特性，没有对外网访问进行限制会是一个很重大的安全问题。例如一条简单的FLUSHALL命令就能被攻击者用来删除整个数据设置。</strong></span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(0, 0, 0);'><strong style='font-weight:700;'><span style='font-size:18px;'>身份验证机制</span></strong></span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>如果你们不想使用访问限制的话，Redis提供了一个身份验证功能，可以通过编辑Redis.CONF文件来实现它。<br></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>如果开启了身份验证功能，Redis将拒绝所有的未身份验证的客户端的所有操作。客户端可以发送AUTH命令+密码来验证自己。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>密码是由系统管理员在Redis。CONFIG文件中设置的明文密码，为了防止暴力破解攻击他应该足够长。原因有两个：</p> 
+ <pre style='background-color:rgb(247, 247, 249);color:rgb(51, 51, 51);font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(72, 72, 76);'>Redis的执行效率非常快，外部设备每秒可以测试相当数量的密码
+Redis的密码是存储在Redis.conf文件和内部客户端的配置中的，因此不需要管理员记住。所以可以使用相当长的密码。</span></pre> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>身份验证的目标是提供第二层的安全保障。这样当防火墙或者其他第一层的系统安全设置失效的话，一个外部设备在没有密码的情况下仍然不能访问redia。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>AUTH命令像其他的redia命令一样是不加密传输的，所以他不能阻止攻击者在内网的窃听。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(0, 0, 0);'><strong style='font-weight:700;'><span style='font-size:18px;'>数据加密支持</span></strong></span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>Redis不支持加密。为了受信的客户端可以以加密形式通过互联网可以采用加密协议（SSL）传输数据。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(0, 0, 0);'><strong style='font-weight:700;'><span style='font-size:18px;'>禁用特定的命令</span></strong></span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>禁用Redis的一些命令是可行的，或者将他们改名。这样来自客户端的请求就只能执行有限的命令。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>例如，虚拟的服务器提供商可能提供托管的Redis服务。在这种情况下，普通用户不应该能够调用Redis的配置命令来修改该配置实例，但提供和删除服务的系统能够有这样的权限。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'><strong style='font-weight:700;'>在这种情况下，从命令表中重命名命令或者完全隐藏命令是可能的。这个功能可用在Redis.conf配置文件里做为一个声明。例如：</strong></p> 
+ <pre style='background-color:rgb(247, 247, 249);color:rgb(51, 51, 51);font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(72, 72, 76);'>rename-command&nbsp;CONFIG&nbsp;b840fc02d524045429941cc15f59e41cb7be6c52</span></pre> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'><strong style='font-weight:700;'>在上面的例子里，CONFIG命令被更名为一个更为陌生的名字。它也完全可以被重命名成空字符串，例如：</strong></p> 
+ <pre style='background-color:rgb(247, 247, 249);color:rgb(51, 51, 51);font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(72, 72, 76);'>rename-command&nbsp;CONFIG&nbsp;''</span></pre> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(0, 0, 0);'><strong style='font-weight:700;'><span style='font-size:18px;'>由精密的输入触发的攻击</span></strong></span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>还有一类攻击，攻击者即使没有获得数据库的访问权限也可以从外部发起攻击。一个此类攻击的例子是通过Redis的内部函数向Redis里插入数据。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>攻击者可以通过一个web表单将一组字符串提交到一个hash的同一个堆栈，引起时间复杂度从O（1）到O(n) ,消耗更多的CPU资源，最终导致DOS攻击。为了防止这种特定的攻击方式，Redis为每个执行请求随机分配hash。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>Redis使用快速排序算法来执行SORT命令。目前，这个算法不是随机的，所以通过对输入的精细控制可能触发命令的二次执行。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(0, 0, 0);'><strong style='font-weight:700;'><span style='font-size:18px;'>字符串转义和NOSQL注入</span></strong></span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>Redis协议里面没有字符串转义相关的内容，所以在通常情况下是不存在注入的。Redis协议使用的是前缀长度的字符串，完全二进制，保证安全性。LUA脚本执行EVAL和EVALSHA命令时遵循相同的规则，因此这些命令也是安全的。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>然而这回事一个非常奇怪的用例，应用程序应该避免使用LUA脚本获取来自非信任源的字符串。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(0, 0, 0);'><strong style='font-weight:700;'><span style='font-size:18px;'>代码安全性</span></strong></span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>在经典的Redis 设置里，客户端可以执行所有的命令集，但是获得的用例应该永远不能导致有控制Redis所在系统的能力。内在的，Redis使用众所周知的安全代码规范来防止缓冲区溢出，格式错误和其它内存损坏问题。然而，客户端拥有控制使用服务器配置命令CONFIG的能力使得其能够改变程序的工作目录和转储文件的名称。这允许客户端写RDB Redis在随机路径写文件。这是一个安全问题，容易导致客户端有Redis运行非法代码的能力。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>Redis不需要root权限运行，也不建议以root权限运行。Redis的作者正在调查添加一条新的配置参数来防止CONFIG SET/GET 目录和其他类似的运行时配置的指令的可能性。这会阻止客户端强制服务器在任意位置写Redis转储文件。</p> 
+ <h2 style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:30px;font-style:normal;font-weight:500;text-align:start;'><span style='color:rgb(0, 0, 0);'>GPG key</span></h2> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'>安全研究人员可以在Github提交问题，当你感觉这个安全问题真的很重要，在文档的末尾加上GPG标识。</p> 
+ <pre style='background-color:rgb(245, 245, 245);color:rgb(51, 51, 51);font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>-----BEGIN&nbsp;PGP&nbsp;PUBLIC&nbsp;KEY&nbsp;BLOCK-----
+Version:&nbsp;GnuPG&nbsp;v1.4.13&nbsp;(Darwin)
+
+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
+vI1sAEeV6ZM/uc4CDI3E2TxEbQ==</pre> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(0, 0, 0);'><strong style='font-weight:700;'>Key fingerprint</strong></span></p> 
+ <pre style='background-color:rgb(245, 245, 245);color:rgb(51, 51, 51);font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>pub&nbsp;&nbsp;&nbsp;4096R/0E5C88D6&nbsp;2013-11-07&nbsp;[expires:&nbsp;2063-10-26]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key&nbsp;fingerprint&nbsp;=&nbsp;E5F3&nbsp;DA80&nbsp;35F0&nbsp;2EC1&nbsp;47F9&nbsp;&nbsp;020F&nbsp;3181&nbsp;3728&nbsp;0E5C&nbsp;88D6
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Salvatore&nbsp;Sanfilippo&nbsp;&lt;antirez@gmail.com&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sub&nbsp;&nbsp;&nbsp;4096R/3B34D15F&nbsp;2013-11-07&nbsp;[expires:&nbsp;2063-10-26]</pre> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(88, 88, 88);font-family:微软雅黑;font-size:14px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(0, 0, 0);'><strong style='font-weight:700;'>[</strong></span><a href='http://redis.io/topics/security#code-security' target='_blank' style='background-color:0px 0px;color:rgb(6, 154, 239);'><strong style='font-weight:700;'>原文地址</strong></a><span style='color:rgb(0, 0, 0);'><strong style='font-weight:700;'>，ubuntu翻译及编辑，转载须注明来自FreeBuf黑客与极客（FreeBuf.COM）]</strong></span></p> 
+ <br> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">					 <a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="204" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-441.html">preventDefault()方法</a></li>
+		<li><a href="http://onelose.com/post-477.html">getQueryString</a></li>
+		<li><a href="http://onelose.com/post-388.html">linux用grep在文件中查找字符串并显示字符串在文件中的行号</a></li>
+		<li><a href="http://onelose.com/post-226.html">MySQL UDF（自定义函数）</a></li>
+		<li><a href="http://onelose.com/post-67.html">sunshine</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

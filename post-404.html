@@ -1,0 +1,653 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>#zhb索引#byE.Young&lt;yangyi@1000plan.org&gt;#date2014.05.</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="#zhb索引  #by E.Young   yangyi@1000plan.org   #da..." />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>#zhb索引#byE.Young&lt;yangyi@1000plan.org&gt;#date2014.05.</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-12-18 7:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div>
+  #zhb索引 
+ <br>#by E.Young&lt; 
+ <a href='mailto:yangyi@1000plan.org'>yangyi@1000plan.org</a>&gt; 
+ <br>#date 2014.05.13 
+ <br> 
+ <br>######源定义 及 索引定义###### 
+ <br>#base source 
+ <br>source base { 
+ <br> type = mysql 
+ <br> sql_host = localhost 
+ <br> sql_user = qrjh 
+ <br> sql_pass = qrjh1000plan 
+ <br> sql_db = qrjh_zhb 
+ <br> sql_port = 3306 
+ <br> sql_query_pre = SET NAMES utf8 
+ <br> sql_query_pre = set session query_cache_type=OFF #清缓存 
+ <br>} 
+ <br> 
+ <br>##用户主数据源## 
+ <br>source user_main : base 
+ <br>{ 
+ <br> #建立索引之前 把ts_user中最大用户ID写入到计数器表中 
+ <br> sql_query_pre = replace into sph_counter (`key`,`max_id`) values ( 'zhb_user' , (select max(uid) from ts_user) ) 
+ <br> 
+ <br> #sql_query = SELECT uid,uname,ename,login,title,intro,trade_str,trade_id,location,search_key,identity,last_login_time,ctime FROM ts_user where identity&lt;5 and is_audit=1 AND is_init=1 AND `uid`&lt;=(select max_id from sph_counter where `key`='zhb_user') 
+ <br> sql_query = SELECT uid,uname,ename,login,title,intro,trade_str,trade_id,location,search_key,identity,last_login_time,ctime FROM ts_user where is_audit=1 AND is_init=1 AND `uid`&lt;=(select max_id from sph_counter where `key`='zhb_user') 
+ <br> #sql_query第一列id需为整数 
+ <br> #uname、search_key...作为字符串/文本字段，被全文索引 
+ <br> 
+ <br> sql_attr_uint = identity #从SQL读取到的值必须为整数 
+ <br> sql_attr_uint = trade_id #从SQL读取到的值必须为整数 
+ <br> sql_attr_timestamp = ctime #从SQL读取到的值必须为整数，作为时间属性 
+ <br> sql_attr_timestamp = last_login_time #从SQL读取到的值必须为整数，作为时间属性 
+ <br> 
+ <br> sql_query_info_pre = SET NAMES utf8 #命令行查询时，设置正确的字符集 
+ <br> sql_query_info = SELECT * FROM ts_user WHERE uid=$id #命令行查询时，从数据库读取原始数据信息 
+ <br>} 
+ <br> 
+ <br>##用户增量数据源## 
+ <br>source user_delta : user_main { 
+ <br> sql_query_pre = SET NAMES utf8 
+ <br> #sql_query = SELECT uid,uname,ename,login,title,trade_str,trade_id,location,search_key,identity,last_login_time,ctime FROM ts_user where identity&lt;5 and is_audit=1 AND is_init=1 AND `uid`&gt;(select max_id from sph_counter where `key`='zhb_user') 
+ <br> sql_query = SELECT uid,uname,ename,login,title,intro,trade_str,trade_id,location,search_key,identity,last_login_time,ctime FROM ts_user where is_audit=1 AND is_init=1 AND `uid`&gt;(select max_id from sph_counter where `key`='zhb_user') 
+ <br>} 
+ <br> 
+ <br>##用户主索引## 
+ <br>index user_main 
+ <br>{ 
+ <br> source = user_main #对应的source名称 
+ <br> path = /usr/local/coreseek/var/data/zhb/user_main #请修改为实际使用的绝对路径，例如：/usr/local/coreseek/var/... 
+ <br> docinfo = extern 
+ <br> mlock = 0 
+ <br> morphology = none 
+ <br> min_word_len = 1 
+ <br> html_strip = 0 
+ <br> 
+ <br> #中文分词配置，详情请查看： 
+ <a href='http://www.coreseek.cn/products-install/coreseek_mmseg/'>http://www.coreseek.cn/products-install/coreseek_mmseg/</a> 
+ <br> charset_dictpath = /usr/local/mmseg3/etc/ #BSD、Linux环境下设置，/符号结尾 
+ <br> #charset_dictpath = etc/ #Windows环境下设置，/符号结尾，最好给出绝对路径，例如：C:/usr/local/coreseek/etc/... 
+ <br> charset_type = zh_cn.utf-8 
+ <br>} 
+ <br> 
+ <br>##用户增量索引## 
+</div> 
+<div>
+  ##用户增量索引## 
+</div> 
+<div>
+  index user_delta : user_main 
+</div> 
+<div>
+  { 
+</div> 
+<div>
+  &nbsp; &nbsp; source &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;= user_delta &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;#对应的source名称 
+</div> 
+<div>
+  &nbsp; &nbsp; path &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;= /usr/local/coreseek/var/data/zhb/user_delta #索引存放的位置，路径为var/data 
+</div> 
+<div>
+  } 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div>
+  ##用户昵称主数据源## 
+</div> 
+<div>
+  source user_uname_main : base 
+</div> 
+<div>
+  { 
+</div> 
+<div>
+  &nbsp; &nbsp; #建立索引之前 把ts_user中最大用户ID写入到计数器表中 
+</div> 
+<div>
+  &nbsp; &nbsp; sql_query_pre &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; = replace into sph_counter (`key`,`max_id`) values ( &nbsp;'zhb_user_uname' , (select max(uid) from ts_user) ) 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div>
+  &nbsp; &nbsp; sql_query &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; = SELECT uid,uname,trade_id,identity,last_login_time,ctime FROM ts_user where identity&lt;5 and is_audit=1 AND is_init=1 AND `uid`&lt;=(select max_id from sph_counter where `key`='zhb_user_uname') 
+</div> 
+<div>
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #sql_query第一列id需为整数 
+</div> 
+<div>
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #uname、search_key...作为字符串/文本字段，被全文索引 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div>
+  &nbsp; &nbsp; sql_attr_uint &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;= identity &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #从SQL读取到的值必须为整数 
+</div> 
+<div>
+  &nbsp; &nbsp; sql_attr_uint &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;= trade_id &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #从SQL读取到的值必须为整数 
+</div> 
+<div>
+  &nbsp; &nbsp; sql_attr_timestamp &nbsp; &nbsp; &nbsp; &nbsp;= ctime &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #从SQL读取到的值必须为整数，作为时间属性 
+</div> 
+<div>
+  &nbsp; &nbsp; sql_attr_timestamp &nbsp; &nbsp; &nbsp; &nbsp;= last_login_time &nbsp; &nbsp; &nbsp; &nbsp; #从SQL读取到的值必须为整数，作为时间属性 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div>
+  &nbsp; &nbsp; sql_query_info_pre &nbsp; &nbsp; &nbsp;= SET NAMES utf8 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;#命令行查询时，设置正确的字符集 
+</div> 
+<div>
+  &nbsp; &nbsp; sql_query_info &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;= SELECT * FROM ts_user WHERE uid=$id #命令行查询时，从数据库读取原始数据信息 
+</div> 
+<div>
+  } 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div>
+  ##用户昵称增量数据源## 
+</div> 
+<div>
+  source user_uname_delta : user_uname_main { 
+</div> 
+<div>
+  &nbsp; &nbsp; &nbsp; &nbsp; sql_query_pre &nbsp; = SET NAMES utf8 
+</div> 
+<div>
+  &nbsp; &nbsp; &nbsp; &nbsp; sql_query &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; = SELECT uid,uname,trade_id,identity,last_login_time,ctime FROM ts_user where identity&lt;5 and is_audit=1 AND is_init=1 AND `uid`&gt;(select max_id from sph_counter where `key`='zhb_user') 
+</div> 
+<div>
+  } 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div>
+  ##用户昵称主索引## 
+ <br>index user_uname_main 
+ <br>{ 
+ <br> source = user_uname_main #对应的source名称 
+ <br> path = /usr/local/coreseek/var/data/zhb/user_uname_main #请修改为实际使用的绝对路径，例如：/usr/local/coreseek/var/... 
+ <br> docinfo = extern 
+ <br> mlock = 0 
+ <br> morphology = none 
+ <br> min_word_len = 1 
+ <br> html_strip = 0 
+ <br> 
+ <br> #中文分词配置，详情请查看： 
+ <a href='http://www.coreseek.cn/products-install/coreseek_mmseg/'>http://www.coreseek.cn/products-install/coreseek_mmseg/</a> 
+ <br> charset_dictpath = /usr/local/mmseg3/etc/ #BSD、Linux环境下设置，/符号结尾 
+ <br> #charset_dictpath = etc/ #Windows环境下设置，/符号结尾，最好给出绝对路径，例如：C:/usr/local/coreseek/etc/... 
+ <br> charset_type = zh_cn.utf-8 
+ <br> 
+ <br> #设置最小中缀为1 
+ <br> min_infix_len = 1 
+ <br> charset_table = U+FF10..U+FF19-&gt;0..9, 0..9, U+FF41..U+FF5A-&gt;a..z, U+FF21..U+FF3A-&gt;a..z,\ 
+ <br> A..Z-&gt;a..z, a..z, U+0149, U+017F, U+0138, U+00DF, U+00FF, U+00C0..U+00D6-&gt;U+00E0..U+00F6,\ 
+ <br> U+00E0..U+00F6, U+00D8..U+00DE-&gt;U+00F8..U+00FE, U+00F8..U+00FE, U+0100-&gt;U+0101, U+0101,\ 
+ <br> U+0102-&gt;U+0103, U+0103, U+0104-&gt;U+0105, U+0105, U+0106-&gt;U+0107, U+0107, U+0108-&gt;U+0109,\ 
+ <br> U+0109, U+010A-&gt;U+010B, U+010B, U+010C-&gt;U+010D, U+010D, U+010E-&gt;U+010F, U+010F,\ 
+ <br> U+0110-&gt;U+0111, U+0111, U+0112-&gt;U+0113, U+0113, U+0114-&gt;U+0115, U+0115, \ 
+ <br> U+0116-&gt;U+0117,U+0117, U+0118-&gt;U+0119, U+0119, U+011A-&gt;U+011B, U+011B, U+011C-&gt;U+011D,\ 
+ <br> U+011D,U+011E-&gt;U+011F, U+011F, U+0130-&gt;U+0131, U+0131, U+0132-&gt;U+0133, U+0133, \ 
+ <br> U+0134-&gt;U+0135,U+0135, U+0136-&gt;U+0137, U+0137, U+0139-&gt;U+013A, U+013A, U+013B-&gt;U+013C, \ 
+ <br> U+013C,U+013D-&gt;U+013E, U+013E, U+013F-&gt;U+0140, U+0140, U+0141-&gt;U+0142, U+0142, \ 
+ <br> U+0143-&gt;U+0144,U+0144, U+0145-&gt;U+0146, U+0146, U+0147-&gt;U+0148, U+0148, U+014A-&gt;U+014B, \ 
+ <br> U+014B,U+014C-&gt;U+014D, U+014D, U+014E-&gt;U+014F, U+014F, U+0150-&gt;U+0151, U+0151, \ 
+ <br> U+0152-&gt;U+0153,U+0153, U+0154-&gt;U+0155, U+0155, U+0156-&gt;U+0157, U+0157, U+0158-&gt;U+0159,\ 
+ <br> U+0159,U+015A-&gt;U+015B, U+015B, U+015C-&gt;U+015D, U+015D, U+015E-&gt;U+015F, U+015F, \ 
+ <br> U+0160-&gt;U+0161,U+0161, U+0162-&gt;U+0163, U+0163, U+0164-&gt;U+0165, U+0165, U+0166-&gt;U+0167, \ 
+ <br> U+0167,U+0168-&gt;U+0169, U+0169, U+016A-&gt;U+016B, U+016B, U+016C-&gt;U+016D, U+016D, \ 
+ <br> U+016E-&gt;U+016F,U+016F, U+0170-&gt;U+0171, U+0171, U+0172-&gt;U+0173, U+0173, U+0174-&gt;U+0175,\ 
+ <br> U+0175,U+0176-&gt;U+0177, U+0177, U+0178-&gt;U+00FF, U+00FF, U+0179-&gt;U+017A, U+017A, \ 
+ <br> U+017B-&gt;U+017C,U+017C, U+017D-&gt;U+017E, U+017E, U+0410..U+042F-&gt;U+0430..U+044F, \ 
+ <br> U+0430..U+044F,U+05D0..U+05EA, U+0531..U+0556-&gt;U+0561..U+0586, U+0561..U+0587, \ 
+ <br> U+0621..U+063A, U+01B9,U+01BF, U+0640..U+064A, U+0660..U+0669, U+066E, U+066F, \ 
+ <br> U+0671..U+06D3, U+06F0..U+06FF,U+0904..U+0939, U+0958..U+095F, U+0960..U+0963, \ 
+ <br> U+0966..U+096F, U+097B..U+097F,U+0985..U+09B9, U+09CE, U+09DC..U+09E3, U+09E6..U+09EF, \ 
+ <br> U+0A05..U+0A39, U+0A59..U+0A5E,U+0A66..U+0A6F, U+0A85..U+0AB9, U+0AE0..U+0AE3, \ 
+ <br> U+0AE6..U+0AEF, U+0B05..U+0B39,U+0B5C..U+0B61, U+0B66..U+0B6F, U+0B71, U+0B85..U+0BB9, \ 
+ <br> U+0BE6..U+0BF2, U+0C05..U+0C39,U+0C66..U+0C6F, U+0C85..U+0CB9, U+0CDE..U+0CE3, \ 
+ <br> U+0CE6..U+0CEF, U+0D05..U+0D39, U+0D60,U+0D61, U+0D66..U+0D6F, U+0D85..U+0DC6, \ 
+ <br> U+1900..U+1938, U+1946..U+194F, U+A800..U+A805,U+A807..U+A822, U+0386-&gt;U+03B1, \ 
+ <br> U+03AC-&gt;U+03B1, U+0388-&gt;U+03B5, U+03AD-&gt;U+03B5,U+0389-&gt;U+03B7, U+03AE-&gt;U+03B7, \ 
+ <br> U+038A-&gt;U+03B9, U+0390-&gt;U+03B9, U+03AA-&gt;U+03B9,U+03AF-&gt;U+03B9, U+03CA-&gt;U+03B9, \ 
+ <br> U+038C-&gt;U+03BF, U+03CC-&gt;U+03BF, U+038E-&gt;U+03C5,U+03AB-&gt;U+03C5, U+03B0-&gt;U+03C5, \ 
+ <br> U+03CB-&gt;U+03C5, U+03CD-&gt;U+03C5, U+038F-&gt;U+03C9,U+03CE-&gt;U+03C9, U+03C2-&gt;U+03C3, \ 
+ <br> U+0391..U+03A1-&gt;U+03B1..U+03C1,U+03A3..U+03A9-&gt;U+03C3..U+03C9, U+03B1..U+03C1, \ 
+ <br> U+03C3..U+03C9, U+0E01..U+0E2E,U+0E30..U+0E3A, U+0E40..U+0E45, U+0E47, U+0E50..U+0E59, \ 
+ <br> U+A000..U+A48F, U+4E00..U+9FBF,U+3400..U+4DBF, U+20000..U+2A6DF, U+F900..U+FAFF, \ 
+ <br> U+2F800..U+2FA1F, U+2E80..U+2EFF,U+2F00..U+2FDF, U+3100..U+312F, U+31A0..U+31BF, \ 
+ <br> U+3040..U+309F, U+30A0..U+30FF,U+31F0..U+31FF, U+AC00..U+D7AF, U+1100..U+11FF, \ 
+ <br> U+3130..U+318F, U+A000..U+A48F,U+A490..U+A4CF 
+ <br> 
+ <br>} 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div>
+  ##用户昵称增量索引## 
+</div> 
+<div>
+  index user_uname_delta : user_uname_main 
+</div> 
+<div>
+  { 
+</div> 
+<div>
+  &nbsp; &nbsp; source &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;= user_uname_delta &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;#对应的source名称 
+</div> 
+<div>
+  &nbsp; &nbsp; path &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;= /usr/local/coreseek/var/data/zhb/user_uname_delta #索引存放的位置，路径为var/data 
+</div> 
+<div>
+  } 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div>
+  ######全局index定义###### 
+</div> 
+<div>
+  indexer 
+</div> 
+<div>
+  { 
+</div> 
+<div>
+  &nbsp; &nbsp; mem_limit &nbsp; &nbsp; &nbsp; = 128M 
+</div> 
+<div>
+  } 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div>
+  ######searchd服务定义###### 
+</div> 
+<div>
+  searchd 
+</div> 
+<div>
+  { 
+</div> 
+<div>
+  &nbsp; &nbsp; listen &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;= 9312 
+</div> 
+<div>
+  &nbsp; &nbsp; read_timeout &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;= 5 
+</div> 
+<div>
+  &nbsp; &nbsp; max_children &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;= 30 
+</div> 
+<div>
+  &nbsp; &nbsp; max_matches &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; = 10000 
+</div> 
+<div>
+  &nbsp; &nbsp; seamless_rotate &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; = 0 
+</div> 
+<div>
+  &nbsp; &nbsp; preopen_indexes &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; = 0 
+</div> 
+<div>
+  &nbsp; &nbsp; unlink_old &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;= 1 
+</div> 
+<div>
+  &nbsp; &nbsp; &nbsp; &nbsp; compat_sphinxql_magics &nbsp;= 0 
+</div> 
+<div>
+  &nbsp; &nbsp; pid_file = /usr/local/coreseek/var/log/zhb/searchd_mysql.pid &nbsp;#请修改为实际使用的绝对路径，例如：/usr/local/coreseek/var/... 
+</div> 
+<div>
+  &nbsp; &nbsp; log = /usr/local/coreseek/var/log/zhb/searchd_mysql.log &nbsp; &nbsp; &nbsp; &nbsp;#请修改为实际使用的绝对路径，例如：/usr/local/coreseek/var/... 
+</div> 
+<div>
+  &nbsp; &nbsp; query_log = /usr/local/coreseek/var/log/zhb/query_mysql.log #请修改为实际使用的绝对路径，例如：/usr/local/coreseek/var/... 
+</div> 
+<div>
+  &nbsp; &nbsp; binlog_path = &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;#关闭binlog日志 
+</div> 
+<div>
+  } 
+</div> 
+<div>
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<div> 
+ <br> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-387.html">zendstudio</a>
+				|
+				 <a href="http://onelose.com/post-407.html">coreseek索引更新机制</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="404" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-394.html">Win8.1玩《战地4》“DirectXError”无法进入游戏的解决方法</a></li>
+		<li><a href="http://onelose.com/post-82.html">2010.12.6 c++ 上机</a></li>
+		<li><a href="http://onelose.com/post-407.html">coreseek索引更新机制</a></li>
+		<li><a href="http://onelose.com/post-475.html">去除右键菜单里弹出的GitInitHere等菜单</a></li>
+		<li><a href="http://onelose.com/post-4.html">破解程序及注册机使用方法</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

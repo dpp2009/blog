@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+<channel>
+<title><![CDATA[迷茫者]]></title> 
+<description><![CDATA[迷茫者王者归来。]]></description>
+<link>http://onelose.com/</link>
+<language>zh-cn</language>
+<generator>www.emlog.net</generator>
+<item>
+	<title>EMLOG模板-------冰淇淋雪糕 0.2 更新</title>
+	<link>http://onelose.com/post-169.html</link>
+	<description><![CDATA[<p>
+	冰淇淋雪糕 0.1BATA&nbsp;
+</p>
+<p>
+	作者：迷茫者&nbsp;
+</p>
+<p>
+	适用于emlog：5.1.2&nbsp;
+</p>
+<p>
+	&nbsp;&nbsp;&nbsp;&nbsp;由<span>官方</span>默认模板修改而成，简约大方，只改动css，增加js。这是测试版，可能存在我还没有测试出的问题。
+</p>
+<p>
+	有问题联系dpp2009@sina.com。
+</p>
+<p style="text-align:center;">
+	<a id="ematt:81" href="http://blog.onelose.com/content/uploadfile/201307/1a7b1375104653.png" target="_blank"><img title="点击查看原图" border="0" alt="2013-07-29T13-14-45.534Z.png" src="http://blog.onelose.com/content/uploadfile/201307/1a7b1375104653.png" width="500" height="718" /></a> 
+</p>
+<p style="text-align:left;">
+	<span style="font-family:Arial, Helvetica, sans-serif, 'Microsoft YaHei';line-height:19px;background-color:#FFFFFF;">20130730 &nbsp;0.2版，支持ie8及其以上版本，ie6、7显示无措，但不完美。</span> 
+</p>
+<p>
+	<span class="attachment">下载地址：<s><a href="http://blog.onelose.com/content/uploadfile/201307/86931375104417.zip" target="_blank">dpp_icecream_v0.1.zip</a></s></span> 
+</p>
+<p>
+	<a target="_blank" href="http://blog.onelose.com/content/uploadfile/201307/94521375276435.zip">dpp_icecream_02.zip</a>
+</p>
+<p>
+	<br />
+</p>]]></description>
+	<pubDate>Mon, 29 Jul 2013 13:25:32 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-169.html</guid>
+
+</item>
+<item>
+	<title>javascript备忘录1</title>
+	<link>http://onelose.com/post-166.html</link>
+	<description><![CDATA[<p class="p0">
+	parseInt
+</p>
+<p class="p0">
+	<br />
+</p>
+<p class="p0">
+	window.onload=init;
+</p>
+<p class="p0">
+	<br />
+</p>
+<p class="p0">
+	var&nbsp;newObj&nbsp;=&nbsp;document.createElement("img");
+</p>
+<p class="p0" style="text-indent:21.0000pt;">
+	//<span>创建了一个</span><span>img</span><span>对象，创建其他对象也同样格式写，比如</span><span>div</span><span>，</span><span>p</span><span>，</span><span>a</span><span>，</span><span>hr</span> 
+</p>
+<p class="p0">
+	//<span>此时</span><span>newOjb</span><span>只是一个完全没有实际图片显示的“内存存在”</span> 
+</p>
+<p class="p0">
+	<br />
+</p>
+<p class="p0">
+	//<span>下两行：</span>将该新的对象（图）放入网页
+</p>
+<p class="p0">
+	var&nbsp;obj&nbsp;=&nbsp;document.body;
+</p>
+<p class="p0">
+	obj.appendChild(&nbsp;newObj&nbsp;);	//<span>将</span><span>newObj</span><span>放入</span><span>obj</span><span>对象内部，这里也就是</span><span>body</span><span>中</span> 
+</p>
+<p class="p0">
+	<br />
+</p>
+<p class="p0">
+	//<span>在应用中，差不多常常是这样的需求：随机获得任意给定的两个整数之间的随机整数。</span> 
+</p>
+<p class="p0">
+	推导出公式：
+</p>
+<p class="p0">
+	给点小的整数<span>z1</span><span>，&nbsp;大的整数</span><span>z2</span><span>：</span> 
+</p>
+<p class="p0">
+	var&nbsp;&nbsp;n&nbsp;=&nbsp;Math.floor(&nbsp;Math.random()&nbsp;*&nbsp;(&nbsp;z2&nbsp;–&nbsp;z1&nbsp;+&nbsp;1)&nbsp;&nbsp;)&nbsp;+&nbsp;z1
+</p>
+<p class="p0">
+	<br />
+</p>
+<p class="p0">
+	var&nbsp;&nbsp;t1&nbsp;=&nbsp;&nbsp;window.setInterval(&nbsp;“要执行的程序”,&nbsp;&nbsp;<span>间隔时间</span><span>t&nbsp;)</span> 
+</p>
+<p class="p0" style="text-indent:21.0000pt;">
+	//<span>时间</span><span>t</span><span>的单位是毫秒，</span> 
+</p>
+<p class="p0">
+	//<span>此时，</span><span>t1</span><span>就是一个定时器的名字</span> 
+</p>
+<p class="p0">
+	<br />
+</p>
+<p class="p0">
+	一个反复性定时器一定启动，则会完全自动一直运行下去，除非人为地去“停止它”，停止方式：
+</p>
+<p class="p0">
+	window.clearInterval(&nbsp;<span>定时器的名字&nbsp;</span><span>)</span> 
+</p>
+<p class="p0">
+	<br />
+</p>
+<p class="p0">
+	//<span>兼容性编程模型：</span> 
+</p>
+<p class="p0">
+	if(&nbsp;window.event&nbsp;){&nbsp;}	//<span>当前浏览器是</span><span>IE</span><span>，这是判断是</span><span>IE</span><span>浏览器的一个方法</span> 
+</p>
+<p class="p0">
+	<br />
+</p>
+<p class="p0">
+	表单事件：
+</p>
+<p class="p0">
+	onsubmit:		提交表单的时候发生
+</p>
+<p class="p0">
+	onfocus<span>：</span> 一个对象（表单项）获得焦点的时候。
+</p>
+<p class="p0">
+	onblur<span>：</span> 一个对象失去焦点的时候发生
+</p>
+<p class="p0">
+	onchange<span>：</span> 一个表单项的内容改变的时候，通常用于<span>select</span><span>对象选项改变</span> 
+</p>
+<p class="p0">
+	<br />
+</p>
+<p class="p0">
+	innerHTML
+</p>
+<p class="p0">
+	<br />
+</p>
+<p class="p0" style="margin-left:21.0000pt;text-indent:-21.0000pt;">
+	l&nbsp;str1.indexOf(&nbsp;s1&nbsp;);		//从<span>str1</span><span>中</span>从前往后找&nbsp;<span>s1</span><span>这个字符串的位置，如果找到，结果就是该位置，如果没有找到，结果是</span><span>-1</span> 
+</p>
+<p class="p0" style="margin-left:21.0000pt;text-indent:-21.0000pt;">
+	<span><br />
+</span>
+</p>
+<p class="p0" style="margin-left:21.0000pt;text-indent:-21.0000pt;">
+	[mp3]http://www.yushengbbs.net/book/zazhi/07zazhi/2BF03B02-35E5-48FB-B367-122F7C7E9D6B.mp3[/mp3]
+</p>]]></description>
+	<pubDate>Sat, 27 Jul 2013 13:52:49 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-166.html</guid>
+
+</item>
+<item>
+	<title>网友帮忙制作的博客logo，非常给力</title>
+	<link>http://onelose.com/post-156.html</link>
+	<description><![CDATA[<p>
+	<a href="http://127.0.0.1/public_html/content/uploadfile/201103/cde1ba0dae73d55be1071c16b9c872ba20110321115211.jpg" id="ematt:77" target="_blank"><img alt="点击查看原图" border="0" src="http://blog.onelose.com/content/uploadfile/201307/b8ab302301684852b364357f9e1f808b20130727144543.jpg" /></a> 
+</p>
+<p style="text-align:left;">
+	&nbsp;&nbsp;最近<a href="http://www.taoxiou.com/">屋顶</a> 在emlog为emer免费制作logo，我是第一个尝鲜的人。<a href="http://www.taoxiou.com/">屋顶</a> 的水平比我好多了。
+</p>]]></description>
+	<pubDate>Mon, 21 Mar 2011 12:50:54 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-156.html</guid>
+
+</item>
+<item>
+	<title>109种字体颜色代码及其图形显示</title>
+	<link>http://onelose.com/post-136.html</link>
+	<description><![CDATA[<p><span style="color:#(color);"><span class="Apple-style-span" style="font-family: Georgia; font-size: small; -webkit-border-horizontal-spacing: 2px; -webkit-border-vertical-spacing: 2px; ">1 白色 #FFFFFF 2 红色 #FF0000 3 绿色 #00FF00&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />4 蓝色 #0000FF 5 牡丹红 #FF00FF 6 青色 #00FFFF&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />7 黄色 #FFFF00 8 黑色 #000000 9 海蓝 #70DB93&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />10 巧克力色 #5C3317 11 蓝紫色 #9F5F9F 12 黄铜色 #B5A642&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />13 亮金色 #D9D919 14 棕色 #A67D3D 15 青铜色 #8C7853&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />16 2号青铜色 #A67D3D 17 士官服蓝色 #5F9F9F 18 冷铜色 #D98719&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />19 铜色 #B87333 20 珊瑚红 #FF7F00 21 紫蓝色 #42426F&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />22 深棕 #5C4033 23 深绿 #2F4F2F 24 深铜绿色 #4A766E&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />25 深橄榄绿 #4F4F2F 26 深兰花色 #9932CD 27 深紫色 #871F78&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />28 深石板蓝 #6B238E 29 深铅灰色 #2F4F4F 30 深棕褐色 #97694F&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />32 深绿松石色 #7093DB 33 暗木色 #855E42 34 淡灰色 #545454&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />35 土灰玫瑰红色#856363 36 长石色 #D19275 37 火砖色 #8E2323&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />38 森林绿 #238E23 39 金色 #CD7F32 40 鲜黄色 #DBDB70&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />41 灰色 #C0C0C0 42 铜绿色 #527F76 43 青黄色 #93DB70&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />44 猎人绿 #215E21 45 印度红 #4E2F2F 46 土黄色 #9F9F5F&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />47 浅蓝色 #C0D9D9 48 浅灰色 #A8A8A8 49 浅钢蓝色 #8F8FBD&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />59 浅木色 #E9C2A6 60 石灰绿色 #32CD32 61 桔黄色 #E47833&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />62 褐红色 #8E236B 63 中海蓝色 #32CD99 64 中蓝色 #3232CD&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />65 中森林绿 #6B8E23 66 中鲜黄色 #EAEAAE 67 中兰花色 #9370DB&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />68 中海绿色 #426F42 69 中石板蓝色 #7F00FF 70 中春绿色 #7FFF00&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />71 中绿松石色 #70DBDB 72 中紫红色 #DB7093 73 中木色 #A68064&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />74 深藏青色 #2F2F4F 75 海军蓝 #23238E 76 霓虹篮 #4D4DFF&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />77 霓虹粉红 #FF6EC7 78 新深藏青色 #00009C 79 新棕褐色 #EBC79E&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />80 暗金黄色 #CFB53B 81 橙色 #FF7F00 82 橙红色 #FF2400&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />83 淡紫色 #DB70DB 84 浅绿色 #8FBC8F 85 粉红色 #BC8F8F&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />86 李子色 #EAADEA 87 石英色 #D9D9F3 88 艳蓝色 #5959AB&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />89 鲑鱼色 #6F4242 90 猩红色 #BC1717 91 海绿色 #238E68&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />92 半甜巧克力色#6B4226 93 赭色 #8E6B23 94 银色 #E6E8FA&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />95 天蓝 #3299CC 96 石板蓝 #007FFF 97 艳粉红色 #FF1CAE&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />98 春绿色 #00FF7F 99 钢蓝色 #236B8E 100 亮天蓝色 #38B0DE&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />101 棕褐色 #DB9370 102 紫红色 #D8BFD8 103 石板蓝色 #ADEAEA&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />104 浓深棕色 #5C4033 105 淡浅灰色 #CDCDCD 106 紫罗兰色 #4F2F4F&nbsp;<br style="line-height: normal; " /><br style="line-height: normal; " />107 紫罗兰红色 #CC3299 108 麦黄色 #D88BF 109 黄绿色 #99CC</span>
+ </span>
+</p>
+<p>&nbsp;</p>
+<p><span class="Apple-style-span" style="color: rgb(0, 0, 0); font-family: Tahoma, Verdana; ">艾利斯兰240,248,255古董白250,235,215浅绿色0,255,255碧绿色127,255,212天蓝色240,255,255米色245,245,220桔黄色255,228,196黑色0,0,0白杏色255,235,205蓝色0,0,255紫罗兰色138,43,226褐色165,42,42实木色222,184,135军兰色95,158,160黄绿色127,255,0巧可力色210,105,30珊瑚色255,127,80菊兰色100,149,237米绸色255,248,220暗深红色220,20,60青色0,255,255暗蓝色0,0,139暗青色0,139,139暗金黄色184,134,11暗灰色169,169,169暗绿色0,100,0暗黄褐色189,183,107暗洋红139,0,139暗橄榄绿85,107,47暗桔黄色255,140,0暗紫色153,50,204暗红色139,0,0暗肉色233,150,122暗海兰色143,188,143暗灰蓝色72,61,139暗瓦灰色47,79,79暗瓦灰色47,79,79暗宝石绿0,206,209暗紫罗兰色148,0,211深粉红色255,20,147深天蓝色0,191,255暗灰色105,105,105闪兰色30,144,255火砖??色178,34,34花白色255,250,240森林绿34,13934雪白色255,250,250春绿色0,255,127钢兰色70,130,180茶色210,180,140水鸭色800,128,128蓟色216,191,216西红柿色255,99,71青绿色64,224,208紫罗兰色238,130,238浅黄色245,222,179白色255,255,255烟白色245,245,245黄色255,255,0黄绿色154,205,50紫红色255,0,255淡灰色220,220,220幽灵白248,248,255金色255,215,0金麒麟色218,165,32灰色128,128,128绿色0,128,0黄绿色173,255,47蜜色240,255,240热粉红色255,105,180印第安红205,92,92靛青色75,0,130象牙色255,255,240黄褐色240,230,140淡紫色230,230,250淡紫红255,240,245草绿色124,252,0柠檬绸色255,250,205亮蓝色173,216,230亮珊瑚色240,128,128亮青色224,255,255亮金黄色250,250,210亮灰色211,211,211亮灰色211,211,211亮粉红色255,182,193亮肉色255,160,122亮海蓝色32,178,170亮天蓝色135,206,250亮蓝灰119,136,153亮钢兰色176,196,222亮黄色255,255,224酸橙色0,255,0中兰色0,0,205中粉紫色186,85,211中紫色147,112,219中海蓝60,179,113中暗蓝色123,104,238中春绿色0,250,154中绿宝石72,209,204中紫罗兰色199,21,133中灰兰色25,25,112薄荷245,255,250浅玫瑰色255,228,225亮绿色144,238,144橙绿色50,205,50亚麻色250,240,230红紫色255,0,255粟色128,0,0中绿色102,205,170鹿皮色255,228,181纳瓦白255,222,173</span>
+</p>
+<p><img src="http://127.0.0.1/public_html/content/uploadfile/201101/0bd761ea76e7e970532e18e77b80493220110109114635.gif" /></p>]]></description>
+	<pubDate>Sun, 09 Jan 2011 06:34:41 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-136.html</guid>
+
+</item>
+<item>
+	<title>做了个站长工具网站</title>
+	<link>http://onelose.com/post-126.html</link>
+	<description><![CDATA[<div id="dictdiv" style="position: absolute; left: 0pt; top: 0pt; z-index: 1000; font-family: arial; font-size: 13px; margin: 5px; background: none repeat scroll 0% 0% yellow; -moz-border-radius: 5px 5px 5px 5px; opacity: 0.9; display: none;">&nbsp;</div>
+<div id="dictaudio"><a href="http://127.0.0.1/public_html/content/uploadfile/201012/4cb138824e78ac53ae6aba41d2dee8e420101228055136.jpg" id="ematt:39" target="_blank"><img alt="点击查看原图" border="0" src="http://127.0.0.1/public_html/content/uploadfile/201012/thum-4cb138824e78ac53ae6aba41d2dee8e420101228055136.jpg" /></a>
+</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 话是我比较讨厌站长站的工具网站，因为广告太多了。于是找了个源码，自己做了个站长工具网站,很清爽的。目前大部分功能已经完善，可能还有什么地方没有注意到。大家帮忙测试一下啊。网址是<a href="http://tools.dppblog.tk">http://tools.dppblog.tk</a>
+</div>]]></description>
+	<pubDate>Tue, 28 Dec 2010 05:43:27 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-126.html</guid>
+
+</item>
+<item>
+	<title>如何ping网站</title>
+	<link>http://onelose.com/post-12.html</link>
+	<description><![CDATA[<p>开端---运行---输入cmd----输入ping 你的网站地址</p>]]></description>
+	<pubDate>Thu, 21 Oct 2010 02:11:12 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-12.html</guid>
+
+</item>
+<item>
+	<title>标签云</title>
+	<link>http://onelose.com/post-7.html</link>
+	<description><![CDATA[<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;这个文章是为了加标签云的。</p>]]></description>
+	<pubDate>Mon, 18 Oct 2010 16:11:09 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-7.html</guid>
+
+</item></channel>
+</rss>

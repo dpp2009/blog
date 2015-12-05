@@ -1,0 +1,533 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>mysql性能优化方向</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>mysql性能优化方向</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-4-9 6:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <h1 style='background-color:rgb(255, 255, 255);color:rgb(102, 102, 102);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:14.7px;font-style:normal;font-weight:bold;text-align:left;'><a href='http://www.cnblogs.com/AloneSword/p/3207697.html' style='color:rgb(52, 104, 164);'></a></h1> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>按照从大到小，从主要到次要的形式，分析 mysql 性能优化点，达到最终优化的效果。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>利用 mindmanger 整理了思路，形成如下图，每个点在网上都能找到说明，并记录下。形成了优化的思路：</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><img src='http://note.youdao.com/yws/res/2833/DFBA3A26D0114DF78F2F201A39FF66B8' style='width:1057px;' data-media-type='image'></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><strong>1 连接 Connections</strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>经常会遇见”mysql: error 1040: too many connections”的情况，一种是访问量确实很高，mysql服务器抗不住，这个时候就要考虑增加从服务器分散读压力，另外一种情况是mysql配置文件中max_connections值过小：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show variables like ‘max_connections‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-----------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　 | value &nbsp; |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-----------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| max_connections | 256　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-----------------+-------+&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>这台mysql服务器最大连接数是256，然后查询一下服务器响应的最大连接数：</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>&nbsp;mysql&gt; show global status like ‘max_used_connections‘;&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql服务器过去的最大连接数是245，没有达到服务器连接数上限256，应该没有出现1040错误，比较理想的设置是</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>&nbsp;<span style='color:rgb(255, 0, 0);'>max_used_connections / max_connections * 100% ≈ 85%</span>&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>最大连接数占上限连接数的85％左右，如果发现比例在10%以下，mysql服务器连接数上限设置的过高了。</span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><strong><span>2 &nbsp;线程 Thread</span></strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show global status like ‘thread%‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　　 | &nbsp; value |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| threads_cached　 | &nbsp; &nbsp;46　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| threads_connected | 2　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| threads_created　| 570　 &nbsp;|</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| threads_running &nbsp;| 1　 &nbsp;　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------+-------+&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>如果我们在mysql服务器配置文件中设置了thread_cache_size，当客户端断开之后，服务器处理此客户的线程将会缓存起来以响应下一个客户而不是销毁（前提是缓存数未达上限）。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>threads_created表示创建过的线程数，如果发现threads_created值过大的话，表明mysql服务器一直在创建线程，这也是比较耗资源，可以适当增加配置文件中thread_cache_size值，</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>查询服务器 thread_cache_size 配置：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show variables like ‘thread_cache_size‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　　 | value &nbsp; |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| thread_cache_size | 64　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------+-------+&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>示例中的服务器还是挺健康的。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><strong>3 &nbsp;缓存 cache</strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><strong>3.1 文件打开数</strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show global status like ‘open_files‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name | value |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| open_files　　 | 1410　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>&nbsp;mysql&gt; show variables like ‘open_files_limit‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　　 | value |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| open_files_limit &nbsp; &nbsp;| 4590 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------+-------+&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>比较合适的设置：<span style='color:rgb(255, 0, 0);'>open_files / open_files_limit * 100% &lt;= 75％</span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><strong>3.2 数据表</strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><strong>3.2.1 打开数 open_tables</strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show global status like ‘open%tables%‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name | value &nbsp; |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| open_tables　 | 919　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| opened_tables | 1951 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------+-------+&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>open_tables: 打开表的数量</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>opened_tables: 打开过的表数量</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>如果 opened_tables 数量过大，说明配置中 table_cache(<span style='color:rgb(255, 0, 0);'>5.1.3之后这个值叫做table_open_cache</span>)值可能太小，我们查询一下服务器table_cache值：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show variables like ‘table_cache‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name | value |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| table_cache　　　 | 2048　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------+-------+&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>比较合适的值为：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>open_tables / opened_tables * 100% &gt;= 85%&nbsp;</span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>open_tables / table_cache * 100% &lt;= 95%</span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>&nbsp;<strong>3.2.2 临时表 tmp_table</strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show global status like ‘created_tmp%‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------------+---------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　　　　　 | value　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------------+---------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| created_tmp_disk_tables | 21197　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| created_tmp_files　　　　| 58　　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| created_tmp_tables　　&nbsp; | 1771587 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------------+---------+&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>每次创建临时表，created_tmp_tables 增加，如果是在磁盘上创建临时表，created_tmp_disk_tables也增加,created_tmp_files表示mysql服务创建的临时文件文件数，比较理想的配置是：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>created_tmp_disk_tables / created_tmp_tables * 100% &lt;= 25%</span>&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>比如上面的服务器 created_tmp_disk_tables / created_tmp_tables * 100% ＝ 1.20%，应该相当好了。我们再看一下mysql服务器对临时表的配置：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show variables where variable_name in (‘tmp_table_size‘, ‘max_heap_table_size‘);</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------------+-----------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　　　 | value　　　　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------------+-----------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| max_heap_table_size | 268435456 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| tmp_table_size　　　 | 536870912 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------------+-----------+&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>只有 256mb 以下的临时表才能全部放内存，超过的就会用到硬盘临时表。&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><strong>3.2.3 表锁情况</strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show global status like ‘table_locks%‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-----------------------+-----------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　　　　 | value　　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-----------------------+-----------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| table_locks_immediate | 490206328 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| table_locks_waited　　| 2084912　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-----------------------+-----------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>&nbsp;table_locks_immediate 表示立即释放表锁数，&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>table_locks_waited 表示需要等待的表锁数，&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>如果 table_locks_immediate / table_locks_waited &gt; 5000，最好采用innodb引擎，因为innodb是行锁而myisam是表锁，对于高并发写入的应用innodb效果会好些。&nbsp;</span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>示例中的服务器 table_locks_immediate / table_locks_waited ＝ 235，myisam就足够了。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><strong>3.2.4 表扫描情况</strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show global status like ‘handler_read%‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-----------------------+-------------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　　　　 | value　　　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-----------------------+-------------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| handler_read_first　　| 5803750　　 &nbsp; |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| handler_read_key　　 | 6049319850 &nbsp;|</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| handler_read_next　 &nbsp;| 94440908210 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| handler_read_prev　 &nbsp;| 34822001724 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| handler_read_rnd　　 | 405482605　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| handler_read_rnd_next | 18912877839 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-----------------------+-------------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>&nbsp;各字段解释参见<span>&nbsp;</span><a href='http://hi.baidu.com/thinkinginlamp/blog/item/31690cd7c4bc5cdaa144df9c.html' style='color:rgb(52, 104, 164);'>http://hi.baidu.com/thinkinginlamp/blog/item/31690cd7c4bc5cdaa144df9c.html</a><span>&nbsp;</span>，调出服务器完成的查询请求次数：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show global status like ‘com_select‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------+-----------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name | value　　　　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------+-----------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| com_select　　　　 | 222693559 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------+-----------+&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>计算表扫描率：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>表扫描率 ＝ handler_read_rnd_next / com_select</span>&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>如果表扫描率超过 4000，说明进行了太多表扫描，很有可能索引没有建好，增加 read_buffer_size 值会有一些好处，但最好不要超过8mb。</span>&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><strong>3.3 key_buffer_size</strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>key_buffer_size是对myisam表性能影响最大的一个参数，下面一台以myisam为主要存储引擎服务器的配置：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show variables like ‘key_buffer_size‘;&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-----------------+------------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　 | value　　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-----------------+------------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| key_buffer_size | 536870912 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-----------------+------------+&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>分配了 512mb 内存给 key_buffer_size ，我们再看一下 key_buffer_size 的使用情况：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show global status like ‘key_read%‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------------+-------------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　　　　　| value　 　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------------+-------------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| key_read_requests　　 | 27813678764 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| key_reads　　　　　　 | 6798830　　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------------+-------------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>&nbsp;一共有 27813678764个 索引读取请求，有 6798830个 请求在内存中没有找到直接从硬盘读取索引，计算索引未命中缓存的概率：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>key_cache_miss_rate ＝ key_reads / key_read_requests * 100%</span>&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>比如上面的数据，key_cache_miss_rate为0.0244%，4000个索引读取请求才有一个直接读硬盘，已经很bt了，key_cache_miss_rate在0.1%以下都很好（每1000个请求有一个直接读硬盘），如果key_cache_miss_rate在0.01%以下的话，key_buffer_size分配的过多，可以适当减少。</span>&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>【注意】key_read_buffer 默认值为 8M 。在专有的数据库服务器上，该值可设置为 RAM * 1/4</span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql服务器还提供了key_blocks_*参数：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show global status like ‘key_blocks_u%‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------------+-------------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　　　　 | value　　　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------------+-------------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| key_blocks_unused　　| 0　　　　　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| key_blocks_used　　　 | 413543 &nbsp;　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------------+-------------+&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>key_blocks_unused 表示未使用的缓存簇(blocks)数</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>key_blocks_used 表示曾经用到的最大的blocks数</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>比如这台服务器，所有的缓存都用到了，要么增加 key_buffer_size，要么就是过渡索引了，把缓存占满了。比较理想的设置：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>key_blocks_used / (key_blocks_unused + key_blocks_used) * 100% ≈ 80%</span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><strong>3.4 排序使用情况 sort_buffer</strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show global status like ‘sort%‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------+------------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　　 | value　　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------+------------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| sort_merge_passes | 29　　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| sort_range　　　　| 37432840　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| sort_rows　　　　 | 9178691532 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| sort_scan　　　　 | 1860569　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------+------------+&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>sort_merge_passes 包括两步。mysql 首先会尝试在内存中做排序，使用的内存大小由系统变量 sort_buffer_size 决定，如果它的大小不够把所有的记录都读到内存中，mysql 就会把每次在内存中排序的结果存到临时文件中，等 mysql 找到所有记录之后，再把临时文件中的记录做一次排序。这再次排序就会增加 sort_merge_passes。实际上，mysql 会用另一个临时文件来存再次排序的结果，所以通常会看到 sort_merge_passes 增加的数值是建临时文件数的两倍。因为用到了临时文件，所以速度可能会比较慢，增加 sort_buffer_size 会减少 sort_merge_passes 和 创建临时文件的次数。但盲目的增加 sort_buffer_size 并不一定能提高速度，见 how fast can you sort data with mysql?（引自<a href='http://qroom.blogspot.com/2007/09/mysql-select-sort.html' style='color:rgb(52, 104, 164);'>http://qroom.blogspot.com/2007/09/mysql-select-sort.html</a><span>&nbsp;</span>，貌似被墙）&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>另外，增加read_rnd_buffer_size(3.2.3是record_rnd_buffer_size)的值对排序的操作也有一点的好处，参见：<a href='http://www.mysqlperformanceblog.com/2007/07/24/what-exactly-is-read_rnd_buffer_size/' style='color:rgb(52, 104, 164);'>http://www.mysqlperformanceblog.com/2007/07/24/what-exactly-is-read_rnd_buffer_size/</a></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><strong><span>3.5 查询缓存</span></strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show global status like ‘qcache%‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------------+-----------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　　　　　| value　　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------------+-----------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| qcache_free_blocks　 &nbsp; | 22756　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| qcache_free_memory　| 76764704　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| qcache_hits　　　　　　| 213028692 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| qcache_inserts　　　　 | 208894227 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| qcache_lowmem_prunes | 4010916 &nbsp;|</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| qcache_not_cached　　| 13385031 &nbsp;|</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| qcache_queries_in_cache | 43560　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| qcache_total_blocks　 | 111212 &nbsp;　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+-------------------------+-----------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>&nbsp;mysql 查询缓存变量解释：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>qcache_free_blocks：缓存中相邻内存块的个数。数目大说明可能有碎片。flush query cache会对缓存中的碎片进行整理，从而得到一个空闲块。&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>qcache_free_memory：缓存中的空闲内存。&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>qcache_hits：每次查询在缓存中命中时就增大&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>qcache_inserts：每次插入一个查询时就增大。命中次数除以插入次数就是命中比率。&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>qcache_lowmem_prunes：缓存出现内存不足并且必须要进行清理以便为更多查询提供空间的次数。这个数字最好长时间来看；如果这个数字在不断增长，就表示可能碎片非常严重，或者内存很少。（上面的 free_blocks和free_memory可以告诉您属于哪种情况）&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>qcache_not_cached：不适合进行缓存的查询的数量，通常是由于这些查询不是 select 语句或者用了now()之类的函数。&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>qcache_queries_in_cache：当前缓存的查询（和响应）的数量。&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>qcache_total_blocks：缓存中块的数量。&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>我们再查询一下服务器关于query_cache的配置：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show variables like ‘query_cache%‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------------------+-----------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　　　　　　　 | value　　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------------------+-----------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| query_cache_limit　　　　　 | 2097152　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| query_cache_min_res_unit　| 4096　　　|</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| query_cache_size　　　　　 &nbsp;| 203423744 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| query_cache_type　　　　　| on　　　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| query_cache_wlock_invalidate | off　　 &nbsp; |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------------------+----------+&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>各字段的解释：&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>query_cache_limit：超过此大小的查询将不缓存&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>query_cache_min_res_unit：缓存块的最小大小&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>query_cache_size：查询缓存大小&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>query_cache_type：缓存类型，决定缓存什么样的查询，示例中表示不缓存 select sql_no_cache 查询</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>query_cache_wlock_invalidate：当有其他客户端正在对myisam表进行写操作时，如果查询在query cache中，是否返回cache结果还是等写操作完成再读表获取结果。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>query_cache_min_res_unit的配置是一柄”双刃剑”，默认是4kb，设置值大对大数据查询有好处，但如果你的查询都是小数据查询，就容易造成内存碎片和浪费。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>查询缓存碎片率 = qcache_free_blocks / qcache_total_blocks * 100%</span>&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>如果查询缓存碎片率超过20%，可以用flush query cache整理缓存碎片，或者试试减小query_cache_min_res_unit，如果你的查询都是小数据量的话。&nbsp;</span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>查询缓存利用率 = (query_cache_size - qcache_free_memory) / query_cache_size * 100%&nbsp;</span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>查询缓存利用率在25%以下的话说明query_cache_size设置的过大，可适当减小；查询缓存利用率在80％以上而且qcache_lowmem_prunes &gt; 50的话说明query_cache_size可能有点小，要不就是碎片太多。</span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>查询缓存命中率 = (qcache_hits - qcache_inserts) / qcache_hits * 100%&nbsp;</span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'>示例服务器 查询缓存碎片率 ＝ 20.46％，查询缓存利用率 ＝ 62.26％，查询缓存命中率 ＝ 1.94％，命中率很差，可能写操作比较频繁吧，而且可能有些碎片。</span></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><strong>4 其他</strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><strong>4.1 read_buffer_size</strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><strong>4.2 慢查询</strong></p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show variables like ‘%slow%‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　 &nbsp; | value &nbsp;|</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| log_slow_queries | on　　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| slow_launch_time | 2　 　 |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+------------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>mysql&gt; show global status like ‘%slow%‘;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| variable_name　　　 | value &nbsp; |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------------+-------+</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| slow_launch_threads | 0&nbsp; 　 &nbsp;|</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>| slow_queries　　　　| 4148&nbsp; |</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>+---------------------+-------+&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>配置中打开了记录慢查询，执行时间超过2秒的即为慢查询，系统显示有4148个慢查询，你可以分析慢查询日志，找出有问题的sql语句，慢查询时间不宜设置过长，否则意义不大，最好在5秒以内，如果你需要微秒级别的慢查询，可以考虑给mysql打补丁：<a href='http://www.percona.com/docs/wiki/release:start' style='color:rgb(52, 104, 164);'>http://www.percona.com/docs/wiki/release:start</a>，记得找对应的版本。&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>打开慢查询日志可能会对系统性能有一点点影响，如果你的mysql是主－从结构，可以考虑打开其中一台从服务器的慢查询日志，这样既可以监控慢查询，对系统性能影响又小。</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'>&nbsp;</p> 
+ <p style='background-color:rgb(255, 255, 255);color:rgb(75, 75, 75);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:13px;font-style:normal;font-weight:normal;text-align:start;'><span style='color:rgb(255, 0, 0);'><a title='完整思路下载' href='http://files.cnblogs.com/AloneSword/MySQL%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF.zip' style='color:rgb(52, 104, 164);'><span style='color:rgb(255, 0, 0);'>&nbsp;完整说明及文件下载</span></a></span></p> 
+	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a>
+				|
+				 <a href="http://onelose.com/post-210.html">sina微博队列memcacheq服务安装与原理</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="211" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-384.html">&gt;/dev/null2&gt;&amp;1</a></li>
+		<li><a href="http://onelose.com/post-556.html">explain显示了mysql如何使用索引来处理select语句以及连接表。可以帮助选择更好的索引和</a></li>
+		<li><a href="http://onelose.com/post-295.html">mysql常用字符串操作函数大全，以及实例</a></li>
+		<li><a href="http://onelose.com/post-335.html">七个习惯助你编写更安全的PHP程序</a></li>
+		<li><a href="http://onelose.com/post-481.html">php使用原生socket函数通信</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

@@ -1,0 +1,420 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>【问底】徐汉彬：PHP7和HHVM的性能之争</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>【问底】徐汉彬：PHP7和HHVM的性能之争</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-14 7:00 Wednesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>【导读】徐汉彬曾在阿里巴巴和腾讯从事4年多的技术研发工作，负责过日请求量过亿的Web系统升级与重构，目前在小满科技创业，从事SaaS服务技术建设。最近，PHP7和HHVM的性能之争成为了一个讨论热点，它们都在提升PHP执行性能方面取得了突破性的进展。这篇文章，参考了两个社区的技术新进展，为大家科普和介绍它们的性能之争。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><br></p> 
+<h2 style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 20px; font-weight: normal;'>PHP语言的排名变化</h2> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>根据“TIOBE编程语言排行榜”（榜单虽然统计方式有局限，但是仍然不失为一个比较好的参考），2010年PHP最高曾经在世界编程语言中排名第三。可见，PHP语言在PC互联网时代的Web领域可谓叱咤风云，擎天一柱。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1907/8DB02C1ED7FD4BDDA591A3B5EB83CD13' style='height:auto;' data-media-type='image'></p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>在PHP程序员中，曾经流传着一个段子：</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>某女：你能让这个论坛的人都吵起来，我就跟你吃饭。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>PHP程序员：PHP是世界上最好的语言！</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>某论坛炸锅了，各种吵架……&nbsp;</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>某女：服了你了，我们走吧！</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>PHP程序员：今天不行，我一定要说服他们，PHP必须是最好的语言。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>好了，我们言归正传，语言本身无分好坏，只是在各自使用的场景中解决不同的问题。互联网的时代车轮是很快的，随着移动互联网的到来，在短短四年多的时间里，移动端技术发展横扫全球。与此同时，各种语言群雄并起，而昔日辉煌的PHP从原来的编程语言的榜单看，下降到第六位（2014年12月榜单）。于是，唱衰PHP的声音此起彼伏。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1902/6D3D919C1E6740EE8F0A0D2055627CC5' style='height:auto;' data-media-type='image'></p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>但是，鸟哥（惠新宸，PHP语言开发者之一）在2014年的Qcon分享中有一个数据，全球排名前100万的网站中，81.3%使用的Web服务端脚本语言是PHP，2013年同期是78.3%。也就是说，PHP的在Web服务方面并没有减少，只是在移动互联网浪潮中，增加了很多的其他语言技术的应用，进而被稀释了。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>最近关于PHP7和HHVM的性能对比，成为了一个热点的争议话题，大家都在讨论和关注哪一个才是PHP性能提升的未来。</p> 
+<h2 style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 20px; font-weight: normal;'>HHVM（HipHop Virtual Machine）的起源</h2> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>HHVM是一个开源的PHP虚拟机，使用JIT的编译方式以及其他技术，让PHP代码的执行性能大幅提升。据传，可以将当前版本的原生PHP代码提升5-10倍的执行性能。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>HHVM起源于Facebook公司，Facebook早起的很多代码是使用PHP来开发的，但是，随着业务的快速发展，PHP执行效率成为越来越明显的问题。为了优化执行效率，Facebook在2008年就开始使用HipHop，这是一种PHP执行引擎，最初是为了将Fackbook的大量PHP代码转成 C++，以提高性能和节约资源。使用HipHop的PHP代码在性能上有数倍的提升。后来，Facebook将HipHop平台开源，逐渐发展为现在的HHVM。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>1. PHP为什么慢？</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>PHP的慢是相对于C/C++级别的语言来说，事实上，PHP语言最初的设计，就不是用来解决计算密集型的应用场景。我们可以这样粗略理解为，PHP为了提升开发效率，而牺牲了执行效率。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>我们知道PHP一个很大的特点，就是弱类型特性，也就是说，我可以随意定义一个变量，然后给它随意赋值为各种类型的数据。以一个int整型数字为例子，在C语言中：</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>int num = 200;//通常是4字节</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>但是，如果是PHP定义了一个同样的变量，实际对应的存储结构则是：</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1903/57F59243BA6648DA88A235227C27A5DD' style='height:auto;' data-media-type='image'></p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>这个结构体将会占据远比C变量多得多的内存，PHP中定义方式如下：</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>$a = 200;//这变量将实际占用对比C变量很多倍的存储空间。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>其实对PHP来说，无论存储什么类型的数据，都是用上述“通杀”的结构体实现。为了兼容PHP程序员的变量类型“乱入”，PHP做到了对开发者的友好，但是对执行引擎很残酷。单个变量内存消耗可能还不明显，一旦用到PHP的数组等，则复杂度指数上升（数组的实现是HashTable）。然后，Zend引擎执行时，将这些PHP代码编译为opcode（PHP的中间字节码，格式有点类似于汇编），由Zend引擎逐行解释执行。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>无论是字符串的连接操作，还是数组的简单修改等，几乎都是“PHP程序员一句话，Zend引擎跑断腿”的节奏。因此，同样的操作，对比C来说，PHP消耗了更多的CPU和内存等系统资源。除此之外，还有内存自动回收、变量类型判断等等，都会增加系统资源的消耗。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>例如，我用纯PHP实现的快速排序函数和原生sort函数，排序10000个整型数字，来做一个耗时对比，结果如下：</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1912/1FD2A1755A5641CD889E7545EF47A465' style='height:auto;' data-media-type='image'></p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>原生的sort耗时3.44 ms，而我们自己实现的PHP函数sort则是68.79 ms。我们发现，两者执行效率差距巨大。我的测试方式，是计算函数执行前后的时间间隔，而不是整个PHP脚本从启动到结束的时间。PHP脚本启动和关闭过程，本身有着一系列的初始化和清理工作，也会占据不少的耗时。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1911/6A477E6D54DE4CD5AE63F4487DBF57F9' style='height:auto;' data-media-type='image'></p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>通常情况下，PHP执行效率的排行是：</p> 
+<ol style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'> 
+ <li>最快的是PHP语言结构（isset、echo等），PHP语言的一部分（它们根本不是函数）。</li> 
+ <li>然后比较快的就是PHP的原生和拓展函数。PHP拓展，基于Zend API之上，用C实现的功能，执行效率和C++/Java是属于同一个数量级的。</li> 
+ <li>真正慢的就是，我们通过PHP自己写的代码和函数。例如，假如我们使用的比较重的纯PHP实现的框架，因为框架本身的模块很多，所以，会明显拖累语言层面的执行效率，同时占据更多的内存。（国内的Yaf框架，以拓展的方式实现，因此执行效率远快于纯PHP写的框架）</li> 
+</ol> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1906/ADB334D80C094B77976AC8FBC5DB4CC0' style='height:auto;' data-media-type='image'></p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>在一般情况下，我们并不推荐用过PHP实现逻辑复杂计算类型的功能，尤其是Web系统流量比较大的场景下。因此，PHP程序员应该对PHP的各种原生函数和各类拓展有一个比较广泛的了解，在具体的功能实现场景中，寻求更原生的解决方案（原生接口或者拓展），而不是自己写一堆复杂的PHP代码来实现这类型功能。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>如果有足够的PHP拓展开发实力，将这类型业务功能重写为一个PHP拓展，也会大幅提升代码的执行效率。这是一个非常不错的方式，也被广泛应用PHP优化中。但是，自己编写的PHP业务拓展的缺点也很明显：</p> 
+<ol style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'> 
+ <li>拓展开发耗时比较长，需求变更的时候修改也复杂，写得不好可能会影响Web服务稳定性。（例如，在Apache的worker模式下，多线程场景下挂掉，会影响同一个进程下的其他正常子线程。如果是多线程的Web模式，编写拓展还需要支持线程安全）</li> 
+ <li>拓展在PHP版本升级的时候，可能需要做额外的兼容工作。</li> 
+ <li>人员变动后的维护和接手成本也比较高。</li> 
+</ol> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>实际上，在互联网一线企业中，更常见的解决方案，并非增加PHP拓展，而用C/C++独立写一个服务server，然后PHP通过socket和服务server通信来完成业务处理，并不将PHP本身和业务耦合在一起。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>不过，Web服务大部分的性能瓶颈都在网络传输和其他服务server的耗时上（例如MySQL等），PHP执行的耗时在整体耗时的占用比例非常小，所以从业务角度来说，影响可能并不明显。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>2. HHVM提升PHP执行性能的方式</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>HHVM提升PHP性能的途径，采用的方式就是替代Zend引擎来生成和执行PHP的中间字节码（HHVM生成自己格式的中间字节码），执行时通过JIT（Just In Time，即时编译是种软件优化技术，指在运行时才会去编译字节码为机器码）转为机器码执行。Zend引擎默认做法，是先编译为opcode，然后再逐条执行，通常每条指令对应的是C语言级别的函数。如果我们产生大量重复的opcode（纯PHP写的代码和函数），对应的则是Zend多次逐条执行这些C代码。而JIT所做的则是更进一步，将大量重复执行的字节码在运行的时候编译为机器码，达到提高执行效率的目的。通常，触发JIT的条件是代码或者函数被多次重复调用。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1909/9E90CD2C573C48FBAD820546931323AD' style='height:auto;' data-media-type='image'></p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>普通的PHP代码，因为无法固定变量的类型，需要额外添加判断类型的逻辑代码，这样PHP代码是不利于CPU执行和优化的。因此，HHVM通常需要用到Hack写法（为了兼容某种特性而额外添加的技巧性质的代码）的PHP代码来“配合”，就是为了让变量类型固定，方便虚拟机编译执行。PHP追求以一种形式来容纳一切类型，而Hack则可以将被容纳的一切标记上确定的类型。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>PHP代码的Hack写法的例子：</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1908/B965AE0109FE4C0A978DF80432715A8D' style='height:auto;' data-media-type='image'></p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>上面的例子中，PHP代码主要被添加上了变量类型。Hack写法的总体方向，就是将之前“动态”的写法变为“静态”的写法，来配合HHVM。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>HHVM因为它的高性能而吸引了不少人的关注，一些一线互联网公司也开始跟进使用。从纯语言执行性能测试结果来看，HHVM领先了开发中的PHP7版本不少。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1900/54F42F982094498D9D4BD11E273B287C' style='height:auto;' data-media-type='image'></p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>不过，从具体业务场景来看，HHVM和PHP7的差距并没有那么大，以WordPress开源博客首页为测试场景的结果中，他们目前的差距并不明显。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1899/FB977750A64B4B79AF211A08E9E61885' style='height:auto;' data-media-type='image'></p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>但是，PHP7目前还在开发中，就已经可用的技术方案来看，目前的HHVM略胜一筹。不过，HHVM的部署和应用都存在一些的问题：</p> 
+<ol style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'> 
+ <li>服务部署比较复杂，有一定维护成本。</li> 
+ <li>对PHP原生代码并非完整支持，PHP拓展也需要做适当的兼容。</li> 
+ <li>HHVM是个新虚拟机，长时间运行有内存泄露。（据说，一线互联网公司在应用这个技术时，是通过自己打Patch的方式解决内存泄露）</li> 
+</ol> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>HHVM毕竟是一个相对比较新的开源项目，发展到成熟仍然需要一定时间。</p> 
+<h2 style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 20px; font-weight: normal;'>PHP7的性能革新</h2> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>PHP长期以来饱受批评的性能问题，将会在这个版本得到大幅度的改善。版本中间没有PHP6哈，据说，是因为这个版本曾经立过项目，后来大部分功能都在5.x的版本里实现了，为了避免混淆，下一个大版本直接就是PHP7。（几年以前，我还看到过关于PHP6的书籍。）</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>1. PHP7的介绍</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>虽然PHP7的正式版本可能要到2015年的10月份才发布，不过明年6月份应可以看见一个测试版本了，之后是3-4个月的质量保证。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>PHP社区的项目计划如下：</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1904/2ED0F4BA2A7A44CABFC20D0CB91D0782' style='height:auto;' data-media-type='image'></p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>因为项目仍然处于开发中的原因，从表格中，可以看见的特性描述都比较模糊。肯定有更多的其他特性，只是尚未公布。下面的这些，是从PHP社区看见的，因为PHP7是一个开发中的项目，下面的这些也不一定准确，不过，不妨碍我们一起来看看。</p> 
+<ol style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'> 
+ <li>PHPNG（PHP next generation，下一代PHP），对Zend执行引擎本身的各种性能优化，其中JIT，可能会实现在Zend Opcache组件中。</li> 
+ <li>AST（Abstract Syntax Tree，抽象语法树），目的是在PHP编译过程引入一个中间件，替代直接从解释器吐出opcode的方式。让解释器和编译器解耦，可以减少大量Hack代码，同时，让实现更容易理解和维护。</li> 
+ <li>uniform variable syntax（统一变量语法），引入一种内部一致和完整的变量语法，让PHP的解析器更完整地支持各种类型的变量。部分变量的用法需要调整，例如变量的变量$$a等。</li> 
+ <li>支持integer semantics（整型语义），例如NaN、Infinity、&lt;&lt;、&gt;&gt;，修正list()的一致性等等。</li> 
+</ol> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>上面的特性中，最令人期待的就是PHPng的性能优化，PHP社区已经放出了一些性能的测速数据。从数据上看，PHPng的执行性能比起项目启动之初，已经有接近1倍的提升。这个成绩已经非常不错，况且，最关键的是PHP7的优化计划还有很多尚未完成。等到都全部完成了，相信我们可以看见一个性能更高的PHP7。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>这测速数据是来自于PHP社区（wiki.php.net/phpng），截取了一部分的数据：</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1901/7A90215DD20348DF8A1E15A835119069' style='height:auto;' data-media-type='image'></p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>对其当前PHP5.6版本，PHPNG的10月份性能提升已经非常明显了：</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1898/80220F0F32AC47D3BF88D7BC540FDE97' style='height:auto;' data-media-type='image'></p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>简单翻译下：</p> 
+<ul style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'> 
+ <li>综合测试速度提升35%。</li> 
+ <li>在实际应用场景有20%-70%的速度提升（WordPress首页有60%的提升）</li> 
+ <li>更少的内存消耗</li> 
+ <li>支持大部分常用的SAPIs</li> 
+ <li>支持大部分的PHP拓展绑定到资源分配（69个完成，6个待迁移）</li> 
+ <li>提供堪比HHVM3.3.0的执行速度</li> 
+</ul> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>2. PHP的弱类型争议</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>PHP被争议的特点很多，但是随着语言版本的发布和完善，功能和特性方面的批评开始变少了。但是，PHP的“弱类型”特性，却明显受到更多的争议，从HHVM通过Hack的方式直接“去掉”了“弱类型”特性可以看出，HHVM并不喜欢“弱类型”特性。然而，在我们很多PHP程序员的眼中，这却是PHP的重要优点之一。PHP里的变量被设计得随性和飘逸，海纳百川，一切皆可包容，不是让语言显得更为简单吗？</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>实际上，有些人认为它是个严重的问题，对于“弱类型”的批评观点大致如下：</p> 
+<ol style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'> 
+ <li>在“严谨”的语言中，通常是预先定义好一个变量的类型，自始至终，变量的类型是固定的，使用范围也是固定。而PHP的变量，通常我们只能看见它名字，类型大部分都不可以预先定义，并且还可以随意改变。（内存分配不好管理）</li> 
+ <li>为了兼容弱类型特性，PHP需要实现大量兼容代码，包括类型判断、类型转换、存储方式等，增加了语言内部的复杂度。（执行效率低下）</li> 
+ <li>变量的类型是不可控的，在执行过程中存在大量的“隐性类型转换”，容易产生不可预知的结果。（这里的确需要强调，PHP的类型转换是个必须掌握的点，各种类型的互相转换的可能会产生很多问题，尤其是初学PHP的同学哈）</li> 
+</ol> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>他们认为，这些都不符合“所见即所得”的简单性，而语法严谨的语言更高效率，也更容易“理解”。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>受到类似批评的还有Javascript等语言，因为它在这个问题上的表现是一样的。但是，一门语言最终被大规模使用，必然有它们的道理。PHP成为Web服务开发的首选脚本语言，Javascript则直接称霸Web前端领域，能走到这一步都不可能是偶然因素，开发者们用脚投票选择了它们。编程语言是人类和机器沟通的桥梁，终极追求是实现“人人皆可编程”的宏伟目标。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>纵观语言发展历史，从0和1的机器码开始，到汇编语言，然后到C语言，再到动态脚本语言PHP。执行效率呈指数下降，但是，学习门槛也呈指数降低。PHP语言不仅屏蔽了C的内存管理和指针的复杂性，而且更进一步屏蔽了变量类型的复杂性。提升了项目开发的效率，降低了学习的门槛，但同时牺牲了一定的执行性能。然后，HHVM的Hack给我们一种“回归原始”的感觉，重新引入了变量的复杂性。当然，不同的语言解决不同场景下的问题，并不能够一概而论。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1905/353CCB5C094F4608B19C0400037A7D3C' style='height:auto;' data-media-type='image'></p> 
+<h2 style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 20px; font-weight: normal;'>小结</h2> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>HHVM对PHP的性能提升，让人眼前一亮，而磨刀霍霍的PHP7则让人万分期待。两者都是极其优秀的开源项目，都在不断前进和发展中。就目前而言，因为距离PHP7正式版的发布还有比较长的一段时间，所以当前性能优化方案的首选当然是HHVM。不过，就我个人而言，我比较看好PHP7，因为它更能做到PHP代码的向下兼容。如果两者性能相差不大，我会选择简单的那个。</p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>参考资料：</p> 
+<ul style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'> 
+ <li>https://wiki.php.net/rfc/php7timeline</li> 
+ <li>https://wiki.php.net/phpng</li> 
+ <li>http://hhvm.com/</li> 
+</ul> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'>更多《问底》内容</p> 
+<ul style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'> 
+ <li><a href='http://www.csdn.net/article/2014-09-11/2821642-data-mining-by-Lanceyan' style='color:rgb(148, 148, 148);font-style:italic;font-weight:bold;'>【问底】严澜：数据挖掘入门（一）——分词</a></li> 
+ <li><a href='http://www.csdn.net/article/2014-09-10/2821615-how-twitter-uses-redis-to-scale-105tb-ram-39mm-qps-10000-ins' style='color:rgb(148, 148, 148);font-style:italic;font-weight:bold;'>【问底】Yao Yu谈Twitter的百TB级Redis缓存实践</a></li> 
+ <li><a href='http://www.csdn.net/article/2014-09-15/2821685-exploring-of-the-php' style='color:rgb(148, 148, 148);font-style:italic;font-weight:bold;'>【问底】王帅：深入PHP内核（一）——弱类型变量原理探究</a>&nbsp;&nbsp;</li> 
+ <li><a href='http://www.csdn.net/article/2014-09-26/2821885-exploring-of-the-php-2' style='color:rgb(148, 148, 148);font-style:italic;font-weight:bold;'>【问底】王帅：深入PHP内核（二）——SAPI探究</a></li> 
+ <li><a href='http://www.csdn.net/article/2014-10-16/2822134' style='color:rgb(148, 148, 148);font-style:italic;font-weight:bold;'>【问底】王帅：深入PHP内核（三）——内核利器哈希表与哈希碰撞攻击</a></li> 
+ <li><a href='http://www.csdn.net/article/2014-09-25/2821866' style='color:rgb(148, 148, 148);font-style:italic;font-weight:bold;'>【问底】静行：FastJSON实现详解</a></li> 
+ <li><a href='http://www.csdn.net/article/2014-09-30/2821940' style='color:rgb(148, 148, 148);font-style:italic;font-weight:bold;'>【问底】李平：大型网站的灵魂——性能</a></li> 
+ <li><a href='http://www.csdn.net/article/2014-10-24/2822278-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline' style='color:rgb(148, 148, 148);font-style:italic;font-weight:bold;'>【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（一）</a></li> 
+ <li><a href='http://www.csdn.net/article/2014-11-14/2822652-how-to-bulida-spark-and-cassandra-based-high-performance-data-pipeline-2' style='color:rgb(148, 148, 148);font-style:italic;font-weight:bold;'>【问底】许鹏：使用Spark+Cassandra打造高性能数据分析平台（二）</a></li> 
+ <li><a href='http://www.csdn.net/article/2014-10-21/2822218' style='color:rgb(148, 148, 148);font-style:italic;font-weight:bold;'>【问底】徐汉彬：大规模网站架构的缓存机制和几何分形学</a></li> 
+ <li><a href='http://www.csdn.net/article/2014-11-06/2822529' style='color:rgb(148, 148, 148);font-style:italic;font-weight:bold;'>【问底】徐汉彬：亿级Web系统搭建——单机到分布式集群</a></li> 
+ <li><a href='http://www.csdn.net/article/2014-11-28/2822858' style='color:rgb(148, 148, 148);font-style:italic;font-weight:bold;'>【问底】徐汉彬：Web系统大规模并发——电商秒杀与抢购</a></li> 
+ <li><a href='http://www.csdn.net/article/2014-12-11/2823077' style='color:rgb(148, 148, 148);font-style:italic;font-weight:bold;'>【问底】OpenStack在天河二号的大规模部署实践</a></li> 
+</ul> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><b>《问底》是&nbsp;CSDN云计算频道&nbsp;新建栏目，以实践为本，分享个人对于新时代软件架构与研发的深刻见解。在含有“【问底】”字样标题的文章中，你会看到某个国外IT巨头的架构分享，会看到国内资深工程师对某个技术的实践总结，更会看到一系列关于某个新技术的探索。&nbsp;</b><b>《问底》邀请对技术具有独特/深刻见解的你一起打造一片只属于技术的天空，详情可邮件至zhonghao@csdn.net。</b></p> 
+<p style='background-color: rgb(254, 254, 254); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 17px;'><img src='http://note.youdao.com/yws/res/1910/92A8B08135254FE49291BC3E11B7611E' style='height:auto;' data-media-type='image'></p>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-333.html">快速构建实时抓取集群</a>
+				|
+				 <a href="http://onelose.com/post-348.html">创业公司CEO54点大忌：穷酸的穿着、和猪辩论、炒人太慢</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="307" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-522.html">JSON.parse(text)</a></li>
+		<li><a href="http://onelose.com/post-337.html">Scrapy轻松定制网络爬虫</a></li>
+		<li><a href="http://onelose.com/post-55.html">朝鲜战争表明中国须敢于在关键时刻出手(图) 阅读原文</a></li>
+		<li><a href="http://onelose.com/post-166.html">javascript备忘录1</a></li>
+		<li><a href="http://onelose.com/post-464.html">ZendStudio9性能优化</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

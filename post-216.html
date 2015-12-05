@@ -1,0 +1,653 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Imghash:相似图片搜索的php实现</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>Imghash:相似图片搜索的php实现</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-4-3 6:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <h1 style='background-color:rgb(245, 245, 245);color:rgb(102, 102, 102);font-family:'Microsoft Yahei', sans-serif;font-size:2em;font-style:normal;font-weight:700;text-align:start;'> 
+  <div style='background-color:rgb(245, 245, 245);color:rgb(102, 102, 102);font-family:'Microsoft Yahei', sans-serif;font-size:16px;font-style:normal;font-weight:normal;text-align:start;'> 
+   <div> 
+    <p style='text-align:justify;'>前几天看到阮一峰的博客里写到关于<a href='http://www.ruanyifeng.com/blog/2011/07/principle_of_similar_image_search.html' style='color:rgb(40, 162, 184);'>相似图片搜索的原理</a>, 里面介绍了Google相似图片搜索的大致原理，主要是从Neal Krawetz博士的<a href='http://www.hackerfactor.com/blog/index.php?/archives/432-Looks-Like-It.html' style='color:rgb(40, 162, 184);'>LOOKS LIKE IT</a>翻译而来。文章详细的介绍了相似图片搜索处理的相关步骤，并且给出了一个python的实现，由于我对PHP比较熟，所以写了个PHP的版本。</p> 
+   </div> 
+  </div></h1> 
+ <h2 style='font-size:1.75em;font-weight:700;'>图片相似搜索的简单原理</h2> 
+ <h1 style='background-color:rgb(245, 245, 245);color:rgb(102, 102, 102);font-family:'Microsoft Yahei', sans-serif;font-size:2em;font-style:normal;font-weight:700;text-align:start;'> 
+  <div style='background-color:rgb(245, 245, 245);color:rgb(102, 102, 102);font-family:'Microsoft Yahei', sans-serif;font-size:16px;font-style:normal;font-weight:normal;text-align:start;'> 
+   <div> 
+    <p style='text-align:justify;'>根据文章里的描述，其实原理比较简单，大致有如下几个步骤：</p> 
+    <p style='text-align:justify;'>1、缩小尺寸。将图片缩小到8x8的尺寸，总共64个像素。这一步的作用是去除图片的细节，只保留结构、明暗等基本信息，摒弃不同尺寸、比例带来的图片差异。</p> 
+    <p style='text-align:justify;'>2、简化色彩。将缩小后的图片，转为64级灰度。也就是说，所有像素点总共只有64种颜色。</p> 
+    <p style='text-align:justify;'>3、计算平均值。<span style='font-family:Consolas, Monaco, monospace;font-size:12px;'>计算所有64个像素的灰度平均值。</span></p> 
+    <p style='text-align:justify;'>4、比较像素的灰度。将每个像素的灰度，与平均值进行比较。大于或等于平均值，记为1；小于平均值，记为0。</p> 
+    <p style='text-align:justify;'>5、计算哈希值。将上一步的比较结果，组合在一起，就构成了一个64位的整数，这就是这张图片的指纹。组合的次序并不重要，只要保证所有图片都采用同样次序就行了。得到指纹以后，就可以对比不同的图片，看看64位中有多少位是不一样的。</p> 
+    <p style='text-align:justify;'>这种算法的优点是简单快速，不受图片大小缩放的影响，缺点是图片的内容不能变更。实际应用中，往往采用更强大的pHash算法和SIFT算法，它们能够识别图片的变形。只要变形程度不超过25%，它们就能匹配原图。</p> 
+   </div> 
+  </div></h1> 
+ <h2 style='font-size:1.75em;font-weight:700;'>图片相似搜索的PHP实现</h2> 
+ <h1 style='background-color:rgb(245, 245, 245);color:rgb(102, 102, 102);font-family:'Microsoft Yahei', sans-serif;font-size:2em;font-style:normal;font-weight:700;text-align:start;'> 
+  <div style='background-color:rgb(245, 245, 245);color:rgb(102, 102, 102);font-family:'Microsoft Yahei', sans-serif;font-size:16px;font-style:normal;font-weight:normal;text-align:start;'> 
+   <div> 
+    <p style='text-align:justify;'>原文中给出了一个<a href='http://www.ruanyifeng.com/blog/2011/07/imgHash.txt' style='color:rgb(40, 162, 184);'>python版本的实现</a>，代码只有53行。我写了个对应的PHP版本，由于直接是用类写的，所以代码有100行，具体如下：</p> 
+    <pre lang='php' style='background-color:rgb(255, 255, 255);font-family:Consolas, 'Liberation Mono', Courier, monospace;font-size:13.6000003814697px;'>&lt;?php
+/**
+
+     
+     
+     
+     
+     <ul style='line-height:1.7;'>
+      
+      
+      
+      
+      <li>相似图片搜索hash的php实现</li>
+      
+      
+      
+      
+      <li><p style='text-align:justify;'>@author welefen <em></em>/ class Imghash{</p><p style='text-align:justify;'> private static $_instance = null;</p><p style='text-align:justify;'> public $rate = 2;</p><p style='text-align:justify;'> public static function getInstance(){</p><pre style='background-color:rgb(255, 255, 255);font-family:Consolas, 'Liberation Mono', Courier, monospace;font-size:11.1999998092651px;'><code style='background-color:rgb(0, 43, 54);color:rgb(131, 148, 150);font-size:16px;'><span style='color:rgb(133, 153, 0);'>if</span> (<span style='color:rgb(133, 153, 0);'>self</span>::<span style='color:rgb(181, 137, 0);'>$_instance</span> === <span style='color:rgb(133, 153, 0);'>null</span>){
+     <span style='color:rgb(133, 153, 0);'>self</span>::<span style='color:rgb(181, 137, 0);'>$_instance</span> = <span style='color:rgb(133, 153, 0);'>new</span><span style='color:rgb(133, 153, 0);'>self</span>();
+ }
+ <span style='color:rgb(133, 153, 0);'>return</span><span style='color:rgb(133, 153, 0);'>self</span>::<span style='color:rgb(181, 137, 0);'>$_instance</span>;</code></pre><p style='text-align:justify;'> } public function run($file){</p><pre style='background-color:rgb(255, 255, 255);font-family:Consolas, 'Liberation Mono', Courier, monospace;font-size:11.1999998092651px;'><code style='background-color:rgb(0, 43, 54);color:rgb(131, 148, 150);font-size:16px;'><span style='color:rgb(133, 153, 0);'>if</span> (!function_exists(<span style='color:rgb(42, 161, 152);'>'imagecreatetruecolor'</span>)){
+     <span style='color:rgb(133, 153, 0);'>throw</span><span style='color:rgb(133, 153, 0);'>new</span><span style='color:rgb(133, 153, 0);'>Exception</span>(<span style='color:rgb(42, 161, 152);'>'must load gd lib'</span>, <span style='color:rgb(42, 161, 152);'>1</span>);
+ }
+ <span style='color:rgb(181, 137, 0);'>$isString</span> = <span style='color:rgb(133, 153, 0);'>false</span>;
+ <span style='color:rgb(133, 153, 0);'>if</span> (is_string(<span style='color:rgb(181, 137, 0);'>$file</span>)){
+     <span style='color:rgb(181, 137, 0);'>$file</span> = <span style='color:rgb(133, 153, 0);'>array</span>(<span style='color:rgb(181, 137, 0);'>$file</span>);
+     <span style='color:rgb(181, 137, 0);'>$isString</span> = <span style='color:rgb(133, 153, 0);'>true</span>;
+ }
+ <span style='color:rgb(181, 137, 0);'>$result</span> = <span style='color:rgb(133, 153, 0);'>array</span>();
+ <span style='color:rgb(133, 153, 0);'>foreach</span> (<span style='color:rgb(181, 137, 0);'>$file</span><span style='color:rgb(133, 153, 0);'>as</span><span style='color:rgb(181, 137, 0);'>$f</span>){
+     <span style='color:rgb(181, 137, 0);'>$result</span>[] = <span style='color:rgb(181, 137, 0);'>$this</span>-&gt;hash(<span style='color:rgb(181, 137, 0);'>$f</span>);
+ }
+ <span style='color:rgb(133, 153, 0);'>return</span><span style='color:rgb(181, 137, 0);'>$isString</span> ? <span style='color:rgb(181, 137, 0);'>$result</span>[<span style='color:rgb(42, 161, 152);'>0</span>] : <span style='color:rgb(181, 137, 0);'>$result</span>;</code></pre><p style='text-align:justify;'> } public function checkIsSimilarImg($imgHash, $otherImgHash){</p><pre style='background-color:rgb(255, 255, 255);font-family:Consolas, 'Liberation Mono', Courier, monospace;font-size:11.1999998092651px;'><code style='background-color:rgb(0, 43, 54);color:rgb(131, 148, 150);font-size:16px;'><span style='color:rgb(133, 153, 0);'>if</span> (file_exists(<span style='color:rgb(181, 137, 0);'>$imgHash</span>) &amp;&amp; file_exists(<span style='color:rgb(181, 137, 0);'>$otherImgHash</span>)){
+     <span style='color:rgb(181, 137, 0);'>$imgHash</span> = <span style='color:rgb(181, 137, 0);'>$this</span>-&gt;run(<span style='color:rgb(181, 137, 0);'>$imgHash</span>);
+     <span style='color:rgb(181, 137, 0);'>$otherImgHash</span> = <span style='color:rgb(181, 137, 0);'>$this</span>-&gt;run(<span style='color:rgb(181, 137, 0);'>$otherImgHash</span>);
+ }
+ <span style='color:rgb(133, 153, 0);'>if</span> (strlen(<span style='color:rgb(181, 137, 0);'>$imgHash</span>) !== strlen(<span style='color:rgb(181, 137, 0);'>$otherImgHash</span>)) <span style='color:rgb(133, 153, 0);'>return</span> false;
+ <span style='color:rgb(181, 137, 0);'>$count</span> = <span style='color:rgb(42, 161, 152);'>0</span>;
+ <span style='color:rgb(181, 137, 0);'>$len</span> = strlen(<span style='color:rgb(181, 137, 0);'>$imgHash</span>);
+ <span style='color:rgb(133, 153, 0);'>for</span>(<span style='color:rgb(181, 137, 0);'>$i</span>=<span style='color:rgb(42, 161, 152);'>0</span>;<span style='color:rgb(181, 137, 0);'>$i</span>&lt;<span style='color:rgb(181, 137, 0);'>$len</span>;<span style='color:rgb(181, 137, 0);'>$i</span>++){
+     <span style='color:rgb(133, 153, 0);'>if</span> (<span style='color:rgb(181, 137, 0);'>$imgHash</span>{<span style='color:rgb(181, 137, 0);'>$i</span>} !== <span style='color:rgb(181, 137, 0);'>$otherImgHash</span>{<span style='color:rgb(181, 137, 0);'>$i</span>}){
+         <span style='color:rgb(181, 137, 0);'>$count</span>++;
+     }
+ }
+ <span style='color:rgb(133, 153, 0);'>return</span><span style='color:rgb(181, 137, 0);'>$count</span> &lt;= (<span style='color:rgb(42, 161, 152);'>5</span> * <span style='color:rgb(181, 137, 0);'>$rate</span> * <span style='color:rgb(181, 137, 0);'>$rate</span>) ? true : false;</code></pre><p style='text-align:justify;'> } public function hash($file){</p><pre style='background-color:rgb(255, 255, 255);font-family:Consolas, 'Liberation Mono', Courier, monospace;font-size:11.1999998092651px;'><code style='background-color:rgb(0, 43, 54);color:rgb(131, 148, 150);font-size:16px;'><span style='color:rgb(133, 153, 0);'>if</span> (!file_exists(<span style='color:rgb(181, 137, 0);'>$file</span>)){
+     <span style='color:rgb(133, 153, 0);'>return</span> false;
+ }
+ <span style='color:rgb(181, 137, 0);'>$height</span> = <span style='color:rgb(42, 161, 152);'>8</span> * <span style='color:rgb(181, 137, 0);'>$this</span>-&gt;rate;
+ <span style='color:rgb(181, 137, 0);'>$width</span> = <span style='color:rgb(42, 161, 152);'>8</span> * <span style='color:rgb(181, 137, 0);'>$this</span>-&gt;rate;
+ <span style='color:rgb(181, 137, 0);'>$img</span> = imagecreatetruecolor(<span style='color:rgb(181, 137, 0);'>$width</span>, <span style='color:rgb(181, 137, 0);'>$height</span>);
+ list(<span style='color:rgb(181, 137, 0);'>$w</span>, <span style='color:rgb(181, 137, 0);'>$h</span>) = getimagesize(<span style='color:rgb(181, 137, 0);'>$file</span>);
+ <span style='color:rgb(181, 137, 0);'>$source</span> = <span style='color:rgb(181, 137, 0);'>$this</span>-&gt;createImg(<span style='color:rgb(181, 137, 0);'>$file</span>);
+ imagecopyresampled(<span style='color:rgb(181, 137, 0);'>$img</span>, <span style='color:rgb(181, 137, 0);'>$source</span>, <span style='color:rgb(42, 161, 152);'>0</span>, <span style='color:rgb(42, 161, 152);'>0</span>, <span style='color:rgb(42, 161, 152);'>0</span>, <span style='color:rgb(42, 161, 152);'>0</span>, <span style='color:rgb(181, 137, 0);'>$width</span>, <span style='color:rgb(181, 137, 0);'>$height</span>, <span style='color:rgb(181, 137, 0);'>$w</span>, <span style='color:rgb(181, 137, 0);'>$h</span>);
+ <span style='color:rgb(181, 137, 0);'>$value</span> = <span style='color:rgb(181, 137, 0);'>$this</span>-&gt;getHashValue(<span style='color:rgb(181, 137, 0);'>$img</span>);
+ imagedestroy(<span style='color:rgb(181, 137, 0);'>$img</span>);
+ <span style='color:rgb(133, 153, 0);'>return</span><span style='color:rgb(181, 137, 0);'>$value</span>;</code></pre><p style='text-align:justify;'> } public function getHashValue($img){</p><pre style='background-color:rgb(255, 255, 255);font-family:Consolas, 'Liberation Mono', Courier, monospace;font-size:11.1999998092651px;'><code style='background-color:rgb(0, 43, 54);color:rgb(131, 148, 150);font-size:16px;'><span style='color:rgb(181, 137, 0);'>$width</span> = imagesx(<span style='color:rgb(181, 137, 0);'>$img</span>);
+ <span style='color:rgb(181, 137, 0);'>$height</span> = imagesy(<span style='color:rgb(181, 137, 0);'>$img</span>);
+ <span style='color:rgb(181, 137, 0);'>$total</span> = <span style='color:rgb(42, 161, 152);'>0</span>;
+ <span style='color:rgb(181, 137, 0);'>$array</span> = array();
+ <span style='color:rgb(133, 153, 0);'>for</span> (<span style='color:rgb(181, 137, 0);'>$y</span>=<span style='color:rgb(42, 161, 152);'>0</span>;<span style='color:rgb(181, 137, 0);'>$y</span>&lt;<span style='color:rgb(181, 137, 0);'>$height</span>;<span style='color:rgb(181, 137, 0);'>$y</span>++){
+     <span style='color:rgb(133, 153, 0);'>for</span> (<span style='color:rgb(181, 137, 0);'>$x</span>=<span style='color:rgb(42, 161, 152);'>0</span>;<span style='color:rgb(181, 137, 0);'>$x</span>&lt;<span style='color:rgb(181, 137, 0);'>$width</span>;<span style='color:rgb(181, 137, 0);'>$x</span>++){
+         <span style='color:rgb(181, 137, 0);'>$gray</span> = ( imagecolorat(<span style='color:rgb(181, 137, 0);'>$img</span>, <span style='color:rgb(181, 137, 0);'>$x</span>, <span style='color:rgb(181, 137, 0);'>$y</span>) &gt;&gt; <span style='color:rgb(42, 161, 152);'>8</span> ) &amp; <span style='color:rgb(42, 161, 152);'>0xFF</span>;
+         <span style='color:rgb(133, 153, 0);'>if</span> (!is_array(<span style='color:rgb(181, 137, 0);'>$array</span>[<span style='color:rgb(181, 137, 0);'>$y</span>])){
+             <span style='color:rgb(181, 137, 0);'>$array</span>[<span style='color:rgb(181, 137, 0);'>$y</span>] = array();
+         }
+         <span style='color:rgb(181, 137, 0);'>$array</span>[<span style='color:rgb(181, 137, 0);'>$y</span>][<span style='color:rgb(181, 137, 0);'>$x</span>] = <span style='color:rgb(181, 137, 0);'>$gray</span>;
+         <span style='color:rgb(181, 137, 0);'>$total</span> += <span style='color:rgb(181, 137, 0);'>$gray</span>;
+     }
+ }
+ <span style='color:rgb(181, 137, 0);'>$average</span> = intval(<span style='color:rgb(181, 137, 0);'>$total</span> / (<span style='color:rgb(42, 161, 152);'>64</span> * <span style='color:rgb(181, 137, 0);'>$this</span>-&gt;rate * <span style='color:rgb(181, 137, 0);'>$this</span>-&gt;rate));
+ <span style='color:rgb(181, 137, 0);'>$result</span> = <span style='color:rgb(42, 161, 152);'>''</span>;
+ <span style='color:rgb(133, 153, 0);'>for</span> (<span style='color:rgb(181, 137, 0);'>$y</span>=<span style='color:rgb(42, 161, 152);'>0</span>;<span style='color:rgb(181, 137, 0);'>$y</span>&lt;<span style='color:rgb(181, 137, 0);'>$height</span>;<span style='color:rgb(181, 137, 0);'>$y</span>++){
+     <span style='color:rgb(133, 153, 0);'>for</span> (<span style='color:rgb(181, 137, 0);'>$x</span>=<span style='color:rgb(42, 161, 152);'>0</span>;<span style='color:rgb(181, 137, 0);'>$x</span>&lt;<span style='color:rgb(181, 137, 0);'>$width</span>;<span style='color:rgb(181, 137, 0);'>$x</span>++){
+         <span style='color:rgb(133, 153, 0);'>if</span> (<span style='color:rgb(181, 137, 0);'>$array</span>[<span style='color:rgb(181, 137, 0);'>$y</span>][<span style='color:rgb(181, 137, 0);'>$x</span>] &gt;= <span style='color:rgb(181, 137, 0);'>$average</span>){
+             <span style='color:rgb(181, 137, 0);'>$result</span> .= <span style='color:rgb(42, 161, 152);'>'1'</span>;
+         }<span style='color:rgb(133, 153, 0);'>else</span>{
+             <span style='color:rgb(181, 137, 0);'>$result</span> .= <span style='color:rgb(42, 161, 152);'>'0'</span>;
+         }
+     }
+ }
+ <span style='color:rgb(133, 153, 0);'>return</span><span style='color:rgb(181, 137, 0);'>$result</span>;</code></pre><p style='text-align:justify;'> } public function createImg($file){</p><pre style='background-color:rgb(255, 255, 255);font-family:Consolas, 'Liberation Mono', Courier, monospace;font-size:11.1999998092651px;'><code style='background-color:rgb(0, 43, 54);color:rgb(131, 148, 150);font-size:16px;'><span style='color:rgb(181, 137, 0);'>$ext</span> = <span style='color:rgb(181, 137, 0);'>$this</span>-&gt;getFileExt(<span style='color:rgb(181, 137, 0);'>$file</span>);
+ <span style='color:rgb(133, 153, 0);'>if</span> (<span style='color:rgb(181, 137, 0);'>$ext</span> === <span style='color:rgb(42, 161, 152);'>'jpeg'</span>) <span style='color:rgb(181, 137, 0);'>$ext</span> = <span style='color:rgb(42, 161, 152);'>'jpg'</span>;
+ <span style='color:rgb(181, 137, 0);'>$img</span> = <span style='color:rgb(133, 153, 0);'>null</span>;
+ <span style='color:rgb(133, 153, 0);'>switch</span> (<span style='color:rgb(181, 137, 0);'>$ext</span>){
+     <span style='color:rgb(133, 153, 0);'>case</span><span style='color:rgb(42, 161, 152);'>'png'</span> : <span style='color:rgb(181, 137, 0);'>$img</span> = imagecreatefrompng(<span style='color:rgb(181, 137, 0);'>$file</span>);<span style='color:rgb(133, 153, 0);'>break</span>;
+     <span style='color:rgb(133, 153, 0);'>case</span><span style='color:rgb(42, 161, 152);'>'jpg'</span> : <span style='color:rgb(181, 137, 0);'>$img</span> = imagecreatefromjpeg(<span style='color:rgb(181, 137, 0);'>$file</span>);<span style='color:rgb(133, 153, 0);'>break</span>;
+     <span style='color:rgb(133, 153, 0);'>case</span><span style='color:rgb(42, 161, 152);'>'gif'</span> : <span style='color:rgb(181, 137, 0);'>$img</span> = imagecreatefromgif(<span style='color:rgb(181, 137, 0);'>$file</span>);
+ }
+ <span style='color:rgb(133, 153, 0);'>return</span><span style='color:rgb(181, 137, 0);'>$img</span>;</code></pre><p style='text-align:justify;'> } public function getFileExt($file){</p><pre style='background-color:rgb(255, 255, 255);font-family:Consolas, 'Liberation Mono', Courier, monospace;font-size:11.1999998092651px;'><code style='background-color:rgb(0, 43, 54);color:rgb(131, 148, 150);font-size:16px;'><span style='color:rgb(181, 137, 0);'>$infos</span> = explode(<span style='color:rgb(42, 161, 152);'>'.'</span>, <span style='color:rgb(181, 137, 0);'>$file</span>);
+ <span style='color:rgb(181, 137, 0);'>$ext</span> = strtolower(<span style='color:rgb(181, 137, 0);'>$infos</span>[count(<span style='color:rgb(181, 137, 0);'>$infos</span>) - <span style='color:rgb(42, 161, 152);'>1</span>]);
+ <span style='color:rgb(133, 153, 0);'>return</span><span style='color:rgb(181, 137, 0);'>$ext</span>;</code></pre><p style='text-align:justify;'> } }</p></li>
+     
+     
+     
+     
+     </ul></pre>调用方式如下： 
+    <pre lang='php' style='background-color:rgb(255, 255, 255);font-family:Consolas, 'Liberation Mono', Courier, monospace;font-size:13.6000003814697px;'> </pre>如果$result值为true, 则表明2个图片相似，否则不相似。 
+    <p style='text-align:justify;'>如果你对这个比较感兴趣，你可以从<a href='http://www.welefen.com/wp-content/uploads/2011/08/Imghash.txt' style='color:rgb(40, 162, 184);'>这里下载PHP代码</a></p> 
+   </div> 
+  </div></h1> 
+ <h2 style='font-size:1.75em;font-weight:700;'>其他</h2> 
+ <h1 style='background-color:rgb(245, 245, 245);color:rgb(102, 102, 102);font-family:'Microsoft Yahei', sans-serif;font-size:2em;font-style:normal;font-weight:700;text-align:start;'> 
+  <div style='background-color: rgb(245, 245, 245); font-size: 16px; font-weight: normal;'> 
+   <div> 
+    <p style='text-align:justify;'>在实际的相似图片搜索中，算图片的指纹并不是难点，难点而是在怎么从海量的图片指纹里找出与之相似的指纹。</p> 
+    <p style='text-align:justify;'>目前有图片相似搜索功能的有：<a href='http://images.google.com/' style='color:rgb(40, 162, 184);'>Google图片搜索</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='http://www.tineye.com/' style='color:rgb(40, 162, 184);'>tineye</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='http://shitu.baidu.com/' style='color:rgb(40, 162, 184);'>百度识图</a></p> 
+    <p style='text-align:justify;'>本文链接：<a href='http://www.welefen.com/similar-image-search-in-php.html' style='color:rgb(40, 162, 184);'>http://www.welefen.com/similar-image-search-in-php.html</a></p> 
+   </div> 
+  </div> 
+  <div style='background-color: rgb(245, 245, 245); font-size: 16px; font-weight: normal;'> 
+   <div style='color: rgb(51, 51, 51); font-size: 13px;'> 
+    <div style='font-family: inherit; font-size: inherit; font-style: inherit;'>
+      &nbsp; 
+     <span style='font-family: inherit; font-size: inherit; font-style: inherit;'>喜欢</span> 
+    </div> 
+    <div style='font-family: inherit; font-style: inherit;'> 
+     <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+      <a style='color: rgb(153, 153, 153); font-family: inherit; font-size: inherit; font-style: inherit;'>最新</a> 
+      <a style='color: rgb(221, 51, 34); font-family: inherit; font-size: inherit; font-style: inherit;'>最早</a> 
+      <a style='color: rgb(153, 153, 153); font-family: inherit; font-size: inherit; font-style: inherit;'>最热</a> 
+     </div> 
+     <ul style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+      <li style='font-family: inherit; font-style: inherit;'><span style='font-family: inherit; font-size: inherit; font-style: inherit; color: rgb(221, 51, 34) !important;'>13</span>条评论</li> 
+     </ul> 
+    </div> 
+    <ul style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+     <li data-post-id='1176998610231885930' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+      <div data-post-id='1176998610231885930' data-thread-id='1176998610231885871' data-root-id='0' data-source='duoshuo' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <a title='卢松松' href='http://lusongsong.com/' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-size: inherit; font-style: inherit;'><img src='http://note.youdao.com/yws/res/2758/82900B3E140F4B7B993CDB43085DFB04' alt='卢松松' style='font-family: inherit; font-size: inherit; font-style: inherit; width: 50px; height: 50px;' data-media-type='image'></a> 
+       </div> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <a href='http://lusongsong.com/' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-style: inherit;'>卢松松</a> 
+        </div> 
+        <p style='font-family: inherit; font-style: inherit;'>看完了，大致懂了点，不过还不明白哈希值是什么</p> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <span title='2011年8月15日 下午10:45:05' style='color: rgb(153, 153, 153); font-family: inherit; font-size: 12px; font-style: inherit;'>2011年8月15日</span>回复顶转发 
+        </div> 
+       </div> 
+      </div> 
+      <ul style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+       <li data-post-id='1176998610231885933' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <div data-post-id='1176998610231885933' data-thread-id='1176998610231885871' data-root-id='1176998610231885930' data-source='duoshuo' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <div data-user-id='1627559' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+          <a title='welefen' href='http://weibo.com/welefen' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-size: inherit; font-style: inherit;'><img src='http://note.youdao.com/yws/res/2757/824CA344AF9044F8899589B22CB3EE1B' alt='welefen' style='font-family: inherit; font-size: inherit; font-style: inherit; width: 30px; height: 30px;' data-media-type='image'></a> 
+         </div> 
+         <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+          <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+           <a href='http://weibo.com/welefen' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-style: inherit;'>welefen</a> 
+          </div> 
+          <p style='font-family: inherit; font-style: inherit;'>呵呵，就是一个唯一加密串</p> 
+          <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+           <span title='2011年8月17日 下午2:59:51' style='color: rgb(153, 153, 153); font-family: inherit; font-size: 12px; font-style: inherit;'>2011年8月17日</span>回复顶转发 
+          </div> 
+         </div> 
+        </div></li> 
+       <li data-post-id='1176998610231886694' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <div data-post-id='1176998610231886694' data-thread-id='1176998610231885871' data-root-id='1176998610231885930' data-source='duoshuo' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <div data-user-id='9452684' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+          <a title='余铁雄' href='http://www.lmlphp.com/' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-size: inherit; font-style: inherit;'><img src='http://note.youdao.com/yws/res/2760/563A039105804A62B3D4375CD3E33381' alt='余铁雄' style='font-family: inherit; font-size: inherit; font-style: inherit; width: 30px; height: 30px;' data-media-type='image'></a> 
+         </div> 
+         <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+          <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+           <a href='http://www.lmlphp.com/' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-style: inherit;'>余铁雄</a> 
+          </div> 
+          <p style='font-family: inherit; font-style: inherit;'>应该就是64个灰度值，根据本文的意思就是64个0和1的组合。。</p> 
+          <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+           <span title='2014年10月27日 下午11:22:01' style='color: rgb(153, 153, 153); font-family: inherit; font-size: 12px; font-style: inherit;'>2014年10月27日</span>回复顶转发 
+          </div> 
+         </div> 
+        </div></li> 
+      </ul></li> 
+     <li data-post-id='1176998610231885947' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+      <div data-post-id='1176998610231885947' data-thread-id='1176998610231885871' data-root-id='0' data-source='duoshuo' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <img src='http://note.youdao.com/yws/res/2758/82900B3E140F4B7B993CDB43085DFB04' alt='西安典当行' style='font-family: inherit; font-size: inherit; font-style: inherit; width: 50px; height: 50px;' data-media-type='image'> 
+       </div> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <span data-qqt-account='' style='color: rgb(119, 119, 119); font-family: inherit; font-style: inherit;'>西安典当行</span> 
+        </div> 
+        <p style='font-family: inherit; font-style: inherit;'>看是看完了，不过不太明白。</p> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <span title='2011年8月25日 上午9:57:55' style='color: rgb(153, 153, 153); font-family: inherit; font-size: 12px; font-style: inherit;'>2011年8月25日</span>回复顶转发 
+        </div> 
+       </div> 
+      </div></li> 
+     <li data-post-id='1176998610231885948' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+      <div data-post-id='1176998610231885948' data-thread-id='1176998610231885871' data-root-id='0' data-source='duoshuo' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <a title='防腐木' href='http://www.ffmgs.com/' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-size: inherit; font-style: inherit;'><img src='http://note.youdao.com/yws/res/2758/82900B3E140F4B7B993CDB43085DFB04' alt='防腐木' style='font-family: inherit; font-size: inherit; font-style: inherit; width: 50px; height: 50px;' data-media-type='image'></a> 
+       </div> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <a href='http://www.ffmgs.com/' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-style: inherit;'>防腐木</a> 
+        </div> 
+        <p style='font-family: inherit; font-style: inherit;'>嘻嘻，支持！支持！！支持！！！</p> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <span title='2011年8月25日 上午9:58:46' style='color: rgb(153, 153, 153); font-family: inherit; font-size: 12px; font-style: inherit;'>2011年8月25日</span>回复顶转发 
+        </div> 
+       </div> 
+      </div></li> 
+     <li data-post-id='1176998610231885951' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+      <div data-post-id='1176998610231885951' data-thread-id='1176998610231885871' data-root-id='0' data-source='duoshuo' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <img src='http://note.youdao.com/yws/res/2758/82900B3E140F4B7B993CDB43085DFB04' alt='Miao' style='font-family: inherit; font-size: inherit; font-style: inherit; width: 50px; height: 50px;' data-media-type='image'> 
+       </div> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <span data-qqt-account='' style='color: rgb(119, 119, 119); font-family: inherit; font-style: inherit;'>Miao</span> 
+        </div> 
+        <p style='font-family: inherit; font-style: inherit;'>仔细看完，写的不错<br>有一处可能是手误<br>return $count rate吧</p> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <span title='2011年8月29日 上午9:53:25' style='color: rgb(153, 153, 153); font-family: inherit; font-size: 12px; font-style: inherit;'>2011年8月29日</span>回复顶转发 
+        </div> 
+       </div> 
+      </div></li> 
+     <li data-post-id='1176998610231885956' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+      <div data-post-id='1176998610231885956' data-thread-id='1176998610231885871' data-root-id='0' data-source='duoshuo' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <a title='西安保温材料' href='http://www.888bwcl.com/' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-size: inherit; font-style: inherit;'><img src='http://note.youdao.com/yws/res/2758/82900B3E140F4B7B993CDB43085DFB04' alt='西安保温材料' style='font-family: inherit; font-size: inherit; font-style: inherit; width: 50px; height: 50px;' data-media-type='image'></a> 
+       </div> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <a href='http://www.888bwcl.com/' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-style: inherit;'>西安保温材料</a> 
+        </div> 
+        <p style='font-family: inherit; font-style: inherit;'>谢谢分享！加油！</p> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <span title='2011年8月31日 下午6:32:48' style='color: rgb(153, 153, 153); font-family: inherit; font-size: 12px; font-style: inherit;'>2011年8月31日</span>回复顶转发 
+        </div> 
+       </div> 
+      </div></li> 
+     <li data-post-id='1176998610231886049' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+      <div data-post-id='1176998610231886049' data-thread-id='1176998610231885871' data-root-id='0' data-source='duoshuo' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <a title='徐小花' href='http://kisexu.com/' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-size: inherit; font-style: inherit;'><img src='http://note.youdao.com/yws/res/2758/82900B3E140F4B7B993CDB43085DFB04' alt='徐小花' style='font-family: inherit; font-size: inherit; font-style: inherit; width: 50px; height: 50px;' data-media-type='image'></a> 
+       </div> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <a href='http://kisexu.com/' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-style: inherit;'>徐小花</a> 
+        </div> 
+        <p style='font-family: inherit; font-style: inherit;'>非常不错，会给我的毕业论文带来一些帮助，O(∩_∩)O谢谢</p> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <span title='2011年12月13日 上午10:42:35' style='color: rgb(153, 153, 153); font-family: inherit; font-size: 12px; font-style: inherit;'>2011年12月13日</span>回复顶转发 
+        </div> 
+       </div> 
+      </div></li> 
+     <li data-post-id='1176998610231886344' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+      <div data-post-id='1176998610231886344' data-thread-id='1176998610231885871' data-root-id='0' data-source='duoshuo' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <img src='http://note.youdao.com/yws/res/2758/82900B3E140F4B7B993CDB43085DFB04' alt='foxhu' style='font-family: inherit; font-size: inherit; font-style: inherit; width: 50px; height: 50px;' data-media-type='image'> 
+       </div> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <span data-qqt-account='' style='color: rgb(119, 119, 119); font-family: inherit; font-style: inherit;'>foxhu</span> 
+        </div> 
+        <p style='font-family: inherit; font-style: inherit;'>楼主代码运行过了吗？怎么这边运行出错啊？<br>Notice: Undefined offset: 0 in Imghash.class.php on line 72<br>就是这行if (!is_array($array[$y])){代码；<br>还有<br>Notice: Undefined variable: rate in Imghash.class.php on line 48，就是return $count &lt;= (5 * $rate * $rate) ? true : false;代码</p> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <span title='2012年12月8日 下午5:19:28' style='color: rgb(153, 153, 153); font-family: inherit; font-size: 12px; font-style: inherit;'>2012年12月8日</span>回复顶转发 
+        </div> 
+       </div> 
+      </div></li> 
+     <li data-post-id='1176998610231886537' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+      <div data-post-id='1176998610231886537' data-thread-id='1176998610231885871' data-root-id='0' data-source='duoshuo' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <img src='http://note.youdao.com/yws/res/2758/82900B3E140F4B7B993CDB43085DFB04' alt='一剑飘红' style='font-family: inherit; font-size: inherit; font-style: inherit; width: 50px; height: 50px;' data-media-type='image'> 
+       </div> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <span data-qqt-account='' style='color: rgb(119, 119, 119); font-family: inherit; font-style: inherit;'>一剑飘红</span> 
+        </div> 
+        <p style='font-family: inherit; font-style: inherit;'>$rate为什么是2，还有如果一张图片被切割了(不是缩放)，对比的话效果怎么样？</p> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <span title='2013年12月5日 上午10:49:20' style='color: rgb(153, 153, 153); font-family: inherit; font-size: 12px; font-style: inherit;'>2013年12月5日</span>回复顶转发 
+        </div> 
+       </div> 
+      </div></li> 
+     <li data-post-id='1176998610231886637' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+      <div data-post-id='1176998610231886637' data-thread-id='1176998610231885871' data-root-id='0' data-source='duoshuo' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+       <div data-user-id='7989085' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <a title='姜林' href='http://t.qq.com/jianglinws' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-size: inherit; font-style: inherit;'><img src='http://note.youdao.com/yws/res/2759/903A9DB70AED42AD80B4C0EB54F77FC7' alt='姜林' style='font-family: inherit; font-size: inherit; font-style: inherit; width: 50px; height: 50px;' data-media-type='image'></a> 
+       </div> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <a href='http://t.qq.com/jianglinws' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-style: inherit;'>姜林</a> 
+        </div> 
+        <p style='font-family: inherit; font-style: inherit;'>我可以解决在海量的图片指纹里找出与之相似的指纹</p> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <span title='2014年7月14日 下午4:35:26' style='color: rgb(153, 153, 153); font-family: inherit; font-size: 12px; font-style: inherit;'>2014年7月14日</span>回复顶转发 
+        </div> 
+       </div> 
+      </div> 
+      <ul style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+       <li data-post-id='1176998610231886646' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <div data-post-id='1176998610231886646' data-thread-id='1176998610231885871' data-root-id='1176998610231886637' data-source='duoshuo' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+          <img src='http://note.youdao.com/yws/res/2758/82900B3E140F4B7B993CDB43085DFB04' alt='zhouzhou' style='font-family: inherit; font-size: inherit; font-style: inherit; width: 30px; height: 30px;' data-media-type='image'> 
+         </div> 
+         <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+          <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+           <span data-qqt-account='' style='color: rgb(119, 119, 119); font-family: inherit; font-style: inherit;'>zhouzhou</span> 
+          </div> 
+          <p style='font-family: inherit; font-style: inherit;'>请问有什么办法呢？</p> 
+          <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+           <span title='2014年8月8日 上午11:54:30' style='color: rgb(153, 153, 153); font-family: inherit; font-size: 12px; font-style: inherit;'>2014年8月8日</span>回复顶转发 
+          </div> 
+         </div> 
+        </div></li> 
+      </ul></li> 
+     <li data-post-id='1176998610231886693' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+      <div data-post-id='1176998610231886693' data-thread-id='1176998610231885871' data-root-id='0' data-source='duoshuo' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+       <div data-user-id='9452684' style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <a title='余铁雄' href='http://www.lmlphp.com/' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-size: inherit; font-style: inherit;'><img src='http://note.youdao.com/yws/res/2760/563A039105804A62B3D4375CD3E33381' alt='余铁雄' style='font-family: inherit; font-size: inherit; font-style: inherit; width: 50px; height: 50px;' data-media-type='image'></a> 
+       </div> 
+       <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <a href='http://www.lmlphp.com/' target='_blank' style='color: rgb(119, 119, 119); font-family: inherit; font-style: inherit;'>余铁雄</a> 
+        </div> 
+        <p style='font-family: inherit; font-style: inherit;'>不错啊，不过我今天试了下，跟楼上foxhu一样，发现运行报错，Notice Undefined offset 和 Undefined variable。。</p> 
+        <div style='font-family: inherit; font-size: inherit; font-style: inherit;'> 
+         <span title='2014年10月27日 下午11:17:16' style='color: rgb(153, 153, 153); font-family: inherit; font-size: 12px; font-style: inherit;'>2014年10月27日</span>回复顶转发 
+        </div> 
+       </div> 
+      </div></li> 
+    </ul> 
+   </div> 
+  </div></h1> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-213.html">室内健身</a>
+				|
+				 <a href="http://onelose.com/post-226.html">MySQL UDF（自定义函数）</a>&raquo;
+	</div>
+				<a name="comments"></a>
+	<p class="comment-header"><b>评论：</b></p>
+			<div class="comment" id="comment-5096">
+		<a name="5096"></a>
+		<div class="avatar"><img src="http://gravatar.duoshuo.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=40&d=mm&r=g" /></div>		<div class="comment-info">
+			<b>你大爷 </b><br /><span class="comment-time">2015-04-27 21:22</span>
+			<div class="comment-content">我搞定了哈哈,不告诉你我是谁</div>
+			<div class="comment-reply"><a href="#comment-5096" onclick="commentReply(5096,this)">回复</a></div>
+		</div>
+			</div>
+	    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="216" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-234.html">MySQLexplain执行计划解读</a></li>
+		<li><a href="http://onelose.com/post-342.html">Chrome扩展及应用开发</a></li>
+		<li><a href="http://onelose.com/post-157.html">《星际争霸2：自由之翼》1.3.0补丁说明</a></li>
+		<li><a href="http://onelose.com/post-540.html">jQuery拖动布局实现排序结果同步数据库</a></li>
+		<li><a href="http://onelose.com/post-126.html">做了个站长工具网站</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

@@ -1,0 +1,455 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>mysql常用字符串操作函数大全，以及实例</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="今天在论坛中看到一个关于mysql的问题，问题如下" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>mysql常用字符串操作函数大全，以及实例</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-6 7:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>今天在论坛中看到一个关于mysql的问题，问题如下</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>good_id &nbsp; &nbsp;   cat_id<br>12654&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; 665,569<br>12655&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 601,4722</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>goods_id是商品id<br>cat_id是分类id<br>当我，怎么根据这种分类ID查数据（一个商品有多个分类，而且用逗号隔开了）<br>我现在用的是like 这样的话，输入一个分类id是688，或者4722都能出来这个商品，但输入一个722也出来这个商品了。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>如果用like做的话，肯定会有问题的，我的开始的想法是，把cat_id里面的字符串换成数组，这样可以利用mysql里面的<strong>in</strong>操作，这样就不会出现查找722，而4722类别下的产品都跑出来了。我从网上找了半天，这方面的字符串操作函数，没找到，不过我发现了<strong>find_in_set</strong>这个函数虽然不能，将字符串转换成数组，但是也不会出现上面的情况。我发现自己有好多函数不知道，所以我从手册中,以及网上收集了半天，做了一些例子。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><strong>一，测试准备</strong></p> 
+ <div style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'> 
+  <div> 
+   <a href='http://blog.51yip.com/mysql/965.html#' target='_blank' style='color:green;'>查看</a> 
+   <a href='http://blog.51yip.com/mysql/965.html#' target='_blank' style='color:green;'>复制</a> 
+   <a href='http://blog.51yip.com/mysql/965.html#' target='_blank' style='color:green;'>打印</a> 
+   <a href='http://blog.51yip.com/mysql/965.html#' target='_blank' style='color:green;'>?</a> 
+  </div> 
+  <ol> 
+   <li>测试表&nbsp;&nbsp;</li> 
+   <li>CREATE&nbsp;TABLE&nbsp;`string_test`&nbsp;(&nbsp;&nbsp;</li> 
+   <li>&nbsp;`id`&nbsp;int(11)&nbsp;NOT&nbsp;NULL&nbsp;auto_increment&nbsp;COMMENT&nbsp;'用户ID',&nbsp;&nbsp;</li> 
+   <li>&nbsp;`name`&nbsp;varchar(50)&nbsp;NOT&nbsp;NULL&nbsp;default&nbsp;''&nbsp;COMMENT&nbsp;'名称',&nbsp;&nbsp;</li> 
+   <li>&nbsp;`job`&nbsp;varchar(23)&nbsp;NOT&nbsp;NULL&nbsp;COMMENT&nbsp;'工作',&nbsp;&nbsp;</li> 
+   <li>&nbsp;`sex`&nbsp;tinyint(1)&nbsp;NOT&nbsp;NULL&nbsp;default&nbsp;'1'&nbsp;COMMENT&nbsp;'性别',&nbsp;&nbsp;</li> 
+   <li>&nbsp;`hobby`&nbsp;varchar(100)&nbsp;character&nbsp;set&nbsp;utf8&nbsp;collate&nbsp;utf8_unicode_ci&nbsp;default&nbsp;NULL&nbsp;COMMENT&nbsp;'爱好',&nbsp;&nbsp;</li> 
+   <li>&nbsp;PRIMARY&nbsp;KEY&nbsp;&nbsp;(`id`)&nbsp;&nbsp;</li> 
+   <li>)&nbsp;ENGINE=MyISAM&nbsp;&nbsp;DEFAULT&nbsp;CHARSET=utf8&nbsp;AUTO_INCREMENT=1&nbsp;;&nbsp;&nbsp;</li> 
+   <li>&nbsp;&nbsp;</li> 
+   <li>测试数据&nbsp;&nbsp;</li> 
+   <li>INSERT&nbsp;INTO&nbsp;`string_test`&nbsp;(`id`,&nbsp;`name`,&nbsp;`job`,&nbsp;`sex`,&nbsp;`hobby`)&nbsp;VALUES&nbsp;&nbsp;</li> 
+   <li>(1,&nbsp;'tank',&nbsp;'农民工',&nbsp;1,&nbsp;'军棋,游戏,fishing'),&nbsp;&nbsp;</li> 
+   <li>(2,&nbsp;'zhang',&nbsp;'DUCK',&nbsp;0,&nbsp;'fly,make&nbsp;firend'),&nbsp;&nbsp;</li> 
+   <li>(3,&nbsp;'ying',&nbsp;'no&nbsp;job',&nbsp;1,&nbsp;'flying,driving,testing'),&nbsp;&nbsp;</li> 
+   <li>(4,&nbsp;'tankzhang',&nbsp;'love&nbsp;your&nbsp;love',&nbsp;1,&nbsp;'i&nbsp;love&nbsp;you');&nbsp;&nbsp;</li> 
+  </ol> 
+ </div> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>测试表
+CREATE TABLE `string_test` (
+ `id` int(11) NOT NULL auto_increment COMMENT '用户ID',
+ `name` varchar(50) NOT NULL default '' COMMENT '名称',
+ `job` varchar(23) NOT NULL COMMENT '工作',
+ `sex` tinyint(1) NOT NULL default '1' COMMENT '性别',
+ `hobby` varchar(100) character set utf8 collate utf8_unicode_ci default NULL COMMENT '爱好',
+ PRIMARY KEY&nbsp; (`id`)
+) ENGINE=MyISAM&nbsp; DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+测试数据
+INSERT INTO `string_test` (`id`, `name`, `job`, `sex`, `hobby`) VALUES
+(1, 'tank', '农民工', 1, '军棋,游戏,fishing'),
+(2, 'zhang', 'DUCK', 0, 'fly,make firend'),
+(3, 'ying', 'no job', 1, 'flying,driving,testing'),
+(4, 'tankzhang', 'love your love', 1, 'i love you');</pre> 
+ <table border='1' cellpadding='2' cellspacing='0' width='100%' style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-size: 13.9200000762939px;'> 
+  <tbody> 
+   <tr> 
+    <th>id</th> 
+    <th>name</th> 
+    <th>job</th> 
+    <th>sex</th> 
+    <th>hobby</th> 
+   </tr> 
+   <tr> 
+    <td>1</td> 
+    <td>tank</td> 
+    <td>农民工</td> 
+    <td>1</td> 
+    <td>军棋,游戏,fishing</td> 
+   </tr> 
+   <tr> 
+    <td>2</td> 
+    <td>zhang</td> 
+    <td>DUCK</td> 
+    <td>0</td> 
+    <td>fly,make firend</td> 
+   </tr> 
+   <tr> 
+    <td>3</td> 
+    <td>ying</td> 
+    <td>no job</td> 
+    <td>1</td> 
+    <td>flying,driving,testing</td> 
+   </tr> 
+   <tr> 
+    <td>4</td> 
+    <td>tankzhang</td> 
+    <td>love your love</td> 
+    <td>1</td> 
+    <td>i love you</td> 
+   </tr> 
+  </tbody> 
+ </table> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><strong>二，mysql字符串操作函数</strong></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>1，UPPER和UCASE</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回字符串str，根据当前字符集映射(缺省是ISO-8859-1 Latin1)把所有的字符改变成大写。该函数对多字节是可靠的。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; select name,UPPER(name) from string_test where name='tank';<br>+------+-------------+<br>| name | UPPER(name) |<br>+------+-------------+<br>| tank | TANK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+------+-------------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>2，LOWER和LCASE</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回字符串str，根据当前字符集映射(缺省是ISO-8859-1 Latin1)把所有的字符改变成小写。该函数对多字节是可靠的。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; select sex,LCASE(job) from string_test where job='DUCK';<br>+------+------------+<br>| sex&nbsp; | LCASE(job) |<br>+------+------------+<br>|&nbsp;&nbsp;&nbsp; 1 | duck&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+------+------------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>3，FIND_IN_SET(str,strlist)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>如果字符串str在由N子串组成的表strlist之中，返回一个1到N的值。一个字符串表是被“,”分隔的子串组成的一个字符串。如果第一个参数是一个常数字符串并且第二个参数是一种类型为SET的列，FIND_IN_SET()函数被优化而使用位运算！如果str不是在strlist里面或如果 strlist是空字符串，返回0。如果任何一个参数是NULL，返回NULL。如果第一个参数包含一个“,”，该函数将工作不正常。看面是二种不同的效果，可以看一下</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id,name FROM string_test WHERE find_in_set('fly',hobby);<br>+----+-------+<br>| id | name&nbsp; |<br>+----+-------+<br>|&nbsp; 2 | zhang |<br>+----+-------+<br>1 row in set (0.00 sec)<br><br>mysql&gt; SELECT id,name FROM string_test WHERE hobby like 'fly%';<br>+----+-------+<br>| id | name&nbsp; |<br>+----+-------+<br>|&nbsp; 2 | zhang |<br>|&nbsp; 3 | ying&nbsp; |<br>+----+-------+<br>2 rows in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>4，FIELD(str,str1,str2,str3,…)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回str在str1, str2, str3, …清单的索引。如果str没找到，返回0。FIELD()是ELT()反运算。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id, name, FIELD( id, name, sex, job, hobby )<br> -&gt; FROM string_test where id &lt; 4;<br>+----+-------+------------------------------------+<br>| id | name&nbsp; | FIELD( id, name, sex, job, hobby ) |<br>+----+-------+------------------------------------+<br>|&nbsp; 1 | tank&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2 |<br>|&nbsp; 2 | zhang |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 |<br>|&nbsp; 3 | ying&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 |<br>+----+-------+------------------------------------+<br>3 rows in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>5.ELT(N,str1,str2,str3,…)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>如果N= 1，返回str1，如果N= 2，返回str2，等等。如果N小于1或大于参数个数，返回NULL。ELT()是FIELD()反运算。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id, name, ELT(1, id, name, sex, job, hobby ) FROM string_test where id &lt; 4;<br>+----+-------+------------------------------------+<br>| id | name&nbsp; | ELT(1, id, name, sex, job, hobby ) |<br>+----+-------+------------------------------------+<br>|&nbsp; 1 | tank&nbsp; | 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>|&nbsp; 2 | zhang | 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>|&nbsp; 3 | ying&nbsp; | 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+----+-------+------------------------------------+<br>3 rows in set (0.00 sec)<br><br>mysql&gt; SELECT id, name, ELT(2, id, name, sex, job, hobby ) FROM string_test where id &lt; 4;<br>+----+-------+------------------------------------+<br>| id | name&nbsp; | ELT(2, id, name, sex, job, hobby ) |<br>+----+-------+------------------------------------+<br>|&nbsp; 1 | tank&nbsp; | tank&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>|&nbsp; 2 | zhang | zhang&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>|&nbsp; 3 | ying&nbsp; | ying&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+----+-------+------------------------------------+<br>3 rows in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>6，REPLACE(str,from_str,to_str)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回字符串str，其字符串from_str的所有出现由字符串to_str代替。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id,REPLACE(hobby,'firend','living') FROM string_test WHERE id = 2;<br><br>+----+----------------------------------+<br>| id | REPLACE(hobby,'firend','living') |<br>+----+----------------------------------+<br>|&nbsp; 2 | fly,make living&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+----+----------------------------------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>7，REPEAT(str,count)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回由重复countTimes次的字符串str组成的一个字符串。如果count &lt;= 0，返回一个空字符串。如果str或count是NULL，返回NULL。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id,REPEAT(name,2) FROM string_test WHERE id &gt; 1 and id &lt; 4;<br>+----+----------------+<br>| id | REPEAT(name,2) |<br>+----+----------------+<br>|&nbsp; 2 | zhangzhang&nbsp;&nbsp;&nbsp;&nbsp; |<br>|&nbsp; 3 | yingying&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+----+----------------+<br>2 rows in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>8，REVERSE(str)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回颠倒字符顺序的字符串str。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'> mysql&gt; SELECT id,reverse(name) FROM string_test WHERE id &gt; 1 and id &lt; 4;<br>+----+---------------+<br>| id | reverse(name) |<br>+----+---------------+<br>|&nbsp; 2 | gnahz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>|&nbsp; 3 | gniy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+----+---------------+<br>2 rows in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>9，INSERT(str,pos,len,newstr)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回字符串str，在位置pos起始的子串且len个字符长得子串由字符串newstr代替。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; select id,name,INSERT(hobby,10,6,'living') from string_test where id = 2;<br><br>+----+-------+-----------------------------+<br>| id | name&nbsp; | INSERT(hobby,10,6,'living') |<br>+----+-------+-----------------------------+<br>|&nbsp; 2 | zhang | fly,make living&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+----+-------+-----------------------------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>10，SUBSTRING(str FROM pos)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>从字符串str的起始位置pos返回一个子串。下面的sub2没有值，因为mysql数据库的下标是从1开始的。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id, substring( hobby, 1, 6) AS sub1, substring( hobby from 0 for 8<br> ) AS sub2,substring( hobby,2) AS sub3, substring( hobby from 4 ) AS sub4 FROM s<br>tring_test WHERE id =4;<br>+----+--------+------+-----------+---------+<br>| id | sub1&nbsp;&nbsp; | sub2 | sub3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | sub4&nbsp;&nbsp;&nbsp; |<br>+----+--------+------+-----------+---------+<br>|&nbsp; 4 | i love |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp; love you | ove you |<br>+----+--------+------+-----------+---------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>11,SUBSTRING_INDEX(str,delim,count)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回从字符串str的第count个出现的分隔符delim之后的子串。如果count是正数，返回最后的分隔符到左边(从左边数) 的所有字符。如果count是负数，返回最后的分隔符到右边的所有字符(从右边数)。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id,SUBSTRING_INDEX(hobby,',',2) as test1,SUBSTRING_INDEX(hobby,','<br>,-1) as test2 FROM string_test WHERE id = 3;<br>+----+----------------+---------+<br>| id | test1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | test2&nbsp;&nbsp; |<br>+----+----------------+---------+<br>|&nbsp; 3 | flying,driving | testing |<br>+----+----------------+---------+<br>1 row in set (0.01 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>12,LTRIM(str)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回删除了其前置空格字符的字符串str。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id,LTRIM(job) FROM string_test WHERE id = 4;<br>+----+----------------+<br>| id | LTRIM(job)&nbsp;&nbsp;&nbsp;&nbsp; |<br>+----+----------------+<br>|&nbsp; 4 | love your love |<br>+----+----------------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>13,RTRIM(str)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回删除了其拖后空格字符的字符串str。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id,RTRIM(job) FROM string_test WHERE id = 4;<br>+----+----------------+<br>| id | RTRIM(job)&nbsp;&nbsp;&nbsp;&nbsp; |<br>+----+----------------+<br>|&nbsp; 4 | love your love |<br>+----+----------------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>14,TRIM([[BOTH | LEADING | TRAILING] [remstr] FROM] str)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回字符串str，其所有remstr前缀或后缀被删除了。如果没有修饰符BOTH、LEADING或TRAILING给出，BOTH被假定。如果remstr没被指定，空格被删除。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; select trim(' test&nbsp; ');<br>+-----------------+<br>| trim(' test&nbsp; ') |<br>+-----------------+<br>| test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+-----------------+<br>1 row in set (0.01 sec)<br><br>mysql&gt; SELECT id,TRIM(LEADING 'love' from job) as test1,TRIM(BOTH 'love' from jo<br>b) as test2,TRIM(TRAILING 'love' from job) as test3 FROM string_test WHERE id =<br>4<br> -&gt; ;<br>+----+------------+--------+------------+<br>| id | test1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | test2&nbsp; | test3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+----+------------+--------+------------+<br>|&nbsp; 4 |&nbsp; your love |&nbsp; your&nbsp; | love your&nbsp; |<br>+----+------------+--------+------------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>15,MID(str,pos,len)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>从字符串str返回一个len个字符的子串，从位置pos开始。使用FROM的变种形式是ANSI SQL92语法。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt;&nbsp; SELECT id, mid( hobby, 1, 6 ) AS sub1, mid( hobby<br> -&gt; FROM 0<br> -&gt; FOR 8 ) AS sub2, mid( hobby, 2 ) AS sub3, mid( hobby<br> -&gt; FROM 4 ) AS sub4<br> -&gt; FROM string_test<br> -&gt; WHERE id =4 ;<br>+----+--------+------+-----------+---------+<br>| id | sub1&nbsp;&nbsp; | sub2 | sub3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | sub4&nbsp;&nbsp;&nbsp; |<br>+----+--------+------+-----------+---------+<br>|&nbsp; 4 | i love |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp; love you | ove you |<br>+----+--------+------+-----------+---------+<br>1 row in set (0.00 sec)<br><br>mysql&gt;</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><strong>16，LPAD(str,len,padstr)</strong></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回字符串str，左面用字符串padstr填补直到str是len个字符长。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id,LPAD(name,11,'zhang ') FROM string_test WHERE id = 3;<br>+----+------------------------+<br>| id | LPAD(name,11,'zhang ') |<br>+----+------------------------+<br>|&nbsp; 3 | zhang zying&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+----+------------------------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>17,RPAD(str,len,padstr)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回字符串str，右面用字符串padstr填补直到str是len个字符长。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id,RPAD(name,11,' ying') FROM string_test WHERE id = 2;<br>+----+-----------------------+<br>| id | RPAD(name,11,' ying') |<br>+----+-----------------------+<br>|&nbsp; 2 | zhang ying&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+----+-----------------------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>18,LEFT(str,len)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回字符串str的最左面len个字符。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id,left(job,4) FROM string_test WHERE id = 4;<br>+----+-------------+<br>| id | left(job,4) |<br>+----+-------------+<br>|&nbsp; 4 | love&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+----+-------------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>19,RIGHT(str,len)</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回字符串str的最右面len个字符。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id,right(job,4) FROM string_test WHERE id = 4;<br>+----+--------------+<br>| id | right(job,4) |<br>+----+--------------+<br>|&nbsp; 4 | love&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+----+--------------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>20,位置控制函数</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>POSITION(substr IN str)<br>返回子串substr在字符串str第一个出现的位置，如果substr不是在str里面，返回0.</p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>LOCATE(substr,str,pos)<br>返回子串substr在字符串str第一个出现的位置，从位置pos开始。如果substr不是在str里面，返回0。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>INSTR(str,substr)<br>返回子串substr在字符串str中的第一个出现的位置。这与有2个参数形式的LOCATE()相同，除了参数被颠倒。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id,INSTR(job,'you') as instr,LOCATE('love',job,3) as locate,POSITI<br>ON('love' in job) as position FROM string_test WHERE id = 4;<br>+----+-------+--------+----------+<br>| id | instr | locate | position |<br>+----+-------+--------+----------+<br>|&nbsp; 4 |&nbsp;&nbsp;&nbsp;&nbsp; 6 |&nbsp;&nbsp;&nbsp;&nbsp; 11 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 |<br>+----+-------+--------+----------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>21，得到字符串长度的函数</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>LENGTH(str),OCTET_LENGTH(str),CHAR_LENGTH(str),CHARACTER_LENGTH(str)</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id,LENGTH(job) as one,OCTET_LENGTH(job) as two,CHAR_LENGTH(job) as<br> three,CHARACTER_LENGTH(job) as four FROM string_test WHERE id = 4;<br>+----+-----+-----+-------+------+<br>| id | one | two | three | four |<br>+----+-----+-----+-------+------+<br>|&nbsp; 4 |&nbsp; 14 |&nbsp; 14 |&nbsp;&nbsp;&nbsp; 14 |&nbsp;&nbsp; 14 |<br>+----+-----+-----+-------+------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>22，合并多个字符串，或者表中的多个字段</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>CONCAT(str1,str2,…)</p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>返回来自于参数连结的字符串。如果任何参数是NULL，返回NULL。可以有超过2个的参数。一个数字参数被变换为等价的字符串形式。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; SELECT id,CONCAT(name,job,hobby) FROM string_test WHERE id = 4;<br>+----+-----------------------------------+<br>| id | CONCAT(name,job,hobby)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |<br>+----+-----------------------------------+<br>|&nbsp; 4 | tankzhanglove your lovei love you |<br>+----+-----------------------------------+<br>1 row in set (0.00 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'><span style='color:rgb(128, 0, 128);'><strong>23，进制转换</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>BIN(N)<br>返回二进制值N的一个字符串表示，在此N是一个长整数(BIGINT)数字，这等价于CONV(N,10,2)。如果N是NULL，返回NULL。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>OCT(N)<br>返回八进制值N的一个字符串的表示，在此N是一个长整型数字，这等价于CONV(N,10,8)。如果N是NULL，返回NULL。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>HEX(N)<br>返回十六进制值N一个字符串的表示，在此N是一个长整型(BIGINT)数字，这等价于CONV(N,10,16)。如果N是NULL，返回NULL。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>ASCII(str)<br>返回字符串str的最左面字符的ASCII代码值。如果str是空字符串，返回0。如果str是NULL，返回NULL。</p> 
+ <pre style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>mysql&gt; select bin(20),oct(20),hex(20),ascii(20);<br>+---------+---------+---------+-----------+<br>| bin(20) | oct(20) | hex(20) | ascii(20) |<br>+---------+---------+---------+-----------+<br>| 10100&nbsp;&nbsp; | 24&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 50 |<br>+---------+---------+---------+-----------+<br>1 row in set (0.02 sec)</pre> 
+ <p style='background-color: rgb(255, 255, 255); font-size: 13.9200000762939px;'>上面我只例举了一部分对字符串进行操作的函数，并且是我觉得我们平时会用的，有可能会用到的一些函数。</p> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-286.html">关于PHP程序员解决问题的能力</a>
+				|
+				 <a href="http://onelose.com/post-299.html">PHP中”单例模式“实例讲解</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="295" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-330.html">Larbin简介,及其在Ubuntu10.04下的编译安装</a></li>
+		<li><a href="http://onelose.com/post-320.html">compileyourappwiththecommandbellowgcc-otest-L/usr/</a></li>
+		<li><a href="http://onelose.com/post-158.html">《形式逻辑》习题2</a></li>
+		<li><a href="http://onelose.com/post-485.html">操纵历史，利用HTML5HistoryAPI实现无刷新跳转</a></li>
+		<li><a href="http://onelose.com/post-322.html">Larbin试用日记</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

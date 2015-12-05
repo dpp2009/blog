@@ -1,0 +1,588 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>十分钟搞清字符集和字符编码</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="十分钟搞清字符集和字符编码" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>十分钟搞清字符集和字符编码</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-27 7:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <h1 style='font-family:'Helvetica Neue', 'Segoe UI', Arial, sans-serif;font-size:2.25rem;'>十分钟搞清字符集和字符编码</h1> 
+ <h1 style='color:rgb(49, 49, 48);font-family:'Helvetica Neue', 'Segoe UI', Arial, sans-serif;font-size:2.25rem;font-style:normal;text-align:start;'> 
+  <div style='font-family: Georgia, Times, 'Times New Roman', serif; font-size: 16px; font-weight: normal;'></div> 
+  <div style='font-family: Georgia, Times, 'Times New Roman', serif; font-size: 16px; font-weight: normal;'> 
+   <nav style='font-family:'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'> 
+    <ul> 
+     <li style='font-size:0.75rem;'><a href='http://cenalulu.github.io/linux/character-encoding/#toc0' style='color:rgb(34, 34, 34);'>什么是字符集</a></li> 
+     <li style='font-size:0.75rem;'><a href='http://cenalulu.github.io/linux/character-encoding/#toc1' style='color:rgb(34, 34, 34);'>什么是字符编码</a></li> 
+     <li style='font-size:0.75rem;'><a href='http://cenalulu.github.io/linux/character-encoding/#toc2' style='color:rgb(34, 34, 34);'>UTF-8和Unicode的关系</a></li> 
+     <li style='font-size:0.75rem;'><a href='http://cenalulu.github.io/linux/character-encoding/#toc3' style='color:rgb(34, 34, 34);'>UTF-8编码简介</a></li> 
+     <li style='font-size:0.75rem;'><a href='http://cenalulu.github.io/linux/character-encoding/#toc4' style='color:rgb(34, 34, 34);'>为什么会出现乱码</a></li> 
+     <li style='font-size:0.75rem;'><a href='http://cenalulu.github.io/linux/character-encoding/#toc5' style='color:rgb(34, 34, 34);'>如何识别乱码的本来想要表达的文字</a></li> 
+     <li style='font-size:0.75rem;'><a href='http://cenalulu.github.io/linux/character-encoding/#toc6' style='color:rgb(34, 34, 34);'>常见问题处理之Emoji</a></li> 
+    </ul> 
+   </nav> 
+   <div> 
+    <blockquote style='font-style:italic;'> 
+     <p style='font-size:1rem;'>本文将简述字符集，字符编码的概念。以及在遭遇乱码时的一些常用诊断技巧</p> 
+    </blockquote> 
+    <blockquote style='font-style:italic;'> 
+     <p style='font-size:1rem;'>背景：字符集和编码无疑是IT菜鸟甚至是各种大神的头痛问题。当遇到纷繁复杂的字符集，各种火星文和乱码时，问题的定位往往变得非常困难。本文就将会从原理方面对字符集和编码做个简单的科普介绍，同时也会介绍一些通用的乱码故障定位的方法以方便读者以后能够更从容的定位相关问题。在正式介绍之前，先做个小申明：如果你希望非常精确的理解各个名词的解释，那么可以查阅wikipedia。本文是博主通过自己理解消化后并转化成易懂浅显的表述后的介绍。</p> 
+    </blockquote> 
+    <hr> 
+   </div> 
+  </div></h1> 
+ <h2 style='font-family:'Helvetica Neue', 'Segoe UI', Arial, sans-serif;font-size:2rem;'>什么是字符集</h2> 
+ <h1 style='color: rgb(49, 49, 48); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif; font-size: 2.25rem;'> 
+  <div style='font-family: Georgia, Times, 'Times New Roman', serif; font-size: 16px; font-weight: normal;'> 
+   <div> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>在介绍字符集之前，我们先了解下为什么要有字符集。我们在计算机屏幕上看到的是实体化的文字，而在计算机存储介质中存放的实际是二进制的比特流。那么在这两者之间的转换规则就需要一个统一的标准，否则把我们的U盘插到老板的电脑上，文档就乱码了；小伙伴QQ上传过来的文件，在我们本地打开又乱码了。于是为了实现转换标准，各种字符集标准就出现了。简单的说字符集就规定了某个文字对应的二进制数字存放方式（编码）和某串二进制数值代表了哪个文字（解码）的转换关系。<br>那么为什么会有那么多字符集标准呢？这个问题实际非常容易回答。问问自己为什么我们的插头拿到英国就不能用了呢？为什么显示器同时有DVI，VGA，HDMI，DP这么多接口呢？很多规范和标准在最初制定时并不会意识到这将会是以后全球普适的准则，或者处于组织本身利益就想从本质上区别于现有标准。于是，就产生了那么多具有相同效果但又不相互兼容的标准了。<br>说了那么多我们来看一个实际例子，下面就是<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>屌</code>这个字在各种编码下的十六进制和二进制编码结果，怎么样有没有一种很屌的感觉？</p> 
+    <table border='1' cellpadding='2' cellspacing='0'> 
+     <thead> 
+      <tr> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>字符集</th> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>16进制编码</th> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>对应的二进制数据</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>UTF-8</td> 
+       <td>0xE5B18C</td> 
+       <td>1110 0101 1011 0001 1000 1100</td> 
+      </tr> 
+      <tr> 
+       <td>UTF-16</td> 
+       <td>0x5C4C</td> 
+       <td>1011 1000 1001 1000</td> 
+      </tr> 
+      <tr> 
+       <td>GBK</td> 
+       <td>0x8CC5</td> 
+       <td>1000 1100 1100 0101</td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <hr> 
+   </div> 
+  </div></h1> 
+ <h2 style='font-family:'Helvetica Neue', 'Segoe UI', Arial, sans-serif;font-size:2rem;'>什么是字符编码</h2> 
+ <h1 style='color: rgb(49, 49, 48); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif; font-size: 2.25rem;'> 
+  <div style='font-family: Georgia, Times, 'Times New Roman', serif; font-size: 16px; font-weight: normal;'> 
+   <div> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>字符集只是一个规则集合的名字，对应到真实生活中，字符集就是对某种语言的称呼。例如：英语，汉语，日语。对于一个字符集来说要正确编码转码一个字符需要三个关键元素：字库表（character repertoire）、编码字符集（coded character set）、字符编码（character encoding form）。其中字库表是一个相当于所有可读或者可显示字符的数据库，字库表决定了整个字符集能够展现表示的所有字符的范围。编码字符集，即用一个编码值<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>code point</code>来表示一个字符在字库中的位置。字符编码，将编码字符集和实际存储数值之间的转换关系。一般来说都会直接将<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>code point</code>的值作为编码后的值直接存储。例如在ASCII中<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>A</code>在表中排第65位，而编码后<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>A</code>的数值是<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>0100 0001</code>也即十进制的65的二进制转换结果。<br>看到这里，可能很多读者都会有和我当初一样的疑问：<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>字库表</code>和<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>编码字符集</code>看来是必不可少的，那既然字库表中的每一个字符都有一个自己的序号，直接把序号作为存储内容就好了。为什么还要多此一举通过<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>字符编码</code>把序号转换成另外一种存储格式呢？其实原因也比较容易理解：统一字库表的目的是为了能够涵盖世界上所有的字符，但实际使用过程中会发现真正用的上的字符相对整个字库表来说比例非常低。例如中文地区的程序几乎不会需要日语字符，而一些英语国家甚至简单的ASCII字库表就能满足基本需求。而如果把每个字符都用字库表中的序号来存储的话，每个字符就需要3个字节（这里以Unicode字库为例），这样对于原本用仅占一个字符的ASCII编码的英语地区国家显然是一个额外成本（存储体积是原来的三倍）。算的直接一些，同样一块硬盘，用ASCII可以存1500篇文章，而用3字节Unicode序号存储只能存500篇。于是就出现了UTF-8这样的变长编码。在UTF-8编码中原本只需要一个字节的ASCII字符，仍然只占一个字节。而像中文及日语这样的复杂字符就需要2个到3个字节来存储。</p> 
+    <hr> 
+   </div> 
+  </div></h1> 
+ <h2 style='font-family:'Helvetica Neue', 'Segoe UI', Arial, sans-serif;font-size:2rem;'>UTF-8和Unicode的关系</h2> 
+ <h1 style='color: rgb(49, 49, 48); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif; font-size: 2.25rem;'> 
+  <div style='font-family: Georgia, Times, 'Times New Roman', serif; font-size: 16px; font-weight: normal;'> 
+   <div> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>看完上面两个概念解释，那么解释UTF-8和Unicode的关系就比较简单了。Unicode就是上文中提到的编码字符集，而UTF-8就是字符编码，即Unicode规则字库的一种实现形式。随着互联网的发展，对同一字库集的要求越来越迫切，Unicode标准也就自然而然的出现。它几乎涵盖了各个国家语言可能出现的符号和文字，并将为他们编号。详见：<a href='http://en.wikipedia.org/wiki/Unicode' style='color:rgb(34, 34, 34);'>Unicode on Wikipedia</a>。Unicode的编号从<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>0000</code>开始一直到<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>10FFFF</code>共分为16个Plane，每个Plane中有65536个字符。而UTF-8则只实现了第一个Plane，可见UTF-8虽然是一个当今接受度最广的字符集编码，但是它并没有涵盖整个Unicode的字库，这也造成了它在某些场景下对于特殊字符的处理困难（下文会有提到）。</p> 
+    <hr> 
+   </div> 
+  </div></h1> 
+ <h2 style='font-family:'Helvetica Neue', 'Segoe UI', Arial, sans-serif;font-size:2rem;'>UTF-8编码简介</h2> 
+ <h1 style='color: rgb(49, 49, 48); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif; font-size: 2.25rem;'> 
+  <div style='font-family: Georgia, Times, 'Times New Roman', serif; font-size: 16px; font-weight: normal;'> 
+   <div> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>为了更好的理解后面的实际应用，我们这里简单的介绍下UTF-8的编码实现方法。即UTF-8的物理存储和Unicode序号的转换关系。<br>UTF-8编码为变长编码。最小编码单位（<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>code unit</code>）为一个字节。一个字节的前1-3个bit为描述性部分，后面为实际序号部分。</p> 
+    <ul> 
+     <li style='font-size:1rem;'>如果一个字节的第一位为0，那么代表当前字符为单字节字符，占用一个字节的空间。0之后的所有部分（7个bit）代表在Unicode中的序号。</li> 
+     <li style='font-size:1rem;'>如果一个字节以110开头，那么代表当前字符为双字节字符，占用2个字节的空间。110之后的所有部分（7个bit）代表在Unicode中的序号。且第二个字节以10开头</li> 
+     <li style='font-size:1rem;'>如果一个字节以1110开头，那么代表当前字符为三字节字符，占用2个字节的空间。110之后的所有部分（7个bit）代表在Unicode中的序号。且第二、第三个字节以10开头</li> 
+     <li style='font-size:1rem;'>如果一个字节以10开头，那么代表当前字节为多字节字符的第二个字节。10之后的所有部分（6个bit）代表在Unicode中的序号。</li> 
+    </ul> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>具体每个字节的特征可见下表，其中<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>x</code>代表序号部分，把各个字节中的所有<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>x</code>部分拼接在一起就组成了在Unicode字库中的序号</p> 
+    <table border='1' cellpadding='2' cellspacing='0'> 
+     <thead> 
+      <tr> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>Byte 1</th> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>Byte 2</th> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>Byte3</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>0xxx xxxx</td> 
+       <td> 
+        <div> 
+         <br> 
+        </div></td> 
+       <td> 
+        <div> 
+         <br> 
+        </div></td> 
+      </tr> 
+      <tr> 
+       <td>110x xxxx</td> 
+       <td>10xx xxxx</td> 
+       <td> 
+        <div> 
+         <br> 
+        </div></td> 
+      </tr> 
+      <tr> 
+       <td>1110 xxxx</td> 
+       <td>10xx xxxx</td> 
+       <td>10xx xxxx</td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>我们分别看三个从一个字节到三个字节的UTF-8编码例子：</p> 
+    <table border='1' cellpadding='2' cellspacing='0'> 
+     <tbody> 
+      <tr> 
+       <td>实际字符</td> 
+       <td>在Unicode字库序号的十六进制</td> 
+       <td>在Unicode字库序号的二进制</td> 
+       <td>UTF-8编码后的二进制</td> 
+       <td>UTF-8编码后的十六进制</td> 
+      </tr> 
+      <tr> 
+       <td>$</td> 
+       <td>0024</td> 
+       <td>010 0100</td> 
+       <td>0010 0100</td> 
+       <td>24</td> 
+      </tr> 
+      <tr> 
+       <td>¢</td> 
+       <td>00A2</td> 
+       <td>000 1010 0010</td> 
+       <td>1100 0010 1010 0010</td> 
+       <td>C2 A2</td> 
+      </tr> 
+      <tr> 
+       <td>€</td> 
+       <td>20AC</td> 
+       <td>0010 0000 1010 1100</td> 
+       <td>1110 0010 1000 0010 1010 1100</td> 
+       <td>E2 82 AC</td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>细心的读者不难从以上的简单介绍中得出以下规律：</p> 
+    <ul> 
+     <li style='font-size:1rem;'>3个字节的UTF-8十六进制编码一定是以<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>E</code>开头的</li> 
+     <li style='font-size:1rem;'>2个字节的UTF-8十六进制编码一定是以<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>C</code>或<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>D</code>开头的</li> 
+     <li style='font-size:1rem;'>1个字节的UTF-8十六进制编码一定是以比<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>8</code>小的数字开头的</li> 
+    </ul> 
+    <hr> 
+   </div> 
+  </div></h1> 
+ <h2 style='font-family:'Helvetica Neue', 'Segoe UI', Arial, sans-serif;font-size:2rem;'>为什么会出现乱码</h2> 
+ <h1 style='color: rgb(49, 49, 48); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif; font-size: 2.25rem;'> 
+  <div style='font-family: Georgia, Times, 'Times New Roman', serif; font-size: 16px; font-weight: normal;'> 
+   <div> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>先科普下<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>乱码</code>的英文native说法是<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>mojibake</code><br>简单的说乱码的出现是因为：编码和解码时用了不同或者不兼容的字符集。对应到真实生活中，就好比是一个英国人为了表示祝福在纸上写了<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>bless</code>（编码过程）。而一个法国人拿到了这张纸，由于在法语中bless表示受伤的意思，所以认为他想表达的是<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>受伤</code>（解码过程）。这个就是一个现实生活中的乱码情况。在计算机科学中一样，一个用UTF-8编码后的字符，用GBK去解码。由于两个字符集的字库表不一样，同一个汉字在两个字符表的位置也不同，最终就会出现乱码。<br>我们来看一个例子：假设我们用UTF-8编码存储<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>很屌</code>两个字，会有如下转换：</p> 
+    <table border='1' cellpadding='2' cellspacing='0'> 
+     <thead> 
+      <tr> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>字符</th> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>UTF-8编码后的十六进制</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>很</td> 
+       <td>E5BE88</td> 
+      </tr> 
+      <tr> 
+       <td>屌</td> 
+       <td>E5B18C</td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>于是我们得到了<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>E5BE88E5B18C</code>这么一串数值。而显示时我们用GBK解码进行展示，通过查表我们获得以下信息：</p> 
+    <table border='1' cellpadding='2' cellspacing='0'> 
+     <thead> 
+      <tr> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>两个字节的十六进制数值</th> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>GBK解码后对应的字符</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>E5BE</td> 
+       <td>寰</td> 
+      </tr> 
+      <tr> 
+       <td>88E5</td> 
+       <td>堝</td> 
+      </tr> 
+      <tr> 
+       <td>B18C</td> 
+       <td>睂</td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>解码后我们就得到了<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>寰堝睂</code>这么一个错误的结果，更要命的是连字符个数都变了。</p> 
+    <hr> 
+   </div> 
+  </div></h1> 
+ <h2 style='font-family:'Helvetica Neue', 'Segoe UI', Arial, sans-serif;font-size:2rem;'>如何识别乱码的本来想要表达的文字</h2> 
+ <h1 style='color: rgb(49, 49, 48); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif; font-size: 2.25rem;'> 
+  <div style='font-family: Georgia, Times, 'Times New Roman', serif; font-size: 16px; font-weight: normal;'> 
+   <div> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>要从乱码字符中反解出原来的正确文字需要对各个字符集编码规则有较为深刻的掌握。但是原理很简单，这里用最常见的UTF-8被错误用GBK展示时的乱码为例，来说明具体反解和识别过程。</p> 
+   </div> 
+  </div></h1> 
+ <h4 style='font-family:'Helvetica Neue', 'Segoe UI', Arial, sans-serif;font-size:1.5rem;'>第1步 编码</h4> 
+ <h1 style='color: rgb(49, 49, 48); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif; font-size: 2.25rem;'> 
+  <div style='font-family: Georgia, Times, 'Times New Roman', serif; font-size: 16px; font-weight: normal;'> 
+   <div> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>假设我们在页面上看到<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>寰堝睂</code>这样的乱码，而又得知我们的浏览器当前使用GBK编码。那么第一步我们就能先通过GBK把乱码编码成二进制表达式。当然查表编码效率很低，我们也可以用以下SQL语句直接通过MySQL客户端来做编码工作：</p> 
+    <div style='background-color:rgb(0, 43, 54);color:rgb(147, 161, 161);font-size:1rem;'> 
+     <pre style='font-family:monospace;'><code data-lang='mysql' style='font-family:monospace;'>mysql [localhost] <span style='background-color: rgb(227, 210, 210);'>{</span>msandbox<span style='background-color: rgb(227, 210, 210);'>}</span> <span style='color:rgb(133, 153, 0);'>&gt;</span> <span style='color:rgb(133, 153, 0);'>select</span> <span style='color:rgb(38, 139, 210);'>hex</span>(<span style='color:rgb(133, 153, 0);'>convert</span>(<span style='color:rgb(42, 161, 152);'>'寰堝睂'</span> <span style='color:rgb(133, 153, 0);'>using</span> gbk));
+<span style='color:rgb(133, 153, 0);'>+-------------------------------------+</span>
+<span style='color:rgb(133, 153, 0);'>|</span> <span style='color:rgb(38, 139, 210);'>hex</span>(<span style='color:rgb(133, 153, 0);'>convert</span>(<span style='color:rgb(42, 161, 152);'>'寰堝睂'</span> <span style='color:rgb(133, 153, 0);'>using</span> gbk))    <span style='color:rgb(133, 153, 0);'>|</span>
+<span style='color:rgb(133, 153, 0);'>+-------------------------------------+</span>
+<span style='color:rgb(133, 153, 0);'>|</span> E5BE88E5B18C                        <span style='color:rgb(133, 153, 0);'>|</span>
+<span style='color:rgb(133, 153, 0);'>+-------------------------------------+</span>
+<span style='color:rgb(42, 161, 152);'>1</span> row <span style='color:rgb(133, 153, 0);'>in</span> <span style='color:rgb(220, 50, 47);'>set</span> (<span style='color:rgb(42, 161, 152);'>0</span>.<span style='color:rgb(42, 161, 152);'>01</span> sec)</code></pre> 
+    </div> 
+   </div> 
+  </div></h1> 
+ <h4 style='font-family:'Helvetica Neue', 'Segoe UI', Arial, sans-serif;font-size:1.5rem;'>第2步 识别</h4> 
+ <h1 style='color: rgb(49, 49, 48); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif; font-size: 2.25rem;'> 
+  <div style='font-family: Georgia, Times, 'Times New Roman', serif; font-size: 16px; font-weight: normal;'> 
+   <div> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>现在我们得到了解码后的二进制字符串<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>E5BE88E5B18C</code>。然后我们将它按字节拆开。</p> 
+    <table border='1' cellpadding='2' cellspacing='0'> 
+     <thead> 
+      <tr> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>Byte 1</th> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>Byte 2</th> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>Byte 3</th> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>Byte 4</th> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>Byte 5</th> 
+       <th style='background-color: rgb(255, 255, 255); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;'>Byte 6</th> 
+      </tr> 
+     </thead> 
+     <tbody> 
+      <tr> 
+       <td>E5</td> 
+       <td>BE</td> 
+       <td>88</td> 
+       <td>E5</td> 
+       <td>B1</td> 
+       <td>8C</td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>然后套用之前UTF-8编码介绍章节中总结出的规律，就不难发现这6个字节的数据符合UTF-8编码规则。如果整个数据流都符合这个规则的话，我们就能大胆假设乱码之前的编码字符集是UTF-8</p> 
+   </div> 
+  </div></h1> 
+ <h4 style='font-family:'Helvetica Neue', 'Segoe UI', Arial, sans-serif;font-size:1.5rem;'>第3步 解码</h4> 
+ <h1 style='color: rgb(49, 49, 48); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif; font-size: 2.25rem;'> 
+  <div style='font-family: Georgia, Times, 'Times New Roman', serif; font-size: 16px; font-weight: normal;'> 
+   <div> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>然后我们就能拿着<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>E5BE88E5B18C</code>用UTF-8解码，查看乱码前的文字了。当然我们可以不查表直接通过SQL获得结果：</p> 
+    <div style='background-color:rgb(0, 43, 54);color:rgb(147, 161, 161);font-size:1rem;'> 
+     <pre style='font-family:monospace;'><code data-lang='mysql' style='font-family:monospace;'>mysql [localhost] <span style='background-color: rgb(227, 210, 210);'>{</span>msandbox<span style='background-color: rgb(227, 210, 210);'>}</span> ((none)) <span style='color:rgb(133, 153, 0);'>&gt;</span> <span style='color:rgb(133, 153, 0);'>select</span> <span style='color:rgb(133, 153, 0);'>convert</span>(<span style='color:rgb(42, 161, 152);'>0</span>xE5BE88E5B18C <span style='color:rgb(133, 153, 0);'>using</span> utf8);
+<span style='color:rgb(133, 153, 0);'>+------------------------------------+</span>
+<span style='color:rgb(133, 153, 0);'>|</span> <span style='color:rgb(133, 153, 0);'>convert</span>(<span style='color:rgb(42, 161, 152);'>0</span>xE5BE88E5B18C <span style='color:rgb(133, 153, 0);'>using</span> utf8) <span style='color:rgb(133, 153, 0);'>|</span>
+<span style='color:rgb(133, 153, 0);'>+------------------------------------+</span>
+<span style='color:rgb(133, 153, 0);'>|</span> <span style='background-color: rgb(227, 210, 210);'>很屌</span>                               <span style='color:rgb(133, 153, 0);'>|</span>
+<span style='color:rgb(133, 153, 0);'>+------------------------------------+</span>
+<span style='color:rgb(42, 161, 152);'>1</span> row <span style='color:rgb(133, 153, 0);'>in</span> <span style='color:rgb(220, 50, 47);'>set</span> (<span style='color:rgb(42, 161, 152);'>0</span>.<span style='color:rgb(42, 161, 152);'>00</span> sec)</code></pre> 
+    </div> 
+   </div> 
+  </div></h1> 
+ <h2 style='font-family:'Helvetica Neue', 'Segoe UI', Arial, sans-serif;font-size:2rem;'>常见问题处理之Emoji</h2> 
+ <h1 style='color: rgb(49, 49, 48); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif; font-size: 2.25rem;'> 
+  <div style='font-family: Georgia, Times, 'Times New Roman', serif; font-size: 16px; font-weight: normal;'> 
+   <div> 
+    <p style='font-size:1.125rem;line-height:1.55556;'>所谓Emoji就是一种在Unicode位于<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>\u1F601</code>-<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>\u1F64F</code>区段的字符。这个显然超过了目前常用的UTF-8字符集的编码范围<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>\u0000</code>-<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>\uFFFF</code>。Emoji表情随着IOS的普及和微信的支持越来越常见。下面就是几个常见的Emoji:<br><img src='http://note.youdao.com/yws/res/2655/90CC52DF86864840836BE7D20F44885C' alt='emoji1' style='height:auto;' data-media-type='image'><br><img src='http://note.youdao.com/yws/res/2653/DB608606E46A4A91B782D49231CF9164' alt='emoji2' style='height:auto;' data-media-type='image'><br><img src='http://note.youdao.com/yws/res/2654/E19F9D211DC04ED6B0324F1C339D78CE' alt='emoji3' style='height:auto;' data-media-type='image'><br>那么Emoji字符表情会对我们平时的开发运维带来什么影响呢？最常见的问题就在于将他存入MySQL数据库的时候。一般来说MySQL数据库的默认字符集都会配置成UTF-8（三字节），而utf8mb4在5.5以后才被支持，也很少会有DBA主动将系统默认字符集改成utf8mb4。那么问题就来了，当我们把一个需要4字节UTF-8编码才能表示的字符存入数据库的时候就会报错：<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>ERROR 1366: Incorrect string value: '\xF0\x9D\x8C\x86' for column</code>&nbsp;。 如果认真阅读了上面的解释，那么这个报错也就不难看懂了。我们试图将一串Bytes插入到一列中，而这串Bytes的第一个字节是<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>\xF0</code>意味着这是一个四字节的UTF-8编码。但是当MySQL表和列字符集配置为UTF-8的时候是无法存储这样的字符的，所以报了错。<br>那么遇到这种情况我们如何解决呢？有两种方式：升级MySQL到5.6或更高版本，并且将表字符集切换至utf8mb4。第二种方法就是在把内容存入到数据库之前做一次过滤，将Emoji字符替换成一段特殊的文字编码，然后再存入数据库中。之后从数据库获取或者前端展示时再将这段特殊文字编码转换成Emoji显示。第二种方法我们假设用<code style='background-color:rgb(242, 242, 242);color:blue;font-family:monospace;font-size:1.125rem;'>-*-1F601-*-</code>来替代4字节的Emoji，那么具体实现python代码可以参见<a href='http://stackoverflow.com/questions/3220031/how-to-filter-or-replace-unicode-characters-that-would-take-more-than-3-bytes' style='color:rgb(34, 34, 34);'>Stackoverflow上的回答</a></p> 
+   </div> 
+  </div></h1> 
+ <h3 style='font-family:'Helvetica Neue', 'Segoe UI', Arial, sans-serif;font-size:1.75rem;line-height:1.71429;'>reference</h3> 
+ <h1 style='color: rgb(49, 49, 48); font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif; font-size: 2.25rem;'> 
+  <div style='font-family: Georgia, Times, 'Times New Roman', serif; font-size: 16px; font-weight: normal;'> 
+   <div> 
+    <p style='font-size:1.125rem;line-height:1.55556;'><a href='http://cenalulu.github.io/python/python-encoding' style='color:rgb(34, 34, 34);'>如何配置Python默认字符集</a><br><a href='http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html' style='color:rgb(34, 34, 34);'>字符编码笔记：ASCII，Unicode和UTF-8</a><br><a href='http://www.chi2ko.com/tool/CJK.htm' style='color:rgb(34, 34, 34);'>Unicode中文编码表</a><br><a href='http://apps.timwhitlock.info/emoji/tables/unicode' style='color:rgb(34, 34, 34);'>Emoji Unicode Table</a><br><a href='http://www.joelonsoftware.com/articles/Unicode.html' style='color:rgb(34, 34, 34);'>Every Developer Should Know About The Encoding</a></p> 
+   </div> 
+  </div><br></h1> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-243.html">MySQL如何利用索引优化ORDERBY排序语句</a>
+				|
+				 <a href="http://onelose.com/post-245.html">设计高效合理的MySQL查询语句讲解</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="244" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-389.html">linux(centos)中的cron计划任务配置方法[详细]</a></li>
+		<li><a href="http://onelose.com/post-413.html">linux的root忘了</a></li>
+		<li><a href="http://onelose.com/post-442.html">13.5.HTTP状态码</a></li>
+		<li><a href="http://onelose.com/post-474.html">gittag—标签相关操作</a></li>
+		<li><a href="http://onelose.com/post-398.html">linuxwget命令用法详解(附实例说明)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

@@ -1,0 +1,290 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>mysqlshowprocesslist命令详解</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>mysqlshowprocesslist命令详解</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-4 7:00 Sunday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <h2 style='color: rgb(68, 68, 68); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>SHOW PROCESSLIST显示哪些线程正在运行。您也可以使用<strong>mysqladmin processlist</strong>语句得到此信息。如果您有SUPER权限，您可以看到所有线程。否则，您只能看到您自己的线程（也就是，与您正在使用的MySQL账户相关的线程）。请参见<span style='color:rgb(0, 102, 204);'>13.5.5.3节，“KILL语法”</span>。如果您不使用FULL关键词，则只显示每个查询的前100个字符。</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>本语句报告TCP/IP连接的主机名称（采用<i>host_name</i>:<i>client_port</i>格式），以方便地判定哪个客户端正在做什么。</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>如果您得到“too many connections”错误信息，并且想要了解正在发生的情况，本语句是非常有用的。MySQL保留一个额外的连接，让拥有SUPER权限的 账户使用，以确保管理员能够随时连接和检查系统（假设您没有把此权限给予所有的用户）。</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>这个命令中最关键的就是state列，mysql列出的状态主要有以下几种：</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Checking table<br></b>　正在检查数据表（这是自动的）。<br><b>Closing tables</b><br>　正在将表中修改的数据刷新到磁盘中，同时正在关闭已经用完的表。这是一个很快的操作，如果不是这样的话，就应该确认磁盘空间是否已经满了或者磁盘是否正处于重负中。<br><b>Connect Out</b><br>　复制从服务器正在连接主服务器。<br><b>Copying to tmp table on disk</b><br>　由于临时结果集大于tmp_table_size，正在将临时表从内存存储转为磁盘存储以此节省内存。<br><b>Creating tmp table</b><br>　正在创建临时表以存放部分查询结果。<br><b>deleting from main table</b><br>　服务器正在执行多表删除中的第一部分，刚删除第一个表。<br><b>deleting from reference tables<br></b>　服务器正在执行多表删除中的第二部分，正在删除其他表的记录。<br><b>Flushing tables<br></b>　正在执行FLUSH TABLES，等待其他线程关闭数据表。<br><b>Killed<br></b>　发送了一个kill请求给某线程，那么这个线程将会检查kill标志位，同时会放弃下一个kill请求。MySQL会在每次的主循环中检查kill标志位，不过有些情况下该线程可能会过一小段才能死掉。如果该线程程被其他线程锁住了，那么kill请求会在锁释放时马上生效。<br><b>Locked</b><br>　被其他查询锁住了。<br><b>Sending data</b><br>　正在处理SELECT查询的记录，同时正在把结果发送给客户端。<br><b>Sorting for group<br></b>　正在为GROUP BY做排序。<br>　Sorting for order<br>　正在为ORDER BY做排序。<br><b>Opening tables</b><br>　这个过程应该会很快，除非受到其他因素的干扰。例如，在执ALTER TABLE或LOCK TABLE语句行完以前，数据表无法被其他线程打开。正尝试打开一个表。<br><b>Removing duplicates</b><br>　正在执行一个SELECT DISTINCT方式的查询，但是MySQL无法在前一个阶段优化掉那些重复的记录。因此，MySQL需要再次去掉重复的记录，然后再把结果发送给客户端。<br><b>Reopen table</b><br>　获得了对一个表的锁，但是必须在表结构修改之后才能获得这个锁。已经释放锁，关闭数据表，正尝试重新打开数据表。<br><b>Repair by sorting</b><br>　修复指令正在排序以创建索引。<br><b>Repair with keycache</b><br>　修复指令正在利用索引缓存一个一个地创建新索引。它会比Repair by sorting慢些。<br><b>Searching rows for update<br></b>　正在讲符合条件的记录找出来以备更新。它必须在UPDATE要修改相关的记录之前就完成了。<br><b>Sleeping</b><br>　正在等待客户端发送新请求.<br><b>System lock</b><br>　正在等待取得一个外部的系统锁。如果当前没有运行多个mysqld服务器同时请求同一个表，那么可以通过增加--skip-external-locking参数来禁止外部系统锁。<br><b>Upgrading lock</b><br>　INSERT DELAYED正在尝试取得一个锁表以插入新记录。<br><b>Updating</b><br>　正在搜索匹配的记录，并且修改它们。<br><b>User Lock</b><br>　正在等待GET_LOCK()。<br><b>Waiting for tables<br></b>　该线程得到通知，数据表结构已经被修改了，需要重新打开数据表以取得新的结构。然后，为了能的重新打开数据表，必须等到所有其他线程关闭这个表。以下几种情况下会产生这个通知：FLUSH TABLES tbl_name, ALTER TABLE, RENAME TABLE, REPAIR TABLE, ANALYZE TABLE,或OPTIMIZE TABLE。<br><b>waiting for handler insert</b><br>　INSERT DELAYED已经处理完了所有待处理的插入操作，正在等待新的请求。<br>　大部分状态对应很快的操作，只要有一个线程保持同一个状态好几秒钟，那么可能是有问题发生了，需要检查一下。<br>　还有其他的状态没在上面中列出来，不过它们大部分只是在查看服务器是否有存在错误是才用得着。</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>mysql 查看当前连接数</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><span style='font-family:宋体;'>命令： show processlist;&nbsp;<br>如果是root帐号，你能看到所有用户的当前连接。如果是其它普通帐号，只能看到自己占用的连接。&nbsp;<br>show processlist;只列出前100条，如果想全列出请使用show full processlist;&nbsp;<br>mysql&gt; show processlist;</span></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><span style='font-family:宋体;'>命令： show status;</span></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><span style='font-family:宋体;'>Aborted_clients 由于客户没有正确关闭连接已经死掉，已经放弃的连接数量。&nbsp;<br>Aborted_connects 尝试已经失败的MySQL服务器的连接的次数。&nbsp;<br>Connections 试图连接MySQL服务器的次数。&nbsp;<br>Created_tmp_tables 当执行语句时，已经被创造了的隐含临时表的数量。&nbsp;<br>Delayed_insert_threads 正在使用的延迟插入处理器线程的数量。&nbsp;<br>Delayed_writes 用INSERT DELAYED写入的行数。&nbsp;<br>Delayed_errors 用INSERT DELAYED写入的发生某些错误(可能重复键值)的行数。&nbsp;<br>Flush_commands 执行FLUSH命令的次数。&nbsp;<br>Handler_delete 请求从一张表中删除行的次数。&nbsp;<br>Handler_read_first 请求读入表中第一行的次数。&nbsp;<br>Handler_read_key 请求数字基于键读行。&nbsp;<br>Handler_read_next 请求读入基于一个键的一行的次数。&nbsp;<br>Handler_read_rnd 请求读入基于一个固定位置的一行的次数。&nbsp;<br>Handler_update 请求更新表中一行的次数。&nbsp;<br>Handler_write 请求向表中插入一行的次数。&nbsp;<br>Key_blocks_used 用于关键字缓存的块的数量。&nbsp;<br>Key_read_requests 请求从缓存读入一个键值的次数。&nbsp;<br>Key_reads 从磁盘物理读入一个键值的次数。&nbsp;<br>Key_write_requests 请求将一个关键字块写入缓存次数。&nbsp;<br>Key_writes 将一个键值块物理写入磁盘的次数。&nbsp;<br>Max_used_connections 同时使用的连接的最大数目。&nbsp;<br>Not_flushed_key_blocks 在键缓存中已经改变但是还没被清空到磁盘上的键块。&nbsp;<br>Not_flushed_delayed_rows 在INSERT DELAY队列中等待写入的行的数量。&nbsp;<br>Open_tables 打开表的数量。&nbsp;<br>Open_files 打开文件的数量。&nbsp;<br>Open_streams 打开流的数量(主要用于日志记载）&nbsp;<br>Opened_tables 已经打开的表的数量。&nbsp;<br>Questions 发往服务器的查询的数量。&nbsp;<br>Slow_queries 要花超过long_query_time时间的查询数量。&nbsp;<br>Threads_connected 当前打开的连接的数量。&nbsp;<br>Threads_running 不在睡眠的线程数量。&nbsp;<br>Uptime 服务器工作了多少秒。</span></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>After create</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>This occurs when the thread creates a table (including internal temporary tables), at the end of the function that creates the table. This state is used even if the table could not be created due to some error.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Analyzing</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is calculating a MyISAM table key distributions (for example, for ANALYZE TABLE).</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>checking permissions</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is checking whether the server has the required privileges to execute the statement.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Checking table</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is performing a table check operation.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>cleaning up</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread has processed one command and is preparing to free memory and reset certain state variables.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>closing tables</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is flushing the changed table data to disk and closing the used tables. This should be a fast operation. If not, you should verify that you do not have a full disk and that the disk is not in very heavy use.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>converting HEAP to MyISAM</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is converting an internal temporary table from a MEMORY table to an on-disk MyISAM table.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>copy to tmp table</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is processing an ALTER TABLE statement. This state occurs after the table with the new structure has been created but before rows are copied into it.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Copying to group table</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>If a statement has different ORDER BY and GROUP BY criteria, the rows are sorted by group and copied to a temporary table.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Copying to tmp table</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The server is copying to a temporary table in memory.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Copying to tmp table on disk</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The server is copying to a temporary table on disk. The temporary result set was larger than tmp_table_size and the thread is changing the temporary table from in-memory to disk-based format to save memory.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Creating index</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is processing ALTER TABLE ... ENABLE KEYS for a MyISAM table.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Creating sort index</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is processing a SELECT that is resolved using an internal temporary table.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>creating table</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is creating a table. This includes creation of temporary tables.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Creating tmp table</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is creating a temporary table in memory or on disk. If the table is created in memory but later is converted to an on-disk table, the state during that operation will be Copying to tmp table on disk.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>deleting from main table</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The server is executing the first part of a multiple-table delete. It is deleting only from the first table, and saving columns and offsets to be used for deleting from the other (reference) tables.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>deleting from reference tables</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The server is executing the second part of a multiple-table delete and deleting the matched rows from the other tables.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>discard_or_import_tablespace</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is processing an ALTER TABLE ... DISCARD TABLESPACE or ALTER TABLE ... IMPORT TABLESPACE statement.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>end</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>This occurs at the end but before the cleanup of ALTER TABLE, CREATE VIEW, DELETE, INSERT, SELECT, or UPDATE statements.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>executing</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread has begun executing a statement.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Execution of init_command</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is executing statements in the value of the init_command system variable.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>freeing items</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread has executed a command. This state is usually followed by cleaning up.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Flushing tables</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is executing FLUSH TABLES and is waiting for all threads to close their tables.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>FULLTEXT initialization</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The server is preparing to perform a natural-language full-text search.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>init</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>This occurs before the initialization of ALTER TABLE, DELETE, INSERT, SELECT, or UPDATE statements.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Killed</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>Someone has sent a KILL statement to the thread and it should abort next time it checks the kill flag. The flag is checked in each major loop in MySQL, but in some cases it might still take a short time for the thread to die. If the thread is locked by some other thread, the kill takes effect as soon as the other thread releases its lock.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Locked</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The query is locked by another query.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>logging slow query</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is writing a statement to the slow-query log.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>NULL</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>This state is used for the SHOW PROCESSLIST state.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>login</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The initial state for a connection thread until the client has been authenticated successfully.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Opening tables, Opening table</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is trying to open a table. This is should be very fast procedure, unless something prevents opening. For example, an ALTER TABLE or a LOCK TABLE statement can prevent opening a table until the statement is finished.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>preparing</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>This state occurs during query optimization.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Purging old relay logs</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is removing unneeded relay log files.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>query end</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>This state occurs after processing a query but before the freeing items state.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Reading from net</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The server is reading a packet from the network.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Removing duplicates</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The query was using SELECT DISTINCT in such a way that MySQL could not optimize away the distinct operation at an early stage. Because of this, MySQL requires an extra stage to remove all duplicated rows before sending the result to the client.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>removing tmp table</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is removing an internal temporary table after processing a SELECT statement. This state is not used if no temporary table was created.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>rename</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is renaming a table.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>rename result table</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is processing an ALTER TABLE statement, has created the new table, and is renaming it to replace the original table.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Reopen tables</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread got a lock for the table, but noticed after getting the lock that the underlying table structure changed. It has freed the lock, closed the table, and is trying to reopen it.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Repair by sorting</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The repair code is using a sort to create indexes.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Repair done</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread has completed a multi-threaded repair for a MyISAM table.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Repair with keycache</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The repair code is using creating keys one by one through the key cache. This is much slower than Repair by sorting.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Rolling back</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is rolling back a transaction.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Saving state</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>For MyISAM table operations such as repair or analysis, the thread is saving the new table state to the .MYI file header. State includes information such as number of rows, the AUTO_INCREMENT counter, and key distributions.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Searching rows for update</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is doing a first phase to find all matching rows before updating them. This has to be done if the UPDATE is changing the index that is used to find the involved rows.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Sending data</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is processing rows for a SELECT statement and also is sending data to the client.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>setup</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is beginning an ALTER TABLE operation.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Sorting for group</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is doing a sort to satisfy a GROUP BY.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Sorting for order</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is doing a sort to satisfy a ORDER BY.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Sorting index</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is sorting index pages for more efficient access during a MyISAM table optimization operation.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Sorting result</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>For a SELECT statement, this is similar to Creating sort index, but for nontemporary tables.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>statistics</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The server is calculating statistics to develop a query execution plan.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>System lock</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is going to request or is waiting for an internal or external system lock for the table. If this state is being caused by requests for external locks and you are not using multiple mysqld servers that are accessing the same tables, you can disable external system locks with the --skip-external-locking option. However, external locking is disabled by default, so it is likely that this option will have no effect. For SHOW PROFILE, this state means the thread is requesting the lock (not waiting for it).</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Table lock</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The next thread state after System lock. The thread has acquired an external lock and is going to request an internal table lock.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Updating</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is searching for rows to update and is updating them.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>updating main table</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The server is executing the first part of a multiple-table update. It is updating only the first table, and saving columns and offsets to be used for updating the other (reference) tables.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>updating reference tables</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The server is executing the second part of a multiple-table update and updating the matched rows from the other tables.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>User lock</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread is going to request or is waiting for an advisory lock requested with a GET_LOCK() call. For SHOW PROFILE, this state means the thread is requesting the lock (not waiting for it).</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Waiting for tables, Waiting for table</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The thread got a notification that the underlying structure for a table has changed and it needs to reopen the table to get the new structure. However, to reopen the table, it must wait until all other threads have closed the table in question.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>This notification takes place if another thread has used FLUSH TABLES or one of the following statements on the table in question: FLUSH TABLES tbl_name, ALTER TABLE, RENAME TABLE, REPAIR TABLE, ANALYZE TABLE, or OPTIMIZE TABLE.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Waiting on cond</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>A generic state in which the thread is waiting for a condition to become true. No specific state information is available.</p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'><b>Writing to net</b></p><p style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;'>The server is writing a packet to the network.</p></h2>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-368.html">Memcachemutex设计模式</a>
+				|
+				 <a href="http://onelose.com/post-376.html">适合PHPER们书单</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="378" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-111.html">第十一章 继承和派生</a></li>
+		<li><a href="http://onelose.com/post-251.html">PHP中的魔术方法总结:__construct,__destruct,__call,__callSt</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-468.html">mysql字段范围</a></li>
+		<li><a href="http://onelose.com/post-398.html">linuxwget命令用法详解(附实例说明)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

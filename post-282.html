@@ -1,0 +1,641 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>【问底】王帅：深入PHP内核（三）——内核利器哈希表与哈希碰撞攻击</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>【问底】王帅：深入PHP内核（三）——内核利器哈希表与哈希碰撞攻击</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-11 7:00 Wednesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <h1 style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Microsoft YaHei'; font-size: 28px; font-weight: normal;'>【问底】王帅：深入PHP内核（三）——内核利器哈希表与哈希碰撞攻击</h1> 
+ <h4 style='background-color: rgb(255, 255, 255); color: rgb(153, 153, 153); font-family: Helvetica, Tahoma, Arial, sans-serif; font-size: 12px; font-weight: normal;'> 
+  <div>
+    发表于2014-10-16 22:26|&nbsp;10014次阅读| 来源CSDN|&nbsp; 
+   <font style='color: rgb(204, 0, 0);'>26</font>&nbsp;条评论| 作者王帅 
+  </div></h4> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Helvetica, Tahoma, Arial, sans-serif;'> 
+  <a href='http://www.csdn.net/tag/%E9%97%AE%E5%BA%95/news' style='background-color:rgb(243, 243, 243);color:rgb(51, 51, 51);'>问底</a> 
+  <a href='http://www.csdn.net/tag/%E7%8E%8B%E5%B8%85/news' style='background-color:rgb(243, 243, 243);color:rgb(51, 51, 51);'>王帅</a> 
+  <a href='http://www.csdn.net/tag/php/news' style='background-color:rgb(243, 243, 243);color:rgb(51, 51, 51);'>PHP</a> 
+ </div> 
+ <div style='background-color: rgb(247, 247, 247); color: rgb(51, 51, 51); font-family: Helvetica, Tahoma, Arial, sans-serif;'> 
+  <strong>摘要：</strong>PHP作为一门简单而强大的语言，能够提供很多Web适用的语言特性。从实践出发，继弱类型变量原理探究后，王帅将继续带大家弄清PHP内核中的一些常用部分，本期则是内核利器哈希表与哈希碰撞攻击。 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Helvetica, Tahoma, Arial, sans-serif;'> 
+  <p>【导读】王帅在海量分布式Web系统有超过8年沉淀，主导过多个大型系统的架构设计，目前在腾讯企业SaaS团队。</p> 
+  <p>PHP内核系列文章，是作者在PHP领域实践中，把相关原理性的知识，通过更便于理解的方式，系统整理出来分享给读者。希望通过PHP原理性的轻量解读，对这门Web领域最热门技术的优秀架构分析解构，让更多的人不断的深入了解语言的原理本身，更容易定位、理解一些问题背后原因，更游刃有余的做基础架构设计。同时希望影响更多的人才投入Web开源领域，不仅是应用和学习一门技术、组件，同样能够贡献更多高质量组件，像战国时期的百家争鸣一样，PHP开源界花开遍地。</p> 
+  <p>作者一直倡导技术的深入学习就像职业篮球训练，80%的时间都是基本功的训练，球场上实际战术的练习只是基本功的应用。同样的，学习PHP语言本身的特性，应当是每个PHP领域工程师所掌握、理解的，至于系统的架构设计也是基于对Linux、Mysql、Nginx等原理机制足够理解后，战术性的使用。</p> 
+  <h2><font color='#7f6000'>深入PHP内核（三）——内核利器哈希表与哈希碰撞攻击</font></h2> 
+  <p>在PHP的Zend&nbsp;Engine（下面简称ZE）中，有一个非常重要的数据结构——哈希表（HashTable）。哈希表在ZE中有非常广泛的应用，PHP的复杂数据结构中数组和类的存储和访问就是用哈希表来组织，PHP语言结构中的常量、变量、函数等符号表也是用它来组织。</p> 
+  <h2><b>1.&nbsp;哈希表的基本概念</b></h2> 
+  <p>什么是哈希表呢？哈希表在数据结构中也叫散列表。是根据键名经过hash函数计算后，映射到表中的一个位置，来直接访问记录，加快了访问速度。在理想情况下，哈希表的操作时间复杂度为O(1)。数据项可以在一个与哈希表长度无关的时间内，计算出一个值hash(key)，在固定时间内定位到一个桶(bucket，表示哈希表的一个位置)，主要时间消耗在于哈希函数计算和桶的定位。</p> 
+  <p>在分析PHP中HashTable实现原理之前，先介绍一下相关的基本概念：</p> 
+  <p>如下图例子，希望通过人名检索一个数据，键名通过哈希函数，得到指向bucket的指针，最后访问真实的bucket。</p> 
+  <p style='text-align:center;'><a href='http://cms.csdnimg.cn/article/201410/16/543fd66bbbc57.jpg' target='_blank' style='color:rgb(0, 102, 204);'><img src='http://note.youdao.com/yws/res/2481/1F3E58B0683745C1A2834930F28BC22E' data-media-type='image'>&nbsp;</a><br></p> 
+  <p><b>键名(Key)：</b>在哈希函数转换前，数据的标识。</p> 
+  <p><b>桶(Bucket)：</b>在哈希表中，真正保存数据的容器。</p> 
+  <p><b>哈希函数(Hash&nbsp;Function)：</b>将Key通过哈希函数，得到一个指向bucket的指针。MD5，SHA-1是我们在业务中常用的哈希函数。</p> 
+  <p><b>哈希冲突(Hash&nbsp;Collision)：</b>两个不同的Key，经过哈希函数，得到同一个bucket的指针。</p> 
+  <h2>2.&nbsp;PHP的哈希表实现原理</h2> 
+  <p><b>哈希表的结构：</b></p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>copy</a> 
+    <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/486720' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2479/0F917D517B19456F94AFF62B2B3168A9' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+    <a title='派生到我的代码片' href='https://code.csdn.net/snippets/486720/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>Zend/zend_hash.h&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;typedef&nbsp;struct&nbsp;_hashtable&nbsp;{&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint&nbsp;nTableSize;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//哈希表的长度，不是元素个数</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint&nbsp;nTableMask;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//哈希表的掩码，设置为nTableSize-1</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint&nbsp;nNumOfElements;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//哈希表实际元素个数</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ulong&nbsp;nNextFreeElement;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//指向下一个空元素位置</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bucket&nbsp;*pInternalPointer;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//用于遍历哈希表的内部指针</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bucket&nbsp;*pListHead;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//哈希表队列的头部</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bucket&nbsp;*pListTail;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//哈希表队列的尾部</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bucket&nbsp;**arBuckets;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//哈希表存储的元素数组</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dtor_func_t&nbsp;pDestructor;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//哈希表的元素析构函数指针</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zend_bool&nbsp;persistent;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//是否是持久保存，用于pmalloc的参数，可以持久存储在内存中</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unsigned&nbsp;char&nbsp;nApplyCount;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//&nbsp;zend_hash_apply的次数，用来限制嵌套遍历的层数，限制为3层</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zend_bool&nbsp;bApplyProtection;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//是否开启嵌套遍历保护</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>#<span style='color: rgb(0, 102, 153); font-weight: 700;'>if</span>&nbsp;ZEND_DEBUG&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;inconsistent;&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>#<span style='color: rgb(0, 102, 153); font-weight: 700;'>endif</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>}&nbsp;HashTable;&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div>1)&nbsp; nTableSize&nbsp;哈希表的大小。最小容量是2^3(8)，最大容量是2^31(2147483648)。当如果进行一次操作后发现元素个数大于nTableSize，会申请当前nTableSize&nbsp;*&nbsp;2的空间。假设当前nTableSize为8，当插入元素达到9个的时候，会申请nTableSize=16的空间。 
+  <p>2)&nbsp; nTableMask&nbsp;为nTableSize-1，用于调整最大索引值。当哈希后值大于索引值时候，把这个值映射到索引值范围内。</p> 
+  <p>3)&nbsp; nNumOfElements&nbsp;HashTable中的个数。数组操作中，sizeof和count函数获取的是这个值。</p> 
+  <p>4)&nbsp; nNextFreeElement&nbsp;下一个空元素的地址。</p> 
+  <p>5)&nbsp; pInternalPointer&nbsp;存储了HashTable当前指向的元素的指针，当我们使用一些内部循环函数的时候会用到这个指针比如reset(),&nbsp;current(),&nbsp;prev(),&nbsp;next(),&nbsp;foreach(),&nbsp;end()。相当于游标。</p> 
+  <p>6)&nbsp; pListHead和pListTail则具体指向了该哈希表的第一个和最后一个元素，对应就是数组的起始和结束元素。哈希表的pListHead、pListTail与Bucket的pListNext、pListLast维护了一个哈希表中Bucket的双向链表，按照插入的先后顺序，用于哈希表的遍历。</p> 
+  <p>7)&nbsp; arBuckets&nbsp;实际存储Buckets的数组。</p> 
+  <p>8)&nbsp; pDestructor&nbsp;是一个析构函数，当某个值被从哈希表删除的时候会触发此函数。他还有一个主要作用是用于变量的GC回收。在PHP里面GC是通过引用计数实现的，当一个变量的引用计数变为0，就会被PHP的GC回收。</p> 
+  <p>9)&nbsp; persistent&nbsp;定义了hashtable是否能在多次request中获得持久存在。</p> 
+  <p>10)&nbsp; nApplyCount&nbsp;和&nbsp;bApplyProtection&nbsp;是用来防止嵌套遍历的。</p> 
+  <p>11)&nbsp; inconsistent&nbsp;是在调试模式下捕获对HT不正确的使用。</p> 
+  <p><b>Bucket的结构：</b></p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>copy</a> 
+    <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/486720' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2479/0F917D517B19456F94AFF62B2B3168A9' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+    <a title='派生到我的代码片' href='https://code.csdn.net/snippets/486720/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;typedef&nbsp;struct&nbsp;bucket&nbsp;{&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ulong&nbsp;h;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//数组索引的哈希值</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint&nbsp;nKeyLength;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//索引数组为0，关联数组为key的长度</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;*pData;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//元素内容的指针</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;*pDataPtr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//&nbsp;如果是指针大小的数据，用pDataPtr直接存储，pData指向pDataPtr</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct&nbsp;bucket&nbsp;*pListNext;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//哈希链表中下一个元素</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct&nbsp;bucket&nbsp;*pListLast;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//哈希链表中上一个元素</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct&nbsp;bucket&nbsp;*pNext;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//解决哈希冲突，变为双向链表，双向链表的下一个元素</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct&nbsp;bucket&nbsp;*pLast;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//解决哈希冲突，变为双向链表，双向链表的上一个元素</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>const</span>&nbsp;char&nbsp;*arKey;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//最后一个元素key的名称</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>}&nbsp;Bucket;&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p>通过下图来表示HashTable的原理：</p> 
+  <p style='text-align:center;'><a href='http://cms.csdnimg.cn/article/201410/16/543fd7ec4437b.jpg' target='_blank' style='color:rgb(0, 102, 204);'><img src='http://note.youdao.com/yws/res/2482/AC3B9A512ECC4C7C8B8DBB9BACCE3217' data-media-type='image'>&nbsp;</a><br></p> 
+  <p>我们先来看一下，ZE是如何创建一个hash表的。创建并初始化一个Hash比较容易，调用_zend_hash_init函数。PHP的哈希表最小容量8(2^3)，最大容量是0x80000000(2^31，即2147483648)。nTableSize会按照2的整数次幂圆整来增加，直到超过预设值的nSize。</p> 
+  <p><b>Zend/zend_hash.c</b></p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>copy</a> 
+    <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/486720' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2479/0F917D517B19456F94AFF62B2B3168A9' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+    <a title='派生到我的代码片' href='https://code.csdn.net/snippets/486720/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>ZEND_API&nbsp;int&nbsp;_zend_hash_init(HashTable&nbsp;*ht,&nbsp;uint&nbsp;nSize,&nbsp;hash_func_t&nbsp;pHashFunction,&nbsp;dtor_func_t&nbsp;pDestructor,&nbsp;zend_bool&nbsp;persistent&nbsp;ZEND_FILE_LINE_DC)&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>{&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint&nbsp;i&nbsp;=&nbsp;3;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SET_INCONSISTENT(HT_OK);&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>if</span>&nbsp;(nSize&nbsp;&gt;=&nbsp;0x80000000)&nbsp;{&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;prevent&nbsp;overflow&nbsp;*/</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ht-&gt;nTableSize&nbsp;=&nbsp;0x80000000;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>else</span>&nbsp;{&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>while</span>&nbsp;((1U&nbsp;&lt;&lt;&nbsp;i)&nbsp;&lt;&nbsp;nSize)&nbsp;{&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++;&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ht-&gt;nTableSize&nbsp;=&nbsp;1&nbsp;&lt;&lt;&nbsp;i;&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;省略哈希表初始化步骤&nbsp;*/</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>return</span>&nbsp;SUCCESS;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>}&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p>1)&nbsp; *ht&nbsp;是哈希表的指针，这里既可以传入一个已存在的HashTable，&nbsp;也可以通过内核宏ALLOC_HASHTABLE(ht)来自动申请一块HashTable内存。ALLOC_HASHTABLE(ht)相当于ht=emalloc(sizeof(HashTable))</p> 
+  <p>2)&nbsp; nSize&nbsp;哈希表能拥有的最大数量。通过预先申请好内存的方式，减少哈希表rehash操作。</p> 
+  <p>3)&nbsp; pHashFunction&nbsp;自定义哈希函数的钩子</p> 
+  <p>4)&nbsp; pDesctructor&nbsp;哈希表析构的回调函数，当删除一个哈希表的时候，会调用。</p> 
+  <p>5)&nbsp; persistent&nbsp;对应HashTable.persistent，当设置为true的时候，不会在RSHUTDOWN阶段自动销毁。</p> 
+  <p><b>我们通过更新哈希表的操作方式，来分析哈希表的操作机制：</b>&nbsp;<br></p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>copy</a> 
+    <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/486720' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2479/0F917D517B19456F94AFF62B2B3168A9' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+    <a title='派生到我的代码片' href='https://code.csdn.net/snippets/486720/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>h&nbsp;=&nbsp;zend_inline_hash_func(arKey,&nbsp;nKeyLength);&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>nIndex&nbsp;=&nbsp;h&nbsp;&amp;&nbsp;ht-&gt;nTableMask;&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>p&nbsp;=&nbsp;ht-&gt;arBuckets[nIndex];&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'><span style='color: rgb(0, 102, 153); font-weight: 700;'>while</span>&nbsp;(p&nbsp;!=&nbsp;NULL)&nbsp;{&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>if</span>&nbsp;(p-&gt;arKey&nbsp;==&nbsp;arKey&nbsp;||&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;((p-&gt;h&nbsp;==&nbsp;h)&nbsp;&amp;&amp;&nbsp;(p-&gt;nKeyLength&nbsp;==&nbsp;nKeyLength)&nbsp;&amp;&amp;&nbsp;!memcmp(p-&gt;arKey,&nbsp;arKey,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nKeyLength)))&nbsp;{&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>if</span>&nbsp;(flag&nbsp;&amp;&nbsp;HASH_ADD)&nbsp;{&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>return</span>&nbsp;FAILURE;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;省略&nbsp;*/</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;UPDATE_DATA(ht,&nbsp;p,&nbsp;pData,&nbsp;nDataSize);&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//&nbsp;找到h&nbsp;和&nbsp;Key都相等的Buckets，说明需要更新</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;省略&nbsp;*/</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;p&nbsp;=&nbsp;p-&gt;pNext;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//&nbsp;这里说明有哈希冲突，按照Buckets[nIndex]的链表找下去</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>}&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'><span style='color: rgb(0, 130, 0);'>/*&nbsp;省略&nbsp;*/</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>p-&gt;nKeyLength&nbsp;=&nbsp;nKeyLength;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>INIT_DATA(ht,&nbsp;p,&nbsp;pData,&nbsp;nDataSize);&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//&nbsp;把Bucket.pData数据更新</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>p-&gt;h&nbsp;=&nbsp;h;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>CONNECT_TO_BUCKET_DLLIST(p,&nbsp;ht-&gt;arBuckets[nIndex]);&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//&nbsp;挂到</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'><span style='color: rgb(0, 102, 153); font-weight: 700;'>if</span>&nbsp;(pDest)&nbsp;{&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;*pDest&nbsp;=&nbsp;p-&gt;pData;&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>}&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>HANDLE_BLOCK_INTERRUPTIONS();&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>CONNECT_TO_GLOBAL_DLLIST(p,&nbsp;ht);&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>ht-&gt;arBuckets[nIndex]&nbsp;=&nbsp;p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>HANDLE_UNBLOCK_INTERRUPTIONS();&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>ht-&gt;nNumOfElements++;&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>ZEND_HASH_IF_FULL_DO_RESIZE(ht);&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;如果哈希表满了，重新散列，这里有一定开销&nbsp;&nbsp;&nbsp;*/</span>&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div>1) 通过哈希算法&nbsp;&nbsp;times33(Key)&nbsp;&amp;&nbsp;(nTableSize-1)&nbsp;，生成Key对应的哈希值A，获取arBuckets[A]的值 
+  <p>2) 判断arBuckets[A]是否存在，如果存在而且没有哈希冲突，进行数据update(UPDATE_DATA)。如果存在但是Key不相同说明有哈希冲突，在arBuckets[A]链表中寻找Key是否存在，如果存在，执行update操作(UPDATE_DATA)</p> 
+  <p>3) 如果arBuckets[A]不存在，创建新的arBucket[A](INIT_DATA)。或哈希冲突情况下，在arBuckets[A]的链表中找不到Key。创建新的bucket(INIT_DATA)，并把新的buckets放在arBucket[A]链表头</p> 
+  <p>4) 维护哈希表的逻辑链表(CONNECT_TO_GLOBAL_DLLIST)。</p> 
+  <p>5)&nbsp;如果发现新插入元素已经超过HashTable的nTableSize，自动扩容至2倍nTableSize，重新哈希后维护新的HashTable。</p> 
+  <h2>3.&nbsp;PHP使用的哈希函数</h2> 
+  <p>PHP的哈希表是用Times33哈希算法，又称为DJBX33A。这是一个使用比较广泛的对字符串的哈希算法，计算速度快，散列均匀，Perl和Apache都使用了这个算法。算法原理就是不断的乘以33，其算法原型如下：</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>copy</a> 
+    <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/486720' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2479/0F917D517B19456F94AFF62B2B3168A9' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+    <a title='派生到我的代码片' href='https://code.csdn.net/snippets/486720/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>hash(i)&nbsp;=&nbsp;hash(i-1)&nbsp;*&nbsp;33&nbsp;+&nbsp;str[i]&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div>为什么是33呢？对于33这个数，DJB注释中是说，1到256之间的所有奇数，都能达到一个可接受的哈希分布，平均分布大概是86%。而其中33，17，31，63，127，129这几个数在面对大量的哈希运算时有一个更大的优势，就是这些数字能将乘法用位运算配合加减法替换，这样运算速度会更高。gcc编译器开启优化后会自动将乘法转换为位运算。PHP实际算法如下： 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>copy</a> 
+    <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/486720' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2479/0F917D517B19456F94AFF62B2B3168A9' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+    <a title='派生到我的代码片' href='https://code.csdn.net/snippets/486720/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>static</span>&nbsp;inline&nbsp;ulong&nbsp;zend_inline_hash_func(<span style='color: rgb(0, 102, 153); font-weight: 700;'>const</span>&nbsp;char&nbsp;*arKey,&nbsp;uint&nbsp;nKeyLength)&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>{&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;register&nbsp;ulong&nbsp;hash&nbsp;=&nbsp;5381;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;variant&nbsp;with&nbsp;the&nbsp;hash&nbsp;unrolled&nbsp;eight&nbsp;times&nbsp;*/</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>for</span>&nbsp;(;&nbsp;nKeyLength&nbsp;&gt;=&nbsp;8;&nbsp;nKeyLength&nbsp;-=&nbsp;8)&nbsp;{&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>switch</span>&nbsp;(nKeyLength)&nbsp;{&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>case</span>&nbsp;7:&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;fallthrough...&nbsp;*/</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>case</span>&nbsp;6:&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;fallthrough...&nbsp;*/</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>case</span>&nbsp;5:&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;fallthrough...&nbsp;*/</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>case</span>&nbsp;4:&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;fallthrough...&nbsp;*/</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>case</span>&nbsp;3:&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;fallthrough...&nbsp;*/</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>case</span>&nbsp;2:&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;fallthrough...&nbsp;*/</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>case</span>&nbsp;1:&nbsp;hash&nbsp;=&nbsp;((hash&nbsp;&lt;&lt;&nbsp;5)&nbsp;+&nbsp;hash)&nbsp;+&nbsp;*arKey++;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>break</span>;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>case</span>&nbsp;0:&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>break</span>;&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EMPTY_SWITCH_DEFAULT_CASE()&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>return</span>&nbsp;hash;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>}&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p>PHP在哈希算法上有所优化，使用了(hash&lt;&lt;5)+hash，效率有所提高。至于hash的初始值为什么为一个大素数5381，要数学上来解释了，不是很理解。</p> 
+  <h2>4.&nbsp;操作哈希表的内部函数</h2> 
+  <p>PHP的变量符号表是通过哈希表来维护，首先介绍一下再PHP扩展中如何创建一个新的变量。PHP变量介绍，请看我上一篇文章，<a href='http://www.csdn.net/article/2014-09-15/2821685-exploring-of-the-php' target='_blank' style='color:rgb(0, 102, 204);'>《深入PHP内核 - 弱类型变量原理探究》</a>。</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>copy</a> 
+    <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/486720' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2479/0F917D517B19456F94AFF62B2B3168A9' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+    <a title='派生到我的代码片' href='https://code.csdn.net/snippets/486720/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;ZEND_FUNCTION(variable_creation)&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>{&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;zval&nbsp;*new_var1,&nbsp;*new_var2,&nbsp;*new_var3;&nbsp;<span style='color: rgb(0, 130, 0);'>//创建两个新的变量容器</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>char&nbsp;*string_contents&nbsp;=&nbsp;<span style='color: rgb(0, 0, 255);'>'This&nbsp;is&nbsp;a&nbsp;new&nbsp;string&nbsp;variable'</span>;&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;MAKE_STD_ZVAL(new_var1);&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//为new_var1申请空间并初始化</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;MAKE_STD_ZVAL(new_var2);&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;ZVAL_LONG(new_var1,&nbsp;10);&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//设置new_var1并赋值为long</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;ZVAL_LONG(new_var2,&nbsp;5);&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;ZVAL_STRINGL(new_var3,&nbsp;string_contents,&nbsp;sizeof(string_contents),&nbsp;0);&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//设置new_var3为字符串</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;ZEND_SET_SYMBOL(EG(active_symbol_table),&nbsp;<span style='color: rgb(0, 0, 255);'>'local_variable'</span>,&nbsp;new_var1);&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//设置long_variable为函数variable_creation的局部变量</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;ZEND_SET_SYMBOL(&amp;EG(symbol_table),&nbsp;<span style='color: rgb(0, 0, 255);'>'global_variable'</span>,&nbsp;new_var2);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//设置global_variable为全局变量</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;zend_hash_update(&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;EG(symbol_table),&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 0, 255);'>'new_var3'</span>,&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strlen(<span style='color: rgb(0, 0, 255);'>'new_var3'</span>)&nbsp;+&nbsp;1,&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;new_var3,&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sizeof(zval&nbsp;*),&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NULL&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;);&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;RETURN_NULL();&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>}&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div>这里的zend_hash_update会更新变量符号表。PHP的数组也是用哈希表来维护，下面通过操作一个array来解释如何使用哈希表来才做数组。 
+  <p><b>增加一个关联数组：</b></p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>copy</a> 
+    <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/486720' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2479/0F917D517B19456F94AFF62B2B3168A9' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+    <a title='派生到我的代码片' href='https://code.csdn.net/snippets/486720/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;zval&nbsp;*new_array,&nbsp;*new_element;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>char&nbsp;*key&nbsp;=&nbsp;<span style='color: rgb(0, 0, 255);'>'element_key'</span>;&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>MAKE_STD_ZVAL(new_array);&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>MAKE_STD_ZVAL(new_element);&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>array_init(new_array);&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>ZVAL_LONG(new_element,&nbsp;10);&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'><span style='color: rgb(0, 102, 153); font-weight: 700;'>if</span>(zend_hash_update(new_array-&gt;value.ht,&nbsp;key,&nbsp;strlen(key)&nbsp;+&nbsp;1,&nbsp;(void&nbsp;*)&amp;new_element,&nbsp;sizeof(zval&nbsp;*),&nbsp;NULL)&nbsp;==&nbsp;FAILURE)&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>{&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//&nbsp;do&nbsp;error&nbsp;handling&nbsp;here&nbsp;</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>}&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <b>增加一个索引数组：</b> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>copy</a> 
+    <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/486720' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2479/0F917D517B19456F94AFF62B2B3168A9' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+    <a title='派生到我的代码片' href='https://code.csdn.net/snippets/486720/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;zval&nbsp;*new_array,&nbsp;*new_element;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>int&nbsp;key&nbsp;=&nbsp;2;&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>MAKE_STD_ZVAL(new_array);&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>MAKE_STD_ZVAL(new_element);&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>array_init(new_array);&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>ZVAL_LONG(new_element,&nbsp;10);&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'><span style='color: rgb(0, 102, 153); font-weight: 700;'>if</span>(zend_hash_index_update(new_array-&gt;value.ht,&nbsp;key,&nbsp;(void&nbsp;*)&amp;new_element,&nbsp;sizeof(zval&nbsp;*),&nbsp;NULL)&nbsp;==&nbsp;FAILURE)&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>{&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//&nbsp;do&nbsp;error&nbsp;handling&nbsp;here&nbsp;</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>}&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p><b>哈希表的增删改查</b></p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-10-16/2822134#' style='color: rgb(160, 160, 160);'>copy</a> 
+    <a title='在CODE上查看代码片' href='https://code.csdn.net/snippets/486720' target='_blank' style='color: rgb(160, 160, 160);'><img src='http://note.youdao.com/yws/res/2479/0F917D517B19456F94AFF62B2B3168A9' alt='在CODE上查看代码片' width='12' height='12' data-media-type='image'></a> 
+    <a title='派生到我的代码片' href='https://code.csdn.net/snippets/486720/fork' target='_blank' style='color: rgb(160, 160, 160);'><img src='https://code.csdn.net/assets/ico_fork.svg' alt='派生到我的代码片' width='12' height='12' data-media-type='image'></a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>int&amp;nbsp;zend_hash_add(&nbsp;HashTable&nbsp;*ht,&nbsp;char&nbsp;*arKey,&nbsp;uint&nbsp;nKeyLen,void&nbsp;*pData,&nbsp;uint&nbsp;nDataSize,&nbsp;void&nbsp;**pDest);&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>int&nbsp;zend_hash_update(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HashTable&nbsp;*ht,&nbsp;char&nbsp;*arKey,&nbsp;uint&nbsp;nKeyLen,&nbsp;void&nbsp;*pData,&nbsp;uint&nbsp;nDataSize,&nbsp;void&nbsp;**pDest);&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>int&nbsp;zend_hash_index_update(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HashTable&nbsp;*ht,&nbsp;ulong&nbsp;h,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;*pData,&nbsp;uint&nbsp;nDataSize,&nbsp;void&nbsp;**pDest);<span style='color: rgb(0, 130, 0);'>//与zend_hash_update类似，不过哈希值计算是用h&amp;TableMask</span>&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>int&nbsp;zend_hash_next_index_insert(HashTable&nbsp;*ht,&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&nbsp;void&nbsp;*pData,&nbsp;uint&nbsp;nDataSize,&nbsp;void&nbsp;**pDest);&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>int&nbsp;zend_hash_find(HashTable&nbsp;*ht,&nbsp;char&nbsp;*arKey,&nbsp;uint&nbsp;nKeyLength,void&nbsp;**pData);&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>int&nbsp;zend_hash_index_find(HashTable&nbsp;*ht,&nbsp;ulong&nbsp;h,&nbsp;void&nbsp;**pData);&amp;nbsp;&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>ZEND_API&amp;nbsp;int&amp;nbsp;zend_hash_exists(<span style='color: rgb(0, 102, 153); font-weight: 700;'>const</span>&amp;nbsp;HashTable&amp;nbsp;*ht,&amp;nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>const</span>&amp;nbsp;char&amp;nbsp;*arKey,&amp;nbsp;uint&amp;nbsp;nKeyLength)&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>ZEND_API&nbsp;ulong&nbsp;zend_get_hash_value(<span style='color: rgb(0, 102, 153); font-weight: 700;'>const</span>&nbsp;char&nbsp;*arKey,&nbsp;uint&nbsp;nKeyLength)&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>ZEND_API&amp;nbsp;void&amp;nbsp;zend_hash_merge_ex(HashTable&amp;nbsp;*target,&amp;nbsp;HashTable&amp;nbsp;*source,&amp;nbsp;copy_ctor_func_t&amp;nbsp;pCopyConstructor,&amp;nbsp;uint&amp;nbsp;size,&amp;nbsp;merge_checker_func_t&amp;nbsp;pMergeSource,&amp;nbsp;void&amp;nbsp;*pParam)&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>通过source的逻辑双向链表，遍历source插入target&nbsp;&nbsp;</span></li> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>ZEND_API&amp;nbsp;void&amp;nbsp;zend_hash_copy(HashTable&amp;nbsp;*target,&amp;nbsp;HashTable&amp;nbsp;*source,&amp;nbsp;copy_ctor_func_t&amp;nbsp;pCopyConstructor,&amp;nbsp;void&a	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-278.html">MySql中explain的时候出现usingfilesort，优化之</a>
+				|
+				 <a href="http://onelose.com/post-290.html">Linuxtcpdump命令详解</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="282" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-493.html">用Js的eval解析JSON中的注意点</a></li>
+		<li><a href="http://onelose.com/post-46.html">简单的快乐</a></li>
+		<li><a href="http://onelose.com/post-489.html">UncaughtTypeError:undefinedisnotafunction</a></li>
+		<li><a href="http://onelose.com/post-452.html">判断是否是微信</a></li>
+		<li><a href="http://onelose.com/post-235.html">【MySQL】onlineddl工具之pt-online-schema-change</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

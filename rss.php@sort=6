@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+<channel>
+<title><![CDATA[迷茫者]]></title> 
+<description><![CDATA[迷茫者王者归来。]]></description>
+<link>http://onelose.com/</link>
+<language>zh-cn</language>
+<generator>www.emlog.net</generator>
+<item>
+	<title>换主机啦！</title>
+	<link>http://onelose.com/post-115.html</link>
+	<description><![CDATA[<p>网站搬家到 篱落主机了，大家帮忙测试速度啊（点击右下方的测试速度）。篱落主机现在还在为emlog等国产博客系统提供免费网站空间，大家所以百度他。篱落主机的上传速度很快，可以达到100kb/s以上，服务速度也是很快的。我发给他们的邮件前2个都是不到一分钟就回信了。使用篱落主机要注意文件的最高权限是755，不可以设置为777，否则会显示500错误！由于我习惯了DA，所以用篱落主机十分方便，不过听说篱落主机也提供CP，不过我没有测试。ping网站的速度也在200以内。另外篱落主机是一个新服务商，一切还有用时间来证明。总体来说，我对篱落主机十分满意。</p>]]></description>
+	<pubDate>Mon, 20 Dec 2010 02:56:09 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-115.html</guid>
+
+</item></channel>
+</rss>

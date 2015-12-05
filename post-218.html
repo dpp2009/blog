@@ -1,0 +1,1066 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>相似图片搜索的原理（二）</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>相似图片搜索的原理（二）</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-4-3 6:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <h1 style='background-color:rgb(245, 245, 213);color:rgb(0, 0, 0);font-family:'Trebuchet MS', Arial, 'Lucida Grande', Verdana, Lucida, Helvetica, sans-serif;font-size:2.88em;font-style:normal;font-weight:900;text-align:left;'> 
+  <div style='background-color:rgb(245, 245, 213);color:rgb(17, 17, 17);font-family:Georgia, serif;font-size:10.3999996185303px;font-style:normal;font-weight:normal;text-align:left;'> 
+   <div style='color:rgb(17, 17, 17);font-style:normal;font-weight:normal;text-align:left;'> 
+    <p style='color:rgb(85, 102, 119);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>作者：<span>&nbsp;</span><a href='http://www.ruanyifeng.com/' style='color:rgb(85, 102, 119);font-style:normal;font-weight:normal;text-align:left;'>阮一峰</a></p> 
+    <p style='color:rgb(85, 102, 119);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>日期：<span>&nbsp;</span><a href='http://www.ruanyifeng.com/blog/2013/03/' style='color:rgb(85, 102, 119);font-style:normal;font-weight:normal;text-align:left;'><abbr title='2013-03-31T19:29:31+08:00' style='color:rgb(85, 102, 119);font-style:normal;font-weight:normal;text-align:left;'>2013年3月31日</abbr></a></p> 
+   </div> 
+   <div style='color:rgb(17, 17, 17);font-style:normal;font-weight:normal;text-align:left;'> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>二年前，我写了<a href='http://www.ruanyifeng.com/blog/2011/07/principle_of_similar_image_search.html' target='_blank' style='color:rgb(17, 34, 51);font-style:normal;font-weight:normal;text-align:left;'>《相似图片搜索的原理》</a>，介绍了一种最简单的实现方法。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>昨天，我在<a href='http://www.isnowfy.com/similar-image-search/' target='_blank' style='color:rgb(17, 34, 51);font-style:normal;font-weight:normal;text-align:left;'>isnowfy</a>的网站看到，还有其他两种方法也很简单，这里做一些笔记。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'><img src='http://note.youdao.com/yws/res/2775/3377B1DFF71A427CB58A8027C84880A1' style='color:rgb(17, 17, 17);font-style:normal;font-weight:normal;text-align:left;' data-media-type='image'></p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'><strong style='font-weight:800;'>一、颜色分布法</strong></p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>每张图片都可以生成<a href='http://en.wikipedia.org/wiki/Color_histogram' target='_blank' style='color:rgb(17, 34, 51);font-style:normal;font-weight:normal;text-align:left;'>颜色分布的直方图</a>（color histogram）。如果两张图片的直方图很接近，就可以认为它们很相似。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'><img src='http://note.youdao.com/yws/res/2773/AB8DF375AEE344CE844BEB259614371C' style='color:rgb(17, 17, 17);font-style:normal;font-weight:normal;text-align:left;' data-media-type='image'></p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>任何一种颜色都是由红绿蓝三原色（RGB）构成的，所以上图共有4张直方图（三原色直方图 + 最后合成的直方图）。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>如果每种原色都可以取256个值，那么整个颜色空间共有1600万种颜色（256的三次方）。针对这1600万种颜色比较直方图，计算量实在太大了，因此需要采用简化方法。可以将0～255分成四个区：0～63为第0区，64～127为第1区，128～191为第2区，192～255为第3区。这意味着红绿蓝分别有4个区，总共可以构成64种组合（4的3次方）。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>任何一种颜色必然属于这64种组合中的一种，这样就可以统计每一种组合包含的像素数量。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'><img src='http://note.youdao.com/yws/res/2772/0C37FD93DD654E47A7A1E477A8D3B3A3' style='color:rgb(17, 17, 17);font-style:normal;font-weight:normal;text-align:left;' data-media-type='image'></p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>上图是某张图片的颜色分布表，将表中最后一栏提取出来，组成一个64维向量(7414, 230, 0, 0, 8, ..., 109, 0, 0, 3415, 53929)。这个向量就是这张图片的特征值或者叫'指纹'。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>于是，寻找相似图片就变成了找出与其最相似的向量。这可以用<a href='http://en.wikipedia.org/wiki/Pearson_product-moment_correlation_coefficient' target='_blank' style='color:rgb(17, 34, 51);font-style:normal;font-weight:normal;text-align:left;'>皮尔逊相关系数</a>或者<a href='http://www.ruanyifeng.com/blog/2013/03/cosine_similarity.html' target='_blank' style='color:rgb(17, 34, 51);font-style:normal;font-weight:normal;text-align:left;'>余弦相似度</a>算出。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'><strong style='font-weight:800;'>二、内容特征法</strong></p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>除了颜色构成，还可以从比较图片内容的相似性入手。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>首先，将原图转成一张较小的灰度图片，假定为50x50像素。然后，确定一个阈值，将灰度图片转成黑白图片。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'><img src='http://note.youdao.com/yws/res/2776/CB6D41E58E46492BB2B14A0719382E0C' style='color:rgb(17, 17, 17);font-style:normal;font-weight:normal;text-align:left;' data-media-type='image'><span>&nbsp;</span><img src='http://note.youdao.com/yws/res/2777/C1E64E4F17954826B2C3499ACFC59705' style='color:rgb(17, 17, 17);font-style:normal;font-weight:normal;text-align:left;' data-media-type='image'><span>&nbsp;</span><img src='http://note.youdao.com/yws/res/2778/5D86FDA713474D5A99DE262BEC72C312' style='color:rgb(17, 17, 17);font-style:normal;font-weight:normal;text-align:left;' data-media-type='image'></p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>如果两张图片很相似，它们的黑白轮廓应该是相近的。于是，问题就变成了，第一步如何确定一个合理的阈值，正确呈现照片中的轮廓？</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>显然，前景色与背景色反差越大，轮廓就越明显。这意味着，如果我们找到一个值，可以使得前景色和背景色各自的'类内差异最小'（minimizing the intra-class variance），或者'类间差异最大'（maximizing the inter-class variance），那么这个值就是理想的阈值。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>1979年，日本学者大津展之证明了，'类内差异最小'与'类间差异最大'是同一件事，即对应同一个阈值。他提出一种简单的算法，可以求出这个阈值，这被称为<a href='http://en.wikipedia.org/wiki/otsu&amp;#39;s_method' target='_blank' style='color:rgb(17, 34, 51);font-style:normal;font-weight:normal;text-align:left;'>'大津法'</a>（Otsu's method）。下面就是他的计算方法。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>假定一张图片共有n个像素，其中灰度值小于阈值的像素为 n1 个，大于等于阈值的像素为 n2 个（ n1 + n2 = n ）。w1 和 w2 表示这两种像素各自的比重。</p> 
+    <blockquote style='background-color:rgb(245, 242, 240);color:rgb(17, 17, 17);font-family:Consolas, Monaco, 'Andale Mono', monospace;font-style:normal;font-weight:normal;text-align:left;'> 
+     <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>　　w1 = n1 / n</p> 
+     <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>　　w2 = n2 / n</p> 
+    </blockquote> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>再假定，所有灰度值小于阈值的像素的平均值和方差分别为 μ1 和 σ1，所有灰度值大于等于阈值的像素的平均值和方差分别为 μ2 和 σ2。于是，可以得到</p> 
+    <blockquote style='background-color:rgb(245, 242, 240);color:rgb(17, 17, 17);font-family:Consolas, Monaco, 'Andale Mono', monospace;font-style:normal;font-weight:normal;text-align:left;'> 
+     <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>　　类内差异 = w1(σ1的平方) + w2(σ2的平方)</p> 
+     <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>　　类间差异 = w1w2(μ1-μ2)^2</p> 
+    </blockquote> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>可以证明，这两个式子是等价的：得到'类内差异'的最小值，等同于得到'类间差异'的最大值。不过，从计算难度看，后者的计算要容易一些。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>下一步用'穷举法'，将阈值从灰度的最低值到最高值，依次取一遍，分别代入上面的算式。使得'类内差异最小'或'类间差异最大'的那个值，就是最终的阈值。具体的实例和Java算法，请看<a href='http://www.labbookpages.co.uk/software/imgProc/otsuThreshold.html' target='_blank' style='color:rgb(17, 34, 51);font-style:normal;font-weight:normal;text-align:left;'>这里</a>。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'><img src='http://note.youdao.com/yws/res/2774/3ACCA908C81D484C98BA1D85848ED537' style='color:rgb(17, 17, 17);font-style:normal;font-weight:normal;text-align:left;' data-media-type='image'></p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>有了50x50像素的黑白缩略图，就等于有了一个50x50的0-1矩阵。矩阵的每个值对应原图的一个像素，0表示黑色，1表示白色。这个矩阵就是一张图片的特征矩阵。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>两个特征矩阵的不同之处越少，就代表两张图片越相似。这可以用'异或运算'实现（即两个值之中只有一个为1，则运算结果为1，否则运算结果为0）。对不同图片的特征矩阵进行'异或运算'，结果中的1越少，就是越相似的图片。</p> 
+    <p style='color:rgb(17, 17, 17);font-size:1.6em;font-style:normal;font-weight:normal;text-align:left;'>（完）<br></p> 
+   </div> 
+  </div></h1> 
+ <h3 style='color:rgb(85, 102, 119);font-size:1.92em;font-style:normal;font-weight:bold;text-align:left;'>文档信息</h3> 
+ <h1 style='background-color:rgb(245, 245, 213);color:rgb(0, 0, 0);font-family:'Trebuchet MS', Arial, 'Lucida Grande', Verdana, Lucida, Helvetica, sans-serif;font-size:2.88em;font-style:normal;font-weight:900;text-align:left;'> 
+  <div style='background-color: rgb(245, 245, 213); color: rgb(17, 17, 17); font-family: Georgia, serif; font-size: 10.3999996185303px; font-weight: normal;'> 
+   <div style='color: rgb(252, 178, 151); font-weight: bold;'> 
+    <ul style='color: rgb(17, 17, 17); font-weight: normal;'> 
+     <li style='color: rgb(85, 102, 119); font-size: 1.6em; text-align: left;'>版权声明：自由转载-非商用-非衍生-保持署名（<a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh' style='color: rgb(85, 102, 119);'>创意共享3.0许可证</a>）</li> 
+     <li style='color: rgb(85, 102, 119); font-size: 1.6em; text-align: left;'>发表日期：&nbsp;<abbr title='2013-03-31T19:29:31+08:00' style='color: rgb(61, 61, 61);'>2013年3月31日</abbr></li> 
+     <li style='color: rgb(85, 102, 119); font-size: 1.6em; text-align: left;'>更多内容：&nbsp;<a href='http://www.ruanyifeng.com/blog/archives.html' target='_blank' style='color: rgb(85, 102, 119);'>档案</a>&nbsp;»&nbsp;<a href='http://www.ruanyifeng.com/blog/algorithm/' style='color: rgb(85, 102, 119);'>算法与数学</a></li> 
+     <li style='color: rgb(85, 102, 119); font-size: 1.6em; text-align: left;'>购买文集：<a href='http://www.ruanyifeng.com/blog/2014/12/my-blog-book.html' target='_blank' style='color: rgb(85, 102, 119);'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAKOWlDQ…teuIGIJ1bI60Se2dG4qFWDddQsSeiZpRkILfQ6Hcmvk2NPLzksA4TnEeNNAAAAAElFTkSuQmCC' style='color: rgb(17, 17, 17);' data-media-type='image'>&nbsp;《如何变得有思想》</a></li> 
+     <li style='color: rgb(85, 102, 119); font-size: 1.6em; text-align: left;'>社交媒体：<a href='https://twitter.com/ruanyf' target='_blank' style='color: rgb(85, 102, 119);'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFW…RNFltmLKDKqj4Qrm1ojzOxDz2pyPQ0P7CK4c40/wJ+CzAAGYrXsvfFXR4AAAAASUVORK5CYII=' style='color: rgb(17, 17, 17);' data-media-type='image'>&nbsp;twitter</a>，<a href='http://weibo.com/ruanyf' target='_blank' style='color: rgb(85, 102, 119);'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIW…ap6qdLVW+Xqt4ujfokadRdVpvgNWpt54y6qc8MV44Sfw4An+t+Gj1AKyYAAAAASUVORK5CYII=' style='color: rgb(17, 17, 17);' data-media-type='image'>&nbsp;weibo</a></li> 
+     <li style='color: rgb(85, 102, 119); font-size: 1.6em; text-align: left;'>Feed订阅：&nbsp;<a href='http://www.ruanyifeng.com/feed.html' target='_blank' style='color: rgb(85, 102, 119);'><img src='data:image/gif;base64,R0lGODlhFAAUANU2APV1GfmrePZ8IeR5VPq2ieNkLf7p3NpFJveCJ…gHLIRIsWAlgASsGMRBMWMGBQtYZ7yIsoBRKkhjOMxAiXJGGCEpHGxIYsSIhrcaQmy1EQQAOw==' style='color: rgb(17, 17, 17);' data-media-type='image'></a></li> 
+    </ul> 
+   </div> 
+  </div></h1> 
+ <h2 style='font-size: 2.88em;'>相关文章</h2> 
+ <h1 style='background-color: rgb(245, 245, 213); font-family: 'Trebuchet MS', Arial, 'Lucida Grande', Verdana, Lucida, Helvetica, sans-serif; font-size: 2.88em;'> 
+  <div style='background-color: rgb(245, 245, 213); color: rgb(17, 17, 17); font-family: Georgia, serif; font-size: 10.3999996185303px; font-weight: normal;'> 
+   <ul> 
+    <li style='font-size: 1.6em; text-align: left;'><span style='font-weight:800;'>2013.12.16:&nbsp;<a href='http://www.ruanyifeng.com/blog/2013/12/naive_bayes_classifier.html' style='color: rgb(85, 102, 119); font-weight: normal;'>朴素贝叶斯分类器的应用</a></span> 
+     <div>
+       生活中很多场合需要用到分类，比如新闻分类、病人分类等等。 
+     </div></li> 
+    <li style='font-size: 1.6em; text-align: left;'><span style='font-weight:800;'>2013.03.26:&nbsp;<a href='http://www.ruanyifeng.com/blog/2013/03/automatic_summarization.html' style='color: rgb(85, 102, 119); font-weight: normal;'>TF-IDF与余弦相似性的应用（三）：自动摘要</a></span> 
+     <div>
+       有时候，很简单的数学方法，就可以完成很复杂的任务。 
+     </div></li> 
+    <li style='font-size: 1.6em; text-align: left;'><span style='font-weight:800;'>2013.03.21:&nbsp;<a href='http://www.ruanyifeng.com/blog/2013/03/cosine_similarity.html' style='color: rgb(85, 102, 119); font-weight: normal;'>TF-IDF与余弦相似性的应用（二）：找出相似文章</a></span> 
+     <div>
+       上一次，我用TF-IDF算法自动提取关键词。 
+     </div></li> 
+    <li style='font-size: 1.6em; text-align: left;'><span style='font-weight:800;'>2013.03.15:&nbsp;<a href='http://www.ruanyifeng.com/blog/2013/03/tf-idf.html' style='color: rgb(85, 102, 119); font-weight: normal;'>TF-IDF与余弦相似性的应用（一）：自动提取关键词</a></span> 
+     <div>
+       这个标题看上去好像很复杂，其实我要谈的是一个很简单的问题。 
+     </div></li> 
+   </ul> 
+  </div></h1> 
+ <h2 style='font-size: 2.88em;'>广告<a href='http://www.ruanyifeng.com/ads.html' style='color: rgb(85, 102, 119); font-weight: normal;'>（购买广告位）</a></h2> 
+ <h2 style='font-size: 2.88em;'>留言（40条）</h2> 
+ <h1 style='background-color: rgb(245, 245, 213); font-family: 'Trebuchet MS', Arial, 'Lucida Grande', Verdana, Lucida, Helvetica, sans-serif; font-size: 2.88em;'> 
+  <div style='background-color: rgb(245, 245, 213); color: rgb(17, 17, 17); font-family: Georgia, serif; font-size: 10.3999996185303px; font-weight: normal;'></div> 
+  <div style='background-color: rgb(245, 245, 213); color: rgb(17, 17, 17); font-family: Georgia, serif; font-size: 10.3999996185303px; font-weight: normal;'> 
+   <div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>gofane&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>看了前几篇关于摘要的算法很受用，相似图片搜索也是很有趣的应用，学习了～～</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270282' style='color: black;'><abbr title='2013-03-31T20:54:32+08:00'>2013年3月31日 20:54</abbr></a>&nbsp;|&nbsp;<a title='gofane的全部留言' href='http://www.ruanyifeng.com/blog/user/gofane.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用gofane的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://zzcang.org' href='http://zzcang.org/' target='_blank' style='color: rgb(43, 43, 43);'>cangzhang</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>好文！</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270283' style='color: black;'><abbr title='2013-03-31T21:21:20+08:00'>2013年3月31日 21:21</abbr></a>&nbsp;|&nbsp;<a title='cangzhang的全部留言' href='http://www.ruanyifeng.com/blog/user/cangzhang.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用cangzhang的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://zzcang.org' href='http://zzcang.org/' target='_blank' style='color: rgb(43, 43, 43);'>cangzhang</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>第一种方法想到过，第二种学习了！</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270284' style='color: black;'><abbr title='2013-03-31T21:30:24+08:00'>2013年3月31日 21:30</abbr></a>&nbsp;|&nbsp;<a title='cangzhang的全部留言' href='http://www.ruanyifeng.com/blog/user/cangzhang.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用cangzhang的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='https://izhaom.in' href='https://izhaom.in/' target='_blank' style='color: rgb(43, 43, 43);'>Charlie Chiu</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>贵文的“阈值”写成了“阙值”，不应该啊。</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270285' style='color: black;'><abbr title='2013-03-31T21:52:27+08:00'>2013年3月31日 21:52</abbr></a>&nbsp;|&nbsp;<a title='Charlie Chiu的全部留言' href='http://www.ruanyifeng.com/blog/user/Charlie%20Chiu.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用Charlie Chiu的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>阮一峰&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>@Charlie Chiu：</p> 
+       <p>谢谢指出，已经改正了。</p> 
+       <p>我从来没注意过这个问题，一直写“阙值”，都习惯了。</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270286' style='color: black;'><abbr title='2013-03-31T22:14:12+08:00'>2013年3月31日 22:14</abbr></a>&nbsp;|&nbsp;<a title='阮一峰的全部留言' href='http://www.ruanyifeng.com/blog/user/%E9%98%AE%E4%B8%80%E5%B3%B0.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用阮一峰的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>reverland&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>第一个反应是用来识别验证码……</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270301' style='color: black;'><abbr title='2013-04-01T09:36:08+08:00'>2013年4月 1日 09:36</abbr></a>&nbsp;|&nbsp;<a title='reverland的全部留言' href='http://www.ruanyifeng.com/blog/user/reverland.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用reverland的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://hightman.cn' href='http://hightman.cn/' target='_blank' style='color: rgb(43, 43, 43);'>hightman</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>好文！这几种方法本质上都是计算图片的 perceptual hash，再通过 hamming distance 表示差异。最近正好也在了解这方面的相关知识，目前碰到的难点在于面对海量（其实只是比较多）图片筛选时，如何把匹配速度优化到一个可接受的范围呢。</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270302' style='color: black;'><abbr title='2013-04-01T09:56:47+08:00'>2013年4月 1日 09:56</abbr></a>&nbsp;|&nbsp;<a title='hightman的全部留言' href='http://www.ruanyifeng.com/blog/user/hightman.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用hightman的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://junyi.me/' href='http://junyi.me/' target='_blank' style='color: rgb(43, 43, 43);'>Junyi</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>Adobe在这方面的技术积累那么深，如果做了图片搜索，是不是可以秒杀其他公司呢？</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270313' style='color: black;'><abbr title='2013-04-01T16:04:53+08:00'>2013年4月 1日 16:04</abbr></a>&nbsp;|&nbsp;<a title='Junyi的全部留言' href='http://www.ruanyifeng.com/blog/user/Junyi.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用Junyi的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>flowaters&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <blockquote style='background-color: rgb(224, 223, 204);'> 
+        <pre style='font-size: 14.3999996185303px; font-weight: 700;'>引用hightman的发言：</pre> 
+        <p style='font-size: 14.3999996185303px;'>好文！这几种方法本质上都是计算图片的 perceptual hash，再通过 hamming distance 表示差异。最近正好也在了解这方面的相关知识，目前碰到的难点在于面对海量（其实只是比较多）图片筛选时，如何把匹配速度优化到一个可接受的范围呢。</p> 
+       </blockquote> 
+       <p>匹配速度可以用索引来做，主要还是hash的质量怎么提高。</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270314' style='color: black;'><abbr title='2013-04-01T16:51:06+08:00'>2013年4月 1日 16:51</abbr></a>&nbsp;|&nbsp;<a title='flowaters的全部留言' href='http://www.ruanyifeng.com/blog/user/flowaters.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用flowaters的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://hightman.cn' href='http://hightman.cn/' target='_blank' style='color: rgb(43, 43, 43);'>hightman</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>像这样的 KNN 问题，有哪些成熟易用的算法或库推荐吗。此外遐想何时能有一个像 strstr() 一样的 imgimg() 功能啊</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270316' style='color: black;'><abbr title='2013-04-01T20:37:45+08:00'>2013年4月 1日 20:37</abbr></a>&nbsp;|&nbsp;<a title='hightman的全部留言' href='http://www.ruanyifeng.com/blog/user/hightman.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用hightman的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://xlzhu.twitter.com' href='http://xlzhu.twitter.com/' target='_blank' style='color: rgb(43, 43, 43);'>xlzhu</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>识别图片中的线段是否中断，博主是否有思路呢？之前考虑过对比，但貌似没找到好的算法</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270324' style='color: black;'><abbr title='2013-04-02T00:01:57+08:00'>2013年4月 2日 00:01</abbr></a>&nbsp;|&nbsp;<a title='xlzhu的全部留言' href='http://www.ruanyifeng.com/blog/user/xlzhu.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用xlzhu的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>cupid&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>我以前也研究过这样的算法。<br>会不会有多张图片，直方图很类似，但图片完全相同呢？<br>毕竟没有通过图片中的轮廓边缘来匹配。</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270333' style='color: black;'><abbr title='2013-04-02T09:17:49+08:00'>2013年4月 2日 09:17</abbr></a>&nbsp;|&nbsp;<a title='cupid的全部留言' href='http://www.ruanyifeng.com/blog/user/cupid.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用cupid的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://www.1kseo.com' href='http://www.1kseo.com/' target='_blank' style='color: rgb(43, 43, 43);'>God</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>这技术非常有潜力，不仅仅局限于图片搜索，可以用到图片伪原创，验证码识别等等各类内容感谢阮大侠</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270334' style='color: black;'><abbr title='2013-04-02T09:33:29+08:00'>2013年4月 2日 09:33</abbr></a>&nbsp;|&nbsp;<a title='God的全部留言' href='http://www.ruanyifeng.com/blog/user/God.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用God的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>Patrick&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <blockquote style='background-color: rgb(224, 223, 204);'> 
+        <pre style='font-size: 14.3999996185303px; font-weight: 700;'>引用God的发言：</pre> 
+        <p style='font-size: 14.3999996185303px;'>这技术非常有潜力，不仅仅局限于图片搜索，可以用到图片伪原创，验证码识别等等各类内容感谢阮大侠</p> 
+       </blockquote>别老想着作恶 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270338' style='color: black;'><abbr title='2013-04-02T13:19:49+08:00'>2013年4月 2日 13:19</abbr></a>&nbsp;|&nbsp;<a title='Patrick的全部留言' href='http://www.ruanyifeng.com/blog/user/Patrick.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用Patrick的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>Kira&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <blockquote style='background-color: rgb(224, 223, 204);'> 
+        <pre style='font-size: 14.3999996185303px; font-weight: 700;'>引用Junyi的发言：</pre> 
+        <p style='font-size: 14.3999996185303px;'>Adobe在这方面的技术积累那么深，如果做了图片搜索，是不是可以秒杀其他公司呢？</p> 
+       </blockquote> 
+       <p>Adobe已经做了，单机版的Photoshop Element就有相似搜索</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270359' style='color: black;'><abbr title='2013-04-03T09:11:57+08:00'>2013年4月 3日 09:11</abbr></a>&nbsp;|&nbsp;<a title='Kira的全部留言' href='http://www.ruanyifeng.com/blog/user/Kira.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用Kira的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>XX&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>这些都是目前人能想到的，利用视觉或数学方面的来寻找相似性的图片。人类及动物是如何识别相似图象的呢？这个更有趣。</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270466' style='color: black;'><abbr title='2013-04-06T14:58:14+08:00'>2013年4月 6日 14:58</abbr></a>&nbsp;|&nbsp;<a title='XX的全部留言' href='http://www.ruanyifeng.com/blog/user/XX.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用XX的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://mazheng.org' href='http://mazheng.org/' target='_blank' style='color: rgb(43, 43, 43);'>冰上游鱼</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>图像处理很有意思啊。感觉最重要的就是如何定义特征，如何提取特征了。</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270503' style='color: black;'><abbr title='2013-04-08T11:07:26+08:00'>2013年4月 8日 11:07</abbr></a>&nbsp;|&nbsp;<a title='冰上游鱼的全部留言' href='http://www.ruanyifeng.com/blog/user/%E5%86%B0%E4%B8%8A%E6%B8%B8%E9%B1%BC.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用冰上游鱼的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://solver.sinaapp.com/' href='http://solver.sinaapp.com/' target='_blank' style='color: rgb(43, 43, 43);'>第04号</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>很有道理，感谢示例代码的分享。</p> 
+       <p>文章很好，详略有度。</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270505' style='color: black;'><abbr title='2013-04-08T12:44:54+08:00'>2013年4月 8日 12:44</abbr></a>&nbsp;|&nbsp;<a title='第04号的全部留言' href='http://www.ruanyifeng.com/blog/user/%E7%AC%AC04%E5%8F%B7.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用第04号的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://demi-panda.com' href='http://demi-panda.com/' target='_blank' style='color: rgb(43, 43, 43);'>熊猫家族</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>讲解的很详细，收藏啦</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270671' style='color: black;'><abbr title='2013-04-11T14:16:44+08:00'>2013年4月11日 14:16</abbr></a>&nbsp;|&nbsp;<a title='熊猫家族的全部留言' href='http://www.ruanyifeng.com/blog/user/%E7%86%8A%E7%8C%AB%E5%AE%B6%E6%97%8F.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用熊猫家族的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://linyuansen.github.com' href='http://linyuansen.github.com/' target='_blank' style='color: rgb(43, 43, 43);'>linyuansen</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>阮哥的东西都写得简单易懂，写得太好了</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270772' style='color: black;'><abbr title='2013-04-15T10:44:53+08:00'>2013年4月15日 10:44</abbr></a>&nbsp;|&nbsp;<a title='linyuansen的全部留言' href='http://www.ruanyifeng.com/blog/user/linyuansen.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用linyuansen的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://www.redoxb.com' href='http://www.redoxb.com/' target='_blank' style='color: rgb(43, 43, 43);'>RedoxB</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>你的第一篇文章以及此篇文章的思路我大概也想到过，第二种方法有点新颖。<br>本来以为可以凭着兴趣玩出个图片搜索引擎，原来谷歌早就有了！唉。少年还需努力！</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-270879' style='color: black;'><abbr title='2013-04-19T22:45:30+08:00'>2013年4月19日 22:45</abbr></a>&nbsp;|&nbsp;<a title='RedoxB的全部留言' href='http://www.ruanyifeng.com/blog/user/RedoxB.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用RedoxB的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>xiasl&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <blockquote style='background-color: rgb(224, 223, 204);'> 
+        <pre style='font-size: 14.3999996185303px; font-weight: 700;'>引用hightman的发言：</pre> 
+        <p style='font-size: 14.3999996185303px;'>好文！这几种方法本质上都是计算图片的 perceptual hash，再通过 hamming distance 表示差异。最近正好也在了解这方面的相关知识，目前碰到的难点在于面对海量（其实只是比较多）图片筛选时，如何把匹配速度优化到一个可接受的范围呢。</p> 
+       </blockquote> 
+       <p>有个疑问，如果是将图片生成hash特征值，再采用布隆过滤器来比对效率会高的惊人，Google就用这个方案解决垃圾邮件问题。不过如此一来那就和相似比对背道而驰了。因为 这是精确比对而非相似比对，差一个字节都无法比对上。不知道兄台你有啥好想法没有^_^</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-271121' style='color: black;'><abbr title='2013-04-29T20:55:42+08:00'>2013年4月29日 20:55</abbr></a>&nbsp;|&nbsp;<a title='xiasl的全部留言' href='http://www.ruanyifeng.com/blog/user/xiasl.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用xiasl的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://www.cnblogs.com/muyun/' href='http://www.cnblogs.com/muyun/' target='_blank' style='color: rgb(43, 43, 43);'>祁磊</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>求<b>参考资料链接</b>，楼主可以列一下主要的参阅材料，网站什么的，信息越多对大家越好哈。<br>求了解更多啊。</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-271230' style='color: black;'><abbr title='2013-05-03T09:27:13+08:00'>2013年5月 3日 09:27</abbr></a>&nbsp;|&nbsp;<a title='祁磊的全部留言' href='http://www.ruanyifeng.com/blog/user/%E7%A5%81%E7%A3%8A.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用祁磊的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>potatos666&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>经常阅读您的博客，收益匪浅。谢谢您提供的宝贵知识！</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-271325' style='color: black;'><abbr title='2013-05-06T11:58:12+08:00'>2013年5月 6日 11:58</abbr></a>&nbsp;|&nbsp;<a title='potatos666的全部留言' href='http://www.ruanyifeng.com/blog/user/potatos666.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用potatos666的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>josico&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>请问什么叫 前景色和背景色的'类内差异最小'和'类间差异最大' 呢？<br>为什么找到这么一个让'类内差异最小'或'类间差异最大'的值 就是阀值，轮廓就越明显呢？<br>望高手赐教</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-271557' style='color: black;'><abbr title='2013-05-16T19:21:55+08:00'>2013年5月16日 19:21</abbr></a>&nbsp;|&nbsp;<a title='josico的全部留言' href='http://www.ruanyifeng.com/blog/user/josico.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用josico的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>josico&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>额。。。上面的那个问题已经知道了 问题挺小白了<br>研究了一个晚上 感觉这种算法貌似有点问题<br>你是这么写的‘首先，将原图转成一张较小的灰度图片，假定为50x50像素’<br>这里的 50*50 感觉有问题&nbsp;<br>有一些桌面壁纸 是那种左边都是背景，真正的前景在图片的最右边，这样取他的50*50岂不是把主干弄没了？<br>但要是不进行缩放 确实很影响效率 那到底该如何是好呢？缩小的比例，多大为好呢？</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-271560' style='color: black;'><abbr title='2013-05-17T00:05:31+08:00'>2013年5月17日 00:05</abbr></a>&nbsp;|&nbsp;<a title='josico的全部留言' href='http://www.ruanyifeng.com/blog/user/josico.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用josico的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>wangwenchen&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>我已经根据您的思想做出了一个图片搜索引擎。请问可不可以提供以下您所参考的文献或者网站信息等资料吗？非常感谢！:)</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-271631' style='color: black;'><abbr title='2013-05-21T03:26:21+08:00'>2013年5月21日 03:26</abbr></a>&nbsp;|&nbsp;<a title='wangwenchen的全部留言' href='http://www.ruanyifeng.com/blog/user/wangwenchen.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用wangwenchen的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>于梓峤&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>可不可以把图片转为4位色然后查询？查询结果按匹配度排列</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-271747' style='color: black;'><abbr title='2013-05-26T10:53:39+08:00'>2013年5月26日 10:53</abbr></a>&nbsp;|&nbsp;<a title='于梓峤的全部留言' href='http://www.ruanyifeng.com/blog/user/%E4%BA%8E%E6%A2%93%E5%B3%A4.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用于梓峤的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>edisonqkj&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>感谢博主提供了这么好一篇博文，我学习了！我特意测试了一下第二种算法，发现<br>“类内差异 = w1(σ1的平方) + w2(σ2的平方)”这里是不是描述错了，括号里的值应该等于方差，而不是方差的平方。因为我用“类外差异”也计算了一下：括号里若是方差的话，两个差异方法的极值是相等的；若是方差的平方的话，极值就不等于了。</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-272188' style='color: black;'><abbr title='2013-06-17T17:38:22+08:00'>2013年6月17日 17:38</abbr></a>&nbsp;|&nbsp;<a title='edisonqkj的全部留言' href='http://www.ruanyifeng.com/blog/user/edisonqkj.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用edisonqkj的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>王敏&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>原文：如果每种原色都可以取256个值，那么整个颜色空间共有1600万种颜色（256的三次方）。</p> 
+       <p>RGB每种原色取256个值，即深度为8，2^8=256，整个颜色空间2^(8+8+8)=2^24约1600万，24次方，您笔误了吧</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-272553' style='color: black;'><abbr title='2013-07-09T11:32:23+08:00'>2013年7月 9日 11:32</abbr></a>&nbsp;|&nbsp;<a title='王敏的全部留言' href='http://www.ruanyifeng.com/blog/user/%E7%8E%8B%E6%95%8F.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用王敏的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>王敏&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>两种方法单独使用都有各自的局限，结合起来不错，学习了。</p> 
+       <p>颜色分布的局限：假如100*100的两张图，一张分割成50*50的4个小块，并各渲染成4种比如红、黄、蓝、绿;另一张分割成25*25的16个小块，各小块交替渲染成上面的4种颜色。视觉上完全不同的两张图片，因为两张图上各种颜色的总像素数一样，会被认为是相似的。</p> 
+       <p>内容特征法的局限：可以避免上面的问题，但忽略了色彩差异，比如车道指示灯，分别发的红光、绿光箭头信号，如果灯体本身是黑色，不管是发红光还是绿光，都会被分离成前景色。</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-272554' style='color: black;'><abbr title='2013-07-09T12:04:52+08:00'>2013年7月 9日 12:04</abbr></a>&nbsp;|&nbsp;<a title='王敏的全部留言' href='http://www.ruanyifeng.com/blog/user/%E7%8E%8B%E6%95%8F.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用王敏的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://www.chepoo.com' href='http://www.chepoo.com/' target='_blank' style='color: rgb(43, 43, 43);'>awnuxkjy</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>简单明了，不错的好文</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-273010' style='color: black;'><abbr title='2013-08-11T15:17:13+08:00'>2013年8月11日 15:17</abbr></a>&nbsp;|&nbsp;<a title='awnuxkjy的全部留言' href='http://www.ruanyifeng.com/blog/user/awnuxkjy.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用awnuxkjy的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://404notfound.duapp.com' href='http://404notfound.duapp.com/' target='_blank' style='color: rgb(43, 43, 43);'>cheng</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>我发现第一种计算方法有一个问题。<br>如果图片是局部色彩相近的图片,用黑色遮掉大部分保存为新图，然后与原图比较<br>发现余弦计算值&gt;0.9(取决图片色彩是否平均，即每个部分都差不多)</p> 
+       <p>这是因为会出现两个向量平行的情况，黑色的rgb值为 0<br></p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-278839' style='color: black;'><abbr title='2013-10-16T16:39:59+08:00'>2013年10月16日 16:39</abbr></a>&nbsp;|&nbsp;<a title='cheng的全部留言' href='http://www.ruanyifeng.com/blog/user/cheng.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用cheng的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'><a title='http://blog.luochen1990.com' href='http://blog.luochen1990.com/' target='_blank' style='color: rgb(43, 43, 43);'>luochen1990</a>&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>太好了, 正需要用到这个, 学习了, 谢谢阮大神的分享!<br>另外顺便帮忙debug一下下:<br>1. 所有灰度值小于阈值的像素的平均值和方差分别为 μ1 和 σ1<br>2. 类内差异 = w1(σ1的平方) + w2(σ2的平方)<br>根据句2推测句1中的σ1和σ2是否应该是'标准差'而不是'方差'?</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-279652' style='color: black;'><abbr title='2013-10-22T10:31:33+08:00'>2013年10月22日 10:31</abbr></a>&nbsp;|&nbsp;<a title='luochen1990的全部留言' href='http://www.ruanyifeng.com/blog/user/luochen1990.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用luochen1990的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>Liu Jinxue&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>感觉这几个方法都只能根据缩略图查找源图像，或者说非常接近的图像，<br>要想真正基于图像内容去检索图像还是不够</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-281049' style='color: black;'><abbr title='2013-10-29T15:14:31+08:00'>2013年10月29日 15:14</abbr></a>&nbsp;|&nbsp;<a title='Liu Jinxue的全部留言' href='http://www.ruanyifeng.com/blog/user/Liu%20Jinxue.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用Liu Jinxue的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>元子&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>前面两种方法不错～第三种好像和Percept Hash类似吧，只是这里扩大来指纹范围</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-286000' style='color: black;'><abbr title='2013-11-13T21:15:05+08:00'>2013年11月13日 21:15</abbr></a>&nbsp;|&nbsp;<a title='元子的全部留言' href='http://www.ruanyifeng.com/blog/user/%E5%85%83%E5%AD%90.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用元子的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>Fangzhou&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>第二种方法 哪些是前景哪些是背景是怎么知道的呢 不知道我理解错或者漏了什么没有</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-330327' style='color: black;'><abbr title='2014-07-05T17:24:49+08:00'>2014年7月 5日 17:24</abbr></a>&nbsp;|&nbsp;<a title='Fangzhou的全部留言' href='http://www.ruanyifeng.com/blog/user/Fangzhou.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用Fangzhou的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>iwbpm&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>很有趣，很想了解证件照中人脸识别的原理跟这种技术有何不同</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-346363' style='color: black;'><abbr title='2014-12-16T21:10:37+08:00'>2014年12月16日 21:10</abbr></a>&nbsp;|&nbsp;<a title='iwbpm的全部留言' href='http://www.ruanyifeng.com/blog/user/iwbpm.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用iwbpm的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: rgb(43, 43, 43); font-weight: 700;'> 
+        <p style='font-size: 1.6em;'>孔雀东南舞&nbsp;说：</p> 
+       </div> 
+      </div> 
+      <div style='font-size: 16px;'> 
+       <p>看完了，通俗易懂。之前我看过别人做交通灯的识别的例子，也用到了图像处理的技术，其中有一个关键就是转为二值图时阈值的选取。</p> 
+       <p>对于交通灯识别中自动选择合适的阈值，我以前想到一种非常粗糙的方法：先得到黑白图，然后得到黑白图的均值（例如90），最后根据这个均值选取阈值例如定为均值的一半，即45。（当然这种算法是很粗糙的）</p> 
+       <p><br>通过Photoshop软件模仿可知，事实上对于同一幅图，采用任何阈值的效果都不会太好，更好的方法是对一幅图采用2-3次不同的阈值，然后将这2-3张图通过某种方式合成到一起，这样得到的阈值图是最完美的，可惜这种处理让人操作Photoshop软件是可以完成的，但通过一套完全自动化的算法程序去实现却困难重重。</p> 
+      </div> 
+      <div> 
+       <div style='color: black;'> 
+        <p style='font-size: 1.2em;'><a href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-346896' style='color: black;'><abbr title='2015-01-03T17:22:00+08:00'>2015年1月 3日 17:22</abbr></a>&nbsp;|&nbsp;<a title='孔雀东南舞的全部留言' href='http://www.ruanyifeng.com/blog/user/%E5%AD%94%E9%9B%80%E4%B8%9C%E5%8D%97%E8%88%9E.html' style='color: black;'>档案</a>&nbsp;|&nbsp;<a title='引用孔雀东南舞的这条留言' href='http://www.ruanyifeng.com/blog/2013/03/similar_image_search_part_ii.html#comment-text' style='color: black;'>引用</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div> 
+     <div> 
+      <div> 
+       <div style='color: r	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-213.html">室内健身</a>
+				|
+				 <a href="http://onelose.com/post-226.html">MySQL UDF（自定义函数）</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="218" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-399.html">Navicat_for_MySQL_10.0.5.0注册码</a></li>
+		<li><a href="http://onelose.com/post-461.html">MYSQL自定义排序</a></li>
+		<li><a href="http://onelose.com/post-135.html">如何下载迅雷所有被屏蔽的最新电影</a></li>
+		<li><a href="http://onelose.com/post-216.html">Imghash:相似图片搜索的php实现</a></li>
+		<li><a href="http://onelose.com/post-11.html">2个搞笑的图片</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

@@ -1,0 +1,450 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Larbin的配置和使用</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>Larbin的配置和使用</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-16 7:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <h2 style='font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px;'><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>(1)</span>运行<span style='font-family:'DejaVu Serif', serif;'>larbin</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>./larbin -c conf_file</span></p><p style='font-weight: normal;'>选项<span style='font-family:'DejaVu Serif', serif;'>-c</span>是指定使用的配置文件<span style='font-family:'DejaVu Serif', serif;'>,</span>不指定时默认使用的是<span style='font-family:'DejaVu Serif', serif;'>larbin.conf</span></p><p style='font-weight: normal;'>当<span style='font-family:'DejaVu Serif', serif;'>larbin</span>运行起来后进行下面的操作<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>(2)</span>在<span style='font-family:'DejaVu Serif', serif;'>larbin.conf</span>的第<span style='font-family:'DejaVu Serif', serif;'>12</span>行是<span style='font-family:'DejaVu Serif', serif;'>httpPort 8081,</span>由于这个端口和我机器上的其他应用冲突了<span style='font-family:'DejaVu Serif', serif;'>,</span>所以我改成了<span style='font-family:'DejaVu Serif', serif;'>8099.</span>这样你在浏览器中输入<span style='font-family:'DejaVu Serif', serif;'>localhost:8099,</span>就会看到统计信息<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>(3)</span>在<span style='font-family:'DejaVu Serif', serif;'>larbin.conf</span>的第<span style='font-family:'DejaVu Serif', serif;'>15</span>行是<span style='font-family:'DejaVu Serif', serif;'>inputPort 1976,</span>还好这个端口不冲突<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'>在终端输入<span style='font-family:'DejaVu Serif', serif;'>telnet localhost 1976,</span>会进入<span style='font-family:'DejaVu Serif', serif;'>larbin</span>的输入系统<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'><img src='http://note.youdao.com/yws/res/1978/1A81272495D044F98E7E151454871237' data-media-type='image'><br></span></p><p style='font-weight: normal;'>我们在此输入</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>priority:1 depth:3 test:0</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>http://www.baidu.com</span></p><p style='font-weight: normal;'>我们把优先级设为了<span style='font-family:'DejaVu Serif', serif;'>1,</span>保证你输入的<span style='font-family:'DejaVu Serif', serif;'>URL</span>比一般的<span style='font-family:'DejaVu Serif', serif;'>URL</span>优先被抓取<span style='font-family:'DejaVu Serif', serif;'>.</span>如果输入了很多<span style='font-family:'DejaVu Serif', serif;'>URL,</span>把优先级设为<span style='font-family:'DejaVu Serif', serif;'>0,</span>防止<span style='font-family:'DejaVu Serif', serif;'>run out of memory.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>depth</span>指定抓取链接的深度<span style='font-family:'DejaVu Serif', serif;'>.</span>一般不要超过<span style='font-family:'DejaVu Serif', serif;'>5</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>test</span>设为<span style='font-family:'DejaVu Serif', serif;'>0</span>表示如果一面网页之前已经抓取过了<span style='font-family:'DejaVu Serif', serif;'>,</span>并且现在又要抓取<span style='font-family:'DejaVu Serif', serif;'>,</span>那就抓取；<span style='font-family:'DejaVu Serif', serif;'>test</span>设为<span style='font-family:'DejaVu Serif', serif;'>1</span>可以防止重复的抓取<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'>第<span style='font-family:'DejaVu Serif', serif;'>2</span>行以后是我们指定从哪些网页开始抓取<span style='font-family:'DejaVu Serif', serif;'>.</span>实际上在<span style='font-family:'DejaVu Serif', serif;'>larbin.conf</span>的第<span style='font-family:'DejaVu Serif', serif;'>36</span>行有个<span style='font-family:'DejaVu Serif', serif;'>startUrl</span>就是起这个作用的<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>(4)</span>重启<span style='font-family:'DejaVu Serif', serif;'>larbin</span></p><p style='font-weight: normal;'>假如你上次从<span style='font-family:'DejaVu Serif', serif;'>www.baidu.com</span>开始已抓取了很多网页<span style='font-family:'DejaVu Serif', serif;'>,</span>那么你下次重启<span style='font-family:'DejaVu Serif', serif;'>larbin</span>的时候它还从<span style='font-family:'DejaVu Serif', serif;'>www.baidu.com</span>开始按照上次一样抓取这些网页<span style='font-family:'DejaVu Serif', serif;'>,</span>你自然不这些重复工作<span style='font-family:'DejaVu Serif', serif;'>,</span>把<span style='font-family:'DejaVu Serif', serif;'>options.h</span>第<span style='font-family:'DejaVu Serif', serif;'>102</span>行<span style='font-family:'DejaVu Serif', serif;'>#define RELOAD</span>前的注释去掉即可<span style='font-family:'DejaVu Serif', serif;'>.</span>使用<span style='font-family:'DejaVu Serif', serif;'>'./larbin -scratch'</span>重启<span style='font-family:'DejaVu Serif', serif;'>larbin.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'><span style='font-family:arial, helvetica, sans-serif;'>(5)批量修改文件名</span></span></p><p style='font-weight: normal;'>larbin抓取的文件保存在save文件夹下,但是文件都没有.html后缀,默认情况下不是以浏览器打开,很不方便.写一下Perl脚本,把所以文件加一下'.html'的后缀,其中用到了File::Find模块.</p><p style='font-weight: normal;'>File::Find方式具有特殊变量，将被赋予特定的信息，显示如下：</p> 
+ <ul style='font-weight: normal;'> 
+  <li> 
+   <div>
+     $_包含目录中的当前文件名 
+   </div></li> 
+  <li> 
+   <div>
+     $File::Find::dir包含当前目录名 
+   </div></li> 
+  <li> 
+   <div> 
+    <div> 
+     <span style='font-size:16px;'><span style='font-family:MathJax_Math-italic;'>F</span><span style='font-family:MathJax_Math-italic;'>i</span><span style='font-family:MathJax_Math-italic;'>l</span><span style='font-family:MathJax_Math-italic;'>e</span><span style='font-family:MathJax_Main;'>::</span><span style='font-family:MathJax_Math-italic;'>F</span><span style='font-family:MathJax_Math-italic;'>i</span><span style='font-family:MathJax_Math-italic;'>n</span><span style='font-family:MathJax_Math-italic;'>d</span><span style='font-family:MathJax_Main;'>::</span><span style='font-family:MathJax_Math-italic;'>n</span><span style='font-family:MathJax_Math-italic;'>a</span><span style='font-family:MathJax_Math-italic;'>m</span><span style='font-family:MathJax_Math-italic;'>e</span><span style='font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 13px;'>包</span><span style='font-family: STIXGeneral, 'Arial Unicode MS', serif; font-size: 13px;'>含</span></span> 
+    </div>File::Find::dir/$_ 
+   </div></li> 
+ </ul> 
+ <div style='font-weight: normal;'> 
+  <div style='background-color:rgb(255, 255, 255) !important;font-size:1em !important;'> 
+   <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 12px !important;'> 
+    <tbody> 
+     <tr> 
+      <td style='width: auto !important; height: auto !important;'> 
+       <div> 
+        <div> 
+         <code style='color: gray !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>#!/usr/bin/perl -w</code> 
+        </div> 
+        <div> 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>use</code>&nbsp; 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>strict;</code> 
+        </div> 
+        <div> 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>use</code>&nbsp; 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>File::Find;</code> 
+        </div> 
+        <div> 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>my</code>&nbsp; 
+         <code style='color: rgb(170, 119, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>$path</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>=</code> 
+         <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>shift</code>&nbsp; 
+         <code style='color: rgb(170, 119, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>@ARGV</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>;</code> 
+        </div> 
+        <div> 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>my</code>&nbsp; 
+         <code style='color: rgb(170, 119, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>$post</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>=</code> 
+         <code style='color: blue !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>'.html'</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>;</code> 
+        </div> 
+        <div> 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>sub</code>&nbsp; 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>add_html{</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>if</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>(-e </code> 
+         <code style='color: rgb(170, 119, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>$File::Find::name</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>){</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>if</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>(-f </code> 
+         <code style='color: rgb(170, 119, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>$File::Find::name</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>){</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>rename</code>&nbsp; 
+         <code style='color: rgb(170, 119, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>$_</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>,</code> 
+         <code style='color: rgb(170, 119, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>$_</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>.</code> 
+         <code style='color: rgb(170, 119, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>$post</code>&nbsp; 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>or </code> 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>die</code>&nbsp; 
+         <code style='color: blue !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>'cannot rename $File::Find::name:$!'</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>;</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>}</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>elsif</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>(-d </code> 
+         <code style='color: rgb(170, 119, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>$File::Find::name</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>){</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>opendir</code>&nbsp; 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>DH,</code> 
+         <code style='color: rgb(170, 119, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>$File::Find::name</code>&nbsp; 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>or </code> 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>die</code>&nbsp; 
+         <code style='color: blue !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>'Cannot open dir $File::Find::name:$!'</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>;</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>foreach</code>&nbsp; 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>my</code>&nbsp; 
+         <code style='color: rgb(170, 119, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>$subfile</code>&nbsp; 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>(</code> 
+         <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>readdir</code>&nbsp; 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>DH){</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>next</code>&nbsp; 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>if</code>&nbsp; 
+         <code style='color: rgb(170, 119, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>$subfile</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>=~/^\./;</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>}</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>}</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>}</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>else</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>{</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>print</code>&nbsp; 
+         <code style='color: blue !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>'$File::Find::name does not exist.\n'</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>;</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>}</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>}</code> 
+        </div> 
+        <div> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>find(\</code> 
+         <code style='color: rgb(170, 119, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&amp;add_html</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>,</code> 
+         <code style='color: rgb(170, 119, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>$path</code> 
+         <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>);</code> 
+        </div> 
+       </div></td> 
+     </tr> 
+    </tbody> 
+   </table> 
+  </div> 
+ </div><p style='font-weight: normal;'>chmod&nbsp; a+x&nbsp; ./add_post_html.pl</p><p style='font-weight: normal;'>File::Find::find()函数本身就是递归地作用于目录下的所有文件,所以我们不需要在add_html()中递归调用add_html().</p><p style='font-weight: normal;'>在save文件夹下有d00000至d00003文件夹,每个文件夹下又有2000个文件.</p><p style='font-weight: normal;'>$ perl&nbsp;&nbsp; add_dot_html.pl&nbsp;&nbsp; /home/orisun/Master/larbin-2.6.3/save</p><p style='font-weight: normal;'>哥泪流满面,六千多个文件呵,就我那破机子用了不到1秒就把它们全部重命名了!</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'><span style='color:rgb(255, 0, 0);'>Larbin</span></span><span style='color:rgb(255, 0, 0);'>的配置</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>/src/interf/</span>下的文件主要定义抓取的页面如何处理<span style='font-family:'DejaVu Serif', serif;'>,</span>比如抓取的文件放到哪个路径下<span style='font-family:'DejaVu Serif', serif;'>,</span>如何提取<span style='font-family:'DejaVu Serif', serif;'>http</span>头<span style='font-family:'DejaVu Serif', serif;'>,</span>是否打印错误信息<span style='font-family:'DejaVu Serif', serif;'>,</span>错误报告放在哪个文件里<span style='font-family:'DejaVu Serif', serif;'>,</span>状态文件放哪里等等<span style='font-family:'DejaVu Serif', serif;'>.</span>你可以看<span style='font-family:'DejaVu Serif', serif;'>useroutput</span>定义了这些接口<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'>我们下面用到的几个配置文件主要是<span style='font-family:'DejaVu Serif', serif;'>/larbin-2.6.3/larbin.conf,/larbin-2.6.3/options.h,/larbin-2.6.3/src/types.h</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'><b>larbin.conf</b></span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>From:</span>如果有人对<span style='font-family:'DejaVu Serif', serif;'>larbin</span>这个爬虫提出投诉<span style='font-family:'DejaVu Serif', serif;'>,</span>那么你可以通过这个邮箱向<span style='font-family:'DejaVu Serif', serif;'>larbin</span>的创始人发一封邮件<span style='font-family:'DejaVu Serif', serif;'>. userAgent:</span>网络爬虫的名字<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>httpPort</span>和<span style='font-family:'DejaVu Serif', serif;'>inputPort</span>就不说了<span style='font-family:'DejaVu Serif', serif;'>,</span>我们上面已经使用过了<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>pagesConnexions:</span>并行抓取网页的数量<span style='font-family:'DejaVu Serif', serif;'>.</span>如果你发现有很多超时<span style='font-family:'DejaVu Serif', serif;'>,</span>说明你的网速不给力<span style='font-family:'DejaVu Serif', serif;'>,</span>最好不要设置超过<span style='font-family:'DejaVu Serif', serif;'>10%.</span></p><p style='font-weight: normal;'>下面还有一些选项<span style='font-family:'DejaVu Serif', serif;'>,</span>自已看吧<span style='font-family:'DejaVu Serif', serif;'>,</span>我就不翻译了<span style='font-family:'DejaVu Serif', serif;'>.</span>最后两个比较有意思<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>limitToDomain:</span>限定你访问的域<span style='font-family:'DejaVu Serif', serif;'>,</span>比如我设为<span style='font-family:'DejaVu Serif', serif;'>.cn .hk .com</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>forbiddenExtensions:</span>你不想抓取哪些后缀形式的文件<span style='font-family:'DejaVu Serif', serif;'>,</span>比如<span style='font-family:'DejaVu Serif', serif;'>.mp3</span>文件太大<span style='font-family:'DejaVu Serif', serif;'>,</span>严重影响你抓取网页的效率<span style='font-family:'DejaVu Serif', serif;'>,</span>可以把<span style='font-family:'DejaVu Serif', serif;'>.mp3</span>放这儿<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'><b>options.h</b></span></p><p style='font-weight: normal;'>改变了这个文件里的选项后必须重新编译<span style='font-family:'DejaVu Serif', serif;'>larbin.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>/////////////////////////////////</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>larbin</span>抓取网页后你想如何输出<span style='font-family:'DejaVu Serif', serif;'>,</span>可以使用这些模块<span style='font-family:'DejaVu Serif', serif;'>:</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>DEFAULT_OUTPUT:</span>除了统计什么都不做<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>SIMPLE_SAVE:</span>把网页存在磁盘上<span style='font-family:'DejaVu Serif', serif;'>,</span>每外目录按序号存<span style='font-family:'DejaVu Serif', serif;'>2000</span>个文件<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>MIRROR_SAVE:</span>按照网页本来的层次结构存储它们<span style='font-family:'DejaVu Serif', serif;'>,</span>每个网站一个文件夹<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>STATS_OUTPUT:</span>在每个页面上标记一些状态<span style='font-family:'DejaVu Serif', serif;'>.</span>我可以通过访问<span style='font-family:'DejaVu Serif', serif;'>http://localhost:8099/output.html</span>看到这些状态<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'>每个模块具体做什么事情实际上你可以在<span style='font-family:'DejaVu Serif', serif;'>types.h</span>里面自已定义<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'>如果你想自己定义额外的模块<span style='font-family:'DejaVu Serif', serif;'>,</span>请参阅<span style='font-family:'DejaVu Serif', serif;'>src/interf/useroutput.cc</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>/////////////////////////////////</span></p><p style='font-weight: normal;'>特定的查找</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>#define SPECIFICSEARCH</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>#define contentTypes ((char *[]) { 'audio/mpeg', NULL })</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>#define privilegedExts ((char *[]) { '.mp3', NULL })</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>contentTypes</span>是从<span style='font-family:'DejaVu Serif', serif;'>http</span>头里查找的<span style='font-family:'DejaVu Serif', serif;'>,</span>文件后缀只是为了加速搜索<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'>如何处理这些特定的页面<span style='font-family:'DejaVu Serif', serif;'>,</span>有<span style='font-family:'DejaVu Serif', serif;'>3</span>种方式</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>#define DEFAULT_SPECIFIC </span>作为<span style='font-family:'DejaVu Serif', serif;'>html</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>#define SAVE_SPECIFIC </span>存入磁盘<span style='font-family:'DejaVu Serif', serif;'>.</span>对于很大的文件</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>#define DYNAMIC_SPECIFIC </span>对于超大文件<span style='font-family:'DejaVu Serif', serif;'>,</span>动态分配缓存</p><p style='font-weight: normal;'>如果你想自己定义新的策略<span style='font-family:'DejaVu Serif', serif;'>,</span>参见<span style='font-family:'DejaVu Serif', serif;'>src/fetch/specbuf.cc</span>和<span style='font-family:'DejaVu Serif', serif;'>src/fetch/specbuf.h,</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>/////////////////////////////////</span></p><p style='font-weight: normal;'>让<span style='font-family:'DejaVu Serif', serif;'>larbin</span>爬虫做什么</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>FOLLOW_LINKS:</span>根据本网页上的链接抓取其他更多的网页<span style='font-family:'DejaVu Serif', serif;'>,</span>这个似乎是必须的<span style='font-family:'DejaVu Serif', serif;'>,</span>否则<span style='font-family:'DejaVu Serif', serif;'>larbin</span>只抓取你输入的网页<span style='font-family:'DejaVu Serif', serif;'>,</span>那就没什么意义了<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>LINKS_INFO:</span>关联网页的链接信息<span style='font-family:'DejaVu Serif', serif;'>.</span>这样你就可以建立起网页间的父子关系<span style='font-family:'DejaVu Serif', serif;'>,</span>可以使用<span style='font-family:'DejaVu Serif', serif;'>page-&gt;getLinks()</span>函数<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>NO_DUP:</span>当一个页面上次出错时<span style='font-family:'DejaVu Serif', serif;'>,</span>这次抓取它直接返回错误<span style='font-family:'DejaVu Serif', serif;'>,</span>不做新的努力或尝试<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>URL_TAGS:</span>在输入系统里面要输入一个数字和一个<span style='font-family:'DejaVu Serif', serif;'>URL,</span>而不再是一个单独的<span style='font-family:'DejaVu Serif', serif;'>URL,</span>这样当你抓取到这个页面的时候就可以通过这个数字来等到这个页面<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>EXIT_AT_END:</span>没有额外的<span style='font-family:'DejaVu Serif', serif;'>URL</span>需要抓取时<span style='font-family:'DejaVu Serif', serif;'>larbin</span>自动停止<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>IMAGES:</span>当你想抓取图片的时候<span style='font-family:'DejaVu Serif', serif;'>,</span>注意在<span style='font-family:'DejaVu Serif', serif;'>larbin.conf</span>里面<span style='font-family:'DejaVu Serif', serif;'>forbiddenExtensions</span>的把<span style='font-family:'DejaVu Serif', serif;'>.jpg .png</span>等都去掉<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>ANYTYPE:</span>如果你想抓取类型的文件<span style='font-family:'DejaVu Serif', serif;'>,</span>那<span style='font-family:'DejaVu Serif', serif;'>larbin.conf</span>里面<span style='font-family:'DejaVu Serif', serif;'>forbiddenExtensions</span>就应该为空<span style='font-family:'DejaVu Serif', serif;'>.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>COOKIES:</span>管理<span style='font-family:'DejaVu Serif', serif;'>cookies.</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>/////////////////////////////////</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>CGILEVEL&nbsp;</span>是否获得<span style='font-family:'DejaVu Serif', serif;'>CGI</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>MAXBANDWIDTH larbin</span>使用的带宽</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>DEPTHBYSITE </span>进入新的<span style='font-family:'DejaVu Serif', serif;'>URL</span>时是否初始化深度</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>/////////////////////////////////</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>THREAD_OUTPUT </span>是否为输出开辟新的线程</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>RELOAD </span>重启时从上次停止的位置继续</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>/////////////////////////////////</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>NOWEBSERVER </span>不加载<span style='font-family:'DejaVu Serif', serif;'>webserver,</span>当你不想加载任何线程的时候这项是有用的</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>GRAPH </span>在实时的状态报告页面中显示直方图</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>NDEBUG </span>屏蔽<span style='font-family:'DejaVu Serif', serif;'>debug</span>信息</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>NOSTATS </span>在<span style='font-family:'DejaVu Serif', serif;'>webserver</span>中不显示状态信息</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>STATS </span>在标准输出中每<span style='font-family:'DejaVu Serif', serif;'>8</span>秒显示一次状态</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>BIGSTATS </span>在标准输出中显示<span style='font-family:'DejaVu Serif', serif;'>larbin</span>抓取到的页面名称<span style='font-family:'DejaVu Serif', serif;'>,</span>这样会严重影响速度</p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>CRASH </span>报告严重的<span style='font-family:'DejaVu Serif', serif;'>bug</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'>/////////////////////////////////</span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'><br></span></p><p style='font-weight: normal;'><span style='font-family:'DejaVu Serif', serif;'><b>types.h</b></span></p><p style='font-weight: normal;'>如果你想更细致地调节<span style='font-family:'DejaVu Serif', serif;'>larbin</span>请更改这个文件<span style='font-family:'DejaVu Serif', serif;'>,</span>当然要使更改生效<span style='font-family:'DejaVu Serif', serif;'>,</span>需要重新编译<span style='font-family:'DejaVu Serif', serif;'>larbin.</span></p><p style='font-weight: normal;'><span style='font-family:arial, helvetica, sans-serif;'>比如这里面定义了输出文件放在哪个路径下,index文件用什么文件名,输入系统中最多允许有几个输入连接等.</span></p></h2>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-323.html">解密搜索引擎技术之爬虫Larbin</a>
+				|
+				 <a href="http://onelose.com/post-342.html">Chrome扩展及应用开发</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="329" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-309.html">给你印象最深的一道面试题是什么？-七月问答─面试·算法·机器学习快速问答平台</a></li>
+		<li><a href="http://onelose.com/post-305.html">在webapp中判断nativeapp是否安装并直接打开</a></li>
+		<li><a href="http://onelose.com/post-257.html">PHP扩展编写点滴技巧收集</a></li>
+		<li><a href="http://onelose.com/post-12.html">如何ping网站</a></li>
+		<li><a href="http://onelose.com/post-289.html">PHPCURL直接設定Cookie帶入</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

@@ -1,0 +1,2301 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>sphinx全文检索之PHP使用教程</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="数据结构：" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>sphinx全文检索之PHP使用教程</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-2-26 15:35 Wednesday 
+		 	</p>
+	<h1 style="text-indent:2em;">
+	<span style="font-size:12px;font-weight:normal;line-height:1.5;">数据结构：</span>
+</h1>
+<div style="padding:0px;margin:0px;">
+<pre>	CREATE TABLE email (
+emailid mediumint(8) unsigned NOT NULL auto_increment COMMENT '邮件id',
+
+fromid int(10) unsigned NOT NULL default '0' COMMENT '发送人ID',
+
+toid int(10) unsigned NOT NULL default '0' COMMENT '收件人ID',
+content text unsigned NOT NULL COMMENT '邮件内容',
+subject varchar(100) unsigned NOT NULL COMMENT '邮件标题',
+
+sendtime int(10) NOT NULL COMMENT '发送时间',
+
+attachment varchar(100) NOT NULL COMMENT '附件ID，以逗号分割', PRIMARY KEY (emailid),
+) ENGINE=MyISAM';</pre>
+</div>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<p style="text-indent:2em;">
+	使用打开控制台，必需打开控制台PHP才能连接到sphinx（确保你已经建立好索引源）：
+</p>
+<p style="text-indent:2em;">
+	d:\coreseek\bin\searchd&nbsp;-c&nbsp;d:\coreseek\bin\sphinx.conf
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<p style="text-indent:2em;">
+	coreseek/api目录下提供了PHP的接口文件&nbsp;sphinxapi.php，这个文件包含一个SphinxClient的类
+</p>
+<p style="text-indent:2em;">
+	在PHP引入这个文件，new一下
+</p>
+<div id="highlighter_971303" style="padding:0px;margin:0px;">
+	<div style="padding:0px;margin:0px;">
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							01
+						</td>
+						<td>
+							$sphinx&nbsp;=&nbsp;new&nbsp;SphinxClient();
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							02
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							03
+						</td>
+						<td>
+							//sphinx的主机名和端口
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							04
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							05
+						</td>
+						<td>
+							$sphinx-&gt;SetServer (&nbsp;'loclahost', 9312 );
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							06
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							07
+						</td>
+						<td>
+							//设置返回结果集为php数组格式
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							08
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							09
+						</td>
+						<td>
+							$sphinx-&gt;SetArrayResult ( true );
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							10
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							11
+						</td>
+						<td>
+							//匹配结果的偏移量，参数的意义依次为：起始位置，返回结果条数，最大匹配条数
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							12
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							13
+						</td>
+						<td>
+							$sphinx-&gt;SetLimits(0, 20, 1000);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							14
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							15
+						</td>
+						<td>
+							//最大搜索时间
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							16
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							17
+						</td>
+						<td>
+							$sphinx-&gt;SetMaxQueryTime(10);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							18
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							19
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							20
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							21
+						</td>
+						<td>
+							//执行简单的搜索，这个搜索将会查询所有字段的信息，要查询指定的字段请继续看下文
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							22
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							23
+						</td>
+						<td>
+							$index&nbsp;=&nbsp;'email'&nbsp;//索引源是配置文件中的 index 类，如果有多个索引源可使用,号隔开：'email,diary' 或者使用'*'号代表全部索引源
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							24
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							25
+						</td>
+						<td>
+							$result&nbsp;=&nbsp;$sphinx-&gt;query ('搜索关键字',&nbsp;$index);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							26
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							27
+						</td>
+						<td>
+							echo&nbsp;'&lt;pre&gt;';
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							28
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							29
+						</td>
+						<td>
+							print_r($result);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							30
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							31
+						</td>
+						<td>
+							echo&nbsp;'&lt;/pre&gt;';
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<p style="text-indent:2em;">
+	$result是一个数组，其中
+</p>
+<p style="text-indent:2em;">
+	total是匹配到的数据总数量
+</p>
+<p style="text-indent:2em;">
+	matches是匹配的数据，包含id，attrs这些信息
+</p>
+<p style="text-indent:2em;">
+	words是搜索关键字的分词
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<p style="text-indent:2em;">
+	你可能奇怪为什么没有邮件的内容这些信息，其实sphinx并不会返回像mysql那样的数据数组，因为sphinx本来就没有记录完整的数据，只记录被分词后的数据。
+</p>
+<p style="text-indent:2em;">
+	具体还要看matches数组，matches中的ID就是指配置文件中sql_query&nbsp;SELECT语句中的第一个字段，我们配置文件中是这样的
+</p>
+<p style="text-indent:2em;">
+	sql_query&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;SELECT&nbsp;emailid,fromid,toid,subject,content,sendtime,attachement&nbsp;FROM&nbsp;email
+</p>
+<p style="text-indent:2em;">
+	所以matches中的ID是指emailid
+</p>
+<p style="text-indent:2em;">
+	至于weight是指匹配的权重，一般权重越高被返回的优先度也最高，匹配权重相关内容请参考官方文档
+</p>
+<p style="text-indent:2em;">
+	attrs是配置文件中sql_attr_&nbsp;&nbsp;&nbsp;&nbsp;中的信息，稍后会提到这些属性的用法
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<p style="text-indent:2em;">
+	说了这么多，即使搜索到结果也不是我们想要的email数据，但事实sphinx是不记录真实数据的，所以要获取到真实email数据还要根据matches中的ID去搜索mysql的email表，但总体来说这样一来一回的速度还是远远比mysql的LIKE快得多，前提是几十万数据量以上，否则用sphinx只会更慢。
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<p style="text-indent:2em;">
+	接下来介绍sphinx一些类似mysql条件的用法
+</p>
+<div id="highlighter_622733" style="padding:0px;margin:0px;">
+	<div style="padding:0px;margin:0px;">
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							01
+						</td>
+						<td>
+							//emailid的范围
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							02
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							03
+						</td>
+						<td>
+							$sphinx-&gt;SetIdRange($min,&nbsp;$max);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							04
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							05
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							06
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							07
+						</td>
+						<td>
+							//属性过滤，可过滤的属性必需在配置文件中设置sql_attr_&nbsp;&nbsp;&nbsp; ，之前我们定义了这些
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							08
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							09
+						</td>
+						<td>
+							&nbsp;&nbsp;&nbsp;&nbsp;sql_attr_uint&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = fromid
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							10
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							11
+						</td>
+						<td>
+							&nbsp;&nbsp;&nbsp;&nbsp;sql_attr_uint&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = toid
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							12
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							13
+						</td>
+						<td>
+							&nbsp;&nbsp;&nbsp;&nbsp;sql_attr_timestamp&nbsp; = sendtime
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							14
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							15
+						</td>
+						<td>
+							//如果你想再次修改这些属性，配置完成后记得重新建立索引才能生效
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							16
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							17
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							18
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							19
+						</td>
+						<td>
+							//指定一些值
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							20
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							21
+						</td>
+						<td>
+							$sphinx-&gt;SetFilter('fromid',&nbsp;array(1,2));&nbsp;&nbsp;&nbsp;&nbsp;//fromid的值只能是1或者2
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							22
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							23
+						</td>
+						<td>
+							//和以上条件相反，可增加第三个参数
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							24
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							25
+						</td>
+						<td>
+							$sphinx-&gt;SetFilter('fromid',&nbsp;array(1,2), false);&nbsp;&nbsp;&nbsp;&nbsp;//fromid的值不能是1或者2
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							26
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							27
+						</td>
+						<td>
+							//指定一个值的范围
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							28
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							29
+						</td>
+						<td>
+							$sphinx-&gt;SetFilterRange('toid', 5, 200);&nbsp;&nbsp;&nbsp;&nbsp;//toid的值在5-200之间
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							30
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							31
+						</td>
+						<td>
+							//和以上条件相反，可增加第三个参数
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							32
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							33
+						</td>
+						<td>
+							$sphinx-&gt;SetFilterRange('toid', 5, 200, false);&nbsp;&nbsp;&nbsp;&nbsp;//toid的值在5-200以外
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							34
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							35
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							36
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							37
+						</td>
+						<td>
+							//执行搜索
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							38
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							39
+						</td>
+						<td>
+							$result&nbsp;=&nbsp;$sphinx-&gt;query('关键字',&nbsp;'*');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<h1 style="text-indent:2em;">
+	排序模式
+</h1>
+<p style="text-indent:2em;">
+	可使用如下模式对搜索结果排序：
+</p>
+<p style="text-indent:2em;">
+	SPH_SORT_RELEVANCE&nbsp;模式,&nbsp;按相关度降序排列（最好的匹配排在最前面）
+</p>
+<p style="text-indent:2em;">
+	SPH_SORT_ATTR_DESC&nbsp;模式,&nbsp;按属性降序排列&nbsp;（属性值越大的越是排在前面）
+</p>
+<p style="text-indent:2em;">
+	SPH_SORT_ATTR_ASC&nbsp;模式,&nbsp;按属性升序排列（属性值越小的越是排在前面）
+</p>
+<p style="text-indent:2em;">
+	SPH_SORT_TIME_SEGMENTS&nbsp;模式,&nbsp;先按时间段（最近一小时/天/周/月）降序，再按相关度降序
+</p>
+<p style="text-indent:2em;">
+	SPH_SORT_EXTENDED&nbsp;模式,&nbsp;按一种类似SQL的方式将列组合起来，升序或降序排列。
+</p>
+<p style="text-indent:2em;">
+	SPH_SORT_EXPR&nbsp;模式，按某个算术表达式排序
+</p>
+<div id="highlighter_805504" style="padding:0px;margin:0px;">
+	<div style="padding:0px;margin:0px;">
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							01
+						</td>
+						<td>
+							//使用属性排序
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							02
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							03
+						</td>
+						<td>
+							//以fromid倒序排序，注意当再次使用SetSortMode会覆盖上一个排序
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							04
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							05
+						</td>
+						<td>
+							$sphinx-&gt;SetSortMode (&nbsp;"SPH_SORT_ATTR_DESC",&nbsp;'fromid');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							06
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							07
+						</td>
+						<td>
+							//如果要使用多个字段排序可使用SPH_SORT_EXTENDED模式
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							08
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							09
+						</td>
+						<td>
+							//@id是sphinx内置关键字，这里指emailid，至于为什么是emailid，自己思考一下
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							10
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							11
+						</td>
+						<td>
+							$sphinx-&gt;SetSortMode (&nbsp;"SPH_SORT_ATTR_DESC",&nbsp;'fromid ASC, toid DESC, @id DESC');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							12
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							13
+						</td>
+						<td>
+							//执行搜索
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							14
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							15
+						</td>
+						<td>
+							$result&nbsp;=&nbsp;$sphinx-&gt;query('关键字',&nbsp;'*');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							16
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							17
+						</td>
+						<td>
+							//更多请查看官方文档排序模式的说明
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<h1 style="text-indent:2em;">
+	匹配模式
+</h1>
+<p style="text-indent:2em;">
+	有如下可选的匹配模式：
+</p>
+<p style="text-indent:2em;">
+	SPH_MATCH_ALL,&nbsp;匹配所有查询词(默认模式);
+</p>
+<p style="text-indent:2em;">
+	SPH_MATCH_ANY,&nbsp;匹配查询词中的任意一个;
+</p>
+<p style="text-indent:2em;">
+	SPH_MATCH_PHRASE,&nbsp;将整个查询看作一个词组，要求按顺序完整匹配;
+</p>
+<p style="text-indent:2em;">
+	SPH_MATCH_BOOLEAN,&nbsp;将查询看作一个布尔表达式&nbsp;
+</p>
+<p style="text-indent:2em;">
+	SPH_MATCH_EXTENDED,&nbsp;将查询看作一个CoreSeek/Sphinx内部查询语言的表达式&nbsp;.&nbsp;从版本Coreseek&nbsp;3/Sphinx&nbsp;0.9.9开始,&nbsp;这个选项被选项SPH_MATCH_EXTENDED2代替，它提供了更多功能和更佳的性能。保留这个选项是为了与遗留的旧代码兼容——这样即使Sphinx及其组件包括API升级的时候，旧的应用程序代码还能够继续工作。
+</p>
+<p style="text-indent:2em;">
+	SPH_MATCH_EXTENDED2,&nbsp;使用第二版的“扩展匹配模式”对查询进行匹配.
+</p>
+<p style="text-indent:2em;">
+	SPH_MATCH_FULLSCAN,&nbsp;强制使用下文所述的“完整扫描”模式来对查询进行匹配。注意，在此模式下，所有的查询词都被忽略，尽管过滤器、过滤器范围以及分组仍然起作用，但任何文本匹配都不会发生.
+</p>
+<p style="text-indent:2em;">
+	我们要关注的主要是SPH_MATCH_EXTENDED2扩展匹配模式，扩展匹配模式允许使用一些像mysql的条件语句
+</p>
+<div id="highlighter_698366" style="padding:0px;margin:0px;">
+	<div style="padding:0px;margin:0px;">
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							01
+						</td>
+						<td>
+							//设置扩展匹配模式
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							02
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							03
+						</td>
+						<td>
+							$sphinx-&gt;SetMatchMode (&nbsp;"SPH_MATCH_EXTENDED2"&nbsp;);
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							04
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							05
+						</td>
+						<td>
+							//查询中使用条件语句，字段用@开头，搜索内容包含测试，toid等于1的邮件：
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							06
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							07
+						</td>
+						<td>
+							$result&nbsp;=&nbsp;$sphinx-&gt;query('@content (测试) &amp; @toid =1',&nbsp;'*');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							08
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							09
+						</td>
+						<td>
+							//用括号和&amp;（与）、|、（或者）、-（非，即!=）设置更复杂的条件
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							10
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							11
+						</td>
+						<td>
+							$result&nbsp;=&nbsp;$sphinx-&gt;query('(@content (测试) &amp; @subject =呃) | (@fromid -(100))',&nbsp;'*');
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							12
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							13
+						</td>
+						<td>
+							//更多语法请查看官方文档匹配模式的说明
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<p style="text-indent:2em;">
+	扩展匹配模式中值得一提的是搜索的字段，如果该字段被设置属性，那么扩展匹配搜索的字段默认是不包含这些属性的，只能用SetFilter()或者SetFilterRange()之类
+</p>
+<p style="text-indent:2em;">
+	之前我们设置了fromid、toid、sendtime为属性，但又想在扩展匹配模式中又想用作条件该怎么办？
+</p>
+<p style="text-indent:2em;">
+	只要在sql_query语句中再选择多一次该字段就可以了
+</p>
+<p style="text-indent:2em;">
+	sql_query&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;SELECT&nbsp;emailid,fromid,fromid,toid,toid,subject,content,sendtime,sendtime,attachement&nbsp;FROM&nbsp;email
+</p>
+<p style="text-indent:2em;">
+	//设置完成记得重新建立索引
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<h1 style="text-indent:2em;">
+	更多条件技巧
+</h1>
+<p style="text-indent:2em;">
+	只是一些技巧，但不建议使用的部署环境中，至于为什么，请看文章结尾
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<h2 style="text-indent:2em;">
+	&lt;、&lt;=、&gt;、&gt;=
+</h2>
+<p style="text-indent:2em;">
+	默认sphinx没有这些比较符。
+</p>
+<p style="text-indent:2em;">
+	假如我想邮件的发送时间大于某一日期怎么办？用SetFilterRange()方法模拟一下
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<div id="highlighter_958806" style="padding:0px;margin:0px;">
+	<div style="padding:0px;margin:0px;">
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							01
+						</td>
+						<td>
+							//大于等于某一时间截$time
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							02
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							03
+						</td>
+						<td>
+							$sphinx-&gt;SetFilterRange('sendtime',&nbsp;$time, 10000000000)&nbsp;//时间截最大是10个9，再加1是不可超越了。。
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							04
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							05
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							06
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							07
+						</td>
+						<td>
+							//大于某一时间截$time
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							08
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							09
+						</td>
+						<td>
+							$sphinx-&gt;SetFilterRange('sendtime',&nbsp;$time+1, 10000000000)
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							10
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							11
+						</td>
+						<td>
+							//小于等于某一时间截$time
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							12
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							13
+						</td>
+						<td>
+							$sphinx-&gt;SetFilterRange('sendtime', -1,&nbsp;$time)&nbsp;&nbsp;&nbsp;&nbsp;//时间截最小是0，所以应该减1
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							14
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							15
+						</td>
+						<td>
+							//大于某一时间截$time
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							16
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							17
+						</td>
+						<td>
+							$sphinx-&gt;SetFilterRange('sendtime', -1,&nbsp;$time&nbsp;- 1)
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<h2 style="text-indent:2em;">
+	IS&nbsp;NOT&nbsp;NULL
+</h2>
+<p style="text-indent:2em;">
+	怎样搜索为空的字段，比如我要搜索附件为空的邮件，有人可能会想&nbsp;@attachment&nbsp;('')不就可以了吗？其实这是搜索两个单引号。。。sphinx搜索的字符串不用加引号的
+</p>
+<p style="text-indent:2em;">
+	目前sphinx是没有提供这样的功能，其实可以在mysql语句上作手脚：
+</p>
+<p style="text-indent:2em;">
+	sql_query&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;SELECT&nbsp;emailid,fromid,toidsubject,content,sendtime,attachement&nbsp;!=&nbsp;''&nbsp;as&nbsp;attach is not null&nbsp;FROM&nbsp;email&nbsp;//这里返回了一个新字段attachisnotnull，当attachisnotnull为1的时候附件就不为空了
+</p>
+<p style="text-indent:2em;">
+	//设置完成记得重新建立索引
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<h2 style="text-indent:2em;">
+	FIND_IN_SET()
+</h2>
+<p style="text-indent:2em;">
+	搜索包含某一附件的邮件，mysql习惯用FIND_IN_SET这么简单一句就搞定了，在sphinx中必需在配置里设置属性sql_attr_multi&nbsp;多值属性（MVA）：
+</p>
+<p style="text-indent:2em;">
+	sql_attr_multi&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;attachment&nbsp;&nbsp;&nbsp;&nbsp;#attachment可以是逗号分隔的附件ID，或者是空格、分号等sphinx都能识别
+</p>
+<p style="text-indent:2em;">
+	//设置完成记得重新建立索引
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<p style="text-indent:2em;">
+	然后PHP中可以使用SetFilter()
+</p>
+<div id="highlighter_132407" style="padding:0px;margin:0px;">
+	<div style="padding:0px;margin:0px;">
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							1
+						</td>
+						<td>
+							//搜索包含附件ID为1或2邮件，mysql语法是这样FIND_IN_SET(`attachment`, '1,2')
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							2
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							3
+						</td>
+						<td>
+							$sphinx-&gt;SetFilter('attachment',&nbsp;array(1,2))
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							4
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							5
+						</td>
+						<td>
+							//可以使用SetFilterRange，搜索包含附件ID在50-100范围的邮件
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							6
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div style="padding:0px;margin:0px;">
+			<table style="padding:0px;margin:0px;">
+				<tbody>
+					<tr>
+						<td>
+							7
+						</td>
+						<td>
+							$sphinx-&gt;SetFilterRange('attachment', 50, 100)
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<p style="text-indent:2em;">
+	<br />
+</p>
+<h1 style="text-indent:2em;">
+	总结
+</h1>
+<p style="text-indent:2em;">
+	如果你想一个免费、好用、极速的全文搜索引擎，sphinx无疑是最好的选择，但是不要忘记sphinx的目的：全文检索。不要去想那些乱七八糟条件。你想要把sphinx搜索变得像mysql那样灵活，可完全单独用在一些复杂的多条件搜索，像某些邮件的高级搜索，那么我建议你还是多花点时间在PHP或者mysql代码的优化上，因为那样可能会让你的搜索变得更慢。
+</p>
+<p style="text-indent:2em;">
+	最好的方法是以最简单的方法搜索到内容，将ID交还mysql数据库搜索。
+</p>	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-551.html">修改MySQL默认数据库存放路径</a>
+				|
+				 <a href="http://onelose.com/post-195.html">sphinx搜索字段权重设置</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="196" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-244.html">十分钟搞清字符集和字符编码</a></li>
+		<li><a href="http://onelose.com/post-253.html">一、pkg-config简介</a></li>
+		<li><a href="http://onelose.com/post-361.html">./configure--with-php-config=/www/wdlinux/php/bin/</a></li>
+		<li><a href="http://onelose.com/post-435.html">gravatar</a></li>
+		<li><a href="http://onelose.com/post-243.html">MySQL如何利用索引优化ORDERBY排序语句</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

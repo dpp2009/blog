@@ -1,0 +1,441 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Memcache及telnent命令详解</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>Memcache及telnent命令详解</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-11-21 7:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><strong><span style='color: rgb(255, 0, 0);'>1、启动Memcache 常用参数</span></strong><br>memcached 1.4.3<br>-p &lt;num&gt;&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;设置端口号(默认不设置为: 11211)<br>-U &lt;num&gt;&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;UDP监听端口 (默认: 11211, 0 时关闭) &nbsp;<wbr><br>-l &lt;ip_addr&gt;&nbsp;<wbr>&nbsp;绑定地址 (默认:所有都允许,无论内外网或者本机更换IP，有安全隐患，若设置为127.0.0.1就只能本机访问)<br>-d&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;duli进程运行<br>-u &lt;username&gt; 绑定使用指定用于运行进程 &lt;username&gt;<br>-m &lt;num&gt;&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;允许最大内存用量，单位M (默认: 64 MB)<br>-P &lt;file&gt;&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;<wbr>&nbsp;将PID写入文件&lt;file&gt;，这样可以使得后边进行快速进程终止, 需要与 -d 一起使用<br>如：<br>在linux下：./usr/local/bin/memcached -d -u jb-mc -l 192.168.1.197 -m 2048 -p 12121<br>在window下：d:\App_Serv\memcached\memcached.exe -d RunService -l 127.0.0.1 -p 11211 -m 500<br>在windows下注册为服务后运行：<br>sc.exe create jb-Memcached binpath= “d:\App_Serv\memcached\memcached.exe -d RunService -p 11211 -m 500″ start= auto<br>net start jb-Memcached</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><span style='color: rgb(255, 0, 0);'><strong>2、telnet连接</strong></span></p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>telnet 127.0.0.1 11211<br></p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><strong><span style='color: rgb(255, 0, 0);'>3、写入memcache</span></strong></p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><span style='font-size:12px;'><strong>3.1 memcached Telnet Interface</strong><br><br></span></p> 
+ <table border='1' cellpadding='2' cellspacing='0' style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Verdana; font-size: 11pt;'> 
+  <tbody> 
+   <tr> 
+    <th>Command</th> 
+    <th>Description</th> 
+    <th>Example</th> 
+   </tr> 
+   <tr> 
+    <td>get</td> 
+    <td>Reads a value</td> 
+    <td>get mykey</td> 
+   </tr> 
+   <tr> 
+    <td>set</td> 
+    <td>Set a key unconditionally</td> 
+    <td>set mykey 0 60 5</td> 
+   </tr> 
+   <tr> 
+    <td>add</td> 
+    <td>Add a new key</td> 
+    <td>add newkey 0 60 5</td> 
+   </tr> 
+   <tr> 
+    <td style='height: 28px;'>replace</td> 
+    <td style='height: 28px;'>Overwrite existing key</td> 
+    <td style='height: 28px;'>replace key 0 60 5</td> 
+   </tr> 
+   <tr> 
+    <td>append</td> 
+    <td>Append data to existing key</td> 
+    <td>append key 0 60 15</td> 
+   </tr> 
+   <tr> 
+    <td>prepend</td> 
+    <td>Prepend data to existing key</td> 
+    <td>prepend key 0 60 15</td> 
+   </tr> 
+   <tr> 
+    <td>incr</td> 
+    <td>Increments numerical key value by given number</td> 
+    <td>incr mykey 2</td> 
+   </tr> 
+   <tr> 
+    <td>decr</td> 
+    <td>Decrements numerical key value by given number</td> 
+    <td>decr mykey 5</td> 
+   </tr> 
+   <tr> 
+    <td style='height: 28px;'>delete</td> 
+    <td style='height: 28px;'>Deletes an existing key</td> 
+    <td style='height: 28px;'>delete mykey</td> 
+   </tr> 
+   <tr> 
+    <td rowspan='2'>flush_all</td> 
+    <td>Invalidate specific items immediately</td> 
+    <td>flush_all</td> 
+   </tr> 
+   <tr> 
+    <td>Invalidate all items in n seconds</td> 
+    <td>flush_all 900</td> 
+   </tr> 
+   <tr> 
+    <td rowspan='7'>stats</td> 
+    <td>Prints general statistics</td> 
+    <td>stats</td> 
+   </tr> 
+   <tr> 
+    <td style='height: 30px;'>Prints memory statistics</td> 
+    <td style='height: 30px;'>stats slabs</td> 
+   </tr> 
+   <tr> 
+    <td>Prints memory statistics</td> 
+    <td>stats malloc</td> 
+   </tr> 
+   <tr> 
+    <td style='height: 26px;'>Print higher level allocation statistics</td> 
+    <td style='height: 26px;'>stats items</td> 
+   </tr> 
+   <tr> 
+    <td> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td>stats detail</td> 
+   </tr> 
+   <tr> 
+    <td style='height: 26px;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='height: 26px;'>stats sizes</td> 
+   </tr> 
+   <tr> 
+    <td>Resets statistics</td> 
+    <td>stats reset</td> 
+   </tr> 
+   <tr> 
+    <td>version</td> 
+    <td>Prints server version.</td> 
+    <td>version</td> 
+   </tr> 
+   <tr> 
+    <td>verbosity</td> 
+    <td>Increases log level</td> 
+    <td>verbosity</td> 
+   </tr> 
+   <tr> 
+    <td>quit</td> 
+    <td>Terminate telnet session</td> 
+    <td>quit</td> 
+   </tr> 
+  </tbody> 
+ </table> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><br></p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><strong>3.2 telnet请求命令格式</strong></p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><span style='color:rgb(0, 0, 255);'>&lt;command name&gt; &lt;key&gt; &lt;flags&gt; &lt;exptime&gt; &lt;bytes&gt;\r\n &lt;data block&gt;\r\n</span><br><span style='color:rgb(255, 0, 0);'>a) &lt;command name&gt; 可以是”set”, “add”, “replace”</span>。<br>“set”表示按照相应的&lt;key&gt;存储该数据，没有的时候增加，有的覆盖。<br>“add”表示按照相应的&lt;key&gt;添加该数据,但是如果该&lt;key&gt;已经存在则会操作失败。<br>“replace”表示按照相应的&lt;key&gt;替换数据,但是如果该&lt;key&gt;不存在则操作失败</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>b) &lt;key&gt; 客户端需要保存数据的key。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>c) &lt;flags&gt; 是一个16位的无符号的整数(以十进制的方式表示)。<br>该标志将和需要存储的数据一起存储,并在客户端get数据时返回。<br>客户可以将此标志用做特殊用途，此标志对服务器来说是不透明的。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><span style='color:rgb(255, 0, 0);'>d) &lt;exptime&gt; 过期的时间。</span><br>若为0表示存储的数据永远不过时(但可被服务器算法：LRU 等替换)。<br>如果非0(unix时间或者距离此时的秒数),当过期后,服务器可以保证用户得不到该数据(以服务器时间为标准)。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>e) &lt;bytes&gt; 需要存储的字节数(不包含最后的”\r\n”),当用户希望存储空数据时,&lt;bytes&gt;可以为0</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><span style='color:rgb(255, 0, 0);'>f) 最后客户端需要加上”\r\n”作为”命令头”的结束标志。</span><br>&lt;data block&gt;\r\n</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>紧接着”命令头”结束之后就要发送数据块(即希望存储的数据内容),最后加上”\r\n”作为此次通讯的结束。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><strong>3.3 telnet响应命令</strong></p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>结果响应：reply<br>当以上数据发送结束之后,服务器将返回一个应答。可能有如下的情况:</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>a) “STORED\r\n”：表示存储成功<br>b) “NOT_STORED\r\n” ： 表示存储失败,但是该失败不是由于错误。<br>通常这是由于”add”或者”replace”命令本身的要求所引起的,或者该项在删除队列之中。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>如： set key 33 0 4\r\n<br>ffff\r\n</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><span style='color: rgb(255, 0, 0);'><strong>4、获取/检查KeyValue</strong></span><br>get &lt;key&gt;*\r\n<br>a) &lt;key&gt;* 表示一个或者多个key(以空格分开)<br>b) “\r\n” 命令头的结束</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>结果响应：reply<br>服务器端将返回0个或者多个的数据项。每个数据项都是由一个文本行和一个数据块组成。当所有的数据项都接收完毕将收到”END\r\n”<br>每一项的数据结构：<br>VALUE &lt;key&gt; &lt;flags&gt; &lt;bytes&gt;\r\n<br>&lt;data block&gt;\r\n</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>a) &lt;key&gt; 希望得到存储数据的key<br>b) &lt;falg&gt; 发送set命令时设置的标志项<br>c) &lt;bytes&gt; 发送数据块的长度(不包含”\r\n”)<br>d) “\r\n” 文本行的结束标志<br>e) &lt;data block&gt; 希望接收的数据项。<br>f) “\r\n” 接收一个数据项的结束标志。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>如果有些key出现在get命令行中但是没有返回相应的数据，这意味着服务器中不存在这些项，这些项过时了，或者被删除了<br>如：get aa<br>VALUE aa 33 4<br>ffff<br>END</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><strong><span style='color: rgb(255, 0, 0);'>5、删除KeyValue：</span></strong><br>delete &lt;key&gt; &lt;time&gt;\r\n</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>a) &lt;key&gt; 需要被删除数据的key<br>b) &lt;time&gt; 客户端希望服务器将该数据删除的时间(unix时间或者从现在开始的秒数)<br>c) “\r\n” 命令头的结束</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><span style='color: rgb(255, 0, 0);'><strong>6、检查Memcache服务器状态：</strong></span><br>stats\r\n<br>在这里可以看到memcache的获取次数，当前连接数，写入次数，已经命中率等；</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>pid ： 进程id<br>uptime ：总的运行时间，秒数<br>time ： 当前时间<br>version ： 版本号<br>……<br>curr_items ： 当前缓存中的KeyValue数量<br>total_items ： 曾经总共经过缓存的KeyValue数量<br>bytes ： 所有的缓存使用的内存量<br>curr_connections 当前连接数<br>….<br>cmd_get ： 总获取次数<br>cmd_set ： 总的写入次数<br>get_hits ： 总的命中次数<br>miss_hits :&nbsp;<wbr>&nbsp;获取失败次数<br>…..<br>bytes_read ： 总共读取的流量字节数<br>bytes_written ： 总的写入流量字节<br>limit_maxbytes ： 最大允许使用的内存量，字节</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><span style='color: rgb(255, 0, 0);'><strong>7、高级缓存细节查看方法：</strong></span><br>stats reset<br>清空统计数据</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>stats malloc<br>显示内存分配数据</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>stats cachedump slab_id limit_num<br>显示某个slab中的前limit_num个key列表，显示格式如下<br>ITEM key_name [ value_length b; expire_time|access_time s]<br>其中，memcached 1.2.2及以前版本显示的是&nbsp;<wbr>&nbsp;访问时间(timestamp)<br>1.2.4以上版本，包括1.2.4显示 过期时间(timestamp)<br>如果是永不过期的key，expire_time会显示为服务器启动的时间</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>stats cachedump 7 2<br>ITEM copy_test1 [250 b; 1207795754 s]<br>ITEM copy_test [248 b; 1207793649 s]</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>stats slabs<br>显示各个slab的信息，包括chunk的大小、数目、使用情况等</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>stats items<br>显示各个slab中item的数目和最老item的年龄(最后一次访问距离现在的秒数)</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>stats detail [on|off|dump]<br>设置或者显示详细操作记录&nbsp;<span style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial; font-size: 22px; font-style: normal; font-weight: normal; line-height: 1.5;'>stats detail on</span></p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>参数为on，打开详细操作记录<br>参数为off，关闭详细操作记录<br>参数为dump，显示详细操作记录(每一个键值get、set、hit、del的次数)</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><span style='color: rgb(255, 0, 0);'><strong>8、清空所有键值</strong></span><br>flush_all<br>注：flush并不会将items删除，只是将所有的items标记为expired，因此这时memcache依旧占用所有内存。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'><span style='color: rgb(255, 0, 0);'><strong>9、退出</strong></span><br>quit\r\n</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(54, 46, 43); font-family: Arial;'>&nbsp;</p> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-445.html">windows下编译php扩展memcache</a>
+				|
+				 <a href="http://onelose.com/post-452.html">判断是否是微信</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="397" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-315.html">一个页面多个id的情况，js怎么处理</a></li>
+		<li><a href="http://onelose.com/post-126.html">做了个站长工具网站</a></li>
+		<li><a href="http://onelose.com/post-172.html">笔记3</a></li>
+		<li><a href="http://onelose.com/post-256.html">PHP源码分析-变量的存储方式</a></li>
+		<li><a href="http://onelose.com/post-345.html">Linux的计划任务</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

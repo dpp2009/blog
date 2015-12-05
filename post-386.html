@@ -1,0 +1,468 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Windows下使用VS2010编译PHP5.4和YAF</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>Windows下使用VS2010编译PHP5.4和YAF</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-12-29 7:00 Monday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>需要研究<a href='http://www.laruence.com/' style='color: rgb(51, 84, 170);'>Laruence</a>维护的<a href='http://projects.laruence.com/yaf/' style='color: rgb(51, 84, 170);'>YAF</a>，而且得在Windows下学习使用。php5.4的改进和新特性吸引我在将来来临的项目中使用它，现在php5.4.1已经RC了，修正了大量<a href='https://github.com/php/php-src/blob/PHP-5.4.1/NEWS' style='color: rgb(51, 84, 170);'>bug</a>，正式版很快就会发布了。估计在项目正式使用时，更稳定可靠的php5.4.2也已经出来了。下面的编译过程，是针对php5.4分支的。下面的过程，参考官方提供的<a href='https://wiki.php.net/internals/windows/stepbystepbuild' style='color: rgb(51, 84, 170);'>编译步骤</a>。</p> 
+ <h2 style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1.28571em;'>编译PHP</h2> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>首先下载<a href='http://windows.php.net/downloads/php-sdk/' style='color: rgb(51, 84, 170);'>php-sdk</a>，先下载较新的<a href='http://windows.php.net/downloads/php-sdk/php-sdk-binary-tools-20110915.zip' style='color: rgb(51, 84, 170);'>php-sdk-binary-tools-20110915.zip</a>，解压到</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>f:\php-sdk</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>目录下。注意，解压后，这个目录下应该有bin和script子目录。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>开一个cmd窗口，切换到f:\php-sdk目录下，运行vcvarsall.bat来设置好编译环境变量。</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>d:\develop\MVS10\vc\vcvarsall.bat</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>这里vcvarsall.bat的具体目录要根据你自己的安装位置而定。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>接着，进入在cmd窗口里继续运行以下命令：</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>bin\phpsdk_setvars.bat</p> 
+  <p>bin\phpsdk_buildtree.bat php54dev</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>这样，在f:\php-sdk目录下又多了一个php54dev目录。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>接着继续在<a href='http://windows.php.net/downloads/php-sdk/' style='color: rgb(51, 84, 170);'>php-sdk</a>目录下载<a href='http://windows.php.net/downloads/php-sdk/deps-5.4-vc9-x86.7z' style='color: rgb(51, 84, 170);'>deps-5.4-vc9-x86.7z</a>，并解压到</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>f:\php-sdk\php54dev\vc9\x86\</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>目录下。原来这个目录下的deps目录下的所有子目录均是空目录，解压后，应该复制进很多必要的模块/扩展所需的库文件。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>接着获取php5.4分支下的最新代码，</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>cd f:\</p> 
+  <p>git clone https://github.com/php/php-src.git</p> 
+  <p>cd php-src</p> 
+  <p>git checkout PHP-5.4</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>将PHP-5.4目录复制一份到</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>f:\php-sdk\php54dev\vc9\x86\</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>目录下。进入php源码目录</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>cd f:\php-sdk\php54dev\vc9\x86\php-5.4</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>运行</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>buildconf</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>然后可以查看一下可配置的选项：</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>configure --help</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>然后就可以先试着编译php了。最开始，一般编译尽可能少的模块，先让核心能正常编译出来：</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>configure --disable-all --enable-cli</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>然后编译</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>nmake clean; nmake</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>稍等，php5.4最核心部分及一个命令行工具就编译出来了。nmake clean是为了避免遗留编译中间结果文件带来干扰。看看都有什么扩展模块：</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>cd Release_TS</p> 
+  <p>php -m</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>可以看到：</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>[PHP Modules]</p> 
+  <p>Core</p> 
+  <p>date</p> 
+  <p>ereg</p> 
+  <p>pcre</p> 
+  <p>Reflection</p> 
+  <p>SPL</p> 
+  <p>standard</p> 
+  <p>[Zend Modules]</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>接下来，可以慢慢地加上所需要的扩展模块。注意，编译时最好把编译结果输出到某个文件中，比如：</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>nmake &gt;log.txt</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>这样，如果编译过程中出了问题，可以查看完整的编译记录。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>我们多加点扩展模块看看：</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>configure --disable-all --enable-cli --with-tidy --with-sqlite3 --with-mcrypt=static --with-mysqlnd --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-gd --with-mhash --with-curl --with-gettext --with-iconv --enable-mbstring --enable-session</p> 
+  <p>nmake</p> 
+  <p>cd Release_TS</p> 
+  <p>php -m</p> 
+  <blockquote> 
+   <p>[PHP Modules]</p> 
+   <p>Core</p> 
+   <p>date</p> 
+   <p>ereg</p> 
+   <p>gd</p> 
+   <p>gettext</p> 
+   <p>hash</p> 
+   <p>iconv</p> 
+   <p>mbstring</p> 
+   <p>mcrypt</p> 
+   <p>mhash</p> 
+   <p>mysql</p> 
+   <p>mysqli</p> 
+   <p>mysqlnd</p> 
+   <p>pcre</p> 
+   <p>Reflection</p> 
+   <p>session</p> 
+   <p>SPL</p> 
+   <p>sqlite3</p> 
+   <p>standard</p> 
+   <p>tidy</p> 
+   <p>[Zend Modules]</p> 
+  </blockquote> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>接下来，可以根据自己的需要增加或删除扩展模块了。具体有哪些模块参数可用，可以通过</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>configure --help</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>来获取。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>如果需要把某个模块编译成动态加载，可以类似这样指定：</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>--with-sqlite3=shared</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>静态模块可以类似这样指定：</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>--with-mcrypt=static</p> 
+ </blockquote> 
+ <h2 style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1.28571em;'>编译YAF</h2> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>现在，我们可以开始进行YAF的编译了。从<a href='http://pecl.php.net/package/yaf' style='color: rgb(51, 84, 170);'>YAF</a>下载，或者直接从svn服务器上同步最新的源码：</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>svn checkout https://svn.php.net/repository/pecl/yaf/trunk/</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>把YAF的源码放到</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>f:\php-sdk\php54dev\vc9\x86\pecl\yaf</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>其实也可以放到</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>f:\php-sdk\php54dev\vc9\x86\php-5.4\ext\yaf</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>目录下。当然，上面是官方推荐用法，毕竟yaf在pecl里。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>回到php源码目录下</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>cd f:\php-sdk\php54dev\vc9\x86\php-5.4</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>运行</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>buildconf</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>然后可以查看一下可配置的选项：</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>configure --help</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>可以发现，多了一个参数选项：</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>--enable-yaf enable yaf support</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>再次配置并编译：</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>configure --disable-all --enable-cli --with-tidy --with-sqlite3 --with-mcrypt=static --with-mysqlnd --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-gd --with-mhash --with-curl --with-gettext --with-iconv --enable-mbstring --enable-session --enable-yaf</p> 
+  <p>nmake</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>注意，YAF可能对一些扩展模块和功能有依赖，如果编译出错，检查出错信息，一般加上所缺的依赖即可。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>使用 php -m 查看一下吧，就会发现YAF已经顺利编译完成。不过缺省情况下是以静态方式编译的，如果想以动态方式，即得到php_yaf.dll，可以把上面配置参数中的</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>--enable-yaf</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>改为</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>--enable-yaf=shared</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>即可。然后再nmake clean;nmake就行了。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>如果想打个包，可以运行</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>nmake snap</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>Release_TS目录下就会多几个zip包，分别是我们将需要的开发包、测试用例包和发布包。</p> 
+ <h2 style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1.28571em;'>更新</h2> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>更新源码后，需要重新编译，这就只需要开一个cmd窗口，进入php源码目录后，运行</p> 
+ <blockquote style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'> 
+  <p>d:\develop\MVS10\vc\vcvarsall.bat</p> 
+  <p>f:\php-sdk\bin\phpsdk_setvars.bat</p> 
+ </blockquote> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;'>然后再用nmake编译即可。如果参数需要调整或有新模块加入，还是要重新buildconf和configure。</p> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-379.html">1.$cd..</a>
+				|
+				 <a href="http://onelose.com/post-389.html">linux(centos)中的cron计划任务配置方法[详细]</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="386" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-248.html">mysql分组取每组前几条记录(排序)</a></li>
+		<li><a href="http://onelose.com/post-126.html">做了个站长工具网站</a></li>
+		<li><a href="http://onelose.com/post-392.html">#智汇邦执行邮箱用户导入#*/1****wgethttp://www.1000plan.com/do</a></li>
+		<li><a href="http://onelose.com/post-440.html">git撤销未提交的修改</a></li>
+		<li><a href="http://onelose.com/post-187.html">让MYSQL支持外部链接</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

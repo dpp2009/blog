@@ -1,0 +1,328 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>快速开发一个PHP扩展</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="..." />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>快速开发一个PHP扩展</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-7-14 6:00 Monday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial; font-size: 20pt;'><font color='#993300'><strong>快速开发一个PHP扩展</strong></font></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><em>作者：heiyeluren<br>时间：2008-12-5<br>博客：</em><a href='http://blog.csdn.net/heiyeshuwu' style='color:rgb(255, 153, 0);'><em>http://blog.csdn.net/heiyeshuwu</em></a></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br>本文通过非常快速的方式讲解了如何制作一个PHP 5.2 环境的扩展（PHP Extension），希望能够在图文的方式下让想快速学习的朋友了解一下制作过程。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br><strong>需求：</strong>比如开发一个叫做 heiyeluren&nbsp; 的扩展，扩展里就一个函数 heiyeluren_test()，输入一个字符串，函数返回：Your input string: xxxxx。<br><strong>要求：</strong>了解C/C++编程，熟悉PHP编程<br><strong>环境：</strong>下载一份php对应版本的源码，我这里是 php-5.2.6，先正常安装php，假设我们的php安装在 /usr/local/php 目录，源码在 /root/soft/php/php-5.2.6/，现在开始！</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br><strong style='font-size:12pt;'><font color='#993300'>步骤一：生成扩展框架</font></strong></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br><font color='#993300'>cd /root/soft/php/php-5.2.6/ext<br>./ext_skel --extname=heiyeluren<br>cd /root/soft/php/php-5.2.6/ext/heiyeluren<br>vi config.m4<br></font>打开文件后去掉 dnl ，获得下面的信息：<br><font color='#008000'>PHP_ARG_ENABLE(heiyeluren, whether to enable heiyeluren support,<br>[&nbsp; --enable-heiyeluren&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Enable heiyeluren support])</font><br>保存退出.<br>(图01)<br><img src='http://note.youdao.com/yws/res/538/86AA942710AA40C1A046AEF82108B0F7' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial; font-size: 12pt;'><strong><font color='#993300'>第二步：编写代码<br></font></strong><br><font color='#993300'>vi php_heiyeluren.h</font><br>找到：PHP_FUNCTION(confirm_heiyeluren_compiled); ，新增一行：<br><font color='#008000'>PHP_FUNCTION(heiyeluren_test);</font>&nbsp;<br>保存退出。<br>(图02)<br><img src='http://note.youdao.com/yws/res/540/91CE348CAB2941819A7F769935F15A8F' data-media-type='image'><br></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br><font color='#993300'>vi heiyeluren.c</font><br>数组里增加我们的函数，找到 zend_function_entry heiyeluren_functions[]，增加：<br><font color='#008000'>PHP_FE(heiyeluren, NULL)</font><br>(图03)</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><img src='http://note.youdao.com/yws/res/542/C36F5FAEB4EE47969B678AFD4BC7BC93' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>再到 heiyeluren.c 文件最后面增加如下代码：<br><font color='#008000'>PHP_FUNCTION(heiyeluren_test)<br>{<br>&nbsp;&nbsp;&nbsp; char *arg = NULL;<br>&nbsp;&nbsp;&nbsp; int arg_len, len;<br>&nbsp;&nbsp;&nbsp; char *strg;</font></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><font color='#008000'>&nbsp;&nbsp;&nbsp; if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, 's', &amp;arg, &amp;arg_len) == FAILURE) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return;<br>&nbsp;&nbsp;&nbsp; }</font></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><font color='#008000'>&nbsp;&nbsp;&nbsp; len = spprintf(&amp;strg, 0, 'Your input string: %s/n', arg);<br>&nbsp;&nbsp;&nbsp; RETURN_STRINGL(strg, len, 0);<br>}<br></font>保存退出。<br>(图04)</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><img src='http://note.youdao.com/yws/res/541/9F685B8569E346F59EADBC93914A2210' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><strong style='font-size:12pt;'><font color='#993300'>第三步：编译安装<br></font></strong><br><font color='#993300'>cd /root/soft/php/php-5.2.6/ext/heiyeluren<br>/usr/local/php/bin/phpize<br>./configure --with-php-config=/usr/local/php/bin/php-config<br>make<br>make test<br>make install</font></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>现在看看是不是有个 /usr/local/php/lib/php/extensions/no-debug-non-zts-20060613/heiyeluren.so<br>编辑php.ini，把扩展加入进去：<br><font color='#993300'>vi /usr/local/php/lib/php.ini</font><br>在[PHP]模块下增加：<br><font color='#008000'>extension = heiyeluren.so</font><br>保存退出。<br>(图05)</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><img src='http://note.youdao.com/yws/res/537/21F4F0144BAB4DFFBC9C020DC5FA0769' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>注意：如果你不存在扩展文件目录，或者安装报错，那么可以自行建立这个目录，然后把扩展拷贝到目录下，然后记得把 php.ini 文件中的 extension_dir 修改为该目录：<br><font color='#008000'>extension_dir = '/usr/local/php/lib/php/extensions/no-debug-non-zts-20060613/'</font><br>(图06)</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><img src='http://note.youdao.com/yws/res/544/F54394721C34458F9DE07E88BFAE0C1F' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><strong style='font-size:12pt;'><font color='#993300'>第四步：检查安装结果<br></font></strong>现在看看模块加载了没有：<br>/usr/local/php/bin/php -m，应该会打印出：<br><font color='#008000'>[PHP Modules]<br>...<br>heiyeluren<br>...<br>[Zend Modules]</font></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br>然后重启apache，输出 phpinfo() ，应该能够看到：<br><font color='#008000'>heiyeluren<br>heiyeluren support enabled</font>&nbsp;<br>(图07)</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><img src='http://note.youdao.com/yws/res/543/F3D68E4D0EA94354888597771B9F6B20' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>看看函数是否存在并且调用，在web目录下建立：heiyeluren.php<br><font color='#008000'>&lt;?php<br>echo '&lt;pre&gt;';<br>print_r(get_loaded_extensions());<br>print_r(get_extension_funcs('heiyeluren'));<br>echo heiyeluren_test('My first php extension');<br>echo '&lt;/pre&gt;';<br>?&gt;</font><br>访问apache，应该能够看到：<br><font color='#008000'>Array<br>(<br>&nbsp;&nbsp;&nbsp; ...<br>&nbsp;&nbsp;&nbsp; [33] =&gt; heiyeluren<br>)<br>Array<br>(<br>&nbsp;&nbsp;&nbsp; [0] =&gt; confirm_heiyeluren_compiled<br>&nbsp;&nbsp;&nbsp; [1] =&gt; heiyeluren_test<br>)<br>Your input string: heiyeluren<br></font>(图08)</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><img src='http://note.youdao.com/yws/res/539/8F23D61EEFF74C24985F24274E3ACF43' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'><br>扩展制作成功！</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>&nbsp;</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial;'>更深入内容请参考这里：<a href='http://blog.csdn.net/taft/archive/2006/02/10/596291.aspx' style='color:rgb(255, 153, 0);'>http://blog.csdn.net/taft/archive/2006/02/10/596291.aspx</a></p> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-503.html">warning:the`gets\'functionisdangerousandshouldnotb</a>
+				|
+				 <a href="http://onelose.com/post-509.html">phpcms笔记</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="507" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-473.html">Git代码同步</a></li>
+		<li><a href="http://onelose.com/post-64.html">浅唱</a></li>
+		<li><a href="http://onelose.com/post-433.html">MySQL索引的创建、删除和查看</a></li>
+		<li><a href="http://onelose.com/post-129.html">新年快乐</a></li>
+		<li><a href="http://onelose.com/post-56.html">徐志摩的让人心疼的经典语录</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

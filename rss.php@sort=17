@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+<channel>
+<title><![CDATA[迷茫者]]></title> 
+<description><![CDATA[迷茫者王者归来。]]></description>
+<link>http://onelose.com/</link>
+<language>zh-cn</language>
+<generator>www.emlog.net</generator>
+<item>
+	<title>《形式逻辑》习题2</title>
+	<link>http://onelose.com/post-158.html</link>
+	<description><![CDATA[<p>《形式逻辑》习题2</p>
+<p>第二章 概念</p>
+<p>一、单选</p>
+<p>1． 在&ldquo;中国人是勤劳勇敢的&rdquo;这一命题中&ldquo;中国人&rdquo;是（ &nbsp; ）。</p>
+<p>① 集合概念 &nbsp; &nbsp;②非集合概念 &nbsp; &nbsp; ③否定概念 &nbsp; &nbsp; &nbsp;④属性概念。</p>
+<p>&nbsp;</p>
+<p>2． 概念与语词的关系是（ &nbsp; &nbsp; ）。</p>
+<p>① 所有语词都表达概念 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;② 所有语词都不表达概念&nbsp;</p>
+<p>③ 所有概念都要通过语词来表达 &nbsp; &nbsp;④ 有的概念不通过语词来表达</p>
+<p>&nbsp;</p>
+<p>3．如c概念是a、b两个概念的属概念，并且所有a不是b，a与b的外延之和等于c的外延，则a与b之间的关系是（ &nbsp; ）。</p>
+<p>① 交叉关系 &nbsp; &nbsp; &nbsp;② 反对关系 &nbsp; &nbsp; &nbsp; ③ 矛盾关系 &nbsp; &nbsp; &nbsp; &nbsp;④ 真包含于关系</p>
+<p>&nbsp;</p>
+<p>4．在&ldquo;有的逻辑学家是心理学家&rdquo;这一命题中，&ldquo;逻辑学家&rdquo; 与&ldquo;心理学家&rdquo;在外延上具有（ &nbsp; &nbsp; &nbsp;）。</p>
+<p>① 全同关系 &nbsp; &nbsp; &nbsp;② 全异关系 &nbsp; &nbsp; &nbsp;③ 真包含关系 &nbsp; &nbsp; &nbsp; &nbsp;④ 交叉关系</p>
+<p>&nbsp;</p>
+<p>5．&ldquo;历史上先后产生的国家有奴隶制国家、封建制国家、资本主义国家、社会主义国家。无论何种类型的国家，都是阶级专政的工具。&rdquo;这里对&ldquo;国家&rdquo;这个概念是（ &nbsp; &nbsp;）来说明的。</p>
+<p>①仅从内涵方面 &nbsp; ②仅从外延方面 &nbsp; &nbsp;③先从内涵再从外延 &nbsp; ④先从外延再从内涵</p>
+<p>&nbsp;</p>
+<p>6．把&ldquo;企业管理就是对企业进行管理&rdquo;这句话作为定义，所犯的逻辑错误是（ &nbsp; &nbsp; ）。</p>
+<p>① 定义过宽 &nbsp; &nbsp; ② 定义过窄 &nbsp; &nbsp; ③ 循环定义 &nbsp; &nbsp;④ 同语反复&nbsp;</p>
+<p>二、 双选&nbsp;</p>
+<p>1．&ldquo;屈原是伟大的诗人&rdquo;这句话中划有横线的概念属于（ &nbsp; &nbsp; &nbsp; &nbsp; ）。</p>
+<p>① 集合概念 &nbsp; &nbsp; ② 普遍概念 &nbsp; &nbsp; &nbsp;③ 单独概念 &nbsp; &nbsp; &nbsp; ④ 肯定概念</p>
+<p>&nbsp;</p>
+<p>2．在语句&ldquo;台湾是中国的&rdquo;中，语词&ldquo;中国的&rdquo;表达（ &nbsp; &nbsp;）概念。</p>
+<p>① 集合概念 &nbsp; &nbsp; ② 普遍概念 &nbsp; &nbsp; ③ 非集合概念 &nbsp; ④ 单独概念</p>
+<p>&nbsp;</p>
+<p>3．下列概念不能划分和限制的是（ &nbsp; &nbsp;）。</p>
+<p>① 泰山 &nbsp; ② 著名逻辑学家 &nbsp; &nbsp;③ 发展中国家 &nbsp; &nbsp; ④ 月亮 &nbsp; &nbsp;⑤ 演绎推理</p>
+<p>&nbsp;</p>
+<p>4．下列各组概念依据箭头所示的推演关系属于错误限制或概括的是（ &nbsp; &nbsp;）。</p>
+<p>① 动物&rarr;哺乳动物&rarr;鲸 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;② 关系命题&rarr;简单命题&rarr;命题&nbsp;</p>
+<p>③ 大学&rarr;北京大学&rarr;北京大学历史系 &nbsp;④ 地球&rarr;行星&rarr;天体&rarr;宇宙&nbsp;</p>
+<p>⑤ 科学家&rarr;物理科学家&rarr;爱因斯坦</p>
+<p>&nbsp;</p>
+<p>三、多选</p>
+<p>1．&ldquo;社会主义国家&rdquo;这个概念的反对关系的概念是（ &nbsp; &nbsp;）。&nbsp;</p>
+<p>① 非社会主义国家 &nbsp; &nbsp; &nbsp; ② 封建主义国家&nbsp;</p>
+<p>③ 法国 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ④ 资本主义国家 &nbsp; &nbsp; &nbsp; ⑤ 亚洲的国家</p>
+<p>&nbsp;</p>
+<p>2．下列各组概念中A真包含于B的有（ &nbsp; &nbsp; &nbsp;）。</p>
+<p>①（A）三段论（B）间接推理 &nbsp; &nbsp;②（A）性质命题（B）简单命题</p>
+<p>③（A）命题（B）推理 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;④（A）联言命题（B）复合命题</p>
+<p>⑤（A）定义（B）逻辑方法</p>
+<p>&nbsp;</p>
+<p>3．下列各组概念依据箭头所示推演关系属于正确限制的有（ &nbsp; &nbsp;）。</p>
+<p>① 规律&rarr;思维规律&rarr;同一律 &nbsp; &nbsp; &nbsp; ② 科学家&rarr;自然科学家&rarr;物理学家&nbsp;</p>
+<p>③ 命题&rarr;非模态命题&rarr;简单命题 &nbsp; ④ 思维形式&rarr;推理&rarr;演绎推理&nbsp;</p>
+<p>⑤ 三角形&rarr;锐角三角形&rarr;等边三角形&nbsp;</p>]]></description>
+	<pubDate>Fri, 25 Mar 2011 09:57:19 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-158.html</guid>
+
+</item></channel>
+</rss>

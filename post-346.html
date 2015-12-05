@@ -1,0 +1,614 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Linuxcurl使用简单介绍</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="Curl是..." />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>Linuxcurl使用简单介绍</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-12 7:00 Monday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>Curl是Linux下一个很强大的http命令行工具，其功能十分强大。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>1) 二话不说，先从这里开始吧！</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl http://www.linuxidc.com</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>回车之后，www.linuxidc.com 的html就稀里哗啦地显示在屏幕上了&nbsp;&nbsp;&nbsp; ~</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>2) 嗯，要想把读过来页面存下来，是不是要这样呢？</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl http://www.linuxidc.com &gt; page.html</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>当然可以，但不用这么麻烦的！</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>用curl的内置option就好，存下http的结果，用这个option: -o</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -o page.html http://www.linuxidc.com</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>这样，你就可以看到屏幕上出现一个下载页面进度指示。等进展到100%，自然就 OK咯</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>3) 什么什么？！访问不到？肯定是你的proxy没有设定了。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>使用curl的时候，用这个option可以指定http访问所使用的proxy服务器及其端口： -x</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -x 123.45.67.89:1080 -o page.html http://www.linuxidc.com</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>4) 访问有些网站的时候比较讨厌，他使用cookie来记录session信息。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>像IE/NN这样的浏览器，当然可以轻易处理cookie信息，但我们的curl呢？.....</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>我们来学习这个option: -D &lt;— 这个是把http的response里面的cookie信息存到一个特别的文件中去</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -x 123.45.67.89:1080 -o page.html -D cookie0001.txt http://www.linuxidc.com</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>这样，当页面被存到page.html的同时，cookie信息也被存到了cookie0001.txt里面了</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>5）那么，下一次访问的时候，如何继续使用上次留下的cookie信息呢？要知道，很多网站都是靠监视你的cookie信息，来判断你是不是不按规矩访问他们的网站的。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>这次我们使用这个option来把上次的cookie信息追加到http request里面去： -b</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -x 123.45.67.89:1080 -o page1.html -D cookie0002.txt -b cookie0001.txt http://www.linuxidc.com</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>这样，我们就可以几乎模拟所有的IE操作，去访问网页了！</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>6）稍微等等&nbsp;&nbsp;&nbsp; ~我好像忘记什么了&nbsp;&nbsp;&nbsp; ~</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>对了！是浏览器信息</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>有些讨厌的网站总要我们使用某些特定的浏览器去访问他们，有时候更过分的是，还要使用某些特定的版本&nbsp;&nbsp;&nbsp;&nbsp; NND，哪里有时间为了它去找这些怪异的浏览器呢！？</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>好在curl给我们提供了一个有用的option，可以让我们随意指定自己这次访问所宣称的自己的浏览器信息： -A</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -A 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)' -x 123.45.67.89:1080 -o page.html -D cookie0001.txt http://www.linuxidc.com</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>这样，服务器端接到访问的要求，会认为你是一个运行在Windows 2000上的 IE6.0，嘿嘿嘿，其实也许你用的是苹果机呢！</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>而'Mozilla/4.73 [en] (X11; U; Linux 2.2; 15 i686'则可以告诉对方你是一台 PC上跑着的Linux，用的是Netscape 4.73，呵呵呵</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>7）另外一个服务器端常用的限制方法，就是检查http访问的referer。比如你先访问首页，再访问里面所指定的下载页，这第二次访问的 referer地址就是第一次访问成功后的页面地址。这样，服务器端只要发现对下载页面某次访问的referer地址不是首页的地址，就可以断定那是个盗连了&nbsp;&nbsp;&nbsp; ~</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>讨厌讨厌 ~我就是要盗连&nbsp;&nbsp;&nbsp; ~！！</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>幸好curl给我们提供了设定referer的option： -e</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -A 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)' -x 123.45.67.89:1080 -e 'mail.linuxidc.com' -o page.html -D cookie0001.txt http://www.linuxidc.com</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>这样，就可以骗对方的服务器，你是从mail.linuxidc.com点击某个链接过来的了，呵呵呵</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>8）写着写着发现漏掉什么重要的东西了！——- 利用curl 下载文件</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>刚才讲过了，下载页面到一个文件里，可以使用 -o ，下载文件也是一样。比如，</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -o 1.jpg http://cgi2.tky.3web.ne.jp/~zzh/screen1.JPG</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>这里教大家一个新的option： -O 大写的O，这么用：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -O http://cgi2.tky.3web.ne.jp/~zzh/screen1.JPG</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>这样，就可以按照服务器上的文件名，自动存在本地了！</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>再来一个更好用的。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>如果screen1.JPG以外还有screen2.JPG、screen3.JPG、....、screen10.JPG需要下载，难不成还要让我们写一个script来完成这些操作？</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>不干！</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>在curl里面，这么写就可以了：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -O http://cgi2.tky.3web.ne.jp/~zzh/screen[1-10].JPG</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>呵呵呵，厉害吧？！ ~</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>9）再来，我们继续讲解下载！</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -O http://cgi2.tky.3web.ne.jp/~{zzh,nick}/[001-201].JPG</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>这样产生的下载，就是</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>~zzh/001.JPG</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>~zzh/002.JPG</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>...</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>~zzh/201.JPG</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>~nick/001.JPG</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>~nick/002.JPG</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>...</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>~nick/201.JPG</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>够方便的了吧？哈哈哈</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>咦？高兴得太早了。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>由于zzh/nick下的文件名都是001，002...，201，下载下来的文件重名，后面的把前面的文件都给覆盖掉了 ~</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>没关系，我们还有更狠的！</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -o #2_#1.jpg http://cgi2.tky.3web.ne.jp/~{zzh,nick}/[001-201].JPG</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>—这是.....自定义文件名的下载？ —对头，呵呵！</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>这样，自定义出来下载下来的文件名，就变成了这样：原来： ~zzh/001.JPG —-&gt; 下载后： 001-zzh.JPG 原来： ~nick/001.JPG —-&gt; 下载后： 001-nick.JPG</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>这样一来，就不怕文件重名啦，呵呵</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>9）继续讲下载</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>我们平时在windows平台上，flashget这样的工具可以帮我们分块并行下载，还可以断线续传。curl在这些方面也不输给谁，嘿嘿</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>比如我们下载screen1.JPG中，突然掉线了，我们就可以这样开始续传</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -c -O http://cgi2.tky.3wb.ne.jp/~zzh/screen1.JPG</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>当然，你不要拿个flashget下载了一半的文件来糊弄我&nbsp;&nbsp;&nbsp; 别的下载软件的半截文件可不一定能用哦 ~</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>分块下载，我们使用这个option就可以了： -r</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>举例说明</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>比如我们有一个http://cgi2.tky.3web.ne.jp/~zzh/zhao1.MP3 要下载（赵老师的电话朗诵 :D ）我们就可以用这样的命令：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -r 0-10240 -o 'zhao.part1' http:/cgi2.tky.3web.ne.jp/~zzh/zhao1.MP3 &amp;\</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -r 10241-20480 -o 'zhao.part1' http:/cgi2.tky.3web.ne.jp/~zzh/zhao1.MP3 &amp;\</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -r 20481-40960 -o 'zhao.part1' http:/cgi2.tky.3web.ne.jp/~zzh/zhao1.MP3 &amp;\</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -r 40961- -o 'zhao.part1' http:/cgi2.tky.3web.ne.jp/~zzh/zhao1.MP3</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>这样就可以分块下载啦。不过你需要自己把这些破碎的文件合并起来如果你用UNIX或苹果，用 cat zhao.part* &gt; zhao.MP3就可以如果用的是Windows，用copy /b 来解决吧，呵呵</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>上面讲的都是http协议的下载，其实ftp也一样可以用。用法嘛，</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -u name:passwd ftp://ip:port/path/file</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>或者大家熟悉的</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl ftp://name:passwd@ip:port/path/file</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>10) 说完了下载，接下来自然该讲上传咯上传的option是 -T</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>比如我们向ftp传一个文件：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -T localfile -u name:passwd ftp://upload_site:port/path/</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>当然，向http服务器上传文件也可以比如</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -T localfile http://cgi2.tky.3web.ne.jp/~zzh/abc.cgi</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>注意，这时候，使用的协议是HTTP的PUT method</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>刚才说到PUT，嘿嘿，自然让老服想起来了其他几种methos还没讲呢！ GET和POST都不能忘哦。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>http提交一个表单，比较常用的是POST模式和GET模式</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>GET模式什么option都不用，只需要把变量写在url里面就可以了比如：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl http://www.linuxidc.com/login.cgi?user=nickwolfe&amp;password=12345</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>而POST模式的option则是 -d</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>比如，</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -d 'user=nickwolfe&amp;password=12345' http://www.linuxidc.com/login.cgi</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>就相当于向这个站点发出一次登陆申请&nbsp;&nbsp;&nbsp; ~</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>到底该用GET模式还是POST模式，要看对面服务器的程序设定。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>一点需要注意的是，POST模式下的文件上的文件上传，比如</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>&lt;form method='POST' enctype='multipar/form-data' action='http://cgi2.tky.3web.ne.jp/~zzh/up_file.cgi'&gt;</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>&lt;input type=file name=upload&gt;</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>&lt;input type=submit name=nick value='go'&gt;</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>&lt;/form&gt;</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>这样一个HTTP表单，我们要用curl进行模拟，就该是这样的语法：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -F upload=@localfile -F nick=go http://cgi2.tky.3web.ne.jp/~zzh/up_file.cgi</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>罗罗嗦嗦讲了这么多，其实curl还有很多很多技巧和用法比如 https的时候使用本地证书，就可以这样</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl -E localcert.pem https://remote_server</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>再比如，你还可以用curl通过dict协议去查字典&nbsp;&nbsp;&nbsp; ~</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'>$ curl dict://dict.org/d:computer</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: verdana, sans-serif; font-size: 13px;'> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-348.html">创业公司CEO54点大忌：穷酸的穿着、和猪辩论、炒人太慢</a>
+				|
+				 <a href="http://onelose.com/post-357.html">重磅资料！Github上的PHP资源汇总大全</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="346" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-484.html">backbone与php交互</a></li>
+		<li><a href="http://onelose.com/post-473.html">Git代码同步</a></li>
+		<li><a href="http://onelose.com/post-549.html">coreseek</a></li>
+		<li><a href="http://onelose.com/post-434.html">mysqlarchive存储引擎安装/使用</a></li>
+		<li><a href="http://onelose.com/post-82.html">2010.12.6 c++ 上机</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

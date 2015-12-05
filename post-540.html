@@ -1,0 +1,874 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>jQuery拖动布局实现排序结果同步数据库</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>jQuery拖动布局实现排序结果同步数据库</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-4-24 6:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <div style='background-color: rgb(248, 248, 248); color: rgb(51, 51, 51); font-family: 宋体; font-size: 12px;'> 
+  <div style='background-color:rgb(255, 255, 255);'> 
+   <p style='color: rgb(0, 102, 0); font-size: 14px;'>最近的项目中涉及到了用户个性化定制首页的需求，用户要求可以随意拖动首页模块的位置，来实现个性化的布局。本文讲解如何使用jquery和PHP实现拖动布局并将拖动后的布局位置保存到数据库。</p> 
+   <p>AD：<a href='http://edu.51cto.com/' target='_blank' style='color:rgb(0, 66, 118);'>51CTO学院：IT精品课程在线看！</a></p> 
+  </div> 
+ </div> 
+ <div style='background-color: rgb(248, 248, 248); color: rgb(51, 51, 51); font-family: 宋体;'> 
+  <div> 
+   <p>很多网站的拖动布局的例子都是采用浏览器的COOKIE来记录用户拖动模块的位置，也就是说拖动后各模块的排序位置信息是记录在客户端的cookie里的。当用户清空客户端的cookie或浏览器的cookie过期后，再次访问页面时，发现布局又还原成最初的状态。这种cookie记录的方式使用简单，但不适合像个人中心、管理系统主页的要求。</p> 
+   <p>51CTO推荐专题：<a href='http://developer.51cto.com/art/201005/202450.htm' target='_blank' style='color:rgb(0, 66, 118);'>jQuery从入门到精通</a>&nbsp;&nbsp;&nbsp;<a href='http://developer.51cto.com/art/201102/245390.htm' target='_blank' style='color:rgb(0, 66, 118);'>jQuery给力插件大阅兵</a></p> 
+   <p><a href='http://images.51cto.com/files/uploadimg/20110323/1036150.jpg' target='_blank' style='color:rgb(0, 66, 118);'><img src='http://images.51cto.com/files/uploadimg/20110323/1036150.jpg' alt='jQuery实现拖动布局并将排序结果保存到数据库' width='498' height='259' style='width:524px;height:233px;' data-media-type='image'></a>&nbsp;</p> 
+   <p>&nbsp;</p> 
+   <p><a href='http://www.helloweba.com/demo/idrag/' target='_blank' style='color:rgb(0, 66, 118);'><img src='http://images.51cto.com/files/uploadimg/20110323/1036151.jpg' alt='jQuery实现拖动布局并将排序结果保存到数据库' width='147' height='44' data-media-type='image'></a></p> 
+   <p><strong>本例实现的效果：</strong></p> 
+   <p>通过拖动随意布局页面模块。</p> 
+   <p>记录拖动后模块的位置，并记录到数据库中。</p> 
+   <p>页面永久性布局，用任意浏览器在任意时候打开，页面布局不变。(除非用户再次更改模块的排序，跟cookie没有关系)。</p> 
+   <p><strong>原理</strong></p> 
+   <p>采用jquery ui的sorttable拖动排序插件实现拖动效果。</p> 
+   <p>将拖动后的模块的位置通过ajax传给服务端PHP程序。</p> 
+   <p>PHP程序处理位置信息后，更新数据库中相应的字段内容。</p> 
+   <p><strong>XHTML</strong></p> 
+   <pre style='background-color: rgb(230, 230, 230); font-family: 'Courier New', monospace;'>
+    
+    
+    
+    
+    <ol style='background-color:rgb(247, 247, 247);color:rgb(92, 92, 92);'>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&lt;div&nbsp;id=<span style='color: blue;'>'loader'</span>&gt;&lt;/div&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&lt;div&nbsp;id=</span><span style='color: blue;'>'module_list'</span><span style='color: black;'>&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&lt;input&nbsp;type=</span><span style='color: blue;'>'hidden'</span><span style='color: black;'>&nbsp;id=</span><span style='color: blue;'>'orderlist'</span><span style='color: black;'>&nbsp;/&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&lt;div&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>class</span><span style='color: black;'>=</span><span style='color: blue;'>'modules'</span><span style='color: black;'>&nbsp;title=</span><span style='color: blue;'>'1'</span><span style='color: black;'>&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h3&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>class</span><span style='color: black;'>=</span><span style='color: blue;'>'m_title'</span><span style='color: black;'>&gt;Module:1&lt;/h3&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;1&lt;/p&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&lt;/div&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;...&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&lt;/div&gt;&nbsp;&nbsp;</span></li>
+    
+    
+    
+    
+    </ol></pre> 
+   <p>DIV#loader用于显示提示信息，如loading...，#orderlist是一个隐藏域，用于记录模块的排序值。“...”表示循环了n个DIV.modules，具体生成的代码在后面会讲到。</p> 
+   <p><strong>CSS</strong></p> 
+   <pre style='background-color: rgb(230, 230, 230); font-family: 'Courier New', monospace;'>
+    
+    
+    
+    
+    <ol style='background-color:rgb(247, 247, 247);color:rgb(92, 92, 92);'>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'><span style='color: gray;'>#module_list{margin-left:4px}&nbsp; </span>&nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>.modules{</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>float</span><span style='color: black;'>:left;&nbsp;width:200px;&nbsp;height:140px;&nbsp;margin:10px;&nbsp;border:1px&nbsp;solid&nbsp;#acc6e9;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;background:#e8f5fe}&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>.m_title{height:24px;&nbsp;line-height:24px;&nbsp;background:#afc6e9}&nbsp; </span>&nbsp;</li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'><span style='color: gray;'>#loader{height:24px;&nbsp;text-align:center}&nbsp;</span>&nbsp;</span></li>
+    
+    
+    
+    
+    </ol></pre> 
+   <p>简单，关键是要给.modules一个想左浮动的样式float:left。</p> 
+   <p><strong>jQuery</strong></p> 
+   <pre style='background-color: rgb(230, 230, 230); font-family: 'Courier New', monospace;'>
+    
+    
+    
+    
+    <ol style='background-color:rgb(247, 247, 247);color:rgb(92, 92, 92);'>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>$(<span style='color: rgb(0, 102, 153); font-weight: bold;'>function</span>(){&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;$(</span><span style='color: blue;'>'.m_title'</span><span style='color: black;'>).bind(</span><span style='color: blue;'>'mouseover'</span><span style='color: black;'>,</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>function</span><span style='color: black;'>(){&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>this</span><span style='color: black;'>).css(</span><span style='color: blue;'>'cursor'</span><span style='color: black;'>,</span><span style='color: blue;'>'move'</span><span style='color: black;'>)&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;});&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>var</span><span style='color: black;'>&nbsp;$show&nbsp;=&nbsp;$(</span><span style='color: blue;'>'#loader'</span><span style='color: black;'>);&nbsp;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>var</span><span style='color: black;'>&nbsp;$orderlist&nbsp;=&nbsp;$(</span><span style='color: blue;'>'#orderlist'</span><span style='color: black;'>);&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>var</span><span style='color: black;'>&nbsp;$list&nbsp;=&nbsp;$(</span><span style='color: blue;'>'#module_list'</span><span style='color: black;'>);&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;$list.sortable({&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;opacity:&nbsp;0.6,&nbsp;</span><span style='color: rgb(0, 130, 0);'>//设置拖动时候的透明度&nbsp; </span><span style='color: black;'>&nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;revert:&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>true</span><span style='color: black;'>,&nbsp;</span><span style='color: rgb(0, 130, 0);'>//缓冲效果&nbsp; </span><span style='color: black;'>&nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cursor:&nbsp;</span><span style='color: blue;'>'move'</span><span style='color: black;'>,&nbsp;</span><span style='color: rgb(0, 130, 0);'>//拖动的时候鼠标样式&nbsp; </span><span style='color: black;'>&nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;handle:&nbsp;</span><span style='color: blue;'>'.m_title'</span><span style='color: black;'>,&nbsp;&nbsp;</span><span style='color: rgb(0, 130, 0);'>//可以拖动的部位，模块的标题部分&nbsp; </span><span style='color: black;'>&nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update:&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>function</span><span style='color: black;'>(){&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>var</span><span style='color: black;'>&nbsp;new_order&nbsp;=&nbsp;[];&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$list.children(</span><span style='color: blue;'>'.modules'</span><span style='color: black;'>).each(</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>function</span><span style='color: black;'>()&nbsp;{&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new_order.push(</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>this</span><span style='color: black;'>.title);&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>var</span><span style='color: black;'>&nbsp;newid&nbsp;=&nbsp;new_order.join(</span><span style='color: blue;'>','</span><span style='color: black;'>);&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>var</span><span style='color: black;'>&nbsp;oldid&nbsp;=&nbsp;$orderlist.val();&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.ajax({&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type:&nbsp;</span><span style='color: blue;'>'post'</span><span style='color: black;'>,&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url:&nbsp;</span><span style='color: blue;'>'update.php'</span><span style='color: black;'>,&nbsp;</span><span style='color: rgb(0, 130, 0);'>//服务端处理程序&nbsp; </span><span style='color: black;'>&nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data:&nbsp;{&nbsp;id:&nbsp;newid,&nbsp;order:&nbsp;oldid&nbsp;},&nbsp;&nbsp;&nbsp;</span><span style='color: rgb(0, 130, 0);'>//id:新的排列对应的ID,order：原排列顺序&nbsp; </span><span style='color: black;'>&nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beforeSend:&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>function</span><span style='color: black;'>()&nbsp;{&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$show.html(</span><span style='color: blue;'>'&lt;img&nbsp;src='load.gif'&nbsp;/&gt;&nbsp;正在更新'</span><span style='color: black;'>);&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;success:&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>function</span><span style='color: black;'>(msg)&nbsp;{&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='color: rgb(0, 130, 0);'>//alert(msg);&nbsp; </span><span style='color: black;'>&nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$show.html(</span><span style='color: blue;'>''</span><span style='color: black;'>);&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;});&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>});&nbsp;&nbsp;</span></li>
+    
+    
+    
+    
+    </ol></pre> 
+   <p>拖动排序的动作都写在$list.sortable({...})里面，参数设置和方法请看代码的注释。juery ui的sortable插件提供了很多方法和参数配置，详情请查看http://jqueryui.com/demos/sortable</p> 
+   <p>拖动完成要执行一个update方法，该方法需要将拖动后排序的位置通过ajax提交给后台处理。</p> 
+   <pre style='background-color: rgb(230, 230, 230); font-family: 'Courier New', monospace;'>
+    
+    
+    
+    
+    <ol style='background-color:rgb(247, 247, 247);color:rgb(92, 92, 92);'>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'><span style='color: rgb(0, 102, 153); font-weight: bold;'>var</span>&nbsp;new_order&nbsp;=&nbsp;[];&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>$list.children(</span><span style='color: blue;'>'.modules'</span><span style='color: black;'>).each(</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>function</span><span style='color: black;'>()&nbsp;{&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new_order.push(</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>this</span><span style='color: black;'>.title);&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>});&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: rgb(0, 102, 153); font-weight: bold;'>var</span><span style='color: black;'>&nbsp;newid&nbsp;=&nbsp;new_order.join(</span><span style='color: blue;'>','</span><span style='color: black;'>);&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: rgb(0, 102, 153); font-weight: bold;'>var</span><span style='color: black;'>&nbsp;oldid&nbsp;=&nbsp;$orderlist.val();&nbsp;&nbsp;</span></li>
+    
+    
+    
+    
+    </ol></pre> 
+   <p>说明：循环每个模块.modules，获取拖动排序后每个模块的属性title值，将值通过逗号连接成一个字符串。原来的未拖动之前的排序值从隐藏域orderlist中获取。</p> 
+   <p>获取排序值后，就是通过ajax和后台程序交互了。</p> 
+   <p><strong>PHP</strong></p> 
+   <p>update.php接收前端ajax通过POST提交过来的两个参数，及排序前的值和排序后的值，将这连个值进行对比，如果不相等，则更新数据库中的排序字段，完成了拖动排序后的及时保存。</p> 
+   <pre style='background-color: rgb(230, 230, 230); font-family: 'Courier New', monospace;'>
+    
+    
+    
+    
+    <ol style='background-color:rgb(247, 247, 247);color:rgb(92, 92, 92);'>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>include_once(<span style='color: blue;'>'connect.php'</span>);<span style='color: rgb(0, 130, 0);'>//连接数据库&nbsp; </span>&nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>$order&nbsp;=&nbsp;$_POST[</span><span style='color: blue;'>'order'</span><span style='color: black;'>];&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>$itemid&nbsp;=&nbsp;trim($_POST[</span><span style='color: blue;'>'id'</span><span style='color: black;'>]);&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: rgb(0, 102, 153); font-weight: bold;'>if</span><span style='color: black;'>&nbsp;(!empty&nbsp;($itemid))&nbsp;{&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>if</span><span style='color: black;'>&nbsp;($order&nbsp;!=&nbsp;$itemid)&nbsp;{&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$query&nbsp;=&nbsp;mysql_query(</span><span style='color: blue;'>'update&nbsp;sortlist&nbsp;set&nbsp;sort='$itemid'&nbsp;where&nbsp;id=1'</span><span style='color: black;'>);&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>if</span><span style='color: black;'>&nbsp;($query)&nbsp;{&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;$itemid;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>else</span><span style='color: black;'>&nbsp;{&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style='color: blue;'>'none'</span><span style='color: black;'>;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>}&nbsp;&nbsp;</span></li>
+    
+    
+    
+    
+    </ol></pre> 
+   <p>首页index.php再回到展示布局的首页index.php。index.php通过连接数据库读取模块的排序信息，并将各模块显示出来。</p> 
+   <p>首先别忘了加载jquery库和jquery ui的sortable拖动排序插件。</p> 
+   <pre style='background-color: rgb(230, 230, 230); font-family: 'Courier New', monospace;'>
+    
+    
+    
+    
+    <ol style='background-color:rgb(247, 247, 247);color:rgb(92, 92, 92);'>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&lt;script&nbsp;type=<span style='color: blue;'>'text/javascript'</span>&nbsp;src=<span style='color: blue;'>'js/jquery.js'</span>&gt;&lt;/script&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&lt;script&nbsp;type=</span><span style='color: blue;'>'text/javascript'</span><span style='color: black;'>&nbsp;src=</span><span style='color: blue;'>'js/jquery-ui.min.js'</span><span style='color: black;'>&gt;&lt;/script&gt;&nbsp;&nbsp;</span></li>
+    
+    
+    
+    
+    </ol></pre> 
+   <p>读取数据库的排序字段值。</p> 
+   <pre style='background-color: rgb(230, 230, 230); font-family: 'Courier New', monospace;'>
+    
+    
+    
+    
+    <ol style='background-color:rgb(247, 247, 247);color:rgb(92, 92, 92);'>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>include_once(<span style='color: blue;'>'connect.php'</span>);&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>$query=mysql_query(</span><span style='color: blue;'>'select&nbsp;*&nbsp;from&nbsp;sortlist&nbsp;where&nbsp;id=1'</span><span style='color: black;'>);&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: rgb(0, 102, 153); font-weight: bold;'>if</span><span style='color: black;'>($rs=mysql_fetch_array($query)){&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$sort=$rs[</span><span style='color: blue;'>'sort'</span><span style='color: black;'>];&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>}&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>$sort_arr=explode(</span><span style='color: blue;'>','</span><span style='color: black;'>,$sort);&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>$len=count($sort_arr);&nbsp;&nbsp;</span></li>
+    
+    
+    
+    
+    </ol></pre> 
+   <p>循环显示各模块。</p> 
+   <pre style='background-color: rgb(230, 230, 230); font-family: 'Courier New', monospace;'>
+    
+    
+    
+    
+    <ol style='background-color:rgb(247, 247, 247);color:rgb(92, 92, 92);'>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&lt;div&nbsp;id=<span style='color: blue;'>'loader'</span>&gt;&lt;/div&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&lt;div&nbsp;id=</span><span style='color: blue;'>'module_list'</span><span style='color: black;'>&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&lt;input&nbsp;type=</span><span style='color: blue;'>'hidden'</span><span style='color: black;'>&nbsp;id=</span><span style='color: blue;'>'orderlist'</span><span style='color: black;'>&nbsp;value=</span><span style='color: blue;'>'&lt;?php&nbsp;echo&nbsp;$sort;?&gt;'</span><span style='color: black;'>&nbsp;/&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&lt;?php&nbsp;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>for</span><span style='color: black;'>($i=0;$i&lt;$len;$i++){&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;?&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&lt;div&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>class</span><span style='color: black;'>=</span><span style='color: blue;'>'modules'</span><span style='color: black;'>&nbsp;title=</span><span style='color: blue;'>'&lt;?php&nbsp;echo&nbsp;$sort_arr[$i];&nbsp;?&gt;'</span><span style='color: black;'>&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h3&nbsp;</span><span style='color: rgb(0, 102, 153); font-weight: bold;'>class</span><span style='color: black;'>=</span><span style='color: blue;'>'m_title'</span><span style='color: black;'>&gt;Module:&lt;?php&nbsp;echo&nbsp;$sort_arr[$i];&nbsp;?&gt;&lt;/h3&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;?php&nbsp;echo&nbsp;$sort_arr[$i];&nbsp;?&gt;&lt;/p&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&nbsp;&nbsp;&lt;/div&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li style='color: inherit;'><span style='color: black;'>&nbsp;&nbsp;&lt;?php&nbsp;}&nbsp;?&gt;&nbsp; &nbsp;</span></li>
+     
+     
+     
+     
+     <li><span style='color: black;'>&lt;/div&gt;&nbsp;&nbsp;</span></li>
+    
+    
+    
+    
+    </ol></pre> 
+   <p>诚然，真正的拖动排序结果的保存都跟每个用户信息相关联，所以数据库的结构设计方面大家可以自行解决，尽情发挥吧。</p> 
+   <p><span style='color:rgb(0, 0, 255);'><em>原文链接：http://www.helloweba.com/view-blog-72.html</em></span></p> 
+  </div> 
+ </div> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-536.html">jqueryinput</a>
+				|
+				 <a href="http://onelose.com/post-542.html">phpCI框架this-&gt;db-&gt;where()条件</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="540" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-169.html">EMLOG模板-------冰淇淋雪糕 0.2 更新</a></li>
+		<li><a href="http://onelose.com/post-396.html">查看所以服务</a></li>
+		<li><a href="http://onelose.com/post-250.html">sqlserver分组取每组前几条记录(排名)</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-280.html">PHP性能分析工具xhprof介绍、安装、使用说明</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

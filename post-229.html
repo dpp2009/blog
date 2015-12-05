@@ -1,0 +1,398 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Phpunit的一些看法</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="Phpunit" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>Phpunit的一些看法</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-31 6:00 Tuesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <div> 
+  <h1 style='text-align:center;'><span style='font-family: 宋体; font-size: 22pt;'>Phpunit&nbsp;<font face='宋体'>的一些看法</font></span></h1> 
+  <p style='text-align:center;'><span style='font-family:'宋体';font-size:10.5000pt;'>作者：&nbsp;王心怡</span></p> 
+  <p style='text-align:center;'><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+  <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总觉得最近应该写点啥，哈哈，&nbsp;不知道是聊聊自己最近学习的&nbsp;<font face='Times New Roman'>Common&nbsp;Lisp&nbsp;</font><font face='宋体'>，&nbsp;还是讲讲&nbsp;</font><font face='Times New Roman'>CCoffeeOffice</font><font face='宋体'>呢</font><font face='Times New Roman'>~~&nbsp;,&nbsp;</font><font face='宋体'>不过这些都刚学，&nbsp;发出来怕被各种拍砖，而且又属于冷门的东西，既然这两年在敲</font><font face='Times New Roman'>PHP</font><font face='宋体'>，就聊一下</font><font face='Times New Roman'>PHP</font><font face='宋体'>相关的工具吧，&nbsp;思来想去，&nbsp;</font><font face='Times New Roman'>Composer&nbsp;?</font><font face='宋体'>，</font><font face='Times New Roman'>phpcs(codesniffer)&nbsp;?</font><font face='宋体'>，</font><font face='Times New Roman'>ApiGen|Phpdocument?</font><font face='宋体'>，</font><font face='Times New Roman'>phing?</font><font face='宋体'>，&nbsp;好吧</font><font face='Times New Roman'>~~&nbsp;</font><font face='宋体'>最近公司在要求使用</font><font face='Times New Roman'>phpunit</font><font face='宋体'>，今天还是讲讲</font><font face='Times New Roman'>PhpUnit&nbsp;</font><font face='宋体'>这个工具吧。</font></span></p> 
+  <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+  <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里我不会讲神马<font face='Times New Roman'>PHPUnit&nbsp;</font><font face='宋体'>和其他单元测试工具之类的关系，单元测试工具，&nbsp;说白了就是一种自动测试工具包，任何程序语言都有（很多还不知一种），就连</font><font face='Times New Roman'>javascript</font><font face='宋体'>都有</font><font face='Times New Roman'>jasmine,&nbsp;YUI&nbsp;Tester&nbsp;</font><font face='宋体'>这样的单元测试工具。&nbsp;&nbsp;说到单元测试，&nbsp;实际就不能不说</font><font face='Times New Roman'>TDD(</font><font face='宋体'>测试驱动开发），我一直觉得如果单元测试脱离了</font><font face='Times New Roman'>TDD,&nbsp;</font><font face='宋体'>真心没啥好说的了。&nbsp;所以说是介绍</font><font face='Times New Roman'>phpunit&nbsp;</font><font face='宋体'>的实践，但是这里还是以介绍</font><font face='Times New Roman'>TDD</font><font face='宋体'>为主，&nbsp;使用</font><font face='Times New Roman'>TDD</font><font face='宋体'>的开发方式会经历一阵痛苦，挑战习惯的过程，不知道最后有几个人能最后坚持以</font><font face='Times New Roman'>TDD</font><font face='宋体'>为准则，&nbsp;但是相信我，经过大量练习和实践后，你会发现这太酷了，&nbsp;并且对于以后整个项目使用</font><font face='Times New Roman'>CI</font><font face='宋体'>系统提高软件质量和降低风险有极为重要的作用！</font></span></p> 
+  <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+  <h3><span style='font-family: 宋体; font-size: 14pt;'>一&nbsp;我的单元测试初体验及我所理解的单元测试</span></h3> 
+  <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;先讲一个我的经历：&nbsp;大概在<font face='Times New Roman'>2010</font><font face='宋体'>年初的时候，&nbsp;我在一个电商网站任职，&nbsp;当时有个任务是做网站上一个推荐系统的接口，&nbsp;推荐系统接口功能要求有几点：&nbsp;</font><font face='Times New Roman'>1</font><font face='宋体'>：根据用户搜索词找出最适合的产品，比如用户搜&nbsp;“水”&nbsp;，搜索结果就应该是“矿泉水”在最前面，而不应该是”补水面膜“，”水果“这样的结果，&nbsp;用户搜索”肥皂”，就应该出来“香皂”这样的结果，而不应该没有查询结果&nbsp;</font><font face='Times New Roman'>2.&nbsp;</font><font face='宋体'>把这些适配词，相近词，网站词频高的词提取出来，&nbsp;发送到推荐系统接口&nbsp;</font><font face='Times New Roman'>3</font><font face='宋体'>，把用户浏览过的商品记录，购物车商品，&nbsp;用户购买历史发送到推荐系统接口，&nbsp;</font><font face='Times New Roman'>4.</font><font face='宋体'>最后从推荐系统获取相关商品</font><font face='Times New Roman'>id.</font><font face='宋体'>。&nbsp;当时发现一个问题就是：从</font></span><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>编码实现某个功能，到我测试运行，周期是如此之长<font face='Times New Roman'>~&nbsp;&nbsp;</font></span><span style='font-family: 宋体; font-size: 10.5pt;'>要完成一个整个的周期测试，我需要&nbsp;‘注册用户’&nbsp;<font face='Times New Roman'>-&nbsp;</font><font face='宋体'>‘浏览几个特定的网页</font></span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>’</span><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;-&nbsp;</span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>‘</span><span style='font-family: 宋体; font-size: 10.5pt;'>放几个制定的商品到购物车里</span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>’</span><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;-&nbsp;</span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>‘</span><span style='font-family: 宋体; font-size: 10.5pt;'>购买几件产品产生购买记录</span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>’</span><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;-&nbsp;<font face='宋体'>测试结果，&nbsp;当结果不符，我再修改代码，&nbsp;再经历一次上述过程，周而复始，&nbsp;整个过程是如此痛苦，甚至改一点点推荐的参数，&nbsp;稍微改一下不同的推荐权重，我都需要经过上面一串的步骤，&nbsp;我发现了，这种过程，简直又傻又笨啊！&nbsp;而且一点对代码执行结果的安全感也没有！</font></span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;后来，&nbsp;我使用了一种方法，</span></p> 
+  <ol> 
+   <li><span style='font-family: 宋体; font-size: 10.5pt;'>把上面的那些功能点拆分成不同的</span><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>单元<font face='Times New Roman'>(unit)&nbsp;</font></span><span style='font-family: 宋体; font-size: 10.5pt;'>:&nbsp;<font face='宋体'>每个单元实现一个单独功能，&nbsp;单元要求是：&nbsp;接受对应的数据输入，&nbsp;返回相应的数据输出。&nbsp;于是我根据这个拆分为&nbsp;</font></span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>“</span><span style='font-family: 宋体; font-size: 10.5pt;'>根据某个词返回相近词</span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>”</span><span style='font-family: 宋体; font-size: 10.5pt;'>，&nbsp;</span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>“</span><span style='font-family: 宋体; font-size: 10.5pt;'>对某个单字返回最合适的词（根据词频和分类标签<font face='Times New Roman'>)</font></span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>”</span><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;，</span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>”</span><span style='font-family: 宋体; font-size: 10.5pt;'>通过用户<font face='Times New Roman'>id</font><font face='宋体'>获取浏览商品记录”&nbsp;“获取当前购物车</font></span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>”</span><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;</span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>“</span><span style='font-family: 宋体; font-size: 10.5pt;'>直接把某个商品放入某个用户<font face='Times New Roman'>id</font><font face='宋体'>浏览历史记录里</font></span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>”</span><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;,</span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>”</span><span style='font-family: 宋体; font-size: 10.5pt;'>设置购买记录</span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>”</span><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;</span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>“</span><span style='font-family: 宋体; font-size: 10.5pt;'>获取购买记录</span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>”</span><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;</span><span style='font-family: 'Times New Roman'; font-size: 10.5pt;'>“</span><span style='font-family: 宋体; font-size: 10.5pt;'>发送数据到推荐系统接口“&nbsp;等单元。&nbsp;&nbsp;</span></li> 
+  </ol> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;</span></p> 
+  <ol start='2'> 
+   <li><span style='font-family: 宋体; font-size: 10.5pt;'>编写数据提供器，&nbsp;我的数据提供器是各种数组（比如：&nbsp;用来测试的用户<font face='Times New Roman'>id</font><font face='宋体'>的数组，&nbsp;对应用户</font><font face='Times New Roman'>id&nbsp;</font><font face='宋体'>需要放入浏览记录的商品</font><font face='Times New Roman'>id&nbsp;</font><font face='宋体'>数组</font><font face='Times New Roman'>,&nbsp;</font><font face='宋体'>需要放入购物车的商品</font><font face='Times New Roman'>id&nbsp;</font><font face='宋体'>数组</font><font face='Times New Roman'>,&nbsp;&nbsp;</font><font face='宋体'>放入历史购买记录的商品</font><font face='Times New Roman'>id&nbsp;</font><font face='宋体'>数组&nbsp;等等数据）</font></span></li> 
+   <li><span style='font-family: 宋体; font-size: 10.5pt;'>编写测试代码，&nbsp;依次迭代上面的数据提供器，根据数据提供器的描述，&nbsp;对测试数据进行声称，&nbsp;测试代码通过这些数据调用上面的&nbsp;功能单元，&nbsp;判断返回结果。&nbsp;当然，&nbsp;当时我没有使用任何单元测试工具提供的断言工具，&nbsp;而只是直接输出返回数据，&nbsp;但是已经让我的工作效率提升了很多。&nbsp;而且对每一个<font face='Times New Roman'>unit&nbsp;</font><font face='宋体'>的结果都能做到心中有数。&nbsp;并且在以后发现问题时候，&nbsp;通过修改数据提供器，&nbsp;执行测试后能快速定位到哪一个</font><font face='Times New Roman'>unit&nbsp;</font><font face='宋体'>出现的问题。&nbsp;让我受益匪浅</font><font face='Times New Roman'>~</font></span></li> 
+  </ol> 
+  <p style='text-align:justify;'><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;</span></p> 
+  <p style='text-align:justify;'><span style='font-family: 宋体; font-size: 10.5pt;'>诚然，当时我并不知道这就是单元测试<font face='Times New Roman'>(unittest)</font><font face='宋体'>的雏形，&nbsp;但是这个过程，和我理解的单元测试是一致的：</font></span></p> 
+  <p style='text-align:justify;'><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;1<font face='宋体'>）缩短编码和运行周期，&nbsp;使用单元测试，&nbsp;我能保持我代码保持能立即执行的节奏，比如实现“对某个单字返回最合适的词”&nbsp;这个单元时，&nbsp;我就可以切开两个窗口</font><font face='Times New Roman'>(vim</font><font face='宋体'>里可以</font><font face='Times New Roman'>ctrl+w,&nbsp;s)&nbsp;,</font><font face='宋体'>左边窗口写我这个单元的代码，&nbsp;右边窗口写对应这个单元的测试，再开一个</font><font face='Times New Roman'>shell&nbsp;</font><font face='宋体'>执行这个单元测试，并维持</font><font face='Times New Roman'>30-60</font><font face='宋体'>秒执行一次的节奏，&nbsp;检查这个单元代码的执行情况，&nbsp;并最后直到单元测试通过的标准。&nbsp;而我们传统的编写方式，可能需要在编写几百行代码后才执行一次，而且编写到执行的周期如此之长，步骤之多是可以想象的。</font></span></p> 
+  <p style='text-align:justify;'><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;2)&nbsp;<font face='宋体'>保持结果的确定性</font><font face='Times New Roman'>,&nbsp;</font><font face='宋体'>通过每个单元的单元测试，通过单元测试里的断言代码</font><font face='Times New Roman'>(assertEquals&nbsp;AssertTrue)&nbsp;,&nbsp;</font><font face='宋体'>我们就可以保证，通过我们给单元功能的一些数据执行后，返回的数据是我们确定正确的，&nbsp;这样，我们在以后对代码进行任何修改的时候，&nbsp;如果要检查是否对之前功能进行了破坏，&nbsp;只要再次执行所有单元测试代码即可进行检查（呵呵，这就到了</font><font face='Times New Roman'>CI&nbsp;</font><font face='宋体'>持续集成的范畴了</font><font face='Times New Roman'>)</font></span></p> 
+  <p style='text-align:justify;'><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;3)&nbsp;&nbsp;<font face='宋体'>增强了对自己代码的信心：&nbsp;当你的单元测试都通过了，你可以自信的说句，&nbsp;我这里代码没问题</font><font face='Times New Roman'>.(</font><font face='宋体'>额</font><font face='Times New Roman'>,&nbsp;</font><font face='宋体'>大概吧，实际上，自己写的单元测试也很难避免一些坑。。。）</font></span></p> 
+  <p style='text-align:justify;'><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;4)&nbsp;&nbsp;<font face='宋体'>单元测试也可以作为文档使用，&nbsp;当你写好了代码的单元测试，&nbsp;有同事需要调用你的接口，直接跟他说“你看我单元测试吧”。</font></span></p> 
+  <p style='text-align:justify;'><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;</span></p> 
+  <p style='text-align:justify;'><span style='font-family: 宋体; font-size: 10.5pt;'>我认为对单元测试的一些误区：</span></p> 
+  <ol> 
+   <li><span style='font-family: 宋体; font-size: 10.5pt;'>片面强调代码覆盖率，&nbsp;有个同事喜欢不断强调什么代码覆盖，我很想问他凭什么，如果坚持测试代码驱动，&nbsp;那么根据测试代码写得生产代码，在这种原则下说代码覆盖有意义么？&nbsp;</span></li> 
+   <li><span style='font-family: 宋体; font-size: 10.5pt;'>单元测试不会影响开发效率。“稍后再写测试”实际工作中是不可能的，&nbsp;代码完成后写测试，仔细看来，这种测试可以达到很高的覆盖率，是的，但是你的测试代码是根据你产品代码产生的，没有很高的覆盖率才奇怪了呢。。。但是这种代码后的测试只是一种防守。&nbsp;而先行写的测试则是进攻，&nbsp;事后写的测试已经受制于你的代码，&nbsp;而代码又是你写成的，你主观上已经规避了某些问题。</span></li> 
+  </ol> 
+  <p style='text-align:justify;'><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;</span></p> 
+  <h3><span style='font-family: 宋体; font-size: 14pt;'>二&nbsp;<font face='Times New Roman'>TDD</font><font face='宋体'>行为准则</font></span></h3> 
+  <ol> 
+   <li><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>在编写好某个功能单元（<font face='Times New Roman'>unit)</font><font face='宋体'>的单元测试</font><font face='Times New Roman'>(</font><font face='宋体'>失败的单元测试前）&nbsp;不要写任何产品代码</font></span><span style='font-family: 宋体; font-size: 10.5pt;'>。</span></li> 
+  </ol> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>从<font face='Times New Roman'>TDD(</font><font face='宋体'>测试驱动开发）这个词就可以看出，&nbsp;整个开发流程是以测试代码驱动的，&nbsp;它最主要的核心是测试现行，&nbsp;先写某一个</font><font face='Times New Roman'>unit&nbsp;</font><font face='宋体'>的测试代码，然后通过这个测试代码为基础，实现生产代码。&nbsp;比如我上面那个“获取某个用户购物车数据”&nbsp;，我们就可以先写如下测试代码：</font></span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;Class&nbsp;CartTest&nbsp;extends&nbsp;PHPUnit_Frameword_TestCase</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;{</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Public&nbsp;testGetCart()&nbsp;{</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$userid&nbsp;=&nbsp;123;</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$cart&nbsp;=&nbsp;new&nbsp;Cart();</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$data&nbsp;=&nbsp;$cart-&gt;getCarts($usrid);</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;assertNotEmpty($data);</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;assertTrue(is_array($data));</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;}</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>而这时，我们的生产代码还没有实现，这时我们的生产代码是这样<font face='Times New Roman'>:</font></span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>Class&nbsp;&nbsp;Cart</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>{</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>Public&nbsp;function&nbsp;getCarts($userId)&nbsp;</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>{</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;<font face='宋体'>没实现</font></span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>}</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>}</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>所以，这个时候我们执行单元测试时候，会直接显示&nbsp;<font face='Times New Roman'>F(</font><font face='宋体'>表示我们这个单元测试结果失败</font><font face='Times New Roman'>)&nbsp;&nbsp;</font><font face='宋体'>这时正常的，&nbsp;这就需要我们下一步去实现我们的单元测试，</font></span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>Public&nbsp;function&nbsp;getCart($userId)&nbsp;{</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>//&nbsp;<font face='宋体'>通过</font><font face='Times New Roman'>$userId&nbsp;</font><font face='宋体'>获取购物车内容</font></span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>return&nbsp;$carts;</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>}</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>这样，执行<font face='Times New Roman'>phpunit&nbsp;</font><font face='宋体'>单元测试，&nbsp;代码执行通过（控制台会显示一个&nbsp;</font><font face='Times New Roman'>.&nbsp;</font><font face='宋体'>表示通过</font><font face='Times New Roman'>),&nbsp;</font><font face='宋体'>这样我们就可以继续下一个单元的开发了。</font></span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;</span></p> 
+  <ol> 
+   <li><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>只要有一个单元测试失败了，&nbsp;就不要写单元测试代码</span><span style='font-family: 宋体; font-size: 10.5pt;'>。</span></li> 
+  </ol> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>很多同学遵守先行测试的<font face='Times New Roman'>TDD</font><font face='宋体'>准则，&nbsp;但是会有个情况发生，比如这种代码</font><font face='Times New Roman'>:</font></span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>Class&nbsp;CartTest&nbsp;extends&nbsp;PHPUnit_Frameword_TestCase</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;{</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Public&nbsp;testGetCart()&nbsp;{</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$userid&nbsp;=&nbsp;123;</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$cart&nbsp;=&nbsp;new&nbsp;Cart();</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$data&nbsp;=&nbsp;$cart-&gt;getCarts($usrid);</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;assertNotEmpty($data);</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;assertTrue(is_array($data));</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Public&nbsp;testAddCart()</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$cartData&nbsp;=&nbsp;array(....);</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$cart&nbsp;=&nbsp;new&nbsp;Cart();</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;assertTrue($cart-&gt;addCart($cartData));</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;<font face='宋体'>等等，单元测试代码</font></span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;&nbsp;&nbsp;}</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>但是在生产代码里，&nbsp;所有的方法都没实现。。。</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>这样执行单元测试，&nbsp;全是一堆<font face='Times New Roman'>F.&nbsp;</font></span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>这样会有个问题，就是容易造成不知道从何入手开始完成这些测试代码。&nbsp;造成各种混乱。&nbsp;所以，应该是&nbsp;&nbsp;测试代码<font face='Times New Roman'>-</font><font face='宋体'>》&nbsp;生产代码&nbsp;</font><font face='Times New Roman'>-</font><font face='宋体'>》测试代码</font><font face='Times New Roman'>-</font><font face='宋体'>》生产代码不断循环，&nbsp;两套代码互相增长，互相补充。&nbsp;两者相辅相成。</font></span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;</span></p> 
+  <ol> 
+   <li><span style='font-family:'宋体';font-size:10.5000pt;font-weight:bold;'>产品代码恰好能够让当前失败的单元测试成功通过即可，&nbsp;不要多</span><span style='font-family: 宋体; font-size: 10.5pt;'>写。&nbsp;一个单元以实现一个功能的<font face='Times New Roman'>unit&nbsp;</font><font face='宋体'>为主，&nbsp;这就需要我们在一开始设计时隔离出待测试的代码功能，&nbsp;为了编写测试，我们首先考虑吧单个</font><font face='Times New Roman'>unit&nbsp;</font><font face='宋体'>解耦，&nbsp;如果在一个生产函数里实现了过多“附加功能”，减少了代码覆盖率是一定的，而且因为不是单元测试驱动要实现的，&nbsp;或让代码耦合度加大，最后变成最终产品无法测试的情况。</font></span></li> 
+  </ol> 
+  <p style='text-align:justify;'><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;</span></p> 
+  <h3><span style='font-family: 宋体; font-size: 16pt;'>三．</span><span style='font-family: 宋体; font-size: 16pt;'>练习</span></h3> 
+  <p><span style='font-family:'宋体';font-size:10.5000pt;'>事实上，&nbsp;<font face='Times New Roman'>TDD</font><font face='宋体'>的方法对于我们来说，开始很难习惯，行为规范很难调整过来，&nbsp;所以一些国外的程序员团队流行平时做一些练习，&nbsp;使用</font><font face='Times New Roman'>TDD</font><font face='宋体'>的方法，写一些小功能，在不断练习中达到纯熟，并且有利于训练问题与解决方案之间联系。&nbsp;在</font><font face='Times New Roman'>&lt;then&nbsp;clean&nbsp;coder&nbsp;&gt;</font><font face='宋体'>这本书里提出的一个叫做卡塔的活动很有意思</font><font face='Times New Roman'>,Rob</font><font face='宋体'>写到，</font></span></p> 
+  <p><span style='font-family:'宋体';font-size:10.5000pt;'>“<font face='Times New Roman'>2005</font><font face='宋体'>年我出席在英国谢菲尔德举办的</font><font face='Times New Roman'>xp2005</font><font face='宋体'>大会，会上我参加了”编程柔道场</font></span><span style='font-family:'Times New Roman';font-size:10.5000pt;'>”</span><span style='font-family:'宋体';font-size:10.5000pt;'>的主题活动，跟他们一起用测试驱动开发来编写<font face='Times New Roman'>Conway</font></span><span style='font-family:'Times New Roman';font-size:10.5000pt;'>’</span><span style='font-family:'宋体';font-size:10.5000pt;'>s&nbsp;Game&nbsp;of&nbsp;life&nbsp;<font face='宋体'>，&nbsp;他们称其为“卡塔”</font></span><span style='font-family:'Times New Roman';font-size:10.5000pt;'>”</span></p> 
+  <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+  <p><span style='font-family:'宋体';font-size:10.5000pt;'>于是我把卡塔习题下载了下来，&nbsp;并用<font face='Times New Roman'>php</font><font face='宋体'>改写了下，&nbsp;很有意思，&nbsp;到时候我放到网盘共享下。</font></span></p> 
+  <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+  <h3><span style='font-family: 宋体; font-size: 16pt;'>四．</span><span style='font-family: 宋体; font-size: 16pt;'>&nbsp;懒得写了</span></h3> 
+  <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;&nbsp;&nbsp;&nbsp;就写这么多吧，&nbsp;<font face='Times New Roman'>phpunit&nbsp;</font><font face='宋体'>具体使用很简单，&nbsp;手册也说的很清楚，或者照着别人的单元测试写一下也行，我这里主要说的是单元测试，没有覆盖功能测试，&nbsp;功能测试在对于我们</font><font face='Times New Roman'>web</font><font face='宋体'>开发实现起来很麻烦，&nbsp;我以前使用过</font><font face='Times New Roman'>SeleniumServer&nbsp;</font><font face='宋体'>实现</font><font face='Times New Roman'>web</font><font face='宋体'>的功能测试。&nbsp;但是后来还是比较难用，&nbsp;最近考虑使用</font><font face='Times New Roman'>php</font><font face='宋体'>实现一个</font><font face='Times New Roman'>brower&nbsp;client&nbsp;</font><font face='宋体'>模拟，&nbsp;实际</font><font face='Times New Roman'>symfony2&nbsp;</font><font face='宋体'>就实现了个这么个东东，&nbsp;看了下，里面一个</font><font face='Times New Roman'>kernel&nbsp;</font><font face='宋体'>就几万行代码了，&nbsp;超级复杂，</font><font face='Times New Roman'>symfony2&nbsp;</font><font face='宋体'>的解耦很好，实际直接拿过来就行了，&nbsp;可惜是</font><font face='Times New Roman'>php5.4</font><font face='宋体'>实现的，，</font><font face='Times New Roman'>namespace,&nbsp;static::&nbsp;use</font><font face='宋体'>闭包等功能目前</font><font face='Times New Roman'>php5.2</font><font face='宋体'>铁定不能用，&nbsp;而我目前没有改造计划的想法。。。</font></span></p> 
+  <p style='text-align:justify;'><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;</span></p> 
+  <p><span style='font-family: 宋体; font-size: 10.5pt;'>&nbsp;</span></p> 
+  <p><span style='font-family:'宋体';font-size:10.5000pt;'>另：&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>phpunit&nbsp;--coverage-html&nbsp;./</span><span style='font-family:'宋体';font-size:10.5000pt;'>Tesclass&nbsp;</span><span style='font-family:'宋体';font-size:10.5000pt;'>测试文件</span><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;可以出代码覆盖率报告，&nbsp;但是我总觉得，&nbsp;如果你真的按照<font face='Times New Roman'>TDD</font><font face='宋体'>的准测开发，&nbsp;你的代码根据测试进行驱动的，&nbsp;那么你的代码覆盖率就是高（因为代码就是为了实现测试写的），除非你写了很多测试功能要求以外的东西。&nbsp;这个代码覆盖率，个人觉得也就那种写好代码后写测试的才会考虑的吧。</font></span></p> 
+  <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+  <p><span style='font-family:'宋体';font-size:10.5000pt;'>&nbsp;</span></p> 
+ </div> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-227.html">Subversion简明手册--使用hooksvn</a>
+				|
+				 <a href="http://onelose.com/post-242.html">mysql中迅速插入百万条测试数据的方法</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="229" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-382.html">在Windows下编译PHP和PHP扩展</a></li>
+		<li><a href="http://onelose.com/post-327.html">Larbin的安装与配置</a></li>
+		<li><a href="http://onelose.com/post-63.html">如果有～</a></li>
+		<li><a href="http://onelose.com/post-369.html">如何查看某个端口被谁占用</a></li>
+		<li><a href="http://onelose.com/post-425.html">NODE.JS应用入门之中文分词模块（基于Sphinx）</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

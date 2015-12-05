@@ -1,0 +1,3537 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+<channel>
+<title><![CDATA[迷茫者]]></title> 
+<description><![CDATA[迷茫者王者归来。]]></description>
+<link>http://onelose.com/</link>
+<language>zh-cn</language>
+<generator>www.emlog.net</generator>
+<item>
+	<title>让MYSQL支持外部链接</title>
+	<link>http://onelose.com/post-187.html</link>
+	<description><![CDATA[<p>
+	第一步：
+</p>
+<blockquote>
+	<p>
+		grant all privileges on *.* to&nbsp;<a href="mailto:'yourname'@'%'">'yourname'@'%'</a>&nbsp;identified by 'youpasswd';
+	</p>
+</blockquote>
+<p>
+	第二步:
+</p>
+<blockquote>
+	<p>
+		flush privileges;
+	</p>
+</blockquote>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>]]></description>
+	<pubDate>Thu, 02 Jan 2014 12:41:07 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-187.html</guid>
+
+</item>
+<item>
+	<title>MYSQL自增长异常（达到最大值），修改自增长值</title>
+	<link>http://onelose.com/post-186.html</link>
+	<description><![CDATA[<p>
+	<span style="line-height:1.5;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;今天在公司测试自己写的功能，发现一张表不能插入数据。原因是表的自增长值已经达到了最大值，而表的实际行数远远没有达到最大值，可能是某个程序异常。下面是针对数据库部分的解决方法：</span>
+</p>
+<blockquote>
+	<p>
+		<span style="line-height:1.5;">查询某个表增长的最大值</span>
+	</p>
+	<p>
+		SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = '表名';
+	</p>
+<span>修改某个表增长的最大值<br />
+</span> ALTER TABLE 表名 AUTO_INCREMENT = 200; （从200开始自动增长）
+</blockquote>]]></description>
+	<pubDate>Thu, 02 Jan 2014 10:12:34 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-186.html</guid>
+
+</item>
+<item>
+	<title>笔记5</title>
+	<link>http://onelose.com/post-174.html</link>
+	<description><![CDATA[<div class="Section0">
+	<h1>
+		昨日回顾
+	</h1>
+	<p class="p0">
+		文字样式：
+	</p>
+	<p class="p0">
+		color:&nbsp;&nbsp;<span>文字颜色</span>
+	</p>
+	<p class="p0">
+		font-size:&nbsp;
+	</p>
+	<p class="p0">
+		font-style:
+	</p>
+	<p class="p0">
+		font-weight:
+	</p>
+	<p class="p0">
+		font-family:
+	</p>
+	<p class="p0">
+		text-decoration:&nbsp;&nbsp;<span>文字修饰：下划线</span><span>(underline)&nbsp;</span><span>中划线&nbsp;&nbsp;上划线&nbsp;&nbsp;无</span><span>(none)</span>
+	</p>
+	<p class="p0">
+		text-indent:&nbsp;<span>首行缩进</span>
+	</p>
+	<p class="p0">
+		text-align:&nbsp;<span>文字水平对其</span>
+	</p>
+	<p class="p0">
+		letter-spacing:&nbsp;<span>字母间距，含中文字间距</span>
+	</p>
+	<p class="p0">
+		word-spacing:&nbsp;<span>单词间距。</span>
+	</p>
+	<p class="p0">
+		line-height:&nbsp;&nbsp;<span>行高</span>
+	</p>
+	<p class="p0">
+		vertical-align:&nbsp;&nbsp;<span>文字垂直对齐</span>
+	</p>
+	<p class="p0">
+		盒子模型：
+	</p>
+	<p class="p0">
+		margin<span>：外边距：</span>
+	</p>
+	<p class="p0">
+		border<span>：边框</span>
+	</p>
+	<p class="p0">
+		padding<span>：内边距</span>
+	</p>
+	<p class="p0">
+		内容区：<span>width</span><span>，</span><span>height</span>
+	</p>
+	<p class="p0">
+		<img width="376" height="232" src="file://C:\Users\dpp\AppData\Local\Temp\ksohtml\wps_clip_image-4633.png" />
+	</p>
+	<p class="p0">
+		如果盒子上下放置，则可以直接实现。
+	</p>
+	<p class="p0">
+		如果盒子要想实现左右放置，则需要进行浮动：
+	</p>
+	<p class="p0">
+		float<span>：</span><span>left</span><span>：</span>
+	</p>
+	<p class="p0">
+		float<span>：</span><span>right</span><span>：</span>
+	</p>
+	<p class="p0">
+		则此时需要对外层盒子（父盒子）进行高度处理：
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		1，&nbsp;设定固定高度
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		2，&nbsp;清除浮动以获得自然高度：
+	</p>
+	<p class="p0" style="margin-left:63.0000pt;text-indent:-21.0000pt;">
+		a)&nbsp;给父盒子设置：<span>overflow:hidden</span>
+	</p>
+	<p class="p0" style="margin-left:63.0000pt;text-indent:-21.0000pt;">
+		b)&nbsp;给父盒子额外添加一个清除浮动的空<span>div</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		布局思想：
+	</p>
+	<p class="p0">
+		我们的整个网页无非是一级一级往下分割的过程，分隔只有两个模式：
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		1，&nbsp;上下分割：只要使用几个<span>div</span><span>，自然就分开了</span>
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		2，&nbsp;左右分割：需要使用几个<span>div</span><span>并对他们进行浮动处理。</span>
+	</p>
+	<p class="p0" style="margin-left:63.0000pt;text-indent:-21.0000pt;">
+		a)&nbsp;分为<span>2</span><span>个：通常是一左一右进行浮动</span>
+	</p>
+	<p class="p0" style="margin-left:63.0000pt;text-indent:-21.0000pt;">
+		b)&nbsp;分为<span>3</span><span>个：通常是两左一右浮动，也可也两右一左浮动。</span>
+	</p>
+	<p class="p0" style="margin-left:63.0000pt;text-indent:-21.0000pt;">
+		c)&nbsp;如果更多，通常是往一个方向浮动
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		3，&nbsp;对浮动元素，我们需要对其父盒子进行高度的特别处理：
+	</p>
+	<p class="p0" style="margin-left:63.0000pt;text-indent:-21.0000pt;">
+		a)&nbsp;设定固定高度：使其能够包住子盒子
+	</p>
+	<p class="p0" style="margin-left:63.0000pt;text-indent:-21.0000pt;">
+		b)&nbsp;清除浮动以获得自然高度：
+	</p>
+	<p class="p0" style="margin-left:84.0000pt;text-indent:-21.0000pt;">
+		i.&nbsp;给父盒子设置：<span>overflow:hidden</span>
+	</p>
+	<p class="p0" style="margin-left:84.0000pt;text-indent:-21.0000pt;">
+		ii.&nbsp;给父盒子额外添加一个清除浮动的空<span>div</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		overflow:&nbsp;hidden<span>的两个用处：</span>
+	</h1>
+	<p class="p0">
+		1,<span>如果一个盒子设定的固定宽高，则其</span><span>overflow</span><span>会使其内部的盒子（如果超出了该盒子的边界）超出部分不可见（</span><span>hidden</span><span>含义）</span><span>.</span>
+	</p>
+	<p class="p0">
+		2,<span>如果一个盒子没有设定固定宽高，且其子盒子有浮动，则其本身会获得“自然高度”，这就是所谓的“清除浮动的效果。</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		页面的<span>css</span><span>初始化</span>
+	</h1>
+	<p class="p0">
+		在<span>html</span><span>的原始表现上，实际上每个浏览器或多或少总会有差别。</span>
+	</p>
+	<p class="p0">
+		我们的目标是：我们开发的网页应该在用户面前（不管是用什么浏览器）都表现一致。
+	</p>
+	<p class="p0">
+		则我们的处理办法是：
+	</p>
+	<p class="p0">
+		将所有<span>html</span><span>的原始表现（即其“表形功能”）全部去除，其每一个外观表现都由我们自己来使用</span><span>css</span><span>设定。</span>
+	</p>
+	<p class="p0">
+		这样，我们就会使用一个“清除原始<span>html</span><span>格式”的</span><span>css</span><span>文件来达到“去除初始样式”的目的。</span>
+	</p>
+	<p class="p0">
+		我们可以使用<span>link</span><span>标签来引入一个外部的</span><span>css</span><span>文件：</span>
+	</p>
+	<p class="p0" style="margin-left:21.0000pt;text-indent:21.0000pt;">
+		&lt;link&nbsp;rel="stylesheet"&nbsp;type="text/css"&nbsp;href="init.css"&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		样式分类：
+	</h1>
+	<p class="p0">
+		行内样式：&nbsp;在标签上使用<span>style</span><span>属性设定的样式——偶尔临时用。</span>
+	</p>
+	<p class="p0">
+		&lt;<span>标签&nbsp;&nbsp;</span><span>style=</span>”声明<span>1</span><span>；声明</span><span>2</span><span>；</span>……&nbsp;”&nbsp;&gt;….&lt;/<span>标签</span><span>&gt;</span>
+	</p>
+	<p class="p0">
+		页内样式：在网页中使用<span>style</span><span>标签设定的样式：</span>
+	</p>
+	<p class="p0">
+		&lt;style&gt;
+	</p>
+	<p class="p0">
+		选择器&nbsp;<span>{</span><span>声明</span><span>1</span><span>；声明</span><span>2</span><span>；</span>……&nbsp;}
+	</p>
+	<p class="p0">
+		&lt;/style&gt;
+	</p>
+	<p class="p0">
+		外部样式：在网页中使用<span>link</span><span>标签导入一个外部的</span><span>css</span><span>文件：</span>
+	</p>
+	<p class="p0">
+		&lt;link&nbsp;type=”text/css”&nbsp;rel=”stylesheet”&nbsp;href=”外部<span>css</span><span>文件</span><span>url</span>”&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		导入样式：在<span>css</span><span>文件中使用</span><span>import</span><span>命令引入一个其他</span><span>css</span><span>文件。注意，该命令必须在最前面出现，且分号结束：——不推荐使用。</span>
+	</p>
+	<p class="p0">
+		@import&nbsp;&nbsp;url(“其他<span>css</span><span>文件</span><span>url</span>”);&nbsp;
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		两个样式细节语法：
+	</p>
+	<p class="p0">
+		格式：标签名<span>.</span><span>类名&nbsp;</span><span>{&nbsp;&nbsp;</span><span>声明</span><span>1</span><span>；声明</span><span>2</span><span>；</span>……&nbsp;&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		含义：指具有该类名的该标签。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		盒子深入
+	</h1>
+	<p class="p0">
+		盒子实际占据的“版面区域”其实是由以下几部分构成（从外到里）：
+	</p>
+	<p class="p0">
+		margin<span>（外边距）&nbsp;</span><span>border</span><span>（边框）&nbsp;</span><span>padding</span><span>（内边距）&nbsp;&nbsp;内容区（</span><span>width,&nbsp;height</span><span>）</span>
+	</p>
+	<p class="p0">
+		一个盒子的实际占宽构成：
+	</p>
+	<p class="p0">
+		margin-left&nbsp;&nbsp;+&nbsp;&nbsp;border-left&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;padding-left&nbsp;&nbsp;+&nbsp;&nbsp;width&nbsp;+&nbsp;padding-right&nbsp;+&nbsp;border-right&nbsp;+&nbsp;margin-right
+	</p>
+	<p class="p0">
+		一个盒子的实际占高构成：
+	</p>
+	<p class="p0">
+		margin-top&nbsp;&nbsp;+&nbsp;&nbsp;border-top&nbsp;+&nbsp;padding-top&nbsp;+&nbsp;height&nbsp;+&nbsp;padding-&nbsp;bottom&nbsp;+&nbsp;border-&nbsp;bottom&nbsp;+&nbsp;margin-bottom
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		margin<span>分解：</span>
+	</p>
+	<p class="p0">
+		margin-top:&nbsp;
+	</p>
+	<p class="p0">
+		margin-right:
+	</p>
+	<p class="p0">
+		margin-bottom:
+	</p>
+	<p class="p0">
+		margin-left:
+	</p>
+	<p class="p0">
+		margin<span>的设定可以有如下形式：</span>
+	</p>
+	<p class="p0">
+		margin:&nbsp;5px;	——&nbsp;四周的<span>margin</span><span>都是</span><span>5px</span>
+	</p>
+	<p class="p0">
+		margin:&nbsp;5px&nbsp;&nbsp;10px;&nbsp;&nbsp;<span>——上下为</span><span>5px</span><span>，左右为</span><span>10px</span>
+	</p>
+	<p class="p0">
+		margin:&nbsp;5px&nbsp;&nbsp;10px&nbsp;&nbsp;15px&nbsp;<span>——上</span><span>5px</span><span>，下</span><span>15px</span><span>，&nbsp;左右为</span><span>10px</span><span>。这个语法不推荐</span>
+	</p>
+	<p class="p0">
+		margin<span>：</span><span>5px&nbsp;&nbsp;10px&nbsp;&nbsp;15px&nbsp;&nbsp;20px&nbsp;&nbsp;</span><span>——上右下左分别是</span><span>5</span><span>，</span><span>10</span><span>，&nbsp;</span><span>15</span><span>，&nbsp;</span><span>20</span>
+	</p>
+	<p class="p0">
+		此时，<span>margin</span><span>其实就是我们常说的“</span>复合属性”
+	</p>
+	<p class="p0">
+		padding<span>分解：</span>
+	</p>
+	<p class="p0">
+		同上。
+	</p>
+	<p class="p0">
+		border<span>分解：</span>
+	</p>
+	<p class="p0">
+		border-top:&nbsp;solid&nbsp;2px&nbsp;blue;	也可以单独写，比如：
+	</p>
+	<p class="p0">
+		border-top-style:&nbsp;<span>设定线型，比如&nbsp;</span><span>solid</span><span>，&nbsp;</span><span>dashed</span><span>，&nbsp;</span><span>dotted</span>
+	</p>
+	<p class="p0">
+		border-top-width:&nbsp;<span>设定线宽</span>
+	</p>
+	<p class="p0">
+		border-top-color:<span>：设定线颜色</span>
+	</p>
+	<p class="p0">
+		border-right:
+	</p>
+	<p class="p0">
+		同上
+	</p>
+	<p class="p0">
+		border-bottom:&nbsp;
+	</p>
+	<p class="p0">
+		同上
+	</p>
+	<p class="p0">
+		border-left:&nbsp;
+	</p>
+	<p class="p0">
+		同上
+	</p>
+	<p class="p0">
+		还有：
+	</p>
+	<p class="p0">
+		border-style:<span>设定</span><span>4</span><span>个方向的线性，也可以使用</span><span>1-4</span><span>个值，含义同</span><span>margin</span><span>。</span>
+	</p>
+	<p class="p0">
+		border-width:&nbsp;<span>设定</span><span>4</span><span>个方向线宽，同上。</span>
+	</p>
+	<p class="p0">
+		border-color:&nbsp;<span>设定</span><span>4</span><span>个方向线颜色，同上。</span>
+	</p>
+	<p class="p0">
+		border<span>：线性&nbsp;线宽&nbsp;&nbsp;线色：设定</span><span>4</span><span>个方向的</span><span>3</span><span>个特性。</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		背景
+	</h1>
+	<p class="p0">
+		一个盒子可以设定其背景，背景包括背景颜色和背景图。
+	</p>
+	<p class="p0">
+		background-color:&nbsp;red;&nbsp;	设定背景颜色；
+	</p>
+	<p class="p0">
+		background-image:&nbsp;url(<span>图片路径</span><span>);&nbsp;&nbsp;</span><span>设定背景图</span>
+	</p>
+	<p class="p0">
+		background-repeat:&nbsp;<span>设定背景图的重复性，有：</span><span>repeat-x</span><span>（</span><span>x</span><span>方向重复）</span><span>,repeat-y</span><span>（</span><span>y</span><span>方向重复）</span><span>,&nbsp;no-repeat</span><span>（不重复）</span><span>;</span><span>——默认不设置的时候是双向重复的（</span><span>repeat</span><span>）</span>
+	</p>
+	<p class="p0">
+		background-pisition:&nbsp;<span>设定背景图的定位（</span><span>x</span><span>和</span><span>y</span><span>方向）。其定位的初始位置（原点）就是盒子的左上角。其可以使用左中右（</span><span>left</span><span>，</span><span>center</span><span>，</span><span>right</span><span>）&nbsp;上中下</span><span>(top,&nbsp;center,&nbsp;&nbsp;bottom)</span><span>来设定其水平和垂直方向的位置。也可以使用具体的数值，比如：</span><span>5px&nbsp;10px;</span><span>含义是离左边</span><span>5px</span><span>，离顶部</span><span>10px</span>
+	</p>
+	<p class="p0">
+		形式：&nbsp;<span>background-position:&nbsp;&nbsp;</span><span>水平位置&nbsp;&nbsp;垂直位置。</span>
+	</p>
+	<p class="p0">
+		举例：<span>background-position:&nbsp;center&nbsp;center;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>水平和垂直都剧中</span>
+	</p>
+	<p class="p0">
+		background-position:&nbsp;center&nbsp;&nbsp;top;		水平居中，垂直靠上
+	</p>
+	<p class="p0">
+		background-position:&nbsp;5px&nbsp;&nbsp;10px;			x<span>方向向右出来</span><span>5</span><span>个</span><span>px</span><span>，</span><span>y</span><span>方向向下出来</span><span>10</span><span>个</span><span>px</span>
+	</p>
+	<p class="p0">
+		background-position:&nbsp;-5px&nbsp;&nbsp;-10px<span>；&nbsp;同上，方向相反</span>
+	</p>
+	<p class="p0">
+		背景的复合属性：
+	</p>
+	<p class="p0">
+		background:&nbsp;<span>背景颜色&nbsp;&nbsp;背景图&nbsp;&nbsp;&nbsp;背景重复性&nbsp;&nbsp;背景位置。</span>
+	</p>
+	<p class="p0">
+		注：背景复合属性的几个属性值可以任意给定其中的某些，而其他不给定。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		块盒子和行内盒子的相互转换：
+	</h1>
+	<p class="p0">
+		块盒子和行内盒子的区别：
+	</p>
+	<p class="p0">
+		块盒子通常是“较大”的盒子，里面可以放置其他盒子（包括块盒子和行内盒子）以及普通文字。
+	</p>
+	<p class="p0">
+		行内盒子通常是“较小”的盒子，里面通常不能放其他块盒子，以及普通文字。
+	</p>
+	<p class="p0">
+		块盒子可以设定其宽高以及其他<span>margin</span><span>，</span><span>padding</span><span>，</span><span>border</span><span>属性等等。</span>
+	</p>
+	<p class="p0">
+		行内盒子不可以设定宽高，其宽高都是由其内部的内容所决定（撑出来的）
+	</p>
+	<p class="p0">
+		行内盒子还不可以设定其上下边距（<span>margin-top,margin-bottom,&nbsp;padding-top,&nbsp;padding-bottom</span><span>）</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		不过，实际上，行内盒子和块盒子并没有本质的区别，无非是他们的一个固有属性的初始值不同罢了：
+	</p>
+	<p class="p0">
+		对块盒子：<span>display</span><span>的初始值为：</span><span>block</span><span>；</span>
+	</p>
+	<p class="p0">
+		对行内盒子，<span>display</span><span>的初始值为：</span><span>inline</span><span>；</span>
+	</p>
+	<p class="p0">
+		我们也可以人为将他们设定为另一个值，这就是相互转换问题：
+	</p>
+	<p class="p0">
+		&lt;span&nbsp;style=”display:&nbsp;block;”&gt;abc&nbsp;&lt;/span&gt;	——此时该<span>span</span><span>就成为块元素（块盒子）了</span>
+	</p>
+	<p class="p0">
+		&lt;div&nbsp;style=”display:&nbsp;inline;”&gt;abc&nbsp;&lt;/div&gt;	——此时该<span>div</span><span>就成为行内元素（行内盒子）了</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		列表样式：
+	</h1>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		设定前导符类型：	list-style-type:&nbsp;circle&nbsp;//&nbsp;disc&nbsp;//&nbsp;square&nbsp;//&nbsp;&nbsp;lower-roman&nbsp;//&nbsp;lower-alpha&nbsp;…..;
+	</p>
+	<p class="p0">
+		设定前导符位置：	list-style-position:inside&nbsp;//&nbsp;outside;——在<span>li</span><span>里还是外</span>
+	</p>
+	<p class="p0">
+		设定前导图：		list-style-image:url(<span>呱呱</span><span>/images/wenhao..jpg);&nbsp;</span><span>——此时前导符就失效了。</span>
+	</p>
+	<p class="p0">
+		复合属性：			list-style:&nbsp;<span>前导图&nbsp;位置&nbsp;前导符；</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		浮动的其他特性：
+	</h1>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		clear:left;		声明本盒子（元素）左边不要出现浮动元素
+	</p>
+	<p class="p0">
+		clear:right;	声明本盒子（元素）右边不要出现浮动元素
+	</p>
+	<p class="p0">
+		clear:both;	声明本盒子（元素）右边不要出现浮动元素
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+</div><!-- (此文通过<a href="http://xiaosong.org/share/auto-pub-plugin-update">emlog自动发布插件</a>发布) -->]]></description>
+	<pubDate>Mon, 05 Aug 2013 14:28:59 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-174.html</guid>
+
+</item>
+<item>
+	<title>笔记4</title>
+	<link>http://onelose.com/post-173.html</link>
+	<description><![CDATA[<div class="Section0">
+	<h1>
+		昨日重现
+	</h1>
+	<p class="p0">
+		表单：它是一种接受用户输入或选择的数据并可以将其提交到服务器的一种标签。
+	</p>
+	<p class="p0">
+		&lt;form&nbsp;&nbsp;action=”提交给的文件”&nbsp;&nbsp;method=”&nbsp;post&nbsp;//&nbsp;get&nbsp;”&gt;
+	</p>
+	<p class="p0">
+		单行文本框：<span>&lt;input&nbsp;type=</span>”text”&nbsp;name=”n1”&nbsp;value=””&nbsp;size=”20”&nbsp;maxlength=”40”&nbsp;readonly=”&nbsp;readonly”&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		密码框：<span>&lt;input&nbsp;type=</span>”password”&nbsp;name=”n2”&nbsp;size=”20”&nbsp;maxlength=”40”&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		单选项：<span>&lt;input&nbsp;type=</span>”radio”&nbsp;name=”n3”&nbsp;value=”1”&nbsp;checked=”&nbsp;checked”&nbsp;/&gt;<span>男</span>
+	</p>
+	<p class="p0">
+		多选项：<span>&lt;input&nbsp;type=</span>”checkbox”&nbsp;name=”n4”&nbsp;value=”1”&nbsp;checked=”&nbsp;checked”&nbsp;&nbsp;&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		文件域：<span>&lt;input&nbsp;type=</span>”file”&nbsp;name=”n5”&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		隐藏域：<span>&lt;input&nbsp;type=</span>”hidden”&nbsp;name=”n6”&nbsp;value=”abc”&nbsp;&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		提交按钮：<span>&lt;input&nbsp;type=</span>”submit”&nbsp;value=”提交”&nbsp;&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		重置按钮：<span>&lt;input&nbsp;type=</span>”reset”&nbsp;value=”重置”&nbsp;&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		普通按钮：<span>&lt;input&nbsp;type=</span>”button”&nbsp;name=”n9”&nbsp;value=”点我”&nbsp;&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		图片按钮：<span>&lt;input&nbsp;type=</span>”image”&nbsp;src=”图片<span>url</span>”&nbsp;name=”n1”&nbsp;&nbsp;/&gt;&nbsp;<span>——显示为指定的图片，但其功能是</span><span>submit</span>
+	</p>
+	<p class="p0">
+		&lt;select&nbsp;name=”n11”&nbsp;size=”1,&nbsp;2,&nbsp;3&nbsp;…..&nbsp;“&nbsp;&gt;
+	</p>
+	<p class="p0">
+		&lt;option&nbsp;value=”1”&gt;<span>文字</span><span>1&lt;/option&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;option&nbsp;value=”2”&gt;<span>文字</span><span>2&lt;/option&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;/select&gt;
+	</p>
+	<p class="p0">
+		&lt;textarea&nbsp;name=”n12”&nbsp;rows=”5”&nbsp;cols=”30”&gt;&lt;/textarea&gt;
+	</p>
+	<p class="p0">
+		&lt;/form&gt;
+	</p>
+	<p class="p0">
+		框架技术：
+	</p>
+	<p class="p0">
+		&lt;frameset&nbsp;cols=”100,&nbsp;1180”&gt;
+	</p>
+	<p class="p0">
+		&lt;frame&nbsp;src=”&nbsp;某<span>url&nbsp;1</span>”&nbsp;name=”f1”&nbsp;frameborder=”1&nbsp;//&nbsp;0”&nbsp;noresize=”&nbsp;noresize”&nbsp;scrolling=”yes&nbsp;//&nbsp;no&nbsp;“&gt;&lt;/frame&gt;
+	</p>
+	<p class="p0">
+		&lt;frame&nbsp;src=”&nbsp;某<span>url&nbsp;2</span>”&nbsp;name=”f2”&gt;&lt;/frame&gt;
+	</p>
+	<p class="p0">
+		&lt;/frameset&gt;
+	</p>
+	<p class="p0">
+		&lt;frameset&nbsp;&nbsp;rows=”200,&nbsp;*&nbsp;”&gt;
+	</p>
+	<p class="p0">
+		…………………
+	</p>
+	<p class="p0">
+		&lt;/frameset&gt;
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		css<span>几个选择器分类：</span>
+	</p>
+	<p class="p0">
+		id<span>选择器：</span>
+	</p>
+	<p class="p0" style="margin-left:21.0000pt;text-indent:21.0000pt;">
+		#id<span>名&nbsp;</span><span>{</span>……….}
+	</p>
+	<p class="p0">
+		类选择器（<span>class</span><span>选择器）：</span>
+	</p>
+	<p class="p0">
+		.&nbsp;class<span>名&nbsp;</span><span>{&nbsp;&nbsp;</span>……&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		标签选择器：
+	</p>
+	<p class="p0">
+		标签名&nbsp;&nbsp;<span>{</span>……….}
+	</p>
+	<p class="p0">
+		通用选择器：
+	</p>
+	<p class="p0">
+		*&nbsp;&nbsp;{……….}
+	</p>
+	<p class="p0">
+		伪类选择器：&nbsp;是固定的几个名字，并表示特定的含义或状态的选择器。
+	</p>
+	<p class="p0">
+		a:link&nbsp;{……….}
+	</p>
+	<p class="p0">
+		a:visited&nbsp;{……….}
+	</p>
+	<p class="p0">
+		a:hover&nbsp;&nbsp;{……….}
+	</p>
+	<p class="p0">
+		a:active&nbsp;&nbsp;{……….}
+	</p>
+	<p class="p0">
+		a<span>有时候上述设定还不能完全满足我们的需求，则可以继续扩展为如下：</span>
+	</p>
+	<p class="p0">
+		#id1&nbsp;&nbsp;a:link&nbsp;{……….}
+	</p>
+	<p class="p0">
+		#id1&nbsp;&nbsp;a:visited&nbsp;{……….}
+	</p>
+	<p class="p0">
+		#id1&nbsp;&nbsp;a:hover&nbsp;&nbsp;{……….}
+	</p>
+	<p class="p0">
+		#id1&nbsp;&nbsp;a:active&nbsp;&nbsp;{……….}
+	</p>
+	<p class="p0">
+		层级选择器：
+	</p>
+	<p class="p0">
+		选择器<span>1&nbsp;&nbsp;</span><span>选择器</span><span>2&nbsp;&nbsp;{</span>……….}
+	</p>
+	<p class="p0">
+		分组选择器：分组选择器其实只是为了将多个相同效果但不同的选择器集中在一起，简少了代码。
+	</p>
+	<p class="p0">
+		选择器<span>1&nbsp;</span><span>，&nbsp;选择器</span><span>2&nbsp;&nbsp;{</span>……….}
+	</p>
+	<h1>
+		文字<span>/</span><span>段落样式：</span>
+	</h1>
+	<p class="p0">
+		在<span>html</span><span>中，使用的各种数字（大小，长宽）通常都不带单位，</span>
+	</p>
+	<p class="p0">
+		在<span>css</span><span>中，使用的各种数字（大小，长宽）通常都带单位。</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		color:&nbsp;&nbsp;<span>设置文字颜色，可以使用单词颜色，也可以使用</span><span>16</span><span>进制颜色，还可以使用</span><span>rgb</span><span>颜色</span>
+	</p>
+	<p class="p0">
+		font-size:&nbsp;12px<span>；</span> 设置文字大小，单位像素，必须写。对比：<span>&lt;font&nbsp;size=</span>”3”&nbsp;&gt;xxx&lt;/font&gt;
+	</p>
+	<p class="p0">
+		font-weight:&nbsp;bold&nbsp;//&nbsp;normal;&nbsp;&nbsp;<span>设置文字为粗体或非粗体。如果不写则默认是正常。如果要设置为非粗体，则使用</span><span>normal</span>
+	</p>
+	<p class="p0">
+		font-family:&nbsp;<span>宋体</span><span>,&nbsp;</span><span>仿宋</span><span>,&nbsp;arial</span><span>；&nbsp;设置文字的字体，可以写多个，按顺序依次适用。</span>
+	</p>
+	<p class="p0">
+		font-style<span>：</span><span>italic&nbsp;//&nbsp;normal;&nbsp;&nbsp;</span><span>设置文字为斜体或非斜体</span>
+	</p>
+	<p class="p0">
+		line-height<span>：</span><span>15px&nbsp;</span><span>设置文字的行高。</span>
+	</p>
+	<p class="p0">
+		letter-spacing<span>：&nbsp;</span> 设置字母之间的间距，包括中文单字
+	</p>
+	<p class="p0">
+		word-spacing<span>：</span> 设置单词（或字）之间的间距，对中文无效。
+	</p>
+	<p class="p0">
+		text-align<span>：</span> 设置文字的水平对其方式（<span>left</span><span>，&nbsp;</span>center，&nbsp;<span>right</span><span>）</span>
+	</p>
+	<p class="p0">
+		text-indent<span>：</span> 设置一段文字的首行缩进，对中文通常有需求。
+	</p>
+	<p class="p0">
+		vertical-align<span>：</span> 设置文字的垂直对其方式（<span>top</span><span>，&nbsp;</span><span>middle</span><span>，&nbsp;</span><span>bottom</span><span>）</span>
+	</p>
+	<p class="p0">
+		text-decoration:&nbsp;	设置文字的划线方式：<span>underline(</span><span>下划线</span><span>),&nbsp;line-through</span><span>（中划线，删除线），上划线（</span><span>overline</span><span>）</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		盒子初步
+	</h1>
+	<p class="p0">
+		所谓“盒子”，其实就是指能够“包容”一定的“内容”（物体）的区域范围，通常都是由一个标签（元素）来表现。比如，<span>div</span><span>，</span><span>p</span><span>，</span><span>h1</span><span>，</span><span>span</span><span>，</span><span>b</span><span>，。。。。。</span>
+	</p>
+	<p class="p0">
+		——我们可以认为，几乎所有标签其实都是一个盒子。
+	</p>
+	<p class="p0">
+		一个盒子通常具有如下几个部分构成：
+	</p>
+	<p class="p0">
+		边框：<span>border</span><span>：可以设定每个方向边框的线形，粗细和颜色</span>
+	</p>
+	<p class="p0">
+		内容区：可以设定宽高<span>width</span><span>，</span><span>height</span><span>。也就是说，设置一个盒子的宽高，只是其内容区的宽高。</span>
+	</p>
+	<p class="p0">
+		内边距：<span>padding</span><span>：可以设定每个方向&nbsp;的</span><span>padding</span>
+	</p>
+	<p class="p0">
+		外边距：<span>margin</span><span>：可以设定每个方向的&nbsp;</span><span>margin</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		以后我们会大量使用<span>div</span><span>这个“典型盒子”</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		盒子的初始表现（行内元素和块元素）：
+	</h1>
+	<p class="p0">
+		有些盒子，初始状态（即<span>html</span><span>初始表现），其本身就独占一行——这种就被称为“块元素”。</span>
+	</p>
+	<p class="p0">
+		比如：<span>div,&nbsp;&nbsp;p,&nbsp;h1~h6,&nbsp;hr,&nbsp;&nbsp;table,&nbsp;pre,&nbsp;&nbsp;blockquote,&nbsp;</span>
+	</p>
+	<p class="p0">
+		有些盒子，初始状态（即<span>html</span><span>初始表现），其本身会尽量在一行内显示，除非一行满了以后才自动换到下一行——这种就被称为“行内元素”。</span>
+	</p>
+	<p class="p0">
+		比如：<span>span,&nbsp;&nbsp;img,&nbsp;&nbsp;a,&nbsp;&nbsp;input,&nbsp;select,&nbsp;textarea,&nbsp;&nbsp;b,&nbsp;i,&nbsp;u,&nbsp;strong,&nbsp;</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		浮动初步
+	</h1>
+	<p class="p0">
+		行内盒子本身（包括普通文字）自然会在一行上从左到右排列出来，满行之后才会自动换行。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		但：
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		块盒子，不管其本身的宽度多少，其默认情况下总是会“自占一行”。
+	</p>
+	<p class="p0">
+		则：
+	</p>
+	<p class="p0">
+		要想让块盒子在水平方向上并列放置（布置），就必须对他们进行浮动处理：
+	</p>
+	<p class="p0">
+		左浮动：<span>float:left</span>
+	</p>
+	<p class="p0">
+		浮动的含义就是指让该盒子（元素，标签）尽量往左边方向挤靠，其他非浮动元素紧随其右
+	</p>
+	<p class="p0">
+		右浮动：<span>float:right</span>
+	</p>
+	<p class="p0">
+		浮动的含义就是指让该盒子（元素，标签）尽量往右边方向挤靠。其他非浮动元素紧随其左。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		一个盒子如果浮动之后，则会影响其上级盒子（父盒子）的自然高度——使其高度失效——现象是，该父盒子已经没有办法“自然”包住其里面的浮动盒子。——此时我们通常就必须去解决该&nbsp;“高度塌陷”问题。
+	</p>
+	<p class="p0">
+		所有浮动盒子的父盒子高度都需要特别处理，以使父盒子能够包住子盒子。通常有以下几种办法：
+	</p>
+	<p class="p0" style="margin-left:42.0000pt;text-indent:-21.0000pt;">
+		１，&nbsp;将父盒子设置一个固定的高度，且保证能将其中的子盒子包住。
+	</p>
+	<p class="p0" style="margin-left:42.0000pt;text-indent:-21.0000pt;">
+		２，&nbsp;设置父盒子：<span>overflow:hidden;</span> 这里是用于所谓“清除浮动”以使父盒子获得自然高度。
+	</p>
+	<p class="p0" style="margin-left:42.0000pt;text-indent:-21.0000pt;">
+		３，&nbsp;在父盒子内部的最后位置加一个清除浮动的０高度ｄｉｖ，如下：<br />
+&lt;div&nbsp;&nbsp;class=”cc”&nbsp;&gt;&lt;/div&gt;<br />
+．ｃｃ｛ｃｌｅａｒ：ｂｏｔｈ；｝
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		实际上，我们可以将我们正常的（非浮动的）元素看作都在“地上”平铺并相互包含，浮动的盒子可以看作是在“天花板”上作为独立的一层。
+	</p>
+	<h1>
+		命名基本规则
+	</h1>
+	<p class="p0">
+		这里指的命名通常是我们今后编程过程中我们自己定义的某个名字，包括（但不限于）如下：
+	</p>
+	<p class="p0">
+		标签的<span>name</span><span>值，</span><span>class</span><span>名，&nbsp;</span><span>id</span><span>名，</span><span>js</span><span>或</span><span>php</span><span>中的变量名，函数名，类名</span>
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		１，&nbsp;名字需要使用字母或下划线开头（<span>a,b,c</span><span>，</span><span>A,B,&nbsp;C&nbsp;&nbsp;</span>……&nbsp;&nbsp;_&nbsp;&nbsp;<span>）</span>
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		２，&nbsp;其后可以跟若干个（含<span>0</span><span>个）字母，数字，或下划线。</span>
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		３，&nbsp;名字不能跟所在环境的系统内部名字相同。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		布局思想
+	</h1>
+	<p class="p0">
+		我们设计网页其实只是对网页的“层层瓜分”。每次瓜分都只考虑“当前版面”，将当前版面划分为几个独立的区域，这个划分只有两个做法：横向划分和纵向划分：
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		１，&nbsp;横向划分：此时使用若干个<span>div</span><span>，他们自然就是横向划分，不需要做额外处理，只要考虑他们的内容就可以了。</span>
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		２，&nbsp;纵向划分：此时使用若干个<span>div</span><span>，并将他们浮动起来以达到并列放置的效果，并设置他们的宽度不会超过父盒子总的宽度。此时我们必须严重考虑浮动盒子的父盒子的高度问题，则其处理办法是：</span>
+	</p>
+	<p class="p0" style="margin-left:63.0000pt;text-indent:-21.0000pt;">
+		a)&nbsp;设定父盒子的固定高度：适合于已知子盒子高度且不会变化的情形。
+	</p>
+	<p class="p0" style="margin-left:63.0000pt;text-indent:-21.0000pt;">
+		b)&nbsp;设置父盒子样式为：　<span>overflow:hidden;&nbsp;</span><span>——清除浮动方法一</span>
+	</p>
+	<p class="p0" style="margin-left:63.0000pt;text-indent:-21.0000pt;">
+		c)&nbsp;在父盒子的最后内部位置放置清除浮动的元素——清除浮动方法一<br />
+&lt;div&nbsp;style=”clear:both”&gt;&lt;/div&gt;
+	</p>
+	<p class="p0" style="margin-left:63.0000pt;text-indent:-21.0000pt;">
+		d)&nbsp;以上<span>3</span><span>个做法最终都是达到一个目的：使父盒子能够包住子盒子。</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		虚线
+	</p>
+	<p class="p0">
+		border-bottom:&nbsp;1px&nbsp;dashed&nbsp;gray;
+	</p>
+	<p class="p0">
+		实线
+	</p>
+	<p class="p0">
+		border-bottom:1px&nbsp;solid&nbsp;red;
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+</div><!-- (此文通过<a href="http://xiaosong.org/share/auto-pub-plugin-update">emlog自动发布插件</a>发布) -->]]></description>
+	<pubDate>Sun, 04 Aug 2013 14:28:53 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-173.html</guid>
+
+</item>
+<item>
+	<title>笔记3</title>
+	<link>http://onelose.com/post-172.html</link>
+	<description><![CDATA[<div class="Section0">
+	<h1>
+		前日回顾
+	</h1>
+	<p class="p0">
+		xml&nbsp;è&nbsp;xhtml&nbsp;è&nbsp;文档类型设定：<span>&lt;!doctype&nbsp;</span>……..&nbsp;&gt;
+	</p>
+	<p class="p0">
+		严格型：<span>strict</span> 
+	</p>
+	<p class="p0">
+		宽松型（过渡型）<span>:&nbsp;transitional</span> 
+	</p>
+	<p class="p0">
+		框架型：<span>frameset</span> 
+	</p>
+	<p class="p0">
+		设定文档类型是“告诉”浏览器，使用什么“标准”来呈现该网页。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		图片及图像映射技术：
+	</p>
+	<p class="p0">
+		&lt;img&nbsp;src=”图片地址”&nbsp;alt=”图片说明文字”&nbsp;title=”图片提示文字”&nbsp;width=”100”&nbsp;height=”200”&nbsp;border=”1”&nbsp;align=”left&nbsp;//&nbsp;center&nbsp;//&nbsp;right”&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		&lt;img&nbsp;src=”…..”&nbsp;&nbsp;usemap=”#<span>某</span><span>map</span><span>标签的名字</span><span>abc</span>”&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		&lt;map&nbsp;name=”abc”&nbsp;&gt;
+	</p>
+	<p class="p0">
+		&lt;!—设定区域形状：矩形<span>rect</span><span>，圆形</span><span>circle</span><span>，多边形</span><span>poly&nbsp;--&gt;</span> 
+	</p>
+	<p class="p0">
+		&lt;area&nbsp;shape=”rect”&nbsp;coords=”左上角<span>x</span><span>，</span><span>y</span><span>坐标，右下角</span><span>x</span><span>，</span><span>y</span><span>坐标</span>”&nbsp;href=”#”&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		&lt;/map&gt;
+	</p>
+	<p class="p0">
+		表格<span>table</span><span>：</span> 
+	</p>
+	<p class="p0">
+		&lt;table&gt;
+	</p>
+	<p class="p0">
+		&lt;caption&gt;<span>表格标题</span><span>&lt;/caption&gt;</span> 
+	</p>
+	<p class="p0">
+		&lt;thead&gt;
+	</p>
+	<p class="p0">
+		&lt;tr&gt;
+	</p>
+	<p class="p0">
+		&lt;td&gt;<span>内容</span><span>&lt;/td&gt;</span> 
+	</p>
+	<p class="p0">
+		&lt;/tr&gt;
+	</p>
+	<p class="p0">
+		&lt;tr&gt;
+	</p>
+	<p class="p0">
+		&lt;th&gt;<span>内容</span><span>&lt;/th&gt;</span> 
+	</p>
+	<p class="p0">
+		&lt;/tr&gt;
+	</p>
+	<p class="p0">
+		&lt;/thead&gt;
+	</p>
+	<p class="p0">
+		&lt;tbody&gt;
+	</p>
+	<p class="p0">
+		&lt;tr&gt;
+	</p>
+	<p class="p0">
+		&lt;td&gt;<span>内容</span><span>&lt;/td&gt;</span> 
+	</p>
+	<p class="p0">
+		&lt;/tr&gt;
+	</p>
+	<p class="p0">
+		&lt;/tbody&gt;
+	</p>
+	<p class="p0">
+		&lt;tfoot&gt;
+	</p>
+	<p class="p0">
+		&lt;tr&gt;
+	</p>
+	<p class="p0">
+		&lt;td&gt;<span>内容</span><span>&lt;/td&gt;</span> 
+	</p>
+	<p class="p0">
+		&lt;/tr&gt;
+	</p>
+	<p class="p0">
+		&lt;/tfoot&gt;
+	</p>
+	<p class="p0">
+		&lt;/table&gt;
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		html<span>字符实体（特殊字符表现）</span> 
+	</p>
+	<p class="p0">
+		[<span>空格</span><span>]&nbsp;&nbsp;&nbsp;</span><span>：</span><span>&nbsp;</span> 
+	</p>
+	<p class="p0">
+		&lt;		:&nbsp;&lt;		less&nbsp;than
+	</p>
+	<p class="p0">
+		&gt;&nbsp;		:&nbsp;&gt;		greater&nbsp;than
+	</p>
+	<p class="p0">
+		“		:&nbsp;"
+	</p>
+	<p class="p0">
+		&amp;		:&nbsp;&amp;
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		表单标签
+	</h1>
+	<p class="p0">
+		表单：&nbsp;就是用于用来向服务器提供信息的那些标签。
+	</p>
+	<p class="p0">
+		在网页中，使用<span>form</span><span>这个标签来表示一个表单——</span> 
+	</p>
+	<p class="p0">
+		通常，一个表单中会包含若干个“信息提供项”，这些每一项可以成为“表单项”
+	</p>
+	<p class="p0">
+		&lt;form&nbsp;action=”提交给的文件”&nbsp;metho=”数据提交方式”&nbsp;&gt;
+	</p>
+	<p class="p0">
+		&lt;!—该表单的各个项都应该写在此范围中--&gt;
+	</p>
+	<p class="p0">
+		数据提交方式：其实只有<span>post</span><span>和</span><span>get</span><span>两种方式，</span><span>php</span><span>里会进行介绍他么区别。</span> 
+	</p>
+	<p class="p0">
+		&lt;/form&gt;
+	</p>
+	<p class="p0">
+		表单项主要有：
+	</p>
+	<p class="p0">
+		&lt;input&nbsp;type=”text”&nbsp;name=”n1”&nbsp;size=”20”&nbsp;/&gt;:&nbsp;&nbsp;		单行文本框
+	</p>
+	<p class="p0">
+		size:&nbsp;<span>设定文本框的“宽度”，此时的单位是“字符宽”</span> 
+	</p>
+	<p class="p0">
+		maxlength：设定文本框中最多输入多少个字符
+	</p>
+	<p class="p0">
+		readonly="readonly"：设定为只读
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		disabled="disabled"：设定为“不可用”（即无效）
+	</p>
+	<p class="p0">
+		&lt;input&nbsp;type=”password”&nbsp;name=”n2”&nbsp;size=”10”&nbsp;/&gt;:		密码框
+	</p>
+	<p class="p0">
+		&lt;input&nbsp;type=”radio”&nbsp;name=”n3”&nbsp;/&gt;:			单选项
+	</p>
+	<p class="p0">
+		一组的单选项必须<span>name</span><span>相同，且</span><span>value</span><span>不同</span> 
+	</p>
+	<p class="p0">
+		默认选中某项使用属性：checked="checked"
+	</p>
+	<p class="p0">
+		&lt;input&nbsp;type=”checkbox”&nbsp;name=”n4”&nbsp;/&gt;:		多选项
+	</p>
+	<p class="p0">
+		一组的多选项必须<span>name</span><span>相同，且</span><span>value</span><span>不同</span> 
+	</p>
+	<p class="p0">
+		默认选中某项使用属性：checked="checked"
+	</p>
+	<p class="p0">
+		&lt;input&nbsp;type=”file”&nbsp;name=”n5”&nbsp;/&gt;:			文件上传框
+	</p>
+	<p class="p0">
+		&lt;input&nbsp;type=”hidden”&nbsp;name=”n6”/&gt;:		隐藏文本框
+	</p>
+	<p class="p0">
+		隐藏文本框在页面上不可见，但其主要作用是将其中的数据提交到服务器。
+	</p>
+	<p class="p0">
+		&lt;input&nbsp;type=”submit”&nbsp;name=”n7”/&gt;:		提交按钮
+	</p>
+	<p class="p0">
+		提交就是指将表单的所有数据提交给<span>action</span><span>所设定的文件，由该文件去接收数据并进行处理。</span> 
+	</p>
+	<p class="p0">
+		&lt;input&nbsp;type=”reset”&nbsp;name=”n8”/&gt;:			重置按钮
+	</p>
+	<p class="p0">
+		重置就是将所有表单项恢复到页面打开的初始状态。
+	</p>
+	<p class="p0">
+		&lt;input&nbsp;type=”button”&nbsp;name=”n9”/&gt;:		普通按钮
+	</p>
+	<p class="p0">
+		普通按钮不为表单服务，而是为后面的“动作”服务，比如“点击”。
+	</p>
+	<p class="p0">
+		下拉列表项：
+	</p>
+	<p class="p0">
+		&lt;select&nbsp;name=”n10”&nbsp;&gt;
+	</p>
+	<p class="p0">
+		&lt;option&nbsp;value=”1”&gt;<span>文字</span><span>1&lt;/option&gt;</span> 
+	</p>
+	<p class="p0">
+		&lt;option&nbsp;value=”2”&nbsp;selected=”selected”&gt;<span>文字</span><span>2&lt;/option&gt;</span> 
+	</p>
+	<p class="p0">
+		&lt;/select&gt;
+	</p>
+	<p class="p0">
+		selected:<span>表示默认选中项</span> 
+	</p>
+	<p class="p0">
+		多行列表项：
+	</p>
+	<p class="p0">
+		&lt;select&nbsp;name=”n12”&nbsp;size=&nbsp;“行数”&gt;
+	</p>
+	<p class="p0">
+		&lt;option&gt;<span>文字</span><span>1&lt;/option&gt;</span> 
+	</p>
+	<p class="p0">
+		&lt;option&gt;<span>文字</span><span>2&lt;/option&gt;</span> 
+	</p>
+	<p class="p0">
+		&lt;/select&gt;
+	</p>
+	<p class="p0">
+		size<span>来控制列表项显示多少行。如果</span><span>size=1</span><span>，则其就是下拉列表项了。</span> 
+	</p>
+	<p class="p0">
+		Multiple:<span>可以实现多选，即可以选多个，类似多选项。</span> 
+	</p>
+	<p class="p0">
+		多行文本框：
+	</p>
+	<p class="p0">
+		&lt;textarea&nbsp;name=”n11”&gt;&lt;/textarea&gt;
+	</p>
+	<p class="p0">
+		rows="5"&nbsp;cols="50":&nbsp;<span>设定文本框的行数和列数（都是以字符为单位）</span> 
+	</p>
+	<p class="p0">
+		textarea<span>是双标签，其中的任何“内容部分”都只会当做“文字（字符）”，即使是标签。同时，</span><span>textara</span><span>没有</span><span>value</span><span>属性。</span> 
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		通常，一个表单中的表单项，其目的（意义）主要是数据的获取和提交。此时，基本上离不开两个属性：
+	</p>
+	<p class="p0">
+		name<span>：</span> 
+	</p>
+	<p class="p0">
+		value<span>：</span> 
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		框架网页实现
+	</h1>
+	<p class="p0">
+		框架网页使用<span>frameset</span><span>文档类型。在该文件中，我们使用</span><span>frameset</span><span>来代替</span><span>body</span><span>。</span> 
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		frameset<span>实际上并不是象</span><span>body</span><span>一样来“容纳”各种内容（文字，</span><span>a</span><span>，</span><span>img</span><span>，</span><span>div</span><span>，</span><span>h1-h6</span><span>，</span><span>p</span><span>，</span><span>span</span><span>，</span><span>b,</span>…..<span>）</span> 
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		frameset<span>实际上只是做一个简单的“窗口划分”，然后在每个划分出来的窗口（可以称为子窗口）中放置网页</span>。划分的方式有两种：
+	</p>
+	<p class="p0">
+		水平划分（以高度<span>768</span><span>举例）：</span> 
+	</p>
+	<p class="p0" style="margin-left:21.0000pt;text-indent:21.0000pt;">
+		&lt;frameset&nbsp;&nbsp;rows=”100,&nbsp;200,468”&nbsp;&gt;
+	</p>
+	<p class="p0">
+		&lt;frame&nbsp;src="<span>第</span><span>1</span><span>个网页</span><span>url"&nbsp;&gt;&lt;/frame&gt;</span> 
+	</p>
+	<p class="p0" style="margin-left:42.0000pt;text-indent:21.0000pt;">
+		&lt;frame&nbsp;src="<span>第</span><span>2</span><span>个网页</span><span>url"&nbsp;&gt;&lt;/frame&gt;</span> 
+	</p>
+	<p class="p0" style="margin-left:42.0000pt;text-indent:21.0000pt;">
+		&lt;frame&nbsp;src="<span>第</span><span>3</span><span>个网页</span><span>url"&nbsp;&gt;&lt;/frame&gt;</span> 
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		&lt;/frameset&gt;
+	</p>
+	<p class="p0">
+		垂直划分（以宽度<span>1280</span><span>举例）：</span> 
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		&lt;frameset&nbsp;&nbsp;cols=”100,&nbsp;*”、&nbsp;<span>&gt;</span> 
+	</p>
+	<p class="p0">
+		&lt;frame&nbsp;src="<span>第</span><span>1</span><span>个网页</span><span>url"&nbsp;&gt;&lt;/frame&gt;</span> 
+	</p>
+	<p class="p0" style="margin-left:42.0000pt;text-indent:21.0000pt;">
+		&lt;frame&nbsp;src="<span>第</span><span>2</span><span>个网页</span><span>url"&nbsp;&gt;&lt;/frame&gt;</span> 
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		&lt;/frameset&gt;&nbsp;&nbsp;
+	</p>
+	<p class="p0">
+		这里“<span>*</span><span>”表示所有其余剩余部分的宽度</span> 
+	</p>
+	<p class="p0">
+		&lt;html&gt;
+	</p>
+	<p class="p0">
+		&lt;head&gt;
+	</p>
+	<p class="p0">
+		&lt;/head&gt;
+	</p>
+	<p class="p0">
+		&lt;frameset&gt;
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		&lt;/frameset&gt;
+	</p>
+	<p class="p0">
+		&lt;/html&gt;
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		br,&nbsp;hr,&nbsp;input,&nbsp;img,&nbsp;&nbsp;
+	</p>
+	<p class="p0">
+		noshade<span>，</span><span>checked,&nbsp;selected,&nbsp;&nbsp;readonly,&nbsp;disabled,&nbsp;noresize</span> 
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		css<span>技术介绍</span> 
+	</h1>
+	<p class="p0">
+		css<span>技术可以使我们更精确和批量地控制我们网页上的元素的表现。</span> 
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		CSS<span>：</span><span>Cascading&nbsp;Style&nbsp;Sheet&nbsp;</span><span>（层叠样式表）</span> 
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		css<span>的语法思想：</span> 
+	</p>
+	<p class="p0">
+		指定某个（些）标签的某方面的特性（属性）是某种样子（也就是某个值），其基本语法形式是：
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		选择器&nbsp;<span>{&nbsp;&nbsp;</span>css<span>属性名</span><span>1:</span><span>值</span><span>1</span>&nbsp;；&nbsp;css<span>属性名</span><span>2&nbsp;:&nbsp;</span><span>值</span><span>2</span>&nbsp;；&nbsp;………………..&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		选择器：就是某种可以对应到网页中的<span>html</span><span>标签（元素）的语法形式。</span> 
+	</p>
+	<h1>
+		选择器的分类
+	</h1>
+	<p class="p0">
+		1<span>：标签选择器：使用一个标签名来表示“所有该种标签”</span> 
+	</p>
+	<p class="p0">
+		标签名&nbsp;<span>{&nbsp;&nbsp;</span><span>声明</span><span>1;&nbsp;</span><span>声明</span><span>2;&nbsp;</span>……..&nbsp;&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		&lt;style&gt;&nbsp;&nbsp;span{&nbsp;color&nbsp;:red;}&nbsp;&lt;/style&gt;
+	</p>
+	<p class="p0">
+		&lt;span&gt;&nbsp;<span>文字&nbsp;</span><span>&lt;/span&gt;</span> 
+	</p>
+	<p class="p0">
+		2<span>：类选择器：在标签上使用一个</span><span>class</span><span>名字，然后在样式中使用如下形式：</span> 
+	</p>
+	<p class="p0">
+		.<span>类名&nbsp;&nbsp;</span><span>{&nbsp;&nbsp;</span><span>声明</span><span>1;&nbsp;</span><span>声明</span><span>2;&nbsp;</span>……..&nbsp;&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		&lt;style&gt;&nbsp;&nbsp;.c1{&nbsp;color&nbsp;:red;}&nbsp;&lt;/style&gt;
+	</p>
+	<p class="p0">
+		&lt;span&nbsp;&nbsp;class=”c2”&gt;&nbsp;<span>文字&nbsp;</span><span>&lt;/span&gt;</span> 
+	</p>
+	<p class="p0">
+		注意：类选择器通常用于多个同类的标签使用相同的效果的时候（其实单独用于某一个标签也可以）
+	</p>
+	<p class="p0">
+		3<span>：</span><span>id</span><span>选择器：在标签上使用一个</span><span>id</span><span>名字，然后在样式中使用如下形式：</span> 
+	</p>
+	<p class="p0">
+		#id<span>名&nbsp;&nbsp;</span><span>{&nbsp;&nbsp;</span><span>声明</span><span>1;&nbsp;</span><span>声明</span><span>2;&nbsp;</span>……..&nbsp;&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		&lt;style&gt;&nbsp;&nbsp;#d1&nbsp;{&nbsp;color&nbsp;:red;}&nbsp;&lt;/style&gt;
+	</p>
+	<p class="p0">
+		&lt;span&nbsp;&nbsp;id=”d1”&gt;&nbsp;<span>文字&nbsp;</span><span>&lt;/span&gt;</span> 
+	</p>
+	<p class="p0">
+		注意：<span>id</span><span>选择器几乎用于区分某一个特定的标签，其不可以在一个网页中同名。</span> 
+	</p>
+	<p class="p0">
+		4:&nbsp;<span>通用选择器：&nbsp;只有一个特殊符号（</span><span>*</span><span>），其代表的含义就是“所有标签”。</span> 
+	</p>
+	<p class="p0">
+		*{&nbsp;&nbsp;text-decoration&nbsp;:&nbsp;underline&nbsp;}
+	</p>
+	<p class="p0">
+		5<span>：伪类选择器：伪类选择器通常是固定的几个伪类名，只针对特定的标签或情形。每个伪类有特定的含义，常见的有：</span> 
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		a:link&nbsp;&nbsp;{&nbsp;&nbsp;<span>声明</span><span>1;&nbsp;</span><span>声明</span><span>2;&nbsp;</span>……..&nbsp;&nbsp;&nbsp;}&nbsp;<span>——&nbsp;表示一个链接标签的初始表现（状态）</span> 
+	</p>
+	<p class="p0">
+		a:visited&nbsp;&nbsp;{&nbsp;&nbsp;<span>声明</span><span>1;&nbsp;</span><span>声明</span><span>2;&nbsp;</span>……..&nbsp;&nbsp;&nbsp;}&nbsp;<span>——&nbsp;表示一个链接标签的点击之后（访问之后）的表现（状态）</span> 
+	</p>
+	<p class="p0">
+		a:hover&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;<span>声明</span><span>1;&nbsp;</span><span>声明</span><span>2;&nbsp;</span>……..&nbsp;&nbsp;&nbsp;}&nbsp;<span>——表示一个链接在鼠标放上去的时候的表现。</span> 
+	</p>
+	<p class="p0">
+		a:active&nbsp;&nbsp;{&nbsp;&nbsp;<span>声明</span><span>1;&nbsp;</span><span>声明</span><span>2;&nbsp;</span>……..&nbsp;&nbsp;&nbsp;}&nbsp;<span>——&nbsp;表示一个链接标签的点中的时候（即活动状态）的表现（状态）</span> 
+	</p>
+	<p class="p0">
+		注意：以上针对<span>a</span><span>标签的</span><span>4</span><span>个伪类状态，通常需要按上述顺序写出，否则可能在某些特定条件下不能正确显示该显示的效果。</span> 
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		6<span>：&nbsp;复合选择器之：层级选择器：</span> 
+	</p>
+	<p class="p0">
+		某独立选择器<span>1&nbsp;&nbsp;&nbsp;</span><span>某独立选择器</span><span>2&nbsp;&nbsp;{&nbsp;&nbsp;</span><span>声明</span><span>1;&nbsp;</span><span>声明</span><span>2;&nbsp;</span>……..&nbsp;&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		解释：&nbsp;表示选择器<span>1</span><span>所选中的那些标签中再由选择器</span><span>2</span><span>所对应的那些标签。</span> 
+	</p>
+	<p class="p0">
+		例：
+	</p>
+	<p class="p0">
+		dd&nbsp;&nbsp;p&nbsp;{&nbsp;……..&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		.c1&nbsp;&nbsp;p&nbsp;{&nbsp;……..&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		#d1&nbsp;&nbsp;span&nbsp;{&nbsp;……..&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		#d1&nbsp;&nbsp;.c2&nbsp;&nbsp;p&nbsp;{&nbsp;……..&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		div&nbsp;&nbsp;.c2&nbsp;&nbsp;#d2&nbsp;&nbsp;{&nbsp;……..&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		7:&nbsp;<span>复合选择器之：分组选择器：</span> 
+	</p>
+	<p class="p0">
+		某选择器<span>1</span><span>，&nbsp;某选择器</span><span>2</span><span>，&nbsp;&nbsp;</span>……&nbsp;&nbsp;{&nbsp;&nbsp;<span>声明</span><span>1;&nbsp;</span><span>声明</span><span>2;&nbsp;</span>……..&nbsp;&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		解释：其实就是指这多个选择器使用相同的声明（即相同的外观）。这里，多个选择器可以是独立选择器，也可以是复合选择器：
+	</p>
+	<p class="p0">
+		例：
+	</p>
+	<p class="p0">
+		p,&nbsp;&nbsp;div&nbsp;{&nbsp;……..&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		#d1,&nbsp;&nbsp;.c2,&nbsp;&nbsp;span&nbsp;&nbsp;{&nbsp;……..&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		#d1&nbsp;div,&nbsp;&nbsp;.c2&nbsp;p&nbsp;&nbsp;span,&nbsp;&nbsp;h1&nbsp;&nbsp;{&nbsp;……..&nbsp;&nbsp;}
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+</div><!-- (此文通过<a href="http://xiaosong.org/share/auto-pub-plugin-update">emlog自动发布插件</a>发布) -->]]></description>
+	<pubDate>Sat, 03 Aug 2013 14:24:23 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-172.html</guid>
+
+</item>
+<item>
+	<title>笔记2</title>
+	<link>http://onelose.com/post-171.html</link>
+	<description><![CDATA[<div class="Section0">
+	<h1>
+		昨日回顾&nbsp;
+	</h1>
+	<p class="p0">
+		html<span>是一种用来对所要表现的内容以一定的形式进行修饰的一种标签语法——从外观和含义两个方面来修饰。</span>
+	</p>
+	<p class="p0">
+		html<span>标签的一般形式：</span>
+	</p>
+	<p class="p0">
+		&lt;<span>标签名&nbsp;属性名</span><span>=</span>”属性值”&nbsp;&nbsp;……&nbsp;&nbsp;&gt;<span>内容</span><span>&lt;/</span><span>标签名</span><span>&gt;</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		特殊情况：&nbsp;
+	</p>
+	<p class="p0" style="margin-left:21.0000pt;text-indent:21.0000pt;">
+		单标签<span>:&nbsp;&lt;br&nbsp;&gt;&nbsp;&nbsp;&nbsp;&lt;hr&gt;&nbsp;&nbsp;&nbsp;&nbsp;&lt;img&gt;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input&gt;</span>
+	</p>
+	<p class="p0">
+		没有值得属性：<span>noshade</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		&lt;font&nbsp;color=”red”&nbsp;size=”7”&nbsp;&gt;afasfasdf&lt;/font&gt;
+	</p>
+	<p class="p0">
+		&lt;hr&nbsp;color=”blue”&nbsp;size=”5”&nbsp;width=”100”&nbsp;noshade&nbsp;&gt;
+	</p>
+	<p class="p0">
+		noshade<span>：&nbsp;表示没有阴影。意思是，如果不写该属性，则一根横线默认情况下是有阴影。</span>
+	</p>
+	<p class="p0">
+		常见标签：
+	</p>
+	<p class="p0">
+		b<span>，</span><span>i</span><span>，</span><span>u</span><span>，</span><span>font</span><span>，</span><span>sub</span><span>，&nbsp;</span><span>sup</span><span>，&nbsp;</span><span>big</span><span>，&nbsp;</span><span>small</span><span>，&nbsp;</span><span>strong</span>
+	</p>
+	<p class="p0">
+		p<span>，</span><span>h1~h6</span><span>，&nbsp;</span><span>pre</span><span>（预定义格式），</span><span>blockquote</span><span>（引用内容），&nbsp;</span><span>address</span><span>（地址），&nbsp;</span><span>div</span><span>，</span><span>span</span>
+	</p>
+	<p class="p0">
+		ol<span>》</span><span>li</span><span>，&nbsp;</span><span>ul</span><span>》</span><span>li</span><span>，&nbsp;&nbsp;</span><span>dl</span><span>》</span><span>dt//dd</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		网页中常见编码对应总结：
+	</p>
+	<p class="p0">
+		文件编码<span>utf-8&nbsp;</span><span>——&nbsp;</span><span>meta</span><span>声明编码</span><span>utf-8</span>
+	</p>
+	<p class="p0">
+		文件编码<span>ANSI&nbsp;</span><span>——&nbsp;</span><span>meta</span><span>声明编码</span><span>gb2312</span>
+	</p>
+	<p class="p0">
+		文件编码<span>ANSI&nbsp;</span><span>——&nbsp;</span><span>meta</span><span>声明编码</span><span>gbk</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		meta<span>标签</span>
+	</h1>
+	<p class="p0">
+		meta<span>标签通常用来整体上对当前网页做一些额外的特性设置，这些设置并不会在网页上表现出来，而是出于对网页的各种描述或声明。常用的有</span><span>3</span><span>个：</span>
+	</p>
+	<p class="p0">
+		声明编码：<span>&lt;meta&nbsp;http-equiv=</span>”content-type”&nbsp;content=”text/html;&nbsp;charset=<span>编码名</span>”&nbsp;&gt;
+	</p>
+	<p class="p0">
+		声明关键字：设定页面的关键字，有利于搜索
+	</p>
+	<p class="p0">
+		声明内容描述：类似一篇文章的“概要”，引语，论文的简介，有利于搜索
+	</p>
+	<p class="p0">
+		举例：
+	</p>
+	<p class="p0">
+		&lt;meta&nbsp;name="keywords"&nbsp;content="<span>养猪</span><span>,&nbsp;</span><span>增肥</span><span>,&nbsp;</span><span>技巧</span><span>"&nbsp;/&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;meta&nbsp;name="description"&nbsp;content="<span>本网页介绍了&nbsp;某养猪大户&nbsp;几十年积累的养猪增肥技巧及详细操作</span><span>"&nbsp;/&gt;</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		xml<span>语言介绍</span>
+	</h1>
+	<p class="p0">
+		html<span>语言：&nbsp;</span><span>HyperText&nbsp;Markup&nbsp;Language</span>
+	</p>
+	<p class="p0">
+		xml<span>语言：&nbsp;</span><span>eXtensible&nbsp;Markup&nbsp;Language</span><span>——可扩展标记语言</span>
+	</p>
+	<p class="p0">
+		xml<span>语言不是为了在浏览器中显示，而是为了保存和传送数据。</span>
+	</p>
+	<p class="p0">
+		举例：
+	</p>
+	<p class="p0">
+		&lt;china&gt;
+	</p>
+	<p class="p0">
+		&lt;Beijing&gt;<span>人口</span><span>1600</span><span>万，面积</span><span>1600&lt;/</span>Beijing&gt;
+	</p>
+	<p class="p0">
+		&lt;shangdong&nbsp;shenghui=”济南”&gt;
+	</p>
+	<p class="p0">
+		&lt;jinan&nbsp;&gt;<span>人口</span><span>300</span><span>万</span><span>&lt;/jinan&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;qingdao&gt;<span>海边度假胜地，人口</span><span>200</span><span>万</span><span>&lt;/</span>qingdao&gt;
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		&lt;shangdong&gt;
+	</p>
+	<p class="p0">
+		&lt;/china&gt;
+	</p>
+	<p class="p0">
+		xml<span>语言的基本规则：</span>
+	</p>
+	<p class="p0" style="margin-left:18.0000pt;text-indent:-18.0000pt;">
+		1，&nbsp;xml<span>语言区分大小写（</span><span>html</span><span>不区分大小写）</span>
+	</p>
+	<p class="p0" style="margin-left:18.0000pt;text-indent:-18.0000pt;">
+		2，&nbsp;xml<span>语言中所有标签和属性都可以是自定义的（没有固定标签）</span>
+	</p>
+	<p class="p0" style="margin-left:18.0000pt;text-indent:-18.0000pt;">
+		3，&nbsp;xml<span>语言的标签必须闭合，有两种做法：</span>
+	</p>
+	<p class="p0" style="margin-left:42.0000pt;text-indent:-21.0000pt;">
+		a)&nbsp;常规做法：&nbsp;<span>&lt;</span><span>标签名</span><span>&gt;</span><span>内容部分</span><span>&lt;/</span><span>标签名</span><span>&gt;</span>
+	</p>
+	<p class="p0" style="margin-left:42.0000pt;text-indent:-21.0000pt;">
+		b)&nbsp;空内容做法：<span>&lt;</span><span>标签名&nbsp;</span><span>/&gt;</span>
+	</p>
+	<p class="p0" style="margin-left:18.0000pt;text-indent:-18.0000pt;">
+		4，&nbsp;xml<span>标签必须严格完整嵌套</span><span>:&nbsp;</span><span>每个标签都应该完整在其他某个标签中</span>
+	</p>
+	<p class="p0" style="margin-left:18.0000pt;text-indent:-18.0000pt;">
+		5，&nbsp;xml<span>的属性必须有值，且必须使用引号引起来。</span>
+	</p>
+	<p class="p0" style="margin-left:18.0000pt;text-indent:-18.0000pt;">
+		6，&nbsp;xml<span>文件中的空白字符也是有效内容。</span>
+	</p>
+	<p class="p0" style="margin-left:18.0000pt;text-indent:-18.0000pt;">
+		7，&nbsp;xml<span>的注释格式同</span><span>html</span><span>：</span><span>&lt;!--</span><span>这是注释内容</span><span>--&gt;</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		文档类型：
+	</h1>
+	<p class="p0">
+		html<span>在发展的过程中，经历的若干个版本，比如</span><span>1.0,&nbsp;2.0,&nbsp;&nbsp;3.2,&nbsp;&nbsp;4.0,&nbsp;4.01</span>
+	</p>
+	<p class="p0">
+		从另一个角度来说，<span>4.0</span><span>版本中，也有其不同的“副版本”——主要是</span><span>3</span><span>个：</span>
+	</p>
+	<p class="p0">
+		严格版：其中的标签和属性相对较少，能兼容的浏览器就更多：
+	</p>
+	<p class="p0">
+		&lt;!DOCTYPE&nbsp;HTML&nbsp;PUBLIC&nbsp;"-//W3C//DTD&nbsp;HTML&nbsp;4.01//EN"&nbsp;&nbsp;&nbsp;"http://www.w3.org/TR/html4/strict.dtd"&gt;
+	</p>
+	<p class="p0">
+		宽松版：其中的标签和属性相对较多，能兼容的浏览器就更少。
+	</p>
+	<p class="p0">
+		&lt;!DOCTYPE&nbsp;HTML&nbsp;PUBLIC&nbsp;"-//W3C//DTD&nbsp;HTML&nbsp;4.01&nbsp;Transitional//EN"&nbsp;"http://www.w3.org/TR/html4/loose.dtd"&gt;
+	</p>
+	<p class="p0">
+		框架型：是专门针对有关<span>frameset</span><span>标签而是用的类型。</span>
+	</p>
+	<p class="p0">
+		&lt;!DOCTYPE&nbsp;HTML&nbsp;PUBLIC&nbsp;"-//W3C//DTD&nbsp;HTML&nbsp;4.01&nbsp;Frameset//EN"&nbsp;"http://www.w3.org/TR/html4/frameset.dtd"&gt;
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		一个<span>html</span><span>文件的第一行可以声明当前网页的文档类型，这样，浏览器就可以使用我们声明的文档类型的那些标签定义去显示我们的网页。</span>
+	</p>
+	<p class="p0">
+		我们的<span>html</span><span>通常语法都相对比较“随意”，这样，对浏览器没有什么太大的影响，但对其他应用来说，就比较麻烦。如果我们将我们的</span><span>html</span><span>写得更为严格，去遵守</span><span>xml</span><span>的规范，则我们的</span><span>html</span><span>文件就除了&nbsp;在浏览器中可以使用之后，在别的场合也可以使用。这种遵守只要稍做修改就可以了：</span>
+	</p>
+	<p class="p0">
+		1,&nbsp;<span>单标签使用一个斜杠进行结束，类似：&nbsp;</span><span>&lt;</span><span>标签名&nbsp;。。。。。。&nbsp;</span><span>/&gt;</span>
+	</p>
+	<p class="p0">
+		2,&nbsp;<span>无值属性，需要给其加一个值，通常设置其值就等于这个属性名，比如：</span><span>&lt;hr&nbsp;noshade=</span>”noshade”&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		3,&nbsp;<span>区分大小写，推荐使用小写来写那些标签和属性名。</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		这就是所谓<span>xhtml</span><span>：</span>
+	</p>
+	<p class="p0">
+		xhtml&nbsp;=&nbsp;html&nbsp;+&nbsp;xml
+	</p>
+	<p class="p0">
+		这样，我们对应<span>xhtml</span><span>，就有了另外</span><span>3</span><span>个文档类型：</span>
+	</p>
+	<p class="p0">
+		严格型：
+	</p>
+	<p class="p0">
+		&lt;!DOCTYPE&nbsp;html&nbsp;PUBLIC&nbsp;"-//W3C//DTD&nbsp;XHTML&nbsp;1.0&nbsp;Strict//EN"&nbsp;"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+	</p>
+	<p class="p0">
+		过渡型：
+	</p>
+	<p class="p0">
+		&lt;!DOCTYPE&nbsp;html&nbsp;PUBLIC&nbsp;"-//W3C//DTD&nbsp;XHTML&nbsp;1.0&nbsp;Transitional//EN"&nbsp;"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+	</p>
+	<p class="p0">
+		框架型：
+	</p>
+	<p class="p0">
+		&lt;!DOCTYPE&nbsp;html&nbsp;PUBLIC&nbsp;"-//W3C//DTD&nbsp;XHTML&nbsp;1.0&nbsp;Frameset//EN"&nbsp;"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"&gt;
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		&lt;br&nbsp;/&gt;
+	</p>
+	<h1>
+		图片标签
+	</h1>
+	<p class="p0">
+		&lt;img&nbsp;src=”图片的路径地址<span>url</span>”&nbsp;alt=”图片说明信息”&nbsp;width=”100”&nbsp;height=”200”&nbsp;border=”边框线宽度”&nbsp;align=”对齐方式”&nbsp;title=”文字提示信息”&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		align=”对齐方式”：&nbsp;有&nbsp;<span>left</span><span>，</span><span>right</span><span>，</span><span>center</span>
+	</p>
+	<p class="p0">
+		alt=”图片说明信息”：&nbsp;用于搜素引擎“识别”该图片的具体内容。
+	</p>
+	<p class="p0">
+		title=”文字提示信息”：&nbsp;用于供人看的信息，鼠标放上去就可以显示。这个属性是一个“通用属性”，几乎用在所有标签上都可以。
+	</p>
+	<p class="p0">
+		border=”边框线宽度”：&nbsp;设定的宽度值直接写一个数字，其单位是像素（<span>px</span><span>）</span>
+	</p>
+	<h1>
+		图像映射技术
+	</h1>
+	<p class="p0">
+		一个图片通常类似一个文字（只是通常更大）。其也可以在其外面加一个<span>a</span><span>标签产生链接。</span>
+	</p>
+	<p class="p0">
+		如果让一张图上产生多个链接，以链接到不同的网页？
+	</p>
+	<p class="p0">
+		我们通过图像映射技术就可以实现，在一张图的内部&nbsp;的不同区域，产生不同的链接，其语法格式如下：
+	</p>
+	<p class="p0">
+		&lt;img&nbsp;src=”某<span>url</span>”&nbsp;usemap=”#<span>某名字</span>”&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		&lt;map&nbsp;name=”某名字”&gt;
+	</p>
+	<p class="p0">
+		&lt;!--<span>这里可以设定</span><span>3</span><span>种形状：矩形，圆形，多边形</span><span>--&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;!--<span>设定矩形：</span><span>coords</span><span>设定矩形的左上角坐标和右下角坐标</span><span>--&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;area&nbsp;shape="rect"&nbsp;coords="135,85,216,&nbsp;152"&nbsp;href="http://www.xinjiang.gov.cn"&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		&lt;!--<span>设定圆形：</span><span>coords</span><span>设定圆形的圆心坐标和半径</span><span>--&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;area&nbsp;shape="circle"&nbsp;coords="440,&nbsp;137,&nbsp;15"&nbsp;href="http://www.beijing.gov.cn"&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		&lt;!--<span>设定多边形：</span><span>coords</span><span>设定多边形的连续的坐标，最后一段会自动连接起来成为一个闭合的区域</span><span>--&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;area&nbsp;shape="poly"&nbsp;coords="100,&nbsp;300,&nbsp;200,&nbsp;400,&nbsp;300,200,&nbsp;200,&nbsp;300"&nbsp;href="http://www.beijing.gov.cn"&nbsp;/&gt;
+	</p>
+	<p class="p0">
+		&lt;/map&gt;
+	</p>
+	<p class="p0">
+		计算机上的平面坐标通常都是以左上角为原点（<span>0</span><span>，</span><span>0</span><span>），向右为</span><span>x</span><span>正向，向下为</span><span>y</span><span>正向。</span>
+	</p>
+	<h1>
+		多媒体及外部插件介绍：
+	</h1>
+	<p class="p0">
+		html4<span>对多媒体的支持非常有限，而且，各浏览器的兼容性相当不理想。实际应用中，我们都是通过ｆｌａｓｈ这个插件来播放各种多媒体资源。</span>
+	</p>
+	<p class="p0">
+		object<span>：将外部“软件”（也就是所谓插件）安插到浏览器中。</span>
+	</p>
+	<p class="p0">
+		embed：类似上面ｏｂｊｅｃｔ标签的功能。
+	</p>
+	<h1>
+		表格应用
+	</h1>
+	<table style="padding:0pt 5.4pt;">
+		<tbody>
+			<tr>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">a</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">b</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">c</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="249" valign="top" colspan="3" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" rowspan="3" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">aa</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">bb</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">cc</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="83" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		实现表格至少需要以下３个标签并相互配合：
+	</p>
+	<p class="p0">
+		&lt;table&gt;
+	</p>
+	<p class="p0">
+		&lt;tr&gt;
+	</p>
+	<p class="p0">
+		&lt;td&gt;a&lt;/td&gt;
+	</p>
+	<p class="p0">
+		&lt;td&gt;b&lt;/td&gt;
+	</p>
+	<p class="p0">
+		&lt;td&gt;c&lt;/td&gt;
+	</p>
+	<p class="p0">
+		&lt;/tr&gt;
+	</p>
+	<p class="p0">
+		&lt;tr&gt;
+	</p>
+	<p class="p0">
+		&lt;td&gt;aa&lt;/td&gt;
+	</p>
+	<p class="p0">
+		&lt;td&gt;bb&lt;/td&gt;
+	</p>
+	<p class="p0">
+		&lt;td&gt;cc&lt;/td&gt;
+	</p>
+	<p class="p0">
+		&lt;/tr&gt;
+	</p>
+	<p class="p0">
+		&lt;/table&gt;
+	</p>
+	<p class="p0">
+		&nbsp;所有表格的可见的内容，均应该出现在<span>td</span><span>标签中间。</span>
+	</p>
+	<p class="p0">
+		table<span>的常用属性：</span>
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		border:&nbsp;<span>设定整个表格的边框线的宽度</span>
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		width<span>：&nbsp;表格整体宽</span><span>,</span><span>可是设定数值，也可以设定百分比。</span>
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		height<span>：表格整体高。</span>
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		cellpadding<span>：单元格里面的内容跟这个单元格的边框线之间的间隙。</span>
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		cellspacing:&nbsp;<span>设定各个单元格相互之间的间隙（边框线之间）</span>
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		bgcolor:&nbsp;<span>设定表格的背景颜色：&nbsp;</span><span>bgcolor=</span>”yellow”
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		background:&nbsp;<span>设定表格的背景图：&nbsp;</span>background="images/chinamap.jpg"
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		align<span>：设定表格作为整体的放置方式：&nbsp;</span><span>left</span><span>，</span><span>center</span><span>，</span><span>right</span>
+	</p>
+	<p class="p0" style="text-indent:21.0000pt;">
+		bordercolor：&nbsp;设定表格边框线的颜色
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		td<span>的常用属性：</span>
+	</p>
+	<p class="p0">
+		colspan<span>：&nbsp;横向合并单元格，指的是“向右合并”：&nbsp;</span><span>colspan=</span>”2”，&nbsp;<span>col</span><span>指“列”，</span><span>span</span><span>表示“跨越”</span>
+	</p>
+	<p class="p0">
+		rowspan:&nbsp;<span>纵向合并单元格，指定是“向下合并”：&nbsp;</span><span>rowspan=</span>”2”，&nbsp;<span>row</span><span>指“行”</span>
+	</p>
+	<p class="p0">
+		bgcolor:&nbsp;<span>设定背景颜色</span>
+	</p>
+	<p class="p0">
+		background<span>：&nbsp;设定背景图片</span>
+	</p>
+	<p class="p0">
+		width<span>，&nbsp;</span><span>height:&nbsp;</span><span>设定宽高</span>
+	</p>
+	<p class="p0">
+		align:&nbsp;<span>设定其中的内容在单元格中的水平对齐方式：</span><span>left</span><span>，</span><span>center</span><span>，</span><span>right</span>
+	</p>
+	<p class="p0">
+		valign:&nbsp;<span>设定其中的内容在单元格中的垂直对齐方式：</span><span>top</span><span>，</span><span>middle</span><span>，</span><span>bottom</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		表格深入
+	</h1>
+	<p class="p0" style="margin-left:18.0000pt;text-indent:-18.0000pt;">
+		1，&nbsp;table<span>中可以使用</span><span>caption</span><span>来设定表格的标题文字</span>
+	</p>
+	<p class="p0" style="margin-left:18.0000pt;text-indent:-18.0000pt;">
+		2，&nbsp;td<span>可以使用另一个标签</span><span>th</span><span>来完全代替，但</span><span>th</span><span>具有“标题单元格”&nbsp;的含义，且其中的文字自动粗体并水平居中对齐。</span>
+	</p>
+	<p class="p0" style="margin-left:18.0000pt;text-indent:-18.0000pt;">
+		3，&nbsp;实际上，一个表格（<span>table</span><span>）还可以将其中的行（</span><span>tr</span><span>）进行“分块”，可以有如下分法：</span>
+	</p>
+	<p class="p0" style="margin-left:42.0000pt;text-indent:-21.0000pt;">
+		a)&nbsp;thead<span>：表示表格的“头部”区域</span>
+	</p>
+	<p class="p0" style="margin-left:42.0000pt;text-indent:-21.0000pt;">
+		b)&nbsp;tbody<span>：表示表格的“主体区域”。如果一个</span><span>tr</span><span>没有明确规定属于哪个区域，则其默认就属于</span><span>tbody</span><span>区域（</span><span>tbody</span><span>不写也存在）</span>
+	</p>
+	<p class="p0" style="margin-left:42.0000pt;text-indent:-21.0000pt;">
+		c)&nbsp;tfoot<span>：表示表格的“尾部区域”</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		table&nbsp;è&nbsp;caption&nbsp;è&nbsp;标题文字
+	</p>
+	<p class="p0">
+		<img width="27" height="14" src="file://C:\Users\dpp\AppData\Local\Temp\ksohtml\wps_clip_image-3598.png" /> è&nbsp;thead&nbsp;&nbsp;
+	</p>
+	<p class="p0">
+		<img width="34" height="16" src="file://C:\Users\dpp\AppData\Local\Temp\ksohtml\wps_clip_image-11893.png" /><img width="27" height="9" src="file://C:\Users\dpp\AppData\Local\Temp\ksohtml\wps_clip_image-9083.png" /> è&nbsp;tbody		è&nbsp;tr&nbsp;&nbsp;è&nbsp;td&nbsp;è真正的内容
+	</p>
+	<p class="p0">
+		è&nbsp;tfoot			&nbsp;&nbsp;è&nbsp;th&nbsp;è真正的内容
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		html<span>字符实体</span>
+	</h1>
+	<p class="p0">
+		在<span>html</span><span>的语法中，有些字符是用来专门表示某种形式</span><span>/</span><span>含义的。，比如“</span><span>&lt;</span><span>”，“</span><span>&gt;</span><span>”</span><span>,&nbsp;&nbsp;</span><span>“</span>””<span>(</span><span>双引号</span><span>)</span>
+	</p>
+	<p class="p0">
+		如果要在网页上表示这些特定的字符，则需要对他们做特定的处理，这就是所谓的<span>html</span><span>实体符号。</span>
+	</p>
+	<p class="p0">
+		<img width="578" height="79" src="file://C:\Users\dpp\AppData\Local\Temp\ksohtml\wps_clip_image-1322.png" />
+	</p>
+	<p class="p0">
+		再加一个：&nbsp;英文双引号：&nbsp;<span>"</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+</div><!-- (此文通过<a href="http://xiaosong.org/share/auto-pub-plugin-update">emlog自动发布插件</a>发布) -->]]></description>
+	<pubDate>Fri, 02 Aug 2013 14:24:28 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-171.html</guid>
+
+</item>
+<item>
+	<title>笔记1</title>
+	<link>http://onelose.com/post-170.html</link>
+	<description><![CDATA[<div class="Section0">
+	<h1>
+		<span style="font-size:12px;font-weight:normal;line-height:1.5;">html</span><span style="font-size:12px;font-weight:normal;line-height:1.5;">介绍</span>
+	</h1>
+	<p class="p0">
+		html<span>：超文本标记语言&nbsp;（&nbsp;</span><span>HyperText&nbsp;Markup&nbsp;Language&nbsp;</span><span>）</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		html<span>其实主要是为了将文件（文档）的内容以一定的形式和含义表现出来，这就是</span><span>html</span><span>的设计思想：</span>
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		1，&nbsp;表形：&nbsp;以一定的外形外观表现出来。
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		2，&nbsp;表意：&nbsp;规定一定的含义让人（和电脑）能够识别出来。
+	</p>
+	<p class="p0">
+		html<span>的一般形式：</span>
+	</p>
+	<p class="p0">
+		html<span>是由一个一个的标签所构成的，标签之间永远都是相互嵌套。</span>
+	</p>
+	<p class="p0">
+		一个标签的一般形式：
+	</p>
+	<p class="p0">
+		&lt;<span>标签名&nbsp;&nbsp;&nbsp;属性名</span><span>1=</span><span>值</span><span>1&nbsp;&nbsp;</span><span>属性名</span><span>2=</span><span>值</span><span>2&nbsp;&nbsp;</span>……..&nbsp;&nbsp;&gt;&nbsp;<span>内容部分&nbsp;</span><span>&lt;/</span><span>标签名</span><span>&gt;</span>
+	</p>
+	<p class="p0">
+		说明：
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		1，&nbsp;属性可以有若干个，每个标签的属性不太一样。当然属性也可以没有。
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		2，&nbsp;属性实际上是用来给标签做进一步的设定用的。
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		3，&nbsp;有少数标签没有内容部分，则此时标签的后半部分也不需要——被称为“单标签”
+	</p>
+	<p class="p0" style="margin-left:39.0000pt;text-indent:-18.0000pt;">
+		4，&nbsp;有少数属性没有值，则直接写属性名。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		一个网页的基本结构性标签如下：
+	</p>
+	<p class="p0">
+		&lt;html&nbsp;&gt;
+	</p>
+	<p class="p0">
+		&lt;head&gt;
+	</p>
+	<p class="p0">
+		&lt;title&nbsp;&gt;<span>这是网页标题</span><span>&lt;/title&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;/head&gt;
+	</p>
+	<p class="p0">
+		&lt;body&gt;
+	</p>
+	<p class="p0">
+		。。。。。。。。。。。。。。。。（网页的主要内容都在这里）
+	</p>
+	<p class="p0">
+		&lt;/body&gt;
+	</p>
+	<p class="p0">
+		&lt;/html&gt;
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		字体元素&nbsp;
+	</h1>
+	<p class="p0">
+		strong：&nbsp;强调字体<span>:&nbsp;&lt;strong&nbsp;&gt;&nbsp;</span><span>文字</span><span>&lt;/strong&gt;</span>
+	</p>
+	<p class="p0">
+		b		粗体字体
+	</p>
+	<p class="p0">
+		i		斜体字体
+	</p>
+	<p class="p0">
+		u		下划线字体
+	</p>
+	<p class="p0">
+		sub		下标字体
+	</p>
+	<p class="p0">
+		sup		上标字体
+	</p>
+	<p class="p0">
+		font	：&nbsp;用于设定文字颜色，大小和具体字体的标签，其格式为：
+	</p>
+	<p class="p0">
+		&lt;font&nbsp;color=”某颜色”&nbsp;size=<span>“某大小”&nbsp;</span><span>face=</span>”字体名字”&nbsp;&gt;&nbsp;<span>内容文字&nbsp;</span><span>&lt;/font&gt;</span>
+	</p>
+	<p class="p0">
+		address:&nbsp;&nbsp;<span>设定地址信息文字</span>
+	</p>
+	<p class="p0">
+		big	：让文字“大一号”——相对来说的，相当于当前版面中的文字大小。
+	</p>
+	<p class="p0">
+		small	：让文字“小一号”
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		要学会常常查手册《<span>HTML4&nbsp;</span><span>参考手册</span><span>.chm</span><span>》</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		排版元素：
+	</h1>
+	<p class="p0">
+		h1,&nbsp;h2,&nbsp;h3,&nbsp;h4,&nbsp;h5,&nbsp;h6:&nbsp;<span>这</span><span>6</span><span>个标签都表示“标题”，</span><span>h1</span><span>是最大的标题，</span><span>h6</span><span>最小。</span>
+	</p>
+	<p class="p0">
+		hr<span>：在网页上显示一条横线，其更多多的属性使用如下：</span>
+	</p>
+	<p class="p0">
+		&lt;hr&nbsp;&nbsp;color=”颜色值”&nbsp;&nbsp;width=”线长”&nbsp;&nbsp;size=”线高<span>(</span><span>线宽</span><span>)</span>”&nbsp;&nbsp;noshade&nbsp;&gt;
+	</p>
+	<p class="p0">
+		noshade<span>：设定该线没有阴影（即如果没有该属性，就会有阴影）。</span>
+	</p>
+	<p class="p0">
+		p：&nbsp;段落标签，用来表示一个段落，其中的文字会连续出现，每个段落都有其自身的前后空隙（间隙）
+	</p>
+	<p class="p0">
+		br：&nbsp;换行。——在<span>html</span><span>中，如果没有自身的换行特性，则需要使用</span><span>br</span><span>来换行。</span>
+	</p>
+	<p class="p0">
+		pre：&nbsp;预格式化文本文字，其中的换行符（不是<span>br</span><span>标签），空格，</span><span>tab</span><span>符等都能够原样输出。——通常用于在网页上显示程序内容</span>
+	</p>
+	<p class="p0">
+		blockquote：引用标签，表示其中的内容是引用别的网站内容或别人的内容。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		以下两个标签可以认为是最没用的标签，但以后会用的最多。
+	</p>
+	<p class="p0">
+		最没用：没有特定的外形，没有特定的含义，基本上，他们只表示一个原始含义：就是一个范围。
+	</p>
+	<p class="p0">
+		div：&nbsp;&nbsp;表示一个“自成一行”的范围区域
+	</p>
+	<p class="p0">
+		span：表示一个简单的文字范围区域——通常只用于文字。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		颜色介绍
+	</h1>
+	<p class="p0">
+		&lt;font&nbsp;color=”red”&nbsp;&gt;<span>文字</span><span>1&lt;/font&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;font&nbsp;color=”#FF0000”&nbsp;&gt;<span>文字</span><span>2&lt;/font&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;font&nbsp;color=”rgb(255,0,0)”&nbsp;&gt;<span>文字</span><span>3&lt;/font&gt;</span>
+	</p>
+	<p class="p0">
+		世界只有<span>3</span><span>种颜色，所有其他颜色都是由这</span><span>3</span><span>种颜色&nbsp;以一定的比例关系混合而成&nbsp;。</span>
+	</p>
+	<p class="p0">
+		我们可以把以下<span>3</span><span>种基色，每种颜色的深浅程度分成</span><span>256</span><span>份，分别用</span><span>0-255</span><span>来表示。</span>
+	</p>
+	<p class="p0">
+		红：<span>red&nbsp;</span><span>：</span>
+	</p>
+	<p class="p0">
+		绿<span>:&nbsp;green</span><span>：</span>
+	</p>
+	<p class="p0">
+		蓝：<span>blue</span><span>：</span>
+	</p>
+	<p class="p0">
+		我们如果用<span>100</span><span>个红，</span><span>150</span><span>个绿，</span><span>200</span><span>个蓝，则其颜色为：&nbsp;</span><span>rgb(100,&nbsp;150,&nbsp;200)</span>
+	</p>
+	<p class="p0">
+		常见颜色：
+	</p>
+	<p class="p0">
+		红：<span>rgb(255,0,0)</span>
+	</p>
+	<p class="p0">
+		绿：<span>rgb(0,255,0)</span>
+	</p>
+	<p class="p0">
+		蓝：<span>rgb(0,0.255)</span>
+	</p>
+	<p class="p0">
+		黄：<span>rgb(255,255,0)</span>
+	</p>
+	<p class="p0">
+		黑：<span>rgb(0,0,0)</span>
+	</p>
+	<p class="p0">
+		白：<span>rgb(255,255,255)</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		上述数字都是<span>10</span><span>进制来说的，如果将上述数字写成</span><span>16</span><span>进制，则他们分别是：</span><span>00-FF</span><span>（对应</span><span>0-255</span><span>），则可以写成另一种形式：</span>
+	</p>
+	<p class="p0">
+		color=”#<span>红绿蓝</span>”
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		列表标签（元素）
+	</h1>
+	<p class="p0">
+		无序列表：由<span>ul&nbsp;</span><span>和&nbsp;</span><span>li&nbsp;</span><span>共同构成，其基本格式为：</span>
+	</p>
+	<p class="p0">
+		&lt;ul&nbsp;type=”disc&nbsp;&nbsp;//&nbsp;&nbsp;square&nbsp;&nbsp;//&nbsp;&nbsp;circle”&gt;
+	</p>
+	<p class="p0">
+		&lt;li&gt;<span>第</span><span>1&nbsp;</span><span>项</span><span>&lt;/li&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;li&gt;<span>第&nbsp;</span><span>2&nbsp;</span><span>项</span><span>&lt;/li&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;li&gt;<span>第&nbsp;</span><span>3&nbsp;</span><span>项</span><span>&lt;/li&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;li&gt;<span>第&nbsp;</span><span>4&nbsp;</span><span>项</span><span>&lt;/li&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;/ul&gt;
+	</p>
+	<p class="p0">
+		type=”disc&nbsp;&nbsp;//&nbsp;&nbsp;square&nbsp;&nbsp;//&nbsp;&nbsp;circle”：&nbsp;分别表示该列表的前导符是原点，方块，圆圈。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		有序列表：由<span>ol&nbsp;</span><span>和&nbsp;</span><span>li&nbsp;</span><span>共同构成，其基本格式为：</span>
+	</p>
+	<p class="p0">
+		&lt;ol&nbsp;type=”&nbsp;1&nbsp;&nbsp;//&nbsp;&nbsp;A&nbsp;&nbsp;//&nbsp;&nbsp;a&nbsp;&nbsp;//&nbsp;&nbsp;I&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;i&nbsp;&nbsp;”&nbsp;&nbsp;&nbsp;start=”开始序号”&gt;
+	</p>
+	<p class="p0">
+		&lt;li&gt;<span>第</span><span>1&nbsp;</span><span>项</span><span>&lt;/li&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;li&gt;<span>第&nbsp;</span><span>2&nbsp;</span><span>项</span><span>&lt;/li&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;li&gt;<span>第&nbsp;</span><span>3&nbsp;</span><span>项</span><span>&lt;/li&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;li&gt;<span>第&nbsp;</span><span>4&nbsp;</span><span>项</span><span>&lt;/li&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;/ol&gt;
+	</p>
+	<p class="p0">
+		type=”&nbsp;1&nbsp;&nbsp;//&nbsp;&nbsp;A&nbsp;&nbsp;//&nbsp;&nbsp;a&nbsp;&nbsp;//&nbsp;&nbsp;I&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;i&nbsp;&nbsp;”：&nbsp;分别表示该列表的前导符是数字，大些字母，小些字母，&nbsp;大些罗马数字，&nbsp;小写罗马数字。
+	</p>
+	<p class="p0">
+		start=”开始序号”：设定列表从哪个位置开始排（即起始位置）。不管用什么符号，这里都只用数字。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		定义列表：由<span>dl</span><span>，</span><span>dt</span><span>，</span><span>dd</span><span>共同构成的用于表示类型“字典词条解释”那种界面效果，其基本格式为：</span>
+	</p>
+	<p class="p0">
+		dl<span>其实是&nbsp;</span><span>definition&nbsp;list&nbsp;&nbsp;&nbsp;dt</span><span>是&nbsp;</span>definition&nbsp;title&nbsp;&nbsp;&nbsp;&nbsp;dd<span>是&nbsp;</span>definition&nbsp;&nbsp;description
+	</p>
+	<p class="p0">
+		&lt;dl&gt;
+	</p>
+	<p class="p0">
+		&lt;dt&gt;<span>词条或标题</span><span>1&lt;/dt&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;dd&gt;<span>对应解释</span><span>/</span><span>内容</span><span>/</span><span>描述</span><span>&lt;/dd&gt;</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		&lt;dt&gt;<span>词条或标题</span><span>2&lt;/dt&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;dd&gt;<span>对应解释</span><span>/</span><span>内容</span><span>/</span><span>描述</span><span>&lt;/dd&gt;</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		&lt;dt&gt;<span>词条或标题</span><span>3&lt;/dt&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;dd&gt;<span>对应解释</span><span>/</span><span>内容</span><span>/</span><span>描述</span><span>&lt;/dd&gt;</span>
+	</p>
+	<p class="p0">
+		&lt;/dl&gt;
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		常见快捷键：
+	</h1>
+	<p class="p0">
+		ctrl&nbsp;+&nbsp;c&nbsp;:&nbsp;&nbsp;<span>复制</span>
+	</p>
+	<p class="p0">
+		ctrl&nbsp;+&nbsp;v<span>：粘贴</span>
+	</p>
+	<p class="p0">
+		ctrl&nbsp;+&nbsp;s<span>：保存</span>
+	</p>
+	<p class="p0">
+		ctrl&nbsp;+&nbsp;z<span>：撤销</span>
+	</p>
+	<p class="p0">
+		ctrl&nbsp;+&nbsp;y<span>：恢复</span>
+	</p>
+	<p class="p0">
+		ctrl&nbsp;+&nbsp;x<span>：剪切掉</span>
+	</p>
+	<p class="p0">
+		ctrl&nbsp;+&nbsp;J<span>：复制并粘贴当前光标所在行（</span><span>editplus</span><span>）</span>
+	</p>
+	<p class="p0">
+		ctrl&nbsp;+&nbsp;f<span>：&nbsp;查找</span>
+	</p>
+	<p class="p0">
+		ctrl&nbsp;+&nbsp;h<span>：&nbsp;替换</span>
+	</p>
+	<p class="p0">
+		双击一个单词可以选中该单词。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		a<span>标签</span>
+	</h1>
+	<p class="p0">
+		a<span>就是链接标签，使用形式：</span>
+	</p>
+	<p class="p0">
+		&lt;a&nbsp;href=”链接地址”&nbsp;target=”在哪里打开”&nbsp;&gt;<span>文字内容</span><span>&lt;/a&gt;</span>
+	</p>
+	<p class="p0">
+		target=”在哪里打开”：用于指定该链接会在哪个窗口里打开，通常，有以下几个值可用：
+	</p>
+	<p class="p0">
+		_blank:&nbsp;&nbsp;<span>新建窗口</span>
+	</p>
+	<p class="p0">
+		_self:&nbsp;<span>“本窗口”，即当前窗口自身，现在网页通常都是这样的，属于默认值。</span>
+	</p>
+	<p class="p0">
+		_top:&nbsp;<span>在“最上层窗口”——后面学。</span>
+	</p>
+	<p class="p0">
+		_parent:&nbsp;<span>在“父级窗口”——后面学。</span>
+	</p>
+	<p class="p0">
+		自定义窗口名：我们可以在某些标签或技术中自己定义窗口名字，并指定在其中打开。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		链接地址：通常会使用<span>url</span><span>来称呼。</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		相对地址：	相对于当前的网页文件所在的位置来说的，通过地址上的信息不能明确确定其文件位置的，通常就是相对地址。
+	</p>
+	<p class="p0">
+		相对路径的几个特殊符号：
+	</p>
+	<p class="p0">
+		./&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<span>代表“本地”（当前位置），可以省略。</span>
+	</p>
+	<p class="p0">
+		../&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;<span>代表上一级路径（位置）</span>
+	</p>
+	<p class="p0">
+		举例：<span>&lt;a&nbsp;href=</span>”abc.html”&nbsp;&gt;xxx&lt;/a&gt;
+	</p>
+	<p class="p0">
+		&lt;a&nbsp;href=”./d1/abc.html”&nbsp;&gt;xxx&lt;/a&gt;<span>——当前目录中的</span><span>d1</span><span>中的</span><span>abc.html</span>
+	</p>
+	<p class="p0">
+		&lt;a&nbsp;href=”d1/abc.html”&nbsp;&gt;xxx&lt;/a&gt;<span>——同上</span>
+	</p>
+	<p class="p0">
+		&lt;a&nbsp;href=”../&nbsp;abc.html”&nbsp;&gt;xxx&lt;/a&gt;<span>——上一级目录中的</span><span>abc.html</span>
+	</p>
+	<p class="p0">
+		&lt;a&nbsp;href=”../../abc.html”&nbsp;&gt;xxx&lt;/a&gt;<span>——上</span><span>2</span><span>级目录中的</span><span>abc.html</span>
+	</p>
+	<p class="p0">
+		&lt;a&nbsp;href=”../&nbsp;d2/d3/abc.html”&nbsp;&gt;xxx&lt;/a&gt;<span>——上一级目录中的</span><span>d2</span><span>目录中的</span><span>d3</span><span>目录中的</span><span>abc.html</span>
+	</p>
+	<p class="p0">
+		绝对地址：
+	</p>
+	<p class="p0">
+		互联网绝对地址：&nbsp;<a href="http://www.abc.com">http://www.abc.com</a>,&nbsp;&nbsp;<a href="http://www.def.com/abc/page1.html">http://www.def.com/abc/page1.html</a>&nbsp;
+	</p>
+	<p class="p0">
+		本地绝对地址：&nbsp;<a href="file://C:/itcast/class/php130707/day1/8列表案例.html">file:///C:/itcast/class/php130707/day1/8<span>列表案例</span><span>.html</span></a>&nbsp;&nbsp;——绝对不要用本地绝对路径
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		a<span>标签的另一个应用：锚点应用</span>
+	</p>
+	<p class="p0">
+		锚点就是指一个网页内部的“链接”，其实就是在该网页的另一个位置而已——通常用于一个网页上的内容比较多（比较长）的的时候，在网页的顶部进行快速定位。
+	</p>
+	<p class="p0">
+		实现锚点功能，需要使用两个至少两个<span>a</span><span>标签相互配合，形式如下：</span>
+	</p>
+	<p class="p0">
+		&lt;a&nbsp;href=”#<span>锚点名</span>”&nbsp;&gt;<span>文字</span><span>&lt;/a&gt;</span><span>——表示点击的文字</span>
+	</p>
+	<p class="p0">
+		………………………………………（中间的很多其他内容。。。。）
+	</p>
+	<p class="p0">
+		&lt;a&nbsp;name=”锚点名”&nbsp;&gt;&lt;/a&gt;<span>——表示位置的标签</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		a<span>标签的第三个应用：用于发送邮件</span>
+	</p>
+	<p class="p0">
+		&lt;a&nbsp;href=”mailto:ldh@itcast.cn”&nbsp;&gt;<span>没事给我</span><span>mail&lt;/a&gt;</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		a<span>标签的第</span><span>4</span><span>个应用：用于下载：</span>
+	</p>
+	<p class="p0">
+		&lt;a&nbsp;href=”&nbsp;xx<span>文件名</span>”&nbsp;&gt;&nbsp;<span>点击下载</span><span>&lt;/a&gt;</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		二进制介绍
+	</h1>
+	<table style="padding:0pt 0pt 0pt 2.85pt;">
+		<tbody>
+			<tr>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">10<span>进制</span></span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">1</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">2</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">3</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">4</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">5</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">6</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">7</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">8</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">9</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">10</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">11</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">12</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">13</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">14</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">15</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="39" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">16</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">8<span>进制</span></span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">1</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">2</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">3</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">4</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">5</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">6</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">7</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">10</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">11</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">12</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">13</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">14</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">15</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">16</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">17</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="39" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">20</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">16<span>进制</span></span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">1</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">2</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">3</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">4</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">5</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">6</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">7</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">8</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">9</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">A</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">B</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">C</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">D</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">E</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">F</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="39" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">10</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">2<span>进制</span></span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">1</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">10</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">11</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">100</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">101</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">110</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">111</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">1000</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">1001</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">1010</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">1011</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">1100</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">1101</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">1110</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">1111</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="39" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">10000</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">2</span><span style="font-size:10.5000pt;font-family:'宋体';vertical-align:super;">0</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">2</span><span style="font-size:10.5000pt;font-family:'宋体';vertical-align:super;">1</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">2</span><span style="font-size:10.5000pt;font-family:'宋体';vertical-align:super;">2</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">2</span><span style="font-size:10.5000pt;font-family:'宋体';vertical-align:super;">3</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="39" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">2</span><span style="font-size:10.5000pt;font-family:'宋体';vertical-align:super;">4</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">1</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">2</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="37" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">4</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">8</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="38" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+				<td width="39" valign="top" style="border:0.5000pt solid #000000;">
+					<p class="p0">
+						<span style="font-size:10.5000pt;font-family:'宋体';">16</span><span style="font-size:10.5000pt;font-family:'宋体';"></span>
+					</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		10000(10)&nbsp;=&nbsp;104
+	</p>
+	<p class="p0">
+		10000(2)&nbsp;=&nbsp;24
+	</p>
+	<h1>
+		字符编码介绍
+	</h1>
+	<p class="p0">
+		在计算机中，本质上，任何东西其实都是用数字来表达的。我们的所有文字（包括中英文，各种符号，各种运算符）其实都是使用了一个数字来代表，比如：
+	</p>
+	<p class="p0">
+		Ａ：６５
+	</p>
+	<p class="p0">
+		Ｂ：６６
+	</p>
+	<p class="p0">
+		ａ：９７
+	</p>
+	<p class="p0">
+		中：５０００（假设）
+	</p>
+	<p class="p0">
+		华：５５００（假设）
+	</p>
+	<p class="p0">
+		．．．．．．．．
+	</p>
+	<p class="p0">
+		这样的数字被称为“字符编号”，每个字符都有一个固定的编号，一般来说，每个国家都会对其国家的文字进行一个文字编码标准化。
+	</p>
+	<p class="p0">
+		问题就来了：
+	</p>
+	<p class="p0">
+		在日文字中，其编码如下：
+	</p>
+	<p class="p0">
+		田：５０００（假设）
+	</p>
+	<p class="p0">
+		中：５００１（假设）
+	</p>
+	<p class="p0">
+		．．．．．．．．．
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		乱码的成因：一个人用某个编码写的字，在另一个人的电脑里，用另一个编码去识别并显示，就可能出现乱码。
+	</p>
+	<p class="p0">
+		对我们网页来说，需要注意两个编码方面的问题：
+	</p>
+	<p class="p0" style="margin-left:18.0000pt;text-indent:-18.0000pt;">
+		1，&nbsp;一个文件中的代码使用什么编码，是由其所使用的编辑器来决定。
+	</p>
+	<p class="p0" style="margin-left:18.0000pt;text-indent:-18.0000pt;">
+		2，&nbsp;一个网页文件，浏览器使用什么编码来显示，通常由<span>html</span><span>代码来设定：</span>
+	</p>
+	<p class="p0" style="margin-left:42.0000pt;text-indent:-21.0000pt;">
+		a)&nbsp;&lt;meta&nbsp;http-equiv="Content-Type"&nbsp;content="text/html;charset=UTF-8"&nbsp;/&gt;
+	</p>
+	<p class="p0" style="margin-left:42.0000pt;text-indent:-21.0000pt;">
+		b)&nbsp;这一行的意思是，程序员生成“我的网页是什么编码”
+	</p>
+	<p class="p0">
+		当我们浏览一个网页的时候，如果浏览器所使用的显示编码跟这个网页文件创建和编辑的时候所使用的编码不一致，就可能导致乱码。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		我们中文编程中的常见编码：<span>gb2312,&nbsp;&nbsp;gbk,&nbsp;&nbsp;utf-8</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+</div><!-- (此文通过<a href="http://xiaosong.org/share/auto-pub-plugin-update">emlog自动发布插件</a>发布) -->]]></description>
+	<pubDate>Thu, 01 Aug 2013 14:24:35 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-170.html</guid>
+
+</item>
+<item>
+	<title>笔记6</title>
+	<link>http://onelose.com/post-175.html</link>
+	<description><![CDATA[<div class="Section0">
+	<h1>
+		昨日回顾
+	</h1>
+	<p class="p0">
+		盒子模型深入：
+	</p>
+	<p class="p0">
+		一个盒子的尺寸构成：是由以下几部分构成的：
+	</p>
+	<p class="p0">
+		margin&nbsp;&nbsp;&nbsp;border&nbsp;&nbsp;&nbsp;padding&nbsp;&nbsp;&nbsp;<span>内容区</span>
+	</p>
+	<p class="p0">
+		宽度方向：&nbsp;左右<span>margin&nbsp;&nbsp;&nbsp;</span><span>左右</span><span>border-width&nbsp;&nbsp;&nbsp;</span><span>左右</span><span>padding&nbsp;&nbsp;&nbsp;</span><span>内容区的</span><span>width</span>
+	</p>
+	<p class="p0">
+		高度方向：&nbsp;上下<span>margin&nbsp;&nbsp;&nbsp;</span><span>上下</span><span>border-width&nbsp;&nbsp;&nbsp;</span><span>上下</span><span>padding&nbsp;&nbsp;&nbsp;</span><span>内容区的</span><span>height</span>
+	</p>
+	<p class="p0">
+		块盒子的宽高：完全遵从上述规则
+	</p>
+	<p class="p0">
+		行内盒子的宽高：
+	</p>
+	<p class="p0">
+		宽度：&nbsp;左右<span>margin&nbsp;&nbsp;&nbsp;</span><span>左右</span><span>border-width&nbsp;&nbsp;&nbsp;</span><span>左右</span><span>padding&nbsp;&nbsp;&nbsp;</span><span>内容区</span><span>width</span><span>由其内容决定</span>
+	</p>
+	<p class="p0">
+		高度：&nbsp;上下<span>border-width&nbsp;&nbsp;&nbsp;</span><span>内容区的</span><span>height</span><span>由其内容决定</span>
+	</p>
+	<p class="p0">
+		行内盒子和块盒子其实可以相互转换：
+	</p>
+	<p class="p0">
+		转换为块盒子：&nbsp;<span>display:&nbsp;block;</span>
+	</p>
+	<p class="p0">
+		转换为行内盒子：<span>display:&nbsp;inline;</span>
+	</p>
+	<p class="p0">
+		背景：
+	</p>
+	<p class="p0">
+		背景颜色：&nbsp;&nbsp;<span>background-color:</span>
+	</p>
+	<p class="p0">
+		背景图片：	background-image:&nbsp;url(<span>图片路径</span><span>url)</span><span>；</span>
+	</p>
+	<p class="p0">
+		背景图片的重复性：&nbsp;<span>background-repeat:&nbsp;repeat&nbsp;//&nbsp;no-repeat&nbsp;//&nbsp;repeat-x&nbsp;&nbsp;//&nbsp;repeat-y</span>
+	</p>
+	<p class="p0">
+		背景图片的定位：	background-position:&nbsp;x<span>方向&nbsp;&nbsp;</span><span>y</span><span>方向；</span>
+	</p>
+	<p class="p0">
+		x<span>方向：&nbsp;</span><span>left&nbsp;&nbsp;&nbsp;center&nbsp;&nbsp;&nbsp;right&nbsp;&nbsp;&nbsp;5px&nbsp;&nbsp;&nbsp;-5px</span>
+	</p>
+	<p class="p0">
+		y<span>方向：&nbsp;</span><span>top&nbsp;&nbsp;&nbsp;&nbsp;center&nbsp;&nbsp;bottom&nbsp;&nbsp;5px&nbsp;&nbsp;-5px</span>
+	</p>
+	<p class="p0">
+		背景综合：&nbsp;<span>background:&nbsp;&nbsp;</span><span>背景颜色&nbsp;背景图片&nbsp;&nbsp;背景图重复性&nbsp;&nbsp;背景图定位；</span>
+	</p>
+	<p class="p0">
+		对比：
+	</p>
+	<p class="p0">
+		边框综合：&nbsp;<span>border:&nbsp;&nbsp;</span><span>线型&nbsp;&nbsp;线宽&nbsp;&nbsp;线色；</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		列表样式：
+	</p>
+	<p class="p0">
+		list-style-type:&nbsp;&nbsp;<span>前导符设定，&nbsp;比如有：&nbsp;&nbsp;&nbsp;</span><span>disc&nbsp;&nbsp;//&nbsp;&nbsp;circle&nbsp;&nbsp;&nbsp;//square&nbsp;&nbsp;//&nbsp;&nbsp;lower-roman&nbsp;&nbsp;</span>
+	</p>
+	<p class="p0">
+		list-style-position:&nbsp;&nbsp;<span>前导符位置设定：是放在</span><span>li</span><span>里面还是</span><span>li</span><span>外面，&nbsp;</span><span>outside&nbsp;&nbsp;//&nbsp;inside</span>
+	</p>
+	<p class="p0">
+		list-style-image:&nbsp;url(…):&nbsp;&nbsp;<span>前导图设定。</span>
+	</p>
+	<p class="p0">
+		综合属性：<span>list-style:&nbsp;</span>……
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		div<span>布局总结</span>
+	</h1>
+	<p class="p0">
+		内容与表现分离思想
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		分块思想
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		整体到局部，
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		标准流与非标准流
+	</h1>
+	<p class="p0">
+		标准流：所有元素如果没有专门设定其定位（或浮动），那么就称这也的盒子的正常表形为“标准流”
+	</p>
+	<p class="p0">
+		元素的原始定位方式（就是所谓标准流）遵循这个原则：&nbsp;在遵循块盒子和行内盒子的基础上，尽量往左上角挤靠。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		非标准流：&nbsp;人为定位或浮动就改变了元素的原始定位方式。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		除了浮动能够改变元素（盒子）的定位之外，我们还可以通过如下属性来改变定位方式：
+	</p>
+	<p class="p0">
+		position:&nbsp;static:&nbsp;&nbsp;<span>静态定位，其中这是所有元素的原始定位，也就是自然流方式的定位。</span>
+	</p>
+	<p class="p0">
+		position:&nbsp;relative;&nbsp;&nbsp;<span>相对定位：相对于其父盒子的定位方式。</span>
+	</p>
+	<p class="p0">
+		position:&nbsp;absolute;&nbsp;<span>绝对定位。其实是指在整个网页中任意指定位置（也可以说是相对于</span><span>body</span><span>）或其父盒子（父盒子应该是非静态定位的）。绝对定位通常类似“凭空粘在网页上的某个位置”</span>
+	</p>
+	<p class="p0">
+		position:&nbsp;fixed;&nbsp;	固定定位。其实是相对于真个浏览器的可视范围而定位的。固定定位通常类似“凭空粘在窗口上的某个位置”
+	</p>
+	<p class="p0">
+		以上相对定位，绝对定位和固定定位，都需要配合<span>left</span><span>和</span><span>top</span><span>属性才能有效。</span>
+	</p>
+	<p class="p0">
+		left<span>：离指定的元素（定位初始点）的左边多少（</span><span>px</span><span>）</span>
+	</p>
+	<p class="p0">
+		right<span>：离指定的元素（定位初始点）的右边多少（</span><span>px</span><span>）</span>
+	</p>
+	<p class="p0">
+		top<span>：离指定的元素（定位初始点）的顶边多少（</span><span>px</span><span>）</span>
+	</p>
+	<p class="p0">
+		bottom<span>：离指定的元素（定位初始点）的底边多少（</span><span>px</span><span>）——很少用</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		层叠顺序：
+	</p>
+	<p class="p0">
+		正常标准流的所有盒子，我们都可以认为是“平铺”到一个平面（比如地面）上作为一层的东西，可以当作０层。
+	</p>
+	<p class="p0">
+		层叠就是分多层放置盒子（元素，标签），即可以放在第２层，第３层。。。。。。。。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		常见居中总结：
+	</h1>
+	<p class="p0">
+		行内盒子里面的内容（文字）无所谓中。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		文字（行内元素）在块盒子（块元素）中水平居中：&nbsp;<span>text-align:&nbsp;center</span>
+	</p>
+	<p class="p0">
+		文字（行内元素）在块盒子（块元素）中垂直居中：&nbsp;设定行高等于盒子高（<span>height:30px;&nbsp;line-height:30px;</span><span>）</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		块盒子在其父块盒子中水平居中：&nbsp;<span>margin:&nbsp;0&nbsp;auto;</span>
+	</p>
+	<p class="p0">
+		快盒子在其父块盒子中垂直居中：&nbsp;没有特别的直接属性可以做到。
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		图片和文字在垂直方向对齐：&nbsp;在图片上使用：<span>vertical-align:&nbsp;middle</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		外边距溶合：&nbsp;
+	</h1>
+	<p class="p0">
+		当两个盒子的上下外边距（<span>margin-top</span><span>，</span><span>margin-bottom</span><span>）相互“触碰”（交汇）的时候，他们之间的实际外间隙是他们中的较大者。</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<h1>
+		样式作用的优先级：
+	</h1>
+	<p class="p0">
+		多个样式（选择器）的设定对某个对象都有效的时候，谁最后说了算（优先）？
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		基本优先级：
+	</p>
+	<p class="p0">
+		!important<span>设置&nbsp;</span><span>&gt;&nbsp;&nbsp;</span><span>行内样式&nbsp;&nbsp;</span><span>&gt;&nbsp;</span>id<span>选择器&nbsp;&nbsp;</span><span>&gt;&nbsp;</span><span>类选择器（含伪类）&nbsp;</span><span>&gt;&nbsp;&nbsp;</span><span>标签选择器&nbsp;&nbsp;</span><span>&gt;&nbsp;</span><span>通用选择器</span>&nbsp;&nbsp;〉&nbsp;继承
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		选择器的优先级权重计算公式：
+	</p>
+	<p class="p0">
+		id<span>选择器的个数</span><span>*1000&nbsp;&nbsp;+&nbsp;</span><span>类选择器的个数&nbsp;</span><span>*&nbsp;100&nbsp;&nbsp;+&nbsp;</span><span>标签选择器的个数&nbsp;</span><span>*&nbsp;10&nbsp;&nbsp;+&nbsp;&nbsp;</span><span>通用选择器个数</span><span>*1</span>
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+	<p class="p0">
+		<br />
+	</p>
+</div>]]></description>
+	<pubDate>Wed, 31 Jul 2013 14:28:08 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-175.html</guid>
+
+</item></channel>
+</rss>

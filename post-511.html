@@ -1,0 +1,495 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>如何编写PHP扩展</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>如何编写PHP扩展</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-7-14 6:00 Monday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span style='font-family:宋体;font-size:26pt;'>如何编写</span><span lang='EN-US' style='font-size:26pt;'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;font-size:26pt;'>扩展</span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><br></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>翻译：</span><span lang='EN-US'><font face='Times New Roman'>taft@wjl.cn</font></span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>Ver 0.1</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>最后修改日期</span><font face='Times New Roman'>&nbsp;<span lang='EN-US'>2006/1/19</span></font></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>WJL Studio @ wjl.cn 2006</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><br></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><strong><span style='font-family:宋体;font-size:24pt;'>目</span><span style='font-size:24pt;'><font face='Times New Roman'>&nbsp;</font></span><span style='font-family:宋体;font-size:24pt;'>录</span></strong></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><a href='http://writeblog.csdn.net/fckeditor/editor/fckeditor.html?InstanceName=Editor_Edit_FCKEditor&amp;Toolbar=Default#_Toc125973931' style='color:rgb(51, 102, 153);'><font size='2'><strong><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>简</span></span><span lang='EN-US'><span lang='EN-US'><font face='Times New Roman'>&nbsp;</font></span></span><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>介</span></span></strong></font></a></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><a href='http://writeblog.csdn.net/fckeditor/editor/fckeditor.html?InstanceName=Editor_Edit_FCKEditor&amp;Toolbar=Default#_Toc125973932' style='color:rgb(51, 102, 153);'><font size='2'><strong><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>快速开始</span></span></strong></font></a></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><a href='http://writeblog.csdn.net/fckeditor/editor/fckeditor.html?InstanceName=Editor_Edit_FCKEditor&amp;Toolbar=Default#_Toc125973933' style='color:rgb(51, 102, 153);'><font size='2'><strong><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>内存管理</span></span></strong></font></a></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><a href='http://writeblog.csdn.net/fckeditor/editor/fckeditor.html?InstanceName=Editor_Edit_FCKEditor&amp;Toolbar=Default#_Toc125973934' style='color:rgb(51, 102, 153);'><font size='2'><strong><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>从</span></span><span style='font-family:Helvetica-Bold;'><font face='Times New Roman'>PHP</font></span><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>函数中返回值</span></span></strong></font></a></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><a href='http://writeblog.csdn.net/fckeditor/editor/fckeditor.html?InstanceName=Editor_Edit_FCKEditor&amp;Toolbar=Default#_Toc125973935' style='color:rgb(51, 102, 153);'><font size='2'><strong><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>完成</span></span><font face='Times New Roman'>self_concat()</font></strong></font></a></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><a href='http://writeblog.csdn.net/fckeditor/editor/fckeditor.html?InstanceName=Editor_Edit_FCKEditor&amp;Toolbar=Default#_Toc125973936' style='color:rgb(51, 102, 153);'><font size='2'><strong><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>实例小结</span></span></strong></font></a></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><a href='http://writeblog.csdn.net/fckeditor/editor/fckeditor.html?InstanceName=Editor_Edit_FCKEditor&amp;Toolbar=Default#_Toc125973937' style='color:rgb(51, 102, 153);'><font size='2'><strong><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>包裹第三方的扩展</span></span></strong></font></a></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><a href='http://writeblog.csdn.net/fckeditor/editor/fckeditor.html?InstanceName=Editor_Edit_FCKEditor&amp;Toolbar=Default#_Toc125973938' style='color:rgb(51, 102, 153);'><font size='2'><strong><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>编写利用资源的第一个</span></span><font face='Times New Roman'>PHP</font><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>函数</span></span></strong></font></a></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><a href='http://writeblog.csdn.net/fckeditor/editor/fckeditor.html?InstanceName=Editor_Edit_FCKEditor&amp;Toolbar=Default#_Toc125973939' style='color:rgb(51, 102, 153);'><font size='2'><strong><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>全局变量</span></span></strong></font></a></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><a href='http://writeblog.csdn.net/fckeditor/editor/fckeditor.html?InstanceName=Editor_Edit_FCKEditor&amp;Toolbar=Default#_Toc125973940' style='color:rgb(51, 102, 153);'><font size='2'><strong><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>添加自定义</span></span><span style='font-family:Helvetica-Bold;'><font face='Times New Roman'>INI</font></span><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>指令</span></span></strong></font></a></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><a href='http://writeblog.csdn.net/fckeditor/editor/fckeditor.html?InstanceName=Editor_Edit_FCKEditor&amp;Toolbar=Default#_Toc125973941' style='color:rgb(51, 102, 153);'><font size='2'><strong><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>线程安全资源管理宏</span></span></strong></font></a></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><a href='http://writeblog.csdn.net/fckeditor/editor/fckeditor.html?InstanceName=Editor_Edit_FCKEditor&amp;Toolbar=Default#_Toc125973942' style='color:rgb(51, 102, 153);'><font size='2'><strong><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>总</span></span><span lang='EN-US' style='font-family:Helvetica-Bold;'><span lang='EN-US'><font face='Times New Roman'>&nbsp;</font></span></span><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>结</span></span></strong></font></a></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><a href='http://writeblog.csdn.net/fckeditor/editor/fckeditor.html?InstanceName=Editor_Edit_FCKEditor&amp;Toolbar=Default#_Toc125973943' style='color:rgb(51, 102, 153);'><strong><font size='2'><span lang='EN-US' style='font-family:宋体;'><span lang='EN-US'>词汇表</span></span></font></strong></a></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><br></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><a style='color:rgb(51, 102, 153);'><strong><span style='font-family:宋体;font-size:12pt;'>简</span></strong></a><strong><span style='font-size:12pt;'><font face='Times New Roman'>&nbsp;</font></span></strong><strong><span style='font-family:宋体;font-size:12pt;'>介</span></strong></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>取得成功的一个主要原因之一是她拥有大量的可用扩展。</span><span lang='EN-US'><font face='Times New Roman'>web</font></span><span style='font-family:宋体;'>开发者无论有何种需求，这种需求最有可能在</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>发行包里找到。</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>发行包包括支持各种数据库，图形文件格式，压缩，</span><span lang='EN-US'><font face='Times New Roman'>XML</font></span><span style='font-family:宋体;'>技术扩展在内的许多扩展。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>扩展</span><span lang='EN-US'><font face='Times New Roman'>API</font></span><span style='font-family:宋体;'>的引入使</span><span lang='EN-US'><font face='Times New Roman'>PHP3</font></span><span style='font-family:宋体;'>取得了巨大的进展，扩展</span><span lang='EN-US'><font face='Times New Roman'>API</font></span><span style='font-family:宋体;'>机制使</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>开发社区很容易的开发出几十种扩展。现在，两个版本过去了，</span><span lang='EN-US'><font face='Times New Roman'>API</font></span><span style='font-family:宋体;'>仍然和</span><span lang='EN-US'><font face='Times New Roman'>PHP3</font></span><span style='font-family:宋体;'>时的非常相似。扩展主要的思想是：尽可能的从扩展编写者那里隐藏</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>的内部机制和脚本引擎本身，仅仅需要开发者熟悉</span><span lang='EN-US'><font face='Times New Roman'>API</font></span><span style='font-family:宋体;'>。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>有两个理由需要自己编写</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>扩展。第一个理由是：</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>需要支持一项她还未支持的技术。这通常包括包裹一些现成的</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>函数库，以便提供</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>接口。例如，如果一个叫</span><span lang='EN-US'><font face='Times New Roman'>FooBase</font></span><span style='font-family:宋体;'>的数据库已推出市场，你需要建立一个</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>扩展帮助你从</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>里调用</span><span lang='EN-US'><font face='Times New Roman'>FooBase</font></span><span style='font-family:宋体;'>的</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>函数库。这个工作可能仅由一个人完成，然后被整个</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>社区共享（如果你愿意的话）。第二个不是很普遍的理由是：你需要从性能或功能的原因考虑来编写一些商业逻辑。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span style='font-family:宋体;'><font size='3'>如果以上的两个理由都和你没什么关系，同时你感觉自己没有冒险精神，那么你可以跳过本章。</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>本章教你如何编写相对简单的</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>扩展，使用一部分扩展</span><span lang='EN-US'><font face='Times New Roman'>API</font></span><span style='font-family:宋体;'>函数。对于大多数打算开发自定义</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>扩展开发者而言，它含概了足够的资料。学习一门编程课程的最好方法之一就是动手做一些极其简单的例子，这些例子正是本章的线索。一旦你明白了基础的东西，你就可以在互联网上通过阅读文挡、原代码或参加邮件列表新闻组讨论来丰富自己。因此，本章集中在让你如何开始的话题。在</span><span lang='EN-US'><font face='Times New Roman'>UNIX</font></span><span style='font-family:宋体;'>下一个叫</span><span lang='EN-US'><font face='Times New Roman'>ext_skel</font></span><span style='font-family:宋体;'>的脚本被用于建立扩展的骨架，骨架信息从一个描述扩展接口的定义文件中取得。因此你需要利用</span><span lang='EN-US'><font face='Times New Roman'>UNIX</font></span><span style='font-family:宋体;'>来建立一个骨架。</span><span lang='EN-US'><font face='Times New Roman'>Windows</font></span><span style='font-family:宋体;'>开发者可以使用</span><span lang='EN-US'><font face='Times New Roman'>Windows ext_skel_win32.php</font></span><span style='font-family:宋体;'>代替</span><span lang='EN-US'><font face='Times New Roman'>ext_skel</font></span><span style='font-family:宋体;'>。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>然而，本章关于用你开发的扩展编译</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>的指导仅涉及</span><span lang='EN-US'><font face='Times New Roman'>UNIX</font></span><span style='font-family:宋体;'>编译系统。本章中所有的对</span><span lang='EN-US'><font face='Times New Roman'>API</font></span><span style='font-family:宋体;'>的解释与</span><span lang='EN-US'><font face='Times New Roman'>UNIX</font></span><span style='font-family:宋体;'>和</span><span lang='EN-US'><font face='Times New Roman'>Windows</font></span><span style='font-family:宋体;'>下开发的扩展都有联系。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>当你阅读完这章，你能学会如何</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:'MS Mincho';'>☞</span><font face='Times New Roman'>&nbsp;</font><span style='font-family:宋体;'>建立一个简单的商业逻辑扩展。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:'MS Mincho';'>☞</span><font face='Times New Roman'>&nbsp;<span lang='EN-US'>.</span></font><span style='font-family:宋体;'>建议个</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>函数库的包裹扩展，尤其是有些标准</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>文件操作函数比如</span><span lang='EN-US'><font face='Times New Roman'>fopen()</font></span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><strong><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></strong></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><a style='color:rgb(51, 102, 153);'><strong><span style='font-family:宋体;font-size:12pt;'>快速开始</span></strong></a></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><strong><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></strong></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>本节没有介绍关于脚本引擎基本构造的一些知识，而是直接进入扩展的编码讲解中，因此不要担心你无法立刻获得对扩展整体把握的感觉。假设你正在开发一个网站，需要一个把字符串重复</span><span lang='EN-US'><font face='Times New Roman'>n</font></span><span style='font-family:宋体;'>次的函数。下面是用</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>写的例子：</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>function self_concat($string, $n)</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>{</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>$result = '';</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>for ($i = 0; $i &lt; $n; $i++) {</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>$result .= $string;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>}</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>return $result;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>}</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>self_concat('One', 3) returns 'OneOneOne'.</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>self_concat('One', 1) returns 'One'.</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>假设由于一些奇怪的原因，你需要时常调用这个函数，而且还要传给函数很长的字符串和大值</span><span lang='EN-US'><font face='Times New Roman'>n</font></span><span style='font-family:宋体;'>。这意味着在脚本里有相当巨大的字符串连接量和内存重新分配过程，以至显著地降低脚本执行速度。如果有一个函数能够更快地分配大量且足够的内存来存放结果字符串，然后把</span><span lang='EN-US'><font face='Times New Roman'>$string</font></span><span style='font-family:宋体;'>重复</span><span lang='EN-US'><font face='Times New Roman'>n</font></span><span style='font-family:宋体;'>次，就不需要在每次循环迭代中分配内存。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>为扩展建立函数的第一步是写一个函数定义文件，该函数定义文件定义了扩展对外提供的函数原形。该例中，定义函数只有一行函数原形</span><span lang='EN-US'><font face='Times New Roman'>self_concat() :</font></span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>string self_concat(string str, int n)</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>函数定义文件的一般格式是一个函数一行。你可以定义可选参数和使用大量的</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>类型，包括</span><span lang='EN-US'><font face='Times New Roman'>: bool, float, int, array</font></span><span style='font-family:宋体;'>等。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>保存为</span><span lang='EN-US'><font face='Times New Roman'>myfunctions.def</font></span><span style='font-family:宋体;'>文件至</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>原代码目录树下。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>该是通过扩展骨架</span><span lang='EN-US'><font face='Times New Roman'>(skeleton)</font></span><span style='font-family:宋体;'>构造器运行函数定义文件的时机了。该构造器脚本叫</span><span lang='EN-US'><font face='Times New Roman'>ext_skel</font></span><span style='font-family:宋体;'>，放在</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>原代码目录树的</span><span lang='EN-US'><font face='Times New Roman'>ext/</font></span><span style='font-family:宋体;'>目录下（</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>原码主目录下的</span><span lang='EN-US'><font face='Times New Roman'>README.EXT_SKEL</font></span><span style='font-family:宋体;'>提供了更多的信息）。假设你把函数定义保存在一个叫做</span><span lang='EN-US'><font face='Times New Roman'>myfunctions.def</font></span><span style='font-family:宋体;'>的文件里，而且你希望把扩展取名为</span><span lang='EN-US'><font face='Times New Roman'>myfunctions</font></span><span style='font-family:宋体;'>，运行下面的命令来建立扩展骨架</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>./ext_skel --extname=myfunctions --proto=myfunctions.def</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span lang='EN-US'><font face='Times New Roman'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span><span style='font-family:宋体;'>这个命令在</span><span lang='EN-US'><font face='Times New Roman'>ext/</font></span><span style='font-family:宋体;'>目录下建立了一个</span><span lang='EN-US'><font face='Times New Roman'>myfunctions/</font></span><span style='font-family:宋体;'>目录。你要做的第一件事情也许就是编译该骨架，以便编写和测试实际的</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>代码。编译扩展有两种方法：</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:'MS Mincho';'>☞</span><font face='Times New Roman'>&nbsp;&nbsp;</font><span style='font-family:宋体;'>作为一个可装载模块或者</span><span lang='EN-US'><font face='Times New Roman'>DSO</font></span><span style='font-family:宋体;'>（动态共享对象）</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:'MS Mincho';'>☞</span><span style='font-family:'MS Mincho';'>&nbsp;</span><font face='Times New Roman'>&nbsp;</font><span style='font-family:宋体;'>静态编译到</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>因为第二种方法比较容易上手，所以本章采用静态编译。如果你对编译可装载扩展模块感兴趣，可以阅读</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>原代码根目录下的</span><span lang='EN-US'><font face='Times New Roman'>README.SELF-CONTAINED_EXTENSIONS</font></span><span style='font-family:宋体;'>文件。为了使扩展能够被编译，需要修改扩展目录</span><span lang='EN-US'><font face='Times New Roman'>ext/myfunctions/</font></span><span style='font-family:宋体;'>下的</span><span lang='EN-US'><font face='Times New Roman'>config.m4</font></span><span style='font-family:宋体;'>文件。扩展没有包裹任何外部的</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>库，你需要添加支持</span><span lang='EN-US'><font face='Times New Roman'>--enable-myfunctions</font></span><span style='font-family:宋体;'>配置开关到</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>编译系统里（–</span><span lang='EN-US'><font face='Times New Roman'>with-extension&nbsp;</font></span><span style='font-family:宋体;'>开关用于那些需要用户指定相关</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>库路径的扩展）。可以去掉自动生成的下面两行的注释来开启这个配置。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>PHP_ARG_ENABLE(myfunctions, whether to enable myfunctions support,</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>[ --enable-myfunctions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Include myfunctions support])</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>现在剩下的事情就是在</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>原代码树根目录下运行</span><span lang='EN-US'><font face='Times New Roman'>./buildconf</font></span><span style='font-family:宋体;'>，该命令会生成一个新的配置脚本。通过查看</span><span lang='EN-US'><font face='Times New Roman'>./configure --help</font></span><span style='font-family:宋体;'>输出信息，可以检查新的配置选项是否被包含到配置文件中。现在，打开你喜好的配置选项开关和</span><span lang='EN-US'><font face='Times New Roman'>--enable-myfunctions</font></span><span style='font-family:宋体;'>重新配置一下</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>。最后的但不是最次要的是，用</span><span lang='EN-US'><font face='Times New Roman'>make</font></span><span style='font-family:宋体;'>来重新编译</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span lang='EN-US'><font face='Times New Roman'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ext_skel</font></span><span style='font-family:宋体;'>应该把两个</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>函数添加到你的扩展骨架了：打算实现的</span><span lang='EN-US'><font face='Times New Roman'>self_concat()</font></span><span style='font-family:宋体;'>函数和用于检测</span><span lang='EN-US'><font face='Times New Roman'>myfunctions&nbsp;</font></span><span style='font-family:宋体;'>是否编译到</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>的</span><span lang='EN-US'><font face='Times New Roman'>confirm_myfunctions_compiled()</font></span><span style='font-family:宋体;'>函数。完成</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>的扩展开发后，可以把后者去掉。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&lt;?php</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>print confirm_myfunctions_compiled('myextension');</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>?&gt;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span style='font-family:宋体;'><font size='3'>运行这个脚本会出现类似下面的输出：</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>'Congratulations! You have successfully modified ext/myfunctions</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>config.m4. Module myfunctions is now compiled into PHP.'</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>另外，</span><span lang='EN-US'><font face='Times New Roman'>ext_skel</font></span><span style='font-family:宋体;'>脚本生成一个叫</span><span lang='EN-US'><font face='Times New Roman'>myfunctions.php</font></span><span style='font-family:宋体;'>的脚本，你也可以利用它来验证扩展是否被成功地编译到</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>。它会列出该扩展所支持的所有函数。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span lang='EN-US'><font face='Times New Roman'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span><span style='font-family:宋体;'>现在你学会如何编译扩展了，该是真正地研究</span><span lang='EN-US'><font face='Times New Roman'>self_concat()</font></span><span style='font-family:宋体;'>函数的时候了。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span lang='EN-US'><font face='Times New Roman'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span><span style='font-family:宋体;'>下面就是</span><span lang='EN-US'><font face='Times New Roman'>ext_skel</font></span><span style='font-family:宋体;'>脚本生成的骨架结构：</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>/* {{{ proto string self_concat(string str, int n)</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>*/</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>PHP_FUNCTION(self_concat)</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>}</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>char *str = NULL;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>int argc = ZEND_NUM_ARGS();</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>int str_len;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>long n;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>if (zend_parse_parameters(argc TSRMLS_CC, 'sl', &amp;str, &amp;str_len, &amp;n) == FAILURE)</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>return;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>php_error(E_WARNING, 'self_concat: not yet implemented');</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>}</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>/* }}} */</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>自动生成的</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>函数周围包含了一些注释，这些注释用于自动生成代码文档和</span><span lang='EN-US'><font face='Times New Roman'>vi</font></span><span style='font-family:宋体;'>、</span><span lang='EN-US'><font face='Times New Roman'>Emacs</font></span><span style='font-family:宋体;'>等编辑器的代码折叠。函数自身的定义使用了宏</span><span lang='EN-US'><font face='Times New Roman'>PHP_FUNCTION()</font></span><span style='font-family:宋体;'>，该宏可以生成一个适合于</span><span lang='EN-US'><font face='Times New Roman'>Zend</font></span><span style='font-family:宋体;'>引擎的函数原型。逻辑本身分成语义各部分，取得调用函数的参数和逻辑本身。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span lang='EN-US'><font face='Times New Roman'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span><span style='font-family:宋体;'>为了获得函数传递的参数，可以使用</span><span lang='EN-US'><font face='Times New Roman'>zend_parse_parameters()API</font></span><span style='font-family:宋体;'>函数。下面是该函数的原型：</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span lang='EN-US'><font face='Times New Roman'>zend_parse_parameters(int num_args TSRMLS_DC, char *type_spec,&nbsp;</font></span><span style='font-family:宋体;'>…</span><span lang='EN-US'><font face='Times New Roman'>);</font></span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>第一个参数是传递给函数的参数个数。通常的做法是传给它</span><span lang='EN-US'><font face='Times New Roman'>ZEND_NUM_ARGS()</font></span><span style='font-family:宋体;'>。这是一个表示传递给函数参数总个数的宏。第二个参数是为了线程安全，总是传递</span><span lang='EN-US'><font face='Times New Roman'>TSRMLS_CC</font></span><span style='font-family:宋体;'>宏，后面会讲到。第三个参数是一个字符串，指定了函数期望的参数类型，后面紧跟着需要随参数值更新的变量列表。因为</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>采用松散的变量定义和动态的类型判断，这样做就使得把不同类型的参数转化为期望的类型成为可能。例如，如果用户传递一个整数变量，可函数需要一个浮点数，那么</span><span lang='EN-US'><font face='Times New Roman'>zend_parse_parameters()</font></span><span style='font-family:宋体;'>就会自动地把整数转换为相应的浮点数。如果实际值无法转换成期望类型（比如整形到数组形），会触发一个警告。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span style='font-family:宋体;'><font size='3'>下表列出了可能指定的类型。我们从完整性考虑也列出了一些没有讨论到的类型。</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<table border='1' cellpadding='2' cellspacing='0' style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial; font-size: 14px;'> 
+ <tbody> 
+  <tr> 
+   <td valign='top' style='width: 147.6pt;'><p><span style='font-family:宋体;'><font size='3'>类型指定符</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><font size='3'><span style='font-family:宋体;'>对应的</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>类型</span></font></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span style='font-family:宋体;'><font size='3'>描述</font></span></p></td> 
+  </tr> 
+  <tr> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>l</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>long</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span style='font-family:宋体;'><font size='3'>符号整数</font></span></p></td> 
+  </tr> 
+  <tr> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>d</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>double</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span style='font-family:宋体;'><font size='3'>浮点数</font></span></p></td> 
+  </tr> 
+  <tr> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>s</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>char *, int</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span style='font-family:宋体;'><font size='3'>二进制字符串，长度</font></span></p></td> 
+  </tr> 
+  <tr> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>b</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>zend_bool</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><font size='3'><span style='font-family:宋体;'>逻辑型（</span><span lang='EN-US'><font face='Times New Roman'>1</font></span><span style='font-family:宋体;'>或</span><span lang='EN-US'><font face='Times New Roman'>0</font></span><span style='font-family:宋体;'>）</span></font></p></td> 
+  </tr> 
+  <tr> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>r</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>zval *</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span style='font-family:宋体;'><font size='3'>资源（文件指针，数据库连接等）</font></span></p></td> 
+  </tr> 
+  <tr> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>a</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>zval *</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span style='font-family:宋体;'><font size='3'>联合数组</font></span></p></td> 
+  </tr> 
+  <tr> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>o</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>zval *</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span style='font-family:宋体;'><font size='3'>任何类型的对象</font></span></p></td> 
+  </tr> 
+  <tr> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>O</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>zval *</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt;'><p><span style='font-family:宋体;'><font size='3'>指定类型的对象。需要提供目标对象的类类型</font></span></p></td> 
+  </tr> 
+  <tr> 
+   <td valign='top' style='width: 147.6pt; height: 32.85pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>z</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt; height: 32.85pt;'><p><span lang='EN-US'><font face='Times New Roman' size='3'>zval *</font></span></p></td> 
+   <td valign='top' style='width: 147.6pt; height: 32.85pt;'><p><font size='3'><span style='font-family:宋体;'>无任何操作的</span><span lang='EN-US'><font face='Times New Roman'>zval</font></span></font></p></td> 
+  </tr> 
+ </tbody> 
+</table> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>为了容易地理解最后几个选项的含义，你需要知道</span><span lang='EN-US'><font face='Times New Roman'>zval</font></span><span style='font-family:宋体;'>是</span><span lang='EN-US'><font face='Times New Roman'>Zend</font></span><span style='font-family:宋体;'>引擎的值容器</span></font><a href='http://writeblog.csdn.net/fckeditor/editor/fckeditor.html?InstanceName=Editor_Edit_FCKEditor&amp;Toolbar=Default#_ftn1' style='color:rgb(51, 102, 153);'><span lang='EN-US'><span lang='EN-US' style='font-family:'Times New Roman';font-size:10.5pt;'>[1]</span></span></a><font size='3'><span style='font-family:宋体;'>。无论这个变量是布尔型，字符串型或者其他任何类型，其信息总会包含在一个</span><span lang='EN-US'><font face='Times New Roman'>zval</font></span><span style='font-family:宋体;'>联合体中。本章中我们不直接存取</span><span lang='EN-US'><font face='Times New Roman'>zval</font></span><span style='font-family:宋体;'>，而是通过一些附加的宏来操作。下面的是或多或少在</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>中的</span><span lang='EN-US'><font face='Times New Roman'>zval,&nbsp;</font></span><span style='font-family:宋体;'>以便我们能更好地理解接下来的代码。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>typedef union _zval {</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>long lval;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>double dval;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>struct {</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>char *val;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>int len;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>} str;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>HashTable *ht;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>zend_object_value obj;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>} zval;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>在我们的例子中，我们用基本类型调用</span><span lang='EN-US'><font face='Times New Roman'>zend_parse_parameters()</font></span><span style='font-family:宋体;'>，以本地</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>类型的方式取得函数参数的值，而不是用</span><span lang='EN-US'><font face='Times New Roman'>zval</font></span><span style='font-family:宋体;'>容器。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>为了让</span><span lang='EN-US'><font face='Times New Roman'>zend_parse_parameters()</font></span><span style='font-family:宋体;'>能够改变传递给它的参数的值，并返回这个改变值，需要传递一个引用。仔细查看一下</span><span lang='EN-US'><font face='Times New Roman'>self_concat()</font></span><span style='font-family:宋体;'>：</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>if (zend_parse_parameters(argc TSRMLS_CC, 'sl', &amp;str, &amp;str_len, &amp;n) == FAILURE)</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>return;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span lang='EN-US'><font face='Times New Roman'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span><span style='font-family:宋体;'>注意到自动生成的代码会检测函数的返回值</span><span lang='EN-US'><font face='Times New Roman'>FAILUER(</font></span><span style='font-family:宋体;'>成功即</span><span lang='EN-US'><font face='Times New Roman'>SUCCESS)</font></span><span style='font-family:宋体;'>来判断是否成功。如果没有成功则立即返回，并且由</span><span lang='EN-US'><font face='Times New Roman'>zend_parse_parameters()</font></span><span style='font-family:宋体;'>负责触发警告信息。因为函数打算接收一个字符串</span><span lang='EN-US'><font face='Times New Roman'>l</font></span><span style='font-family:宋体;'>和一个整数</span><span lang='EN-US'><font face='Times New Roman'>n</font></span><span style='font-family:宋体;'>，所以指定</span><font face='Times New Roman'>&nbsp;<span lang='EN-US'>”sl”&nbsp;</span></font><span style='font-family:宋体;'>作为其类型指示符。</span><span lang='EN-US'><font face='Times New Roman'>s</font></span><span style='font-family:宋体;'>需要两个参数，所以我们传递参考</span><span lang='EN-US'><font face='Times New Roman'>char *&nbsp;</font></span><span style='font-family:宋体;'>和</span><span lang='EN-US'><font face='Times New Roman'>&nbsp;int (str&nbsp;</font></span><span style='font-family:宋体;'>和</span><span lang='EN-US'><font face='Times New Roman'>str_len)</font></span><span style='font-family:宋体;'>给</span><span lang='EN-US'><font face='Times New Roman'>zend_parse_parameters()</font></span><span style='font-family:宋体;'>函数。无论什么时候，记得总是在代码中使用字符串长度</span><span lang='EN-US'><font face='Times New Roman'>str_len</font></span><span style='font-family:宋体;'>来确保函数工作在二进制安全的环境中。不要使用</span><span lang='EN-US'><font face='Times New Roman'>strlen()</font></span><span style='font-family:宋体;'>和</span><span lang='EN-US'><font face='Times New Roman'>strcpy()</font></span><span style='font-family:宋体;'>，除非你不介意函数在二进制字符串下不能工作。二进制字符串是包含有</span><span lang='EN-US'><font face='Times New Roman'>nulls</font></span><span style='font-family:宋体;'>的字符串。二进制格式包括图象文件，压缩文件，可执行文件和更多的其他文件。</span><span lang='EN-US'><font face='Times New Roman'>”l”&nbsp;</font></span><span style='font-family:宋体;'>只需要一个参数，所以我们传递给它</span><span lang='EN-US'><font face='Times New Roman'>n</font></span><span style='font-family:宋体;'>的引用。尽管为了清晰起见，骨架脚本生成的</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>变量名与在函数原型定义文件中的参数名一样；这样做不是必须的，尽管在实践中鼓励这样做。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>回到转换规则中来。下面三个对</span><span lang='EN-US'><font face='Times New Roman'>self_concat()</font></span><span style='font-family:宋体;'>函数的调用使</span><span lang='EN-US'><font face='Times New Roman'>str, str_len</font></span><span style='font-family:宋体;'>和</span><span lang='EN-US'><font face='Times New Roman'>n</font></span><span style='font-family:宋体;'>得到同样的值：</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>self_concat('321', 5);</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>self_concat(321, '5');</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>self_concat('321', '5');</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>str points to the string '321', str_len equals 3, and n equals 5.</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span lang='EN-US'><font face='Times New Roman'>str&nbsp;</font></span><span style='font-family:宋体;'>指向字符串</span><span lang='EN-US'><font face='Times New Roman'>'321'</font></span><span style='font-family:宋体;'>，</span><span lang='EN-US'><font face='Times New Roman'>str_len</font></span><span style='font-family:宋体;'>等于</span><span lang='EN-US'><font face='Times New Roman'>3</font></span><span style='font-family:宋体;'>，</span><span lang='EN-US'><font face='Times New Roman'>n</font></span><span style='font-family:宋体;'>等于</span><span lang='EN-US'><font face='Times New Roman'>5</font></span><span style='font-family:宋体;'>。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>在我们编写代码来实现连接字符串返回给</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>的函数前，还得谈谈两个重要的话题：内存管理、从</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>内部返回函数值所使用的</span><span lang='EN-US'><font face='Times New Roman'>API</font></span><span style='font-family:宋体;'>。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><a style='color:rgb(51, 102, 153);'><strong><span style='font-family:宋体;font-size:12pt;'>内存管理</span></strong></a></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>用于从堆中分配内存的</span><span lang='EN-US'><font face='Times New Roman'>PHP API</font></span><span style='font-family:宋体;'>几乎和标准</span><span lang='EN-US'><font face='Times New Roman'>C API</font></span><span style='font-family:宋体;'>一样。在编写扩展的时候，使用下面与</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>对应（因此不必再解释）的</span><span lang='EN-US'><font face='Times New Roman'>API</font></span><span style='font-family:宋体;'>函数：</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>emalloc(size_t size);</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>efree(void *ptr);</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>ecalloc(size_t nmemb, size_t size);</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>erealloc(void *ptr, size_t size);</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>estrdup(const char *s);</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>estrndup(const char *s, unsigned int length);</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span lang='EN-US'><font face='Times New Roman' size='3'>&nbsp;</font></span></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>在这一点上，任何一位有经验的</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>程序员应该象这样思考一下：“什么？标准</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>没有</span><span lang='EN-US'><font face='Times New Roman'>strndup()</font></span><span style='font-family:宋体;'>？”是的，这是正确的，因为</span><span lang='EN-US'><font face='Times New Roman'>GNU</font></span><span style='font-family:宋体;'>扩展通常在</span><span lang='EN-US'><font face='Times New Roman'>Linux</font></span><span style='font-family:宋体;'>下可用。</span><span lang='EN-US'><font face='Times New Roman'>estrndup()</font></span><span style='font-family:宋体;'>只是</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>下的一个特殊函数。它的行为与</span><span lang='EN-US'><font face='Times New Roman'>estrdup()</font></span><span style='font-family:宋体;'>相似，但是可以指定字符串重复的次数（不需要结束空字符），同时是二进制安全的。这是推荐使用</span><span lang='EN-US'><font face='Times New Roman'>estrndup()</font></span><span style='font-family:宋体;'>而不是</span><span lang='EN-US'><font face='Times New Roman'>estrdup()</font></span><span style='font-family:宋体;'>的原因。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><font size='3'><span style='font-family:宋体;'>在几乎所有的情况下，你应该使用这些内存分配函数。有一些情况，即扩展需要分配在请求中永久存在的内存，从而不得不使用</span><span lang='EN-US'><font face='Times New Roman'>malloc()</font></span><span style='font-family:宋体;'>，但是除非你知道你在做什么，你应该始终使用以上的函数。如果没有使用这些内存函数，而相反使用标准</span><span lang='EN-US'><font face='Times New Roman'>C</font></span><span style='font-family:宋体;'>函数分配的内存返回给脚本引擎，那么</span><span lang='EN-US'><font face='Times New Roman'>PHP</font></span><span style='font-family:宋体;'>会崩溃。</span></font></p> 
+<p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'><span style='font-family:宋体;'><font size='3'>这些函数的优点是：任何分配的内存在偶然情况下如果没有被释放，则会在页面请求的最后被释放。因此，真正的内存泄漏不会产生。然而，不要依赖这一	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-503.html">warning:the`gets\'functionisdangerousandshouldnotb</a>
+				|
+				 <a href="http://onelose.com/post-509.html">phpcms笔记</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="511" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-327.html">Larbin的安装与配置</a></li>
+		<li><a href="http://onelose.com/post-187.html">让MYSQL支持外部链接</a></li>
+		<li><a href="http://onelose.com/post-378.html">mysqlshowprocesslist命令详解</a></li>
+		<li><a href="http://onelose.com/post-483.html">JavaScript数组添加remove()方法</a></li>
+		<li><a href="http://onelose.com/post-24.html">现代战争真人搞笑短片</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

@@ -1,0 +1,386 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>mysqlprepare存储过程使用</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>mysqlprepare存储过程使用</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-12 7:00 Monday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <h3 style='background-color: rgb(255, 255, 255); font-family: Helvetica, Tahoma, Arial, sans-serif; font-size: 16px;'><p style='background-color: rgb(255, 255, 255); font-size: 14px; font-weight: normal;'>语法</p> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Monaco, 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', Consolas, 'Courier New', monospace; font-size: 12px; font-weight: normal;'> 
+  <div style='font-weight: bold;'> 
+   <strong>[sql]</strong> 
+  </div> 
+  <ol style='background-color:rgb(255, 255, 255);color:rgb(43, 145, 175);font-size:1em;'> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>PREPARE</span>&nbsp;statement_name&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>FROM</span>&nbsp;sql_text&nbsp;/*定义*/&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>EXECUTE</span>&nbsp;statement_name&nbsp;[USING&nbsp;variable&nbsp;[,variable...]]&nbsp;/*执行预处理语句*/&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>DEALLOCATE</span>&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>PREPARE</span>&nbsp;statement_name&nbsp;/*删除定义*/&nbsp;&nbsp;&nbsp;</span></li> 
+  </ol> 
+ </div><p style='background-color: rgb(255, 255, 255); font-size: 14px; font-weight: normal;'><br>例</p> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Monaco, 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', Consolas, 'Courier New', monospace; font-size: 12px; font-weight: normal;'> 
+  <div style='font-weight: bold;'> 
+   <strong>[sql]</strong> 
+  </div> 
+  <ol style='background-color:rgb(255, 255, 255);color:rgb(43, 145, 175);font-size:1em;'> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>PREPARE</span>&nbsp;prod&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>FROM</span>&nbsp;<span style='color:blue;'>'INSERT&nbsp;INTO&nbsp;examlple&nbsp;VALUES(?,?)'</span>;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@p=<span style='color:blue;'>'1'</span>;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@q=<span style='color:blue;'>'2'</span>;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>EXECUTE</span>&nbsp;prod&nbsp;USING&nbsp;@p,@q;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@<span style='color:rgb(127, 0, 85);font-weight:bold;'>name</span>=<span style='color:blue;'>'3'</span>;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>EXECUTE</span>&nbsp;prod&nbsp;USING&nbsp;@p,@<span style='color:rgb(127, 0, 85);font-weight:bold;'>name</span>;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>DEALLOCATE</span>&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>PREPARE</span>&nbsp;prod;&nbsp;&nbsp;</span></li> 
+  </ol> 
+ </div><p style='background-color: rgb(255, 255, 255); font-size: 14px; font-weight: normal;'><br>1.用变量做表名： 简单的用set或者declare语句定义变量，然后直接作为sql的表名是不行的，mysql会把变量名当作表名。在其他的sql数据库中也是如 此，mssql的解决方法是将整条sql语句作为变量，其中穿插变量作为表名，然后用sp_executesql调用该语句。 这在mysql5.0之前是不行的，5.0之后引入了一个全新的语句，可以达到类似sp_executesql的功能（仅对procedure有 效，function不支持动态查询）：&nbsp;</p><p style='background-color: rgb(255, 255, 255); font-size: 14px; font-weight: normal;'>PREPARE stmt_name FROM preparable_stmt;&nbsp;<br>EXECUTE stmt_name [USING @var_name [, @var_name] ...];&nbsp;<br>{DEALLOCATE | DROP} PREPARE stmt_name;&nbsp;</p><p style='background-color: rgb(255, 255, 255); font-size: 14px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); font-size: 14px; font-weight: normal;'>为了有一个感性的认识，下面先给几个小例子：&nbsp;</p><p style='background-color: rgb(255, 255, 255); font-size: 14px; font-weight: normal;'>&nbsp;</p> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Monaco, 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', Consolas, 'Courier New', monospace; font-size: 12px; font-weight: normal;'> 
+  <div style='font-weight: bold;'> 
+   <strong>[sql]</strong> 
+  </div> 
+  <ol style='background-color:rgb(255, 255, 255);color:rgb(43, 145, 175);font-size:1em;'> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>PREPARE</span>&nbsp;stmt1&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>FROM</span>&nbsp;<span style='color:blue;'>'SELECT&nbsp;SQRT(POW(?,2)&nbsp;+&nbsp;POW(?,2))&nbsp;AS&nbsp;hypotenuse'</span>;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@a&nbsp;=&nbsp;3;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@b&nbsp;=&nbsp;4;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>EXECUTE</span>&nbsp;stmt1&nbsp;USING&nbsp;@a,&nbsp;@b;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>+<span style='color:rgb(0, 130, 0);'>------------+&nbsp;</span>&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>|&nbsp;hypotenuse&nbsp;|&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>+<span style='color:rgb(0, 130, 0);'>------------+&nbsp;</span>&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>|&nbsp;5&nbsp;|&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>+<span style='color:rgb(0, 130, 0);'>------------+&nbsp;</span>&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>DEALLOCATE</span>&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>PREPARE</span>&nbsp;stmt1;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@s&nbsp;=&nbsp;<span style='color:blue;'>'SELECT&nbsp;SQRT(POW(?,2)&nbsp;+&nbsp;POW(?,2))&nbsp;AS&nbsp;hypotenuse'</span>;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>PREPARE</span>&nbsp;stmt2&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>FROM</span>&nbsp;@s;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@a&nbsp;=&nbsp;6;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@b&nbsp;=&nbsp;8;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>EXECUTE</span>&nbsp;stmt2&nbsp;USING&nbsp;@a,&nbsp;@b;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>+<span style='color:rgb(0, 130, 0);'>------------+&nbsp;</span>&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>|&nbsp;hypotenuse&nbsp;|&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>+<span style='color:rgb(0, 130, 0);'>------------+&nbsp;</span>&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>|&nbsp;10&nbsp;|&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>+<span style='color:rgb(0, 130, 0);'>------------+&nbsp;</span>&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>DEALLOCATE</span>&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>PREPARE</span>&nbsp;stmt2;&nbsp;&nbsp;</span></li> 
+  </ol> 
+ </div><p style='background-color: rgb(255, 255, 255); font-size: 14px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); font-size: 14px; font-weight: normal;'>如果你的MySQL 版本是 5.0.7 或者更高的，你还可以在 LIMIT 子句中使用它，示例如下：</p><p style='background-color: rgb(255, 255, 255); font-size: 14px; font-weight: normal;'>&nbsp;</p> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Monaco, 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', Consolas, 'Courier New', monospace; font-size: 12px; font-weight: normal;'> 
+  <div style='font-weight: bold;'> 
+   <strong>[sql]</strong> 
+  </div> 
+  <ol style='background-color:rgb(255, 255, 255);color:rgb(43, 145, 175);font-size:1em;'> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@a=1;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>PREPARE</span>&nbsp;STMT&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>FROM</span>&nbsp;<span style='color:blue;'>'SELECT&nbsp;*&nbsp;FROM&nbsp;tbl&nbsp;LIMIT&nbsp;?'</span>;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>EXECUTE</span>&nbsp;STMT&nbsp;USING&nbsp;@a;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@skip=1;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@numrows=5;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>PREPARE</span>&nbsp;STMT&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>FROM</span>&nbsp;<span style='color:blue;'>'SELECT&nbsp;*&nbsp;FROM&nbsp;tbl&nbsp;LIMIT&nbsp;?,&nbsp;?'</span>;&nbsp;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>mysql&gt;&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>EXECUTE</span>&nbsp;STMT&nbsp;USING&nbsp;@skip,&nbsp;@numrows;&nbsp;&nbsp;</span></li> 
+  </ol> 
+ </div><p style='background-color: rgb(255, 255, 255); font-size: 14px; font-weight: normal;'><br>使用 PREPARE 的几个注意点：&nbsp;<br>A：PREPARE stmt_name FROM preparable_stmt;预定义一个语句，并将它赋给 stmt_name ，tmt_name 是不区分大小写的。<br>B： 即使 preparable_stmt 语句中的 ? 所代表的是一个字符串，你也不需要将 ? 用引号包含起来。&nbsp;<br>C： 如果新的 PREPARE 语句使用了一个已存在的 stmt_name ，那么原有的将被立即释放！ 即使这个新的 PREPARE 语句因为错误而不能被正确执行。<br>D： PREPARE stmt_name 的作用域是当前客户端连接会话可见。&nbsp;<br>E： 要释放一个预定义语句的资源，可以使用 DEALLOCATE PREPARE 句法。&nbsp;<br>F： EXECUTE stmt_name 句法中，如果 stmt_name 不存在，将会引发一个错误。&nbsp;<br>G： 如果在终止客户端连接会话时，没有显式地调用 DEALLOCATE PREPARE 句法释放资源，服务器端会自己动释放它。&nbsp;<br>H： 在预定义语句中，CREATE TABLE, DELETE, DO, INSERT, REPLACE, SELECT, SET, UPDATE, 和大部分的 SHOW 句法被支持。<br>I： PREPARE 语句不可以用于存储过程，自定义函数！但从 MySQL 5.0.13 开始，它可以被用于存储过程，仍不支持在函数中使用！</p><p style='background-color: rgb(255, 255, 255); font-size: 14px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); font-size: 14px; font-weight: normal;'>下面给个示例：</p> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Monaco, 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', Consolas, 'Courier New', monospace; font-size: 12px; font-weight: normal;'> 
+  <div style='font-weight: bold;'>
+    Sql代码&nbsp;&nbsp; 
+   <img src='http://note.youdao.com/yws/res/1852/DB48168261E04273933ED1CE53FEE3C1' alt='收藏代码' data-media-type='image'> 
+  </div> 
+  <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(43, 145, 175);font-size:1em;'> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>CREATE</span>&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>PROCEDURE</span>&nbsp;`p1`(<span style='color:rgb(128, 128, 128);'>IN</span>&nbsp;id&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>INT</span>&nbsp;UNSIGNED,<span style='color:rgb(128, 128, 128);'>IN</span>&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>name</span>&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>VARCHAR</span>(11))&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>BEGIN</span>&nbsp;lable_exit:&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>BEGIN</span>&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@SqlCmd&nbsp;=&nbsp;<span style='color:blue;'>'SELECT&nbsp;*&nbsp;FROM&nbsp;tA&nbsp;'</span>;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>IF&nbsp;id&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>IS</span>&nbsp;<span style='color:rgb(128, 128, 128);'>NOT</span>&nbsp;<span style='color:rgb(128, 128, 128);'>NULL</span>&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>THEN</span>&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@SqlCmd&nbsp;=&nbsp;CONCAT(@SqlCmd&nbsp;,&nbsp;<span style='color:blue;'>'WHERE&nbsp;id=?'</span>);&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>PREPARE</span>&nbsp;stmt&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>FROM</span>&nbsp;@SqlCmd;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@a&nbsp;=&nbsp;id;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>EXECUTE</span>&nbsp;stmt&nbsp;USING&nbsp;@a;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>LEAVE&nbsp;lable_exit;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>END</span>&nbsp;IF;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>IF&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>name</span>&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>IS</span>&nbsp;<span style='color:rgb(128, 128, 128);'>NOT</span>&nbsp;<span style='color:rgb(128, 128, 128);'>NULL</span>&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>THEN</span>&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@SqlCmd&nbsp;=&nbsp;CONCAT(@SqlCmd&nbsp;,&nbsp;<span style='color:blue;'>'WHERE&nbsp;name&nbsp;LIKE&nbsp;?'</span>);&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>PREPARE</span>&nbsp;stmt&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>FROM</span>&nbsp;@SqlCmd;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>SET</span>&nbsp;@a&nbsp;=&nbsp;CONCAT(<span style='color:rgb(127, 0, 85);font-weight:bold;'>name</span>,&nbsp;<span style='color:blue;'>'%'</span>);&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>EXECUTE</span>&nbsp;stmt&nbsp;USING&nbsp;@a;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>LEAVE&nbsp;lable_exit;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>END</span>&nbsp;IF;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>END</span>&nbsp;lable_exit;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>END</span>;&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>CALL&nbsp;`p1`(1,<span style='color:rgb(128, 128, 128);'>NULL</span>);&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'>CALL&nbsp;`p1`(<span style='color:rgb(128, 128, 128);'>NULL</span>,<span style='color:blue;'>'QQ'</span>);&nbsp;&nbsp;</span></li> 
+   <li style='background-color:rgb(250, 250, 250);font-size:1em;'><span style='color:black;'><span style='color:rgb(127, 0, 85);font-weight:bold;'>DROP</span>&nbsp;<span style='color:rgb(127, 0, 85);font-weight:bold;'>PROCEDURE</span>&nbsp;`p1`;&nbsp;&nbsp;&nbsp;</span></li> 
+  </ol> 
+ </div><p style='background-color: rgb(255, 255, 255); font-size: 14px; font-weight: normal;'>&nbsp;<br><br>了解了PREPARE的用法，再用变量做表名就很容易了。不过在实际操作过程中还发现其他一些问题，比如变量定义，declare变量和set @var=value变量的用法以及参数传入的变量。&nbsp;<br><br>测试后发现，set @var=value这样定义的变量直接写在字符串中就会被当作变量转换，declare的变量和参数传入的变量则必须用CONCAT来连接。具体的原理没有研究。&nbsp;<br><br>EXECUTE stmt USING @a;这样的语句USING后面的变量也只能用set @var=value这种，declare和参数传入的变量不行。</p></h3>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-348.html">创业公司CEO54点大忌：穷酸的穿着、和猪辩论、炒人太慢</a>
+				|
+				 <a href="http://onelose.com/post-357.html">重磅资料！Github上的PHP资源汇总大全</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="349" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-298.html">UPDATE `ts_user_job`SET`area_str`=CONCAT(SUBSTRING</a></li>
+		<li><a href="http://onelose.com/post-306.html">MySQLDELAY_KEY_WRITE(在mysql插入大数据量时可以关闭索引的选项)</a></li>
+		<li><a href="http://onelose.com/post-219.html">计算机科学中的树</a></li>
+		<li><a href="http://onelose.com/post-149.html">名人像</a></li>
+		<li><a href="http://onelose.com/post-256.html">PHP源码分析-变量的存储方式</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

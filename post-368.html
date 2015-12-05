@@ -1,0 +1,678 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Memcachemutex设计模式</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>Memcachemutex设计模式</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-5 7:00 Monday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <h2 style='background-color: rgb(255, 255, 255); color: rgb(95, 133, 176); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, 宋体, sans-serif; font-size: 1.25em;'><p style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-weight: normal;'>周六的S2&nbsp;<a href='http://www.s2forum.org/1/topic/' style='color:rgb(0, 47, 95);'>Web 2.0技术沙龙</a>上介绍了memcache中使用mutex场景(文后要演讲稿)，有网友对详情感兴趣，简单介绍如下。</p></h2> 
+<h3 style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, 宋体, sans-serif; font-size: 1.375em;'>场景</h3> 
+<h2 style='background-color: rgb(255, 255, 255); color: rgb(95, 133, 176); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, 宋体, sans-serif; font-size: 1.25em;'><p style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-weight: normal;'>Mutex主要用于有大量并发访问并存在cache过期的场合，如</p> 
+ <ul style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-weight: normal;'> 
+  <li>首页top 10, 由数据库加载到memcache缓存n分钟</li> 
+  <li>微博中名人的content cache, 一旦不存在会大量请求不能命中并加载数据库</li> 
+  <li>需要执行多个IO操作生成的数据存在cache中, 比如查询db多次</li> 
+ </ul></h2> 
+<h3 style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, 宋体, sans-serif; font-size: 1.375em;'>问题</h3> 
+<h2 style='background-color: rgb(255, 255, 255); color: rgb(95, 133, 176); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, 宋体, sans-serif; font-size: 1.25em;'><p style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-weight: normal;'>在大并发的场合，当cache失效时，大量并发同时取不到cache，会同一瞬间去访问db并回设cache，可能会给系统带来潜在的超负荷风险。<strong>我们曾经在线上系统出现过类似故障</strong>。</p></h2> 
+<h3 style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, 宋体, sans-serif; font-size: 1.375em;'>解决方法</h3> 
+<h2 style='background-color: rgb(255, 255, 255); color: rgb(95, 133, 176); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, 宋体, sans-serif; font-size: 1.25em;'><p style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-weight: normal;'><strong>方法一</strong><br>在load db之前先add一个mutex key, mutex key add成功之后再去做加载db, 如果add失败则sleep之后重试读取原cache数据。为了防止死锁，mutex key也需要设置过期时间。伪代码如下<br>(<em>注：下文伪代码仅供了解思路，可能存在bug，欢迎随时指出。</em>)</p><pre style='background-color: rgb(235, 239, 249); font-family: Consolas, 'Courier New', Courier, monospace; font-size: 0.8em; font-weight: normal;'>if (memcache.get(key) == null) {
+    // 3 min timeout to avoid mutex holder crash
+    if (memcache.add(key_mutex, 3 * 60 * 1000) == true) {
+        value = db.get(key);
+        memcache.set(key, value);
+        memcache.delete(key_mutex);
+    } else {
+        sleep(50);
+        retry();
+    }
+}</pre><p style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-weight: normal;'><strong>方法二</strong><br>在value内部设置1个超时值(timeout1), timeout1比实际的memcache timeout(timeout2)小。当从cache读取到timeout1发现它已经过期时候，马上延长timeout1并重新设置到cache。然后再从数据库加载数据并设置到cache中。伪代码如下</p><pre style='background-color: rgb(235, 239, 249); font-family: Consolas, 'Courier New', Courier, monospace; font-size: 0.8em; font-weight: normal;'>v = memcache.get(key);
+if (v == null) {
+    if (memcache.add(key_mutex, 3 * 60 * 1000) == true) {
+        value = db.get(key);
+        memcache.set(key, value);
+        memcache.delete(key_mutex);
+    } else {
+        sleep(50);
+        retry();
+    }
+} else {
+    if (v.timeout &lt;= now()) {
+        if (memcache.add(key_mutex, 3 * 60 * 1000) == true) {
+            // extend the timeout for other threads
+            v.timeout += 3 * 60 * 1000;
+            memcache.set(key, v, KEY_TIMEOUT * 2);
+
+            // load the latest value from db
+            v = db.get(key);
+            v.timeout = KEY_TIMEOUT;
+            memcache.set(key, value, KEY_TIMEOUT * 2);
+            memcache.delete(key_mutex);
+        } else {
+            sleep(50);
+            retry();
+        }
+    }
+}</pre><p style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-weight: normal;'>相对于方案一<br>优点：避免cache失效时刻大量请求获取不到mutex并进行sleep<br>缺点：代码复杂性增大，因此一般场合用方案一也已经足够。</p><p style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-weight: normal;'>方案二在Memcached FAQ中也有详细介绍&nbsp;<a href='http://code.google.com/p/memcached/wiki/FAQ#How_to_prevent_clobbering_updates,_stampeding_requests' style='color:rgb(0, 47, 95);'>How to prevent clobbering updates, stampeding requests</a>，并且Brad还介绍了用他另外一个得意的工具 Gearman 来实现单实例设置cache的方法，见&nbsp;<a href='http://lists.danga.com/pipermail/memcached/2007-July/004858.html' style='color:rgb(0, 47, 95);'>Cache miss stampedes</a>，不过用Gearman来解决就感觉就有点奇技淫巧了。</p><p style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-weight: normal;'>附：本次Web2.0技术沙龙演讲主题：微博Cache设计谈，需下载请点击演讲稿下menu/download (需登录slideshare)。</p><p style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-weight: normal;'><br></p></h2> 
+<h4 style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, 宋体, sans-serif; font-size: 18px;'>50 Comments&nbsp;&nbsp;<a title='Jump to the comments form' href='http://timyang.net/programming/memcache-mutex/#postcomment' style='color:rgb(0, 47, 95);'>»</a></h4> 
+<h2 style='background-color: rgb(255, 255, 255); color: rgb(95, 133, 176); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, 宋体, sans-serif; font-size: 1.25em;'> 
+ <ol style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-weight: normal;'> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://www.dbthink.com/' style='color:rgb(0, 47, 95);'>jametong</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4535' style='color:rgb(0, 47, 95);'>10-07-27 09:15</a> 
+   </div><p>关于memCache Mutex 的做法,,InfoQ 北京 2010时, Facebook也介绍过类似的处理, 控制并发的场景使用Mutex或者Latch还是个必须的操作啊.</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://blog.fulin.org/' style='color:rgb(0, 47, 95);'>tangfl</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4536' style='color:rgb(0, 47, 95);'>10-07-27 09:37</a> 
+   </div><p>我在项目中用 memcache mutex 做锁，结果 code review 的时候，被人说成“山寨”了。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>Tim</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4537' style='color:rgb(0, 47, 95);'>10-07-27 09:50</a> 
+   </div><p>那是因为这个问题普及得还不够，需要你去布道</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://www.cnblogs.com/sunli' style='color:rgb(0, 47, 95);'>孙立</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4538' style='color:rgb(0, 47, 95);'>10-07-27 10:37</a> 
+   </div><p>tim yang那天讲得非常不错，感同身受，我今天也写了一篇博客<a href='http://www.cnblogs.com/sunli/archive/2010/07/27/cache_key_mutex.html%E5%81%9A%E4%BA%86%E8%BF%99%E4%B8%AA%E9%97%AE%E9%A2%98%E7%9A%84%E8%A1%A5%E5%85%85' style='color:rgb(0, 47, 95);'>http://www.cnblogs.com/sunli/archive/2010/07/27/cache_key_mutex.html做了这个问题的补充</a></p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://www.cnblogs.com/sunli' style='color:rgb(0, 47, 95);'>孙立</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4539' style='color:rgb(0, 47, 95);'>10-07-27 10:37</a> 
+   </div><p><a href='http://www.cnblogs.com/sunli/archive/2010/07/27/cache_key_mutex.html' style='color:rgb(0, 47, 95);'>http://www.cnblogs.com/sunli/archive/2010/07/27/cache_key_mutex.html</a>&nbsp;上面链接粘在一起了</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>Chancey</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4540' style='color:rgb(0, 47, 95);'>10-07-27 11:29</a> 
+   </div><p>仔细想了想，方案二判断了timeout1，这实际上跟未命中缓存是一个道理，甚至更多了一层判断，在并发高的时候，除了add mutex的请求外，其他请求仍然会休眠直至获取到缓存并且timeout1无过期</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>yq</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4542' style='color:rgb(0, 47, 95);'>10-07-27 12:15</a> 
+   </div><p>做一个类似代理的layer去负责和memcache交互不就好了。当然系统复杂度会加大很多，但是可以等开源的系统出来。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://www.cnblogs.com/sunli' style='color:rgb(0, 47, 95);'>孙立</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4545' style='color:rgb(0, 47, 95);'>10-07-27 15:18</a> 
+   </div><p>@yq： 通过代理和memcache交互不是一样的吗？</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://hi.baidu.com/thinkinginlamp' style='color:rgb(0, 47, 95);'>老王</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4546' style='color:rgb(0, 47, 95);'>10-07-27 18:55</a> 
+   </div><p>我怎么感觉搞复杂了呢，对付cache穿透问题，最简单的方法设置cache的时候，cache永不过期，然后系统通过cron定期“主动”更新cache。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://hi.baidu.com/thinkinginlamp' style='color:rgb(0, 47, 95);'>老王</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4547' style='color:rgb(0, 47, 95);'>10-07-27 20:23</a> 
+   </div><p>我前面想简单了，忘了如果是多用户系统，用cron同时更新成千上万用户的用户信息，是不可能的。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>yq</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4550' style='color:rgb(0, 47, 95);'>10-07-28 02:42</a> 
+   </div><p>我说的不准确 不是代理 是让memcache直接和mysql交互</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>Tin</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4552' style='color:rgb(0, 47, 95);'>10-07-28 09:28</a> 
+   </div><p>这次QCon的时候Facebook的那位工程师不是介绍了Facebook的加锁方法？使用Copy on write，但是争write的锁，失败的使用stale数据。类似Tim Yang说的第一种方案吧。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>Robin</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4556' style='color:rgb(0, 47, 95);'>10-07-28 20:28</a> 
+   </div><p>抱歉，我一直想问一下libmemcached不是有CAS吗？难道CAS不是用来解决并发原子的问题的？</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://www.cnblogs.com/sunli' style='color:rgb(0, 47, 95);'>孙立</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4557' style='color:rgb(0, 47, 95);'>10-07-28 21:50</a> 
+   </div><p>@Robin: libmemcached的cas也即是新版的memcached提供的cas功能，这个是用来保证多个客户端对memcached的操作通过无锁的方式实现原子性，如果数据已被其它用户修改过，则放弃保存，cas是没有加锁用于等待的，Tim Yang讲的是对数据库的相同操作加锁，一旦有一个用户查询数据重建缓存成功，那么剩下的用户就不用再去查询数据库了，这里解决的是解决重复查库的资源浪费。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>tszming</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4581' style='color:rgb(0, 47, 95);'>10-08-01 00:09</a> 
+   </div><p>方案二中，如果能接受到在短时间使用 stale 的数据，在第二个判断就不必用 mutex和 sleep，实现起来也相对容易。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>filebat</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4592' style='color:rgb(0, 47, 95);'>10-08-02 01:08</a> 
+   </div><p>感觉第二种方法的优点是在memcache还没有被刷新前， 减少读到dirty data的概率。</p><p>没有看出来作者说的“避免cache失效时刻大量请求获取不到mutex并进行sleep”，这个优点。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://weizhifeng.net/' style='color:rgb(0, 47, 95);'>JeremyWei</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4646' style='color:rgb(0, 47, 95);'>10-08-06 16:15</a> 
+   </div><p>当竞争不到锁的时候，为什么不直接返回旧的cache数据而要sleep呢？</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>hanguokai</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4709' style='color:rgb(0, 47, 95);'>10-08-15 00:17</a> 
+   </div><p>ehcache中也提到了这个问题，和解决方法。还有个名字，叫作“Thundering Herd”，http://ehcache.org/recipes/thunderingherd.html</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>lcycenter</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4713' style='color:rgb(0, 47, 95);'>10-08-15 11:31</a> 
+   </div><p>收益匪浅!!!</p><p>上面的：<br>v.timeout now() 吧？</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>lcycenter</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4714' style='color:rgb(0, 47, 95);'>10-08-15 11:34</a> 
+   </div><p>收益匪浅!!!</p><p>上面的“v.timeout 小等于 now()” 应该是 “v.timeout 大等于 now()”吧？</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>5w台灯</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4779' style='color:rgb(0, 47, 95);'>10-08-25 08:17</a> 
+   </div><p>这种写法有个问题，当MC当机后，出现死循环。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>Baokui Yang</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4782' style='color:rgb(0, 47, 95);'>10-08-25 22:58</a> 
+   </div><p>同前几位留言的看法一样，如果严格按上述伪码实现，两策略感觉本质上是一样的，第二种也达不到，timYang所言“避免cache失效时刻大量请求获取不到mutex并进行sleep”，的效果。<br>—<br>感觉只需把第二种方案最后一个分支：<br>else {<br>sleep(50);<br>retry();<br>}<br>改成使用stale值即可（其实这个时候还没stale，只是timeout1到了）<br>不知是否timyang 手误：）</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>chenbw</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4905' style='color:rgb(0, 47, 95);'>10-09-07 17:52</a> 
+   </div><p>第二种方案最后一个分支：<br>else {<br>sleep(50);<br>retry();<br>}</p><p>个人认为也是可以的<br>这样可以拿到最新数据</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>conan</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-4927' style='color:rgb(0, 47, 95);'>10-09-10 11:56</a> 
+   </div><p>如果无法连接到memcached的话会陷入死循环吧</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>Jarvis</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-5234' style='color:rgb(0, 47, 95);'>10-10-21 15:59</a> 
+   </div><p>请问PPT中提到的outbox hot vector中，hot是如何度量的？</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>lzh</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-7132' style='color:rgb(0, 47, 95);'>11-01-19 11:06</a> 
+   </div><p>第二种方法不错，学习了</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>xiukuan</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-14564' style='color:rgb(0, 47, 95);'>11-03-07 11:46</a> 
+   </div><p>第二种方案的第二个分支应该直接返回数据吧?<br>因为实际上数据还没过期(memcache可以取到),只是到了可以更新的地步<br>不让的话好像和第一种方案差不多了,都是等待写入锁</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>楼拴柱</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-22315' style='color:rgb(0, 47, 95);'>11-04-13 12:16</a> 
+   </div><p>这种内存cache失效，且需要更新的情况，我想是否可以如下实现：<br>1，cache并不马上移除，而是可以提供前台的读取访问，有总比没有好，取到过期数据总比没有数据好。<br>2，把cache失效的key放到后台，由后台线程后台获取数据，并更新到cache中，保证每个失效的key只有一个去后台读取数据的原子操作，降低DB的压力。<br>3，接下来的前台请求读到的数据就是新数据了。</p><p>请杨老师指点。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://www.satsuns.coml/' style='color:rgb(0, 47, 95);'>satsun</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-22911' style='color:rgb(0, 47, 95);'>11-04-16 12:10</a> 
+   </div><p>技术深奥，真是高手QQ呵呵</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>bright</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-25475' style='color:rgb(0, 47, 95);'>11-04-27 10:27</a> 
+   </div><p>确实，方案2控制的思路更加精细，增加mutex key失败后retry是合理的，因为tim要实现的是”要取到最新数据且避免数据库访问压力”，楼上有人提出直接返回cache中timeout1已经过期的数据也是合理的，但超出了tim的前提场景了。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://www.dbafree.net/' style='color:rgb(0, 47, 95);'>dbafree</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-40877' style='color:rgb(0, 47, 95);'>11-07-05 21:32</a> 
+   </div><p>有两个问题:<br>1.<br>// load the latest value from db<br>v = db.get(key);<br>v.timeout = KEY_TIMEOUT;<br>memcache.set(key, value, KEY_TIMEOUT * 2);</p><p>这里的value是指什么？上下文也没出现过，是不是写错了。</p><p>2.<br>if( v.timeout now()时直接返回。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://www.dbafree.net/' style='color:rgb(0, 47, 95);'>dbafree</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-40878' style='color:rgb(0, 47, 95);'>11-07-05 21:35</a> 
+   </div><p>回复的内容怎么丢掉了了。<br>第二个问题是:<br>每次<br>if (v.timeout now()) 时就直接返回吧。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://www.dbafree.net/' style='color:rgb(0, 47, 95);'>dbafree</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-40880' style='color:rgb(0, 47, 95);'>11-07-05 21:37</a> 
+   </div><p>第二个问题是:<br>每次 if (v.timeout now()) 就直接返回了</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://rtxbc.iteye.com/' style='color:rgb(0, 47, 95);'>rtxbc</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-43804' style='color:rgb(0, 47, 95);'>11-07-18 12:03</a> 
+   </div><p>如果捕捉不到内容，则把key扔进队列，然后定期把队列里的内容再此扔进cache中，前端只是做个友好界面提醒。。。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://rtxbc.iteye.com/' style='color:rgb(0, 47, 95);'>rtxbc</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-43806' style='color:rgb(0, 47, 95);'>11-07-18 12:05</a> 
+   </div><p>队列和数据库交互，把数据扔进cache中。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://www.zh61wx.com/' style='color:rgb(0, 47, 95);'>儿童文学</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-51267' style='color:rgb(0, 47, 95);'>11-08-24 10:06</a> 
+   </div><p>呃。。。这个不是很了解。。。</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>xfly</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-98214' style='color:rgb(0, 47, 95);'>11-12-01 20:07</a> 
+   </div><p>项目中就是使用的这种分布式缓存+mutex的方式控制并发，当时还跟架构小pk了下，现在终于有新的依据了，hoho~~:D</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>bingobird</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-98785' style='color:rgb(0, 47, 95);'>11-12-02 16:29</a> 
+   </div><p>第一种方案有点危险，如果批量请求是一个DB中不存在的值，则会引发线程堵塞（因为retry也不会有数据）。可以将retry改成判断锁是否存在。<br>第二种方案里，如果没拿到锁，sleep跟retry也可以不做了，因为毕竟没有过期。<br>（有些同学说为了拿到最新数据，但阻塞在此为了拿新数据实在不划算）</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://anzhuodiy.com/' style='color:rgb(0, 47, 95);'>安卓DIY</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-168979' style='color:rgb(0, 47, 95);'>12-05-04 16:50</a> 
+   </div><p>第二种方法不错</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>zgl</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-183318' style='color:rgb(0, 47, 95);'>12-06-13 16:08</a> 
+   </div><p>1 无止境的retry确实不太合适，我的做法是retry3次之后，则放弃并做合适的后续动作；此外可以考虑一些trick，比如每次sleep的时间逐渐增加。<br>2 extend timeout没有必要，不如直接保证timeout1-timeout2足够大(至少大于一次DB查询的时间)<br>3 拿不到更新锁的线程完全可以返回当前的cache值：a 此时不算脏数据，b 否则就失去这个提前预判cache失效思路的最大价值了</p><p>if ((retVal = cache.getAsExpireableCacheObjectWrapper(key))!=null) {</p><p>if (!retVal.isAboutToExpire(expireThreshold)) {<br>return retVal;<br>}<br>//need pre-refresh the cache.<br>return preRefreshCache();</p><p>} else {<br>return whenCacheMissed();<br>}</p><p>preRefreshCache() {<br>//set flag<br>if (!getCacheUpdateLock(…,10s)) {<br>//Failed: Some other guy is refreshing -&gt; return v<br>return retVal;<br>}<br>//Success: I should do this refresh<br>Object object = DB.query(…);<br>Object put = cache.put(key, new ExpireableCacheObjectWrapper(object,expireOffsetSec,System.currentTimeMillis()), expireOffsetSec);<br>//reset refresh flag.<br>releaseCacheUpdateLock(…);<br>return object;<br>}</p><p>whenCacheMissed() {<br>if (!getCacheUpdateLock(…,10s)) {<br>// some other guy is doing the DB job.<br>//sleep and then re-check the cache<br>Thread.sleep(1000);<br>ExpireableCacheObjectWrapper retVal;<br>int i=0;<br>while ((retVal = cache.getAsExpireableCacheObjectWrapper(key))==null&amp;&amp;i&lt;3) {<br>i++;<br>Thread.sleep(1000);<br>}<br>if (retVal==null) {<br>throw new IllegalStateException('cache[key:' +key+<br>'] waited for the DB guy for … seconds, and still no luck. fail this action, throw Exception.');<br>}<br>//cache hit on subsequent check(s)<br>return retVal;<br>} else {<br>//query DB and then feed cache.<br>//and then release flag<br>Object obj = DB.query(…);<br>Object put = cache.put(key, new ExpireableCacheObjectWrapper(obj,expireOffsetSec,System.currentTimeMillis()),expireOffsetSec);<br>releaseCacheUpdateLock(…);<br>return obj;<br>}<br>}</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'><a href='http://www.cxphp.com/' style='color:rgb(0, 47, 95);'>IM鑫爷</a></cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-215775' style='color:rgb(0, 47, 95);'>12-10-22 12:03</a> 
+   </div><p>无论是第一和第二种方法，不停的retry肯定不行，当某个读DB的操作非常耗费时间的时候，很多请求都会阻塞。但是如果设置一个retry次数，那么就意味着，如果DB读取超时，返回的数据就会是空。不知道各位有何高见？</p></li> 
+  <li style='background-color:rgb(245, 245, 245);font-size:0.8em;'> 
+   <div style='font-weight:bold;'> 
+    <img src='http://note.youdao.com/yws/res/1769/97052014A1C249A3AA78C910CD85973A' width='32' height='32' data-media-type='image'> 
+    <cite style='font-style:normal;'>stevencjh</cite> 
+   </div> 
+   <div style='font-size:0.87em;'> 
+    <a href='http://timyang.net/programming/memcache-mutex/comment-page-1/#comment-284221' style='color:rgb(0, 47, 95);'>13-03-11 15:29</a> 
+   </div><p>第二个 解决方案的第二个判断应该是直接返回cache值吧，否则跟第一种没有任何区别啊</p></li> 
+ </ol><p style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-weight: normal;'><br></p><p style='background-color: rgb(255, 255, 255); color: rgb(17, 17, 17); font-weight: normal;'><br></p></h2>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-363.html">VI</a>
+				|
+				 <a href="http://onelose.com/post-378.html">mysqlshowprocesslist命令详解</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="368" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-210.html">sina微博队列memcacheq服务安装与原理</a></li>
+		<li><a href="http://onelose.com/post-509.html">phpcms笔记</a></li>
+		<li><a href="http://onelose.com/post-67.html">sunshine</a></li>
+		<li><a href="http://onelose.com/post-460.html">MySQL按指定字段自定义列表排序</a></li>
+		<li><a href="http://onelose.com/post-20.html">算式计算器-----江苏科技大学计算机协会陈嘉生软件作品</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

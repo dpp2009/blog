@@ -1,0 +1,795 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>mysql字符串函数(转载)</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>mysql字符串函数(转载)</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-6 7:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <div style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif;font-size:12px;font-style:normal;font-weight:normal;text-align:start;'> 
+  <p>对于针对字符串位置的操作，第一个位置被标记为1。</p> 
+  <dl> 
+   <dt> 
+    <strong><code>ASCII(str)</code></strong> 
+   </dt> 
+   <dd> 
+    <strong>返回字符串<code>str</code>的 最左面字符的ASCII代码值。</strong>如果 
+    <code>str</code>是空字符串， 返回 
+    <code>0</code>。如果 
+    <code>str</code>是 
+    <code>NULL</code>，返回 
+    <code>NULL</code>。 
+    <pre style='font-size:1em;'>mysql&gt; select ASCII('2');<br>        -&gt; 50<br>mysql&gt; select ASCII(2);<br>        -&gt; 50<br>mysql&gt; select ASCII('dx');<br>        -&gt; 100</pre> 
+    <p>也可参见ORD()函数。</p> 
+   </dd> 
+   <dt> 
+    <code><strong>ORD(str)</strong></code> 
+   </dt> 
+   <dd>
+     如果字符串str最左面字符是一个多字节字符，通过以格式 
+    <code>((first byte ASCII code)*256+(second byte ASCII code))[*256+third byte ASCII code...]</code>返 回字符的ASCII代码值来返回多字节字符代码。如果最左面的字符不是一个多字节字符。返回与 
+    <code>ASCII()</code>函 数返回的相同值。 
+    <pre style='font-size:1em;'>mysql&gt; select ORD('2');<br>        -&gt; 50<br> </pre> 
+   </dd> 
+   <dt> 
+    <code><strong>CONV(N,from_base,to_base)</strong></code> 
+   </dt> 
+   <dd>
+     在不同的数字基之间变换数字。返回数字 
+    <code>N</code>的字符串数字， 从 
+    <code>from_base</code>基变换为 
+    <code>to_base</code>基，如果任何参数是 
+    <code>NULL</code>， 返回 
+    <code>NULL</code>。参数 
+    <code>N</code>解 释为一个整数，但是可以指定为一个整数或一个字符串。最小基是 
+    <code>2</code>且最大的基 是 
+    <code>36</code>。如果 
+    <code>to_base</code>是 一个负数， 
+    <code>N</code>被认为是一个有符号数，否则， 
+    <code>N</code>被当作无符号数。 
+    <span>&nbsp;</span> 
+    <code>CONV</code>以 64位点精度工作。 
+    <pre style='font-size:1em;'>mysql&gt; select CONV('a',16,2);<br>        -&gt; '1010'<br>mysql&gt; select CONV('6E',18,8);<br>        -&gt; '172'<br>mysql&gt; select CONV(-17,10,-18);<br>        -&gt; '-H'<br>mysql&gt; select CONV(10+'10'+'10'+0xa,10,10);<br>        -&gt; '40'<br> </pre> 
+   </dd> 
+   <dt> 
+    <code><strong>BIN(N)</strong></code> 
+   </dt> 
+   <dd>
+     返回二进制值 
+    <code>N</code>的一个字符串表示，在此 
+    <code>N</code>是一个长整数( 
+    <code>BIGINT</code>) 数字，这等价于 
+    <code>CONV(N,10,2)</code>。如果 
+    <code>N</code>是 
+    <code>NULL</code>，返回 
+    <code>NULL</code>。 
+    <pre style='font-size:1em;'>mysql&gt; select BIN(12);<br>        -&gt; '1100'<br></pre> 
+   </dd> 
+   <dt> 
+    <strong><code>OCT(N)</code></strong> 
+   </dt> 
+   <dd>
+     返回八进制值 
+    <code>N</code>的一个字符串的表示，在此 
+    <code>N</code>是一个长整型数字，这等价于 
+    <code>CONV(N,10,8)</code>。 如果 
+    <code>N</code>是NULL，返回 
+    <code>NULL</code>。 
+    <pre style='font-size:1em;'>mysql&gt; select OCT(12);<br>        -&gt; '14'<br> </pre> 
+   </dd> 
+   <dt> 
+    <strong><code>HEX(N)</code></strong> 
+   </dt> 
+   <dd>
+     返回十六进制值 
+    <code>N</code>一个字符串的表示，在此 
+    <code>N</code>是一个长整型( 
+    <code>BIGINT</code>) 数字，这等价于 
+    <code>CONV(N,10,16)</code>。如果 
+    <code>N</code>是 
+    <code>NULL</code>，返回 
+    <code>NULL</code>。 
+    <pre style='font-size:1em;'>mysql&gt; select HEX(255);<br>        -&gt; 'FF'<br> </pre> 
+   </dd> 
+   <dt> 
+    <strong><code>CHAR(N,...)</code></strong> 
+   </dt> 
+   <dd> 
+    <strong><code>CHAR()</code>将参数解释为整数并且返回 由这些整数的ASCII代码字符组成的一个字符串。</strong> 
+    <code>NULL</code>值 被跳过。 
+    <pre style='font-size:1em;'>mysql&gt; select CHAR(77,121,83,81,'76');<br>        -&gt; 'MySQL'<br>mysql&gt; select CHAR(77,77.3,'77.3');<br>        -&gt; 'MMM'<br> </pre> 
+   </dd> 
+   <dt> 
+    <strong><code>CONCAT(str1,str2,...)</code></strong> 
+   </dt> 
+   <dd> 
+    <strong>返回来自于参数连结的字符串</strong>。如果任何参数是 
+    <code>NULL</code>， 返回 
+    <code>NULL</code>。可以有超过2个的参数。一个数字参数被变换为等价的字符串形 式。 
+    <pre style='font-size:1em;'>mysql&gt; select CONCAT('My', 'S', 'QL');<br>        -&gt; 'MySQL'<br>mysql&gt; select CONCAT('My', NULL, 'QL');<br>        -&gt; NULL<br>mysql&gt; select CONCAT(14.3);<br>        -&gt; '14.3'<br></pre> 
+   </dd> 
+   <dt> 
+    <strong><code>LENGTH(str)</code></strong> 
+   </dt> 
+   <dd> 
+    <strong>　</strong> 
+   </dd> 
+   <dt> 
+    <strong><code>OCTET_LENGTH(str)</code></strong> 
+   </dt> 
+   <dd> 
+    <strong>　</strong> 
+   </dd> 
+   <dt> 
+    <strong><code>CHAR_LENGTH(str)</code></strong> 
+   </dt> 
+   <dd> 
+    <strong>　</strong> 
+   </dd> 
+   <dt> 
+    <code><strong>CHARACTER_LENGTH(str)</strong></code> 
+   </dt> 
+   <dd>
+     返回字符串 
+    <code>str</code>的长度。 
+    <pre style='font-size:1em;'>mysql&gt; select LENGTH('text');<br>        -&gt; 4<br>mysql&gt; select OCTET_LENGTH('text');<br>        -&gt; 4<br></pre> 
+    <p>注意，对于多字节字符，其CHAR_LENGTH()仅计算一次。</p> 
+   </dd> 
+   <dt> 
+    <code><strong>LOCATE(substr,str)</strong></code> 
+   </dt> 
+   <dd>
+     　 
+   </dd> 
+   <dt> 
+    <code><strong>POSITION(substr IN str)</strong></code> 
+   </dt> 
+   <dd>
+     返回子串 
+    <code>substr</code>在字符串 
+    <code>str</code>第一个出现的位置，如果 
+    <code>substr</code>不 是在 
+    <code>str</code>里面，返回 
+    <code>0</code>. 
+    <pre style='font-size:1em;'>mysql&gt; select LOCATE('bar', 'foobarbar');<br>        -&gt; 4<br>mysql&gt; select LOCATE('xbar', 'foobar');<br>        -&gt; 0<br></pre> 
+    <pre style='font-size:1em;'>该函数是多字节可靠的。  </pre> 
+   </dd> 
+   <dt> 
+    <code><strong>LOCATE(substr,str,pos)</strong></code> 
+   </dt> 
+   <dd>
+     返回子串 
+    <code>substr</code>在字符串 
+    <code>str</code>第一个出现的位置，从位置 
+    <code>pos</code>开 始。如果 
+    <code>substr</code>不是在 
+    <code>str</code>里 面，返回 
+    <code>0</code>。 
+    <pre style='font-size:1em;'>mysql&gt; select LOCATE('bar', 'foobarbar',5);<br>        -&gt; 7<br></pre> 
+    <p>这函数是多字节可靠的。</p> 
+   </dd> 
+   <dt> 
+    <code><strong>INSTR(str,substr)</strong></code> 
+   </dt> 
+   <dd>
+     返回子串 
+    <code>substr</code>在字符串 
+    <code>str</code>中的第一个出现的位置。这与有2个参数形式的 
+    <code>LOCATE()</code>相 同，除了参数被颠倒。 
+    <pre style='font-size:1em;'>mysql&gt; select INSTR('foobarbar', 'bar');<br>        -&gt; 4<br>mysql&gt; select INSTR('xbar', 'foobar');<br>        -&gt; 0<br></pre> 
+    <p>这函数是多字节可靠的。</p> 
+   </dd> 
+   <dt> 
+    <code><strong>LPAD(str,len,padstr)</strong></code> 
+   </dt> 
+   <dd>
+     返回字符串 
+    <code>str</code>，左面用字符串 
+    <code>padstr</code>填补直到 
+    <code>str</code>是 
+    <code>len</code>个字符长。 
+    <pre style='font-size:1em;'>mysql&gt; select LPAD('hi',4,'??');<br>        -&gt; '??hi'<br> </pre> 
+   </dd> 
+   <dt> 
+    <code><strong>RPAD(str,len,padstr)</strong></code> 
+   </dt> 
+   <dd>
+     返回字符串 
+    <code>str</code>，右面用字符串 
+    <code>padstr</code>填补直到 
+    <code>str</code>是 
+    <code>len</code>个字符长。 &nbsp; 
+    <pre style='font-size:1em;'>mysql&gt; select RPAD('hi',5,'?');<br>        -&gt; 'hi???'<br></pre> 
+   </dd> 
+   <dt> 
+    <code><strong>LEFT(str,len)</strong></code> 
+   </dt> 
+   <dd>
+     返回字符串 
+    <code>str</code>的最左面 
+    <code>len</code>个字符。 
+    <pre style='font-size:1em;'>mysql&gt; select LEFT('foobarbar', 5);<br>        -&gt; 'fooba'<br></pre> 
+    <p>该函数是多字节可靠的。</p> 
+   </dd> 
+   <dt> 
+    <code><strong>RIGHT(str,len)</strong></code> 
+   </dt> 
+   <dd>
+     返回字符串 
+    <code>str</code>的最右面 
+    <code>len</code>个字符 
+    <code>。</code> 
+    <pre style='font-size:1em;'>mysql&gt; select RIGHT('foobarbar', 4);<br>        -&gt; 'rbar'<br></pre> 
+    <p>该函数是多字节可靠的。</p> 
+   </dd> 
+   <dt> 
+    <code><strong>SUBSTRING(str,pos,len)</strong></code> 
+   </dt> 
+   <dd>
+     　 
+   </dd> 
+   <dt> 
+    <code><strong>SUBSTRING(str FROM pos FOR len)</strong></code> 
+   </dt> 
+   <dd>
+     　 
+   </dd> 
+   <dt> 
+    <code><strong>MID(str,pos,len)</strong></code> 
+   </dt> 
+   <dd>
+     从字符串 
+    <code>str</code>返回一个 
+    <code>len</code>个字符的子串，从位置 
+    <code>pos</code>开 始。使用 
+    <code>FROM</code>的变种形式是ANSI SQL92语法。 
+    <pre style='font-size:1em;'>mysql&gt; select SUBSTRING('Quadratically',5,6);<br>        -&gt; 'ratica'<br></pre> 
+    <p>该函数是多字节可靠的。</p> 
+   </dd> 
+   <dt> 
+    <code><strong>SUBSTRING(str,pos)</strong></code> 
+   </dt> 
+   <dd>
+     　 
+   </dd> 
+   <dt> 
+    <code><strong>SUBSTRING(str FROM pos)</strong></code> 
+   </dt> 
+   <dd>
+     从字符串 
+    <code>str</code>的起始位置 
+    <code>pos</code>返回一个子串。 
+    <pre style='font-size:1em;'>mysql&gt; select SUBSTRING('Quadratically',5);<br>        -&gt; 'ratically'<br>mysql&gt; select SUBSTRING('foobarbar' FROM 4);<br>        -&gt; 'barbar'<br></pre> 
+    <p>该函数是多字节可靠的。</p> 
+   </dd> 
+   <dt> 
+    <code><strong>SUBSTRING_INDEX(str,delim,count)</strong></code> 
+   </dt> 
+   <dd>
+     返回从字符串 
+    <code>str</code>的第 
+    <code>count</code>个出现 
+    <code>的</code>分 隔符 
+    <code>delim</code>之后的子串。如果 
+    <code>count</code>是正数，返回最后的分隔符到左边(从左边数) 的所有字符。如果 
+    <code>count</code>是负数，返回最后的分隔符到右边的所有字符(从右边数)。 
+    <pre style='font-size:1em;'>mysql&gt; select SUBSTRING_INDEX('www.mysql.com', '.', 2);<br>        -&gt; 'www.mysql'<br>mysql&gt; select SUBSTRING_INDEX('www.mysql.com', '.', -2);<br>        -&gt; 'mysql.com'<br></pre> 
+    <p>该函数对多字节是可靠的。</p> 
+   </dd> 
+   <dt> 
+    <code><strong>LTRIM(str)</strong></code> 
+   </dt> 
+   <dd>
+     返回删除了其前置空格字符的字符串 
+    <code>str</code>。 
+    <pre style='font-size:1em;'>mysql&gt; select LTRIM('  barbar');<br>        -&gt; 'barbar'<br></pre> 
+   </dd> 
+   <dt> 
+    <code><strong>RTRIM(str)</strong></code> 
+   </dt> 
+   <dd>
+     返回删除了其拖后空格字符的字符串 
+    <code>str</code>。 
+    <pre style='font-size:1em;'>mysql&gt; select RTRIM('barbar   ');<br>        -&gt; 'barbar'<br></pre> 
+    <pre style='font-size:1em;'>该函数对多字节是可靠的。  </pre> 
+   </dd> 
+   <dt> 
+    <code><strong>TRIM([[BOTH | LEADING | TRAILING] [remstr] FROM] str)</strong></code> 
+   </dt> 
+   <dd>
+     返回字符串 
+    <code>str</code>，其所有 
+    <code>remstr</code>前缀或后缀被删除了。如果没有修饰符 
+    <code>BOTH</code>、 
+    <code>LEADING</code>或 
+    <code>TRAILING</code>给 出， 
+    <code>BOTH</code>被假定。如果 
+    <code>remstr</code>没 被指定，空格被删除。 
+    <pre style='font-size:1em;'>mysql&gt; select TRIM('  bar   ');<br>        -&gt; 'bar'<br>mysql&gt; select TRIM(LEADING 'x' FROM 'xxxbarxxx');<br>        -&gt; 'barxxx'<br>mysql&gt; select TRIM(BOTH 'x' FROM 'xxxbarxxx');<br>        -&gt; 'bar'<br>mysql&gt; select TRIM(TRAILING 'xyz' FROM 'barxxyz');<br>        -&gt; 'barx'<br></pre> 
+    <p>该函数对多字节是可靠的。</p> 
+   </dd> 
+   <dt> 
+    <code><strong>SOUNDEX(str)</strong></code> 
+   </dt> 
+   <dd>
+     返回 
+    <code>str</code>的一个同音字符串。听起来“大致相同”的2个 字符串应该有相同的同音字符串。一个“标准”的同音字符串长是4个字符，但是 
+    <code>SOUNDEX()</code>函 数返回一个任意长的字符串。你可以在结果上使用 
+    <code>SUBSTRING()</code>得到 一个“标准”的 同音串。所有非数字字母字符在给定的字符串中被忽略。所有在A-Z之外的字符国际字母被当作元音。 
+    <pre style='font-size:1em;'>mysql&gt; select SOUNDEX('Hello');<br>        -&gt; 'H400'<br>mysql&gt; select SOUNDEX('Quadratically');<br>        -&gt; 'Q36324'<br> </pre> 
+   </dd> 
+   <dt> 
+    <code><strong>SPACE(N)</strong></code> 
+   </dt> 
+   <dd>
+     返回由 
+    <code>N</code>个空格字符组成的一个字符串。 
+    <pre style='font-size:1em;'>mysql&gt; select SPACE(6);<br>        -&gt; '      '<br> </pre> 
+   </dd> 
+   <dt> 
+    <code><strong>REPLACE(str,from_str,to_str)</strong></code> 
+   </dt> 
+   <dd>
+     返回字符串 
+    <code>str</code>，其字符串 
+    <code>from_str</code>的所有出现由字符串 
+    <code>to_str</code>代 替。 
+    <pre style='font-size:1em;'>mysql&gt; select REPLACE('www.mysql.com', 'w', 'Ww');<br>        -&gt; 'WwWwWw.mysql.com'<br></pre> 
+    <p>该函数对多字节是可靠的。</p> 
+   </dd> 
+   <dt> 
+    <code><strong>REPEAT(str,count)</strong></code> 
+   </dt> 
+   <dd>
+     返回由重复 
+    <code>count</code>Times次的字符串 
+    <code>str</code>组成的一个字符串。如果 
+    <code>count &lt;= 0</code>，返回一个空字符串。如果 
+    <code>str</code>或 
+    <code>count</code>是 
+    <code>NULL</code>， 返回 
+    <code>NULL</code>。 
+    <pre style='font-size:1em;'>mysql&gt; select REPEAT('MySQL', 3);<br>        -&gt; 'MySQLMySQLMySQL'<br> </pre> 
+   </dd> 
+   <dt> 
+    <code><strong>REVERSE(str)</strong></code> 
+   </dt> 
+   <dd>
+     返回颠倒字符顺序的字符串 
+    <code>str</code>。 
+    <pre style='font-size:1em;'>mysql&gt; select REVERSE('abc');<br>        -&gt; 'cba'<br></pre> 
+    <p>该函数对多字节可靠的。</p> 
+   </dd> 
+   <dt> 
+    <code><strong>INSERT(str,pos,len,newstr)</strong></code> 
+   </dt> 
+   <dd>
+     返回字符串 
+    <code>str</code>，在位置 
+    <code>pos</code>起始的子串且 
+    <code>len</code>个 字符长得子串由字符串 
+    <code>newstr</code>代替。 
+    <pre style='font-size:1em;'>mysql&gt; select INSERT('Quadratic', 3, 4, 'What');<br>        -&gt; 'QuWhattic'<br></pre> 
+    <p>该函数对多字节是可靠的。</p> 
+   </dd> 
+   <dt> 
+    <code><strong>ELT(N,str1,str2,str3,...)</strong></code> 
+   </dt> 
+   <dd>
+     如果 
+    <code>N</code>= 
+    <span>&nbsp;</span> 
+    <code>1</code>，返回 
+    <code>str1</code>，如 果 
+    <code>N</code>= 
+    <span>&nbsp;</span> 
+    <code>2</code>， 返回 
+    <code>str2</code>，等等。如果 
+    <code>N</code>小 于 
+    <code>1</code>或大于参数个数，返回 
+    <code>NULL</code>。 
+    <code>ELT()</code>是 
+    <code>FIELD()</code>反 运算。 
+    <pre style='font-size:1em;'>mysql&gt; select ELT(1, 'ej', 'Heja', 'hej', 'foo');<br>        -&gt; 'ej'<br>mysql&gt; select ELT(4, 'ej', 'Heja', 'hej', 'foo');<br>        -&gt; 'foo'<br></pre> 
+   </dd> 
+   <dt> 
+    <code><strong>FIELD(str,str1,str2,str3,...)</strong></code> 
+   </dt> 
+   <dd>
+     返回 
+    <code>str</code>在 
+    <code>str1</code>, 
+    <span>&nbsp;</span> 
+    <code>str2</code>, 
+    <span>&nbsp;</span> 
+    <code>str3</code>, 
+    <span>&nbsp;</span> 
+    <code>...</code>清 单的索引。如果 
+    <code>str</code>没找到，返回 
+    <code>0</code>。 
+    <code>FIELD()</code>是 
+    <code>ELT()</code>反运算。 
+    <pre style='font-size:1em;'>mysql&gt; select FIELD('ej', 'Hej', 'ej', 'Heja', 'hej', 'foo');<br>        -&gt; 2<br>mysql&gt; select FIELD('fo', 'Hej', 'ej', 'Heja', 'hej', 'foo');<br>        -&gt; 0<br></pre> 
+   </dd> 
+   <dt> 
+    <code><strong>FIND_IN_SET(str,strlist)</strong></code> 
+   </dt> 
+   <dd>
+     如果字符串 
+    <code>str</code>在由 
+    <code>N</code>子串组成的表 
+    <code>strlist</code>之 中，返回一个 
+    <code>1</code>到 
+    <code>N</code>的 值。一个字符串表是被 
+    <samp>“,”</samp>分隔的子串组成的一个字符串。如果第一个参数是 一个常数字符串并且第二个参数是一种类型为 
+    <code>SET</code>的列， 
+    <code>FIND_IN_SET()</code>函数被优化而使用位运算！如果 
+    <code>str</code>不是在 
+    <code>strlist</code>里 面或如果 
+    <code>strlist</code>是空字符串，返回 
+    <code>0</code>。如果任何一个参数是 
+    <code>NULL</code>， 返回 
+    <code>NULL</code>。如果第一个参数包含一个 
+    <samp>“,”</samp>，该函数将工作不正常。 
+    <pre style='font-size:1em;'>mysql&gt; SELECT FIND_IN_SET('b','a,b,c,d');<br>        -&gt; 2<br> </pre> 
+   </dd> 
+   <dt> 
+    <code><strong>MAKE_SET(bits,str1,str2,...)</strong></code> 
+   </dt> 
+   <dd>
+     返回一个集合 (包含由 
+    <samp>“,”</samp>字符分隔的子串组成的一个 字符串)，由相应的位在 
+    <code>bits</code>集合中的的字符串组成。 
+    <code>str1</code>对应于位0， 
+    <code>str2</code>对 应位1，等等。在 
+    <code>str1</code>, 
+    <span>&nbsp;</span> 
+    <code>str2</code>, 
+    <span>&nbsp;</span> 
+    <code>...</code>中 的 
+    <code>NULL</code>串不添加到结果中。 
+    <pre style='font-size:1em;'>mysql&gt; SELECT MAKE_SET(1,'a','b','c');<br>        -&gt; 'a'<br>mysql&gt; SELECT MAKE_SET(1 | 4,'hello','nice','world');<br>        -&gt; 'hello,world'<br>mysql&gt; SELECT MAKE_SET(0,'a','b','c');<br>        -&gt; ''<br></pre> 
+   </dd> 
+   <dt> 
+    <code><strong>EXPORT_SET(bits,on,off,[separator,[number_of_bits]])</strong></code> 
+   </dt> 
+   <dd>
+     返回一个字符串，在这里对于在“bits”中设定每一位，你得到一个“on”字符串，并且对于每个复位(reset)的位，你得到一个 “off”字符串。每个字符串用“separator”分隔(缺省“,”)，并且只有“bits”的“number_of_bits” (缺省64)位被使用。 
+    <pre style='font-size:1em;'>mysql&gt; select EXPORT_SET(5,'Y','N',',',4)<br>        -&gt; Y,N,Y,N <br></pre> 
+   </dd> 
+   <dt> 
+    <strong><code>LCASE(str)</code></strong> 
+   </dt> 
+   <dd> 
+    <strong>　</strong> 
+   </dd> 
+   <dt> 
+    <code><strong>LOWER(str)</strong></code> 
+   </dt> 
+   <dd>
+     返回字符串 
+    <code>str</code>，根据当前字符集映射(缺省是ISO- 8859-1 Latin1)把所有的字符改变成小写。该函数对多字节是可靠的。 
+    <pre style='font-size:1em;'>mysql&gt; select LCASE('QUADRATICALLY');<br>        -&gt; 'quadratically'<br> </pre> 
+   </dd> 
+   <dt> 
+    <strong><code>UCASE(str)</code></strong> 
+   </dt> 
+   <dd> 
+    <strong>　</strong> 
+   </dd> 
+   <dt> 
+    <code><strong>UPPER(str)</strong></code> 
+   </dt> 
+   <dd>
+     返回字符串 
+    <code>str</code>，根据当前字符集映射(缺省是ISO- 8859-1 Latin1)把所有的字符改变成大写。该函数对多字节是可靠的。 
+    <pre style='font-size:1em;'>mysql&gt; select UCASE('Hej');<br>        -&gt; 'HEJ'<br></pre> 
+    <p>该函数对多字节是可靠的。</p> 
+   </dd> 
+   <dt> 
+    <code><strong>LOAD_FILE(file_name)</strong></code> 
+   </dt> 
+   <dd>
+     读入文件并且作为一个字符串返回文件内容。文件必须在服务器上，你必须指定到文件的完整路径名，而且你必须有 
+    <strong>file</strong>权 限。文件必须所有内容都是可读的并且小于 
+    <code>max_allowed_packet</code>。 如果文件不存在或由于上面原因之一不能被读出，函数返回 
+    <code>NULL</code>。 
+    <pre style='font-size:1em;'>mysql&gt; UPDATE table_name<br>           SET blob_column=LOAD_FILE('/tmp/picture')<br>           WHERE id=1;<br><br></pre> 
+   </dd> 
+  </dl> 
+  <p><strong>MySQL</strong>必要时自动变换数字为字符串，并且反过来也如此：</p> 
+  <pre style='font-size:1em;'>mysql&gt; SELECT 1+'1';<br>        -&gt; 2<br>mysql&gt; SELECT CONCAT(2,' test');<br>        -&gt; '2 test'<br></pre> 
+  <p>如果你想要明确地变换一个数字到一个字符串，把它作为参数传递到<code>CONCAT()</code>。</p> 
+  <p>如果字符串函数提供一个二进制字符串作为参数，结果字符串也是一个二进制字符串。被变换到一个字符串的数字被当作是一个二进制字符串。这仅影响比 较。</p> 
+ </div> 
+ <div style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif;font-size:12px;font-style:normal;font-weight:normal;text-align:start;'> 
+  <div>
+    分类: 
+   <span>&nbsp;</span> 
+   <a href='http://www.cnblogs.com/showker/category/244562.html' style='color:rgb(29, 88, 209);'>MySql</a> 
+  </div> 
+ </div> 
+ <br> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-286.html">关于PHP程序员解决问题的能力</a>
+				|
+				 <a href="http://onelose.com/post-299.html">PHP中”单例模式“实例讲解</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="293" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-327.html">Larbin的安装与配置</a></li>
+		<li><a href="http://onelose.com/post-322.html">Larbin试用日记</a></li>
+		<li><a href="http://onelose.com/post-323.html">解密搜索引擎技术之爬虫Larbin</a></li>
+		<li><a href="http://onelose.com/post-24.html">现代战争真人搞笑短片</a></li>
+		<li><a href="http://onelose.com/post-230.html">windows下安装pear和PHPUnit</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

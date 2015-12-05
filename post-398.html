@@ -1,0 +1,687 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>linuxwget命令用法详解(附实例说明)</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>linuxwget命令用法详解(附实例说明)</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-12-19 7:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <div style='color: rgb(68, 68, 68); font-family: Tahoma, Helvetica, Arial, 宋体, sans-serif; font-size: 14px; font-style: normal; font-weight: normal; line-height: 1.7857142857142858;'> 
+  <div style='background-color: rgb(255, 255, 255); color: rgb(68, 68, 68); line-height: 1.7857142857142858;'> 
+   <br>Linux wget是一个下载文件的工具，它用在命令行下。对于Linux用户是必不可少的工具，尤其对于网络管理员，经常要下载一些软件或从远程服务器恢复备份到本地服务器 
+  </div>Linux wget是一个下载文件的工具，它用在命令行下。对于Linux用户是必不可少的工具，尤其对于网络管理员，经常要下载一些软件或从远程服务器恢复备份到本地服务器。如果我们使用虚拟主机，处理这样的事务我们只能先从远程服务器下载到我们电脑磁盘，然后再用ftp工具上传到服务器。这样既浪费时间又浪费精力，那不没办法的事。而到了Linux VPS，它则可以直接下载到服务器而不用经过上传这一步。wget工具体积小但功能完善，它支持断点下载功能，同时支持FTP和HTTP下载方式，支持代理服务器和设置起来方便简单。下面我们以实例的形式说明怎么使用wget。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>1、使用wget下载单个文件<span>&nbsp;</span><br><br></strong>以下的例子是从网络下载一个文件并保存在当前目录 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget http://cn.wordpress.org/wordpress-3.1-zh_CN.zip 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>在下载的过程中会显示进度条，包含（下载完成百分比，已经下载的字节，当前下载速度，剩余下载时间）。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>2、使用wget -O下载并以不同的文件名保存<span>&nbsp;</span><br></strong> 
+  <br>wget默认会以最后一个符合”/”的后面的字符来命令，对于动态链接的下载通常文件名会不正确。 
+  <span>&nbsp;</span> 
+  <br>错误：下面的例子会下载一个文件并以名称download.php?id=1080保存 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget http://www.centos.bz/download?id=1 
+  <span>&nbsp;</span> 
+  <br>即使下载的文件是zip格式，它仍然以download.php?id=1080命令。 
+  <span>&nbsp;</span> 
+  <br>正确：为了解决这个问题，我们可以使用参数-O来指定一个文件名： 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget -O wordpress.zip http://www.centos.bz/download.php?id=1080 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>3、使用wget –limit -rate限速下载<span>&nbsp;</span><br></strong>当你执行wget的时候，它默认会占用全部可能的宽带下载。但是当你准备下载一个大文件，而你还需要下载其它文件时就有必要限速了。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget –limit-rate=300k http://cn.wordpress.org/wordpress-3.1-zh_CN.zip 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>4、使用wget -c断点续传<span>&nbsp;</span><br></strong>使用wget -c重新启动下载中断的文件: 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget -c http://cn.wordpress.org/wordpress-3.1-zh_CN.zip 
+  <span>&nbsp;</span> 
+  <br>对于我们下载大文件时突然由于网络等原因中断非常有帮助，我们可以继续接着下载而不是重新下载一个文件。需要继续中断的下载时可以使用-c参数。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>5、使用wget -b后台下载<span>&nbsp;</span><br></strong>对于下载非常大的文件的时候，我们可以使用参数-b进行后台下载。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget -b http://cn.wordpress.org/wordpress-3.1-zh_CN.zip 
+  <span>&nbsp;</span> 
+  <br>Continuing in background, pid 1840. 
+  <span>&nbsp;</span> 
+  <br>Output will be written to `wget-log’. 
+  <span>&nbsp;</span> 
+  <br>你可以使用以下命令来察看下载进度 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>tail -f wget-log 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>6、伪装代理名称下载<span>&nbsp;</span><br></strong>有些网站能通过根据判断代理名称不是浏览器而拒绝你的下载请求。不过你可以通过–user-agent参数伪装。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget –user-agent=”Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.204 Safari/534.16″ 下载链接 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>7、使用wget –spider测试下载链接<span>&nbsp;</span><br></strong>当你打算进行定时下载，你应该在预定时间测试下载链接是否有效。我们可以增加–spider参数进行检查。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget –spider URL 
+  <span>&nbsp;</span> 
+  <br>如果下载链接正确，将会显示 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget –spider URL 
+  <span>&nbsp;</span> 
+  <br>Spider mode enabled. Check if remote file exists. 
+  <span>&nbsp;</span> 
+  <br>HTTP request sent, awaiting response… 200 OK 
+  <span>&nbsp;</span> 
+  <br>Length: unspecified [text/html] 
+  <span>&nbsp;</span> 
+  <br>Remote file exists and could contain further links, 
+  <span>&nbsp;</span> 
+  <br>but recursion is disabled — not retrieving. 
+  <span>&nbsp;</span> 
+  <br>这保证了下载能在预定的时间进行，但当你给错了一个链接，将会显示如下错误 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget –spider url 
+  <span>&nbsp;</span> 
+  <br>Spider mode enabled. Check if remote file exists. 
+  <span>&nbsp;</span> 
+  <br>HTTP request sent, awaiting response… 404 Not Found 
+  <span>&nbsp;</span> 
+  <br>Remote file does not exist — broken link!!! 
+  <span>&nbsp;</span> 
+  <br>你可以在以下几种情况下使用spider参数： 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>定时下载之前进行检查 
+  <span>&nbsp;</span> 
+  <br>间隔检测网站是否可用 
+  <span>&nbsp;</span> 
+  <br>检查网站页面的死链接 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>8、使用wget –tries增加重试次数<span>&nbsp;</span><br></strong>如果网络有问题或下载一个大文件也有可能失败。wget默认重试20次连接下载文件。如果需要，你可以使用–tries增加重试次数。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget –tries=40 URL 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>9、使用wget -i下载多个文件<span>&nbsp;</span><br></strong>首先，保存一份下载链接文件 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>cat &gt; filelist.txt 
+  <span>&nbsp;</span> 
+  <br>url1 
+  <span>&nbsp;</span> 
+  <br>url2 
+  <span>&nbsp;</span> 
+  <br>url3 
+  <span>&nbsp;</span> 
+  <br>url4 
+  <span>&nbsp;</span> 
+  <br>接着使用这个文件和参数-i下载 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget -i filelist.txt 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>10、使用wget –mirror镜像网站<span>&nbsp;</span><br></strong>下面的例子是下载整个网站到本地。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget –mirror -p –convert-links -P ./LOCAL URL 
+  <span>&nbsp;</span> 
+  <br>–miror:开户镜像下载 
+  <span>&nbsp;</span> 
+  <br>-p:下载所有为了html页面显示正常的文件 
+  <span>&nbsp;</span> 
+  <br>–convert-links:下载后，转换成本地的链接 
+  <span>&nbsp;</span> 
+  <br>-P ./LOCAL：保存所有文件和目录到本地指定目录 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>11、使用wget –reject过滤指定格式下载<span>&nbsp;</span><br></strong>你想下载一个网站，但你不希望下载图片，你可以使用以下命令。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget –reject=gif url 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>12、使用wget -o把下载信息存入日志文件<span>&nbsp;</span><br></strong>你不希望下载信息直接显示在终端而是在一个日志文件，可以使用以下命令： 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget -o download.log URL 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>13、使用wget -Q限制总下载文件大小<span>&nbsp;</span><br></strong>当你想要下载的文件超过5M而退出下载，你可以使用以下命令: 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget -Q5m -i filelist.txt 
+  <span>&nbsp;</span> 
+  <br>注意：这个参数对单个文件下载不起作用，只能递归下载时才有效。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>14、使用wget -r -A下载指定格式文件<span>&nbsp;</span><br></strong>可以在以下情况使用该功能 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>下载一个网站的所有图片 
+  <span>&nbsp;</span> 
+  <br>下载一个网站的所有视频 
+  <span>&nbsp;</span> 
+  <br>下载一个网站的所有PDF文件 
+  <span>&nbsp;</span> 
+  <br>wget -r -A.pdf url 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>15、使用wget FTP下载<span>&nbsp;</span><br></strong>你可以使用wget来完成ftp链接的下载。 
+  <span>&nbsp;</span> 
+  <br>使用wget匿名ftp下载 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget ftp-url 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>使用wget用户名和密码认证的ftp下载 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget –ftp-user=USERNAME –ftp-password=PASSWORD url 
+  <br> 
+  <br> 
+  <strong>wget是在Linux下开发的开放源代码的软件，作者是Hrvoje Niksic，后来被移植到包括Windows在内的各个平台上。它有以下功能和特点：<span>&nbsp;</span><br></strong> 
+  <br>（1）支持断点下传功能；这一点，也是网络蚂蚁和FlashGet当年最大的卖点，现在，Wget也可以使用此功能，那些网络不是太好的用户可以放心了； 
+  <span>&nbsp;</span> 
+  <br>（2）同时支持FTP和HTTP下载方式；尽管现在大部分软件可以使用HTTP方式下载，但是，有些时候，仍然需要使用FTP方式下载软件； 
+  <span>&nbsp;</span> 
+  <br>（3）支持代理服务器；对安全强度很高的系统而言，一般不会将自己的系统直接暴露在互联网上，所以，支持代理是下载软件必须有的功能； 
+  <span>&nbsp;</span> 
+  <br>（4）设置方便简单；可能，习惯图形界面的用户已经不是太习惯命令行了，但是，命令行在设置上其实有更多的优点，最少，鼠标可以少点很多次，也不要担心是否错点鼠标； 
+  <span>&nbsp;</span> 
+  <br>（5）程序小，完全免费；程序小可以考虑不计，因为现在的硬盘实在太大了；完全免费就不得不考虑了，即使网络上有很多所谓的免费软件，但是，这些软件的广告却不是我们喜欢的； 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget虽然功能强大，但是使用起来还是比较简单的，基本的语法是：wget [参数列表] URL。下面就结合具体的例子来说明一下wget的用法。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>1、下载整个http或者ftp站点。<span>&nbsp;</span><br></strong>wget http://place.your.url/here 
+  <span>&nbsp;</span> 
+  <br>这个命令可以将http://place.your.url/here 首页下载下来。使用-x会强制建立服务器上一模一样的目录，如果使用-nd参数，那么服务器上下载的所有内容都会加到本地当前目录。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget -r http://place.your.url/here 
+  <span>&nbsp;</span> 
+  <br>这 个命令会按照递归的方法，下载服务器上所有的目录和文件，实质就是下载整个网站。这个命令一定要小心使用，因为在下载的时候，被下载网站指向的所有地址同 样会被下载，因此，如果这个网站引用了其他网站，那么被引用的网站也会被下载下来！基于这个原因，这个参数不常用。可以用-l number参数来指定下载的层次。例如只下载两层，那么使用-l 2。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>要是您想制作镜像站点，那么可以使用－m参数，例如：wget -m http://place.your.url/here 
+  <span>&nbsp;</span> 
+  <br>这时wget会自动判断合适的参数来制作镜像站点。此时，wget会登录到服务器上，读入robots.txt并按robots.txt的规定来执行。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>2、断点续传。<span>&nbsp;</span><br></strong>当文件特别大或者网络特别慢的时候，往往一个文件还没有下载完，连接就已经被切断，此时就需要断点续传。wget的断点续传是自动的，只需要使用-c参数，例如： 
+  <span>&nbsp;</span> 
+  <br>wget -c http://the.url.of/incomplete/file 
+  <span>&nbsp;</span> 
+  <br>使用断点续传要求服务器支持断点续传。-t参数表示重试次数，例如需要重试100次，那么就写-t 100，如果设成-t 0，那么表示无穷次重试，直到连接成功。-T参数表示超时等待时间，例如-T 120，表示等待120秒连接不上就算超时。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>3、批量下载。<span>&nbsp;</span><br></strong>如果有多个文件需要下载，那么可以生成一个文件，把每个文件的URL写一行，例如生成文件download.txt，然后用命令：wget -i download.txt 
+  <span>&nbsp;</span> 
+  <br>这样就会把download.txt里面列出的每个URL都下载下来。（如果列的是文件就下载文件，如果列的是网站，那么下载首页） 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>4、选择性的下载。<span>&nbsp;</span><br></strong>可以指定让wget只下载一类文件，或者不下载什么文件。例如： 
+  <span>&nbsp;</span> 
+  <br>wget -m –reject=gif http://target.web.site/subdirectory 
+  <span>&nbsp;</span> 
+  <br>表示下载http://target.web.site/subdirectory，但是忽略gif文件。–accept=LIST 可以接受的文件类型，–reject=LIST拒绝接受的文件类型。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>5、密码和认证。<span>&nbsp;</span><br></strong>wget只能处理利用用户名/密码方式限制访问的网站，可以利用两个参数： 
+  <span>&nbsp;</span> 
+  <br>–http-user=USER设置HTTP用户 
+  <span>&nbsp;</span> 
+  <br>–http-passwd=PASS设置HTTP密码 
+  <span>&nbsp;</span> 
+  <br>对于需要证书做认证的网站，就只能利用其他下载工具了，例如curl。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br> 
+  <strong>6、利用代理服务器进行下载。<span>&nbsp;</span><br></strong>如果用户的网络需要经过代理服务器，那么可以让wget通过代理服务器进行文件的下载。此时需要在当前用户的目录下创建一个.wgetrc文件。文件中可以设置代理服务器： 
+  <span>&nbsp;</span> 
+  <br>http-proxy = 111.111.111.111:8080 
+  <span>&nbsp;</span> 
+  <br>ftp-proxy = 111.111.111.111:8080 
+  <span>&nbsp;</span> 
+  <br>分别表示http的代理服务器和ftp的代理服务器。如果代理服务器需要密码则使用： 
+  <span>&nbsp;</span> 
+  <br>–proxy-user=USER设置代理用户 
+  <span>&nbsp;</span> 
+  <br>–proxy-passwd=PASS设置代理密码 
+  <span>&nbsp;</span> 
+  <br>这两个参数。 
+  <span>&nbsp;</span> 
+  <br>使用参数–proxy=on/off 使用或者关闭代理。 
+  <span>&nbsp;</span> 
+  <br>wget还有很多有用的功能，需要用户去挖掘。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>附录： 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>命令格式： 
+  <span>&nbsp;</span> 
+  <br>wget [参数列表] [目标软件、网页的网址] 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>-V,–version 显示软件版本号然后退出； 
+  <span>&nbsp;</span> 
+  <br>-h,–help显示软件帮助信息； 
+  <span>&nbsp;</span> 
+  <br>-e,–execute=COMMAND 执行一个 “.wgetrc”命令 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>-o,–output-file=FILE 将软件输出信息保存到文件； 
+  <span>&nbsp;</span> 
+  <br>-a,–append-output=FILE将软件输出信息追加到文件； 
+  <span>&nbsp;</span> 
+  <br>-d,–debug显示输出信息； 
+  <span>&nbsp;</span> 
+  <br>-q,–quiet 不显示输出信息； 
+  <span>&nbsp;</span> 
+  <br>-i,–input-file=FILE 从文件中取得URL； 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>-t,–tries=NUMBER 是否下载次数（0表示无穷次） 
+  <span>&nbsp;</span> 
+  <br>-O –output-document=FILE下载文件保存为别的文件名 
+  <span>&nbsp;</span> 
+  <br>-nc, –no-clobber 不要覆盖已经存在的文件 
+  <span>&nbsp;</span> 
+  <br>-N,–timestamping只下载比本地新的文件 
+  <span>&nbsp;</span> 
+  <br>-T,–timeout=SECONDS 设置超时时间 
+  <span>&nbsp;</span> 
+  <br>-Y,–proxy=on/off 关闭代理 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>-nd,–no-directories 不建立目录 
+  <span>&nbsp;</span> 
+  <br>-x,–force-directories 强制建立目录 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>–http-user=USER设置HTTP用户 
+  <span>&nbsp;</span> 
+  <br>–http-passwd=PASS设置HTTP密码 
+  <span>&nbsp;</span> 
+  <br>–proxy-user=USER设置代理用户 
+  <span>&nbsp;</span> 
+  <br>–proxy-passwd=PASS设置代理密码 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>-r,–recursive 下载整个网站、目录（小心使用） 
+  <span>&nbsp;</span> 
+  <br>-l,–level=NUMBER 下载层次 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>-A,–accept=LIST 可以接受的文件类型 
+  <span>&nbsp;</span> 
+  <br>-R,–reject=LIST拒绝接受的文件类型 
+  <span>&nbsp;</span> 
+  <br>-D,–domains=LIST可以接受的域名 
+  <span>&nbsp;</span> 
+  <br>–exclude-domains=LIST拒绝的域名 
+  <span>&nbsp;</span> 
+  <br>-L,–relative 下载关联链接 
+  <span>&nbsp;</span> 
+  <br>–follow-ftp 只下载FTP链接 
+  <span>&nbsp;</span> 
+  <br>-H,–span-hosts 可以下载外面的主机 
+  <span>&nbsp;</span> 
+  <br>-I,–include-directories=LIST允许的目录 
+  <span>&nbsp;</span> 
+  <br>-X,–exclude-directories=LIST 拒绝的目录 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>中文文档名在平常的情况下会被编码， 但是在 –cut-dirs 时又是正常的， 
+  <span>&nbsp;</span> 
+  <br>wget -r -np -nH –cut-dirs=3 ftp://host/test/ 
+  <span>&nbsp;</span> 
+  <br>测试.txt 
+  <span>&nbsp;</span> 
+  <br>wget -r -np -nH -nd ftp://host/test/ 
+  <span>&nbsp;</span> 
+  <br>%B4%FA%B8%D5.txt 
+  <span>&nbsp;</span> 
+  <br>wget “ftp://host/test/*” 
+  <span>&nbsp;</span> 
+  <br>%B4%FA%B8%D5.txt 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>由 於不知名的原因，可能是为了避开特殊档名， wget 会自动将抓取档名的部分用 encode_string 处理过， 所以该 patch 就把被 encode_string 处理成 “%3A” 这种东西， 用 decode_string 还原成 “:”，并套用在目录与档案名称的部分，decode_string 是 wget 内建的函式。 
+  <span>&nbsp;</span> 
+  <br> 
+  <br>wget -t0 -c -nH -x -np -b -m -P /home/sunny/NOD32view/ http://downloads1.kaspersky-labs.com/bases/ -o wget.log 
+ </div> 
+ <div style='color: rgb(0, 0, 0); font-family: Tahoma, Helvetica, Arial, 宋体, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; line-height: 1.5;'>
+   Tag： 
+  <b><a href='http://www.jb51.net/do/tag/Linux/' style='color:rgb(16, 50, 107);font-size:12px;'>Linux</a></b> 
+  <span>&nbsp;</span>&nbsp; 
+  <span>&nbsp;</span> 
+  <b><a href='http://www.jb51.net/do/tag/Wget/' style='color:rgb(16, 50, 107);font-size:12px;'>Wget</a></b> 
+  <span>&nbsp;</span>&nbsp; 
+ </div> 
+ <br> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-345.html">Linux的计划任务</a>
+				|
+				 <a href="http://onelose.com/post-404.html">#zhb索引#byE.Young&lt;yangyi@1000plan.org&gt;#date2014.05.</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="398" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-319.html">PHP中使用cURL实现Get和Post请求的方法</a></li>
+		<li><a href="http://onelose.com/post-399.html">Navicat_for_MySQL_10.0.5.0注册码</a></li>
+		<li><a href="http://onelose.com/post-496.html">AjaxFileUpload</a></li>
+		<li><a href="http://onelose.com/post-239.html">Mysql数字类型转换函数</a></li>
+		<li><a href="http://onelose.com/post-504.html">CentOS设置网络（修改IP&amp;修改网关&amp;修改DNS）</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

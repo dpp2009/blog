@@ -1,0 +1,550 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>js实践篇：例外处理Try{}catch(e){}</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>js实践篇：例外处理Try{}catch(e){}</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-9-17 6:00 Wednesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>程序开发中，编程人员经常要面对的是如何编写代码来响应错误事件的发生，即例外处理（exception handlers）。如果例外处理代码设计得周全，那么最终呈现给用户的就将是一个友好的界面。否则，就会让访问者对莫名的现象感到真正的“意外”。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　一、什么是例外处理</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　当JavaScript程序在运行中发生了诸如数组索引越界、类型不匹配或者语法错误时，JavaScript解释器就会引发例外处理。ECMAScript定义了六种类型的错误，除此之外，我们可以使用Error对象和throw语句来创建并引发自定义的例外处理信息。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　二、例外处理技术的优点</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　通过运用例外处理技术，我们可以实现用结构化的方式来响应错误事件的发生，让例外处理代码与正常脚本代码科学分离，最终使我们能够集中精力编写完成主要功能的核心程序。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　三、使用 try…catch…finally 执行例外处理</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　在JavaScript中，我们使用try…catch…finally语句来执行例外处理，即通过它来捕捉错误发生后导致的例外或者执行throw语句产生的例外。它的基本语法如下：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>
+   　try { 
+  <br>　　// 此处是可能产生例外的语句 
+  <br>　　} catch(error) { 
+  <br>　　// 此处是负责例外处理的语句 
+  <br>　　} finally { 
+  <br>　　// 此处是出口语句 
+  <br>　　} 
+ </div> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　上述代码中，try块中的语句首先被执行。如果运行中发生了错误，控制就会转移到位于catch块中语句，其中括号中的error参数被作为例外变量传递。否则，catch块的语句被跳过不执行。无论是发生错误时catch块中的语句执行完毕，或者没有发生错误try块中的语句执行完毕，最后将执行finally块中的语句。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　下面我们来看一个例子：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>
+   　　&lt;script language='javascript'&gt; 
+  <br>　　try { 
+  <br>　　　　document.writeln('开始执行try块语句 ---&gt; ') 
+  <br>　　　　document.writeln('还没有发生例外 ---&gt; ') 
+  <br>　　 　　alert((prompt('输入一个值：',''))) 
+  <br>　　 } catch(err) { 
+  <br>　　 　　document.writeln('捕捉到例外，开始执行catch块语句 ---&gt;'); 
+  <br>　　 　　document.writeln('错误名称: ' + err.name+' ---&gt; '); 
+  <br>　　 　　document.writeln('错误信息: ' + err.message+' ---&gt; '); 
+  <br>　　} finally { 
+  <br>　　 　　document.writeln('开始执行finally块语句') 
+  <br>　　} 
+  <br>　　&lt;/script&gt; 
+ </div> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　我们输入abc，然后确定，输出结果如下：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　“开始执行try块语句 ---&gt; 还没有发生例外 ---&gt; 捕捉到例外，开始执行catch块语句 ---&gt; 错误名称: TypeError ---&gt; 错误信息: 'abc' 未定义 ---&gt; 开始执行finally块语句”</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　上述例程以try块语句开始，当输出信息“还没有发生例外”后，弹出输入对话框，要求用户输入一个数值，当我们输入非法的信息'abc'后，就引发了一个例外，所以剩下的try块中的语句将被跳过而开始执行catch块语句。Catch块开始的err参数作为这个例外的错误对象，它具有name和message两个属性。最后，执行finally块的语句。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　我们看到，由于没有错误发生，当try块的语句执行完毕后，catch块语句被跳过，出现一个窗口显示输入的数值，最后执行了finally块的语句。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　四、try...catch...finally的变形</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　try…catch…finally语句有两种变形应用，即try…catch或者try…finally。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　try…catch这种结构最常见，它的执行过程是：当没有例外发生执行完毕try块语句后或者发生例外执行完catch块语句后，控制将转移到整个try…catch结构后面的语句。请看下面的例子：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>
+   　　try { 
+  <br>　　　　document.writeln('Beginnng the try block') 
+  <br>　　　　document.writeln('No exceptions yet') 
+  <br>　　// Create a syntax error 
+  <br>　　('6 + * 3') 
+  <br>　　document.writeln('Finished the try block with no exceptions') 
+  <br>　　} catch(err) { 
+  <br>　　　　document.writeln('Exception caught, executing the catch block') 
+  <br>　　　　document.writeln('Error name: ' + err.name) 
+  <br>　　　　document.writeln('Error message: ' + err.message) 
+  <br>　　} 
+  <br>　　document.writeln('Executing after the try-catch statement') 
+ </div> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　如果是try…finally结构，那么当发生例外时，由于没有catch块语句来捕捉错误，所以最终finally块的语句也不会被执行。因此，这种结构在实际应用中很少见。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　五、例外的表现形式：Error对象</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　在JavaScript，例外是作为Error对象出现的。Error对象有两个属性：name属性表示例外的类型，message属性表示例外的含义。根据这些属性的取值，我们可以决定处理例外的方式，比如：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>
+   　　function Text() { 
+  <br>　　try { 
+  <br>　　　　alert((prompt('Enter JavaScript to uate:',''))) 
+  <br>　　} catch(err) { 
+  <br>　　　　if(err.name == 'SyntaxError') alert('Invalid expression') 
+  <br>　　　　else alert('Cannot uate') 
+  <br>　　} 
+  <br>　　} 
+ </div> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　上面的代码将对用户输入的内容进行表达式求值，然后显示出来。如果在求值过程中发生了SyntaxErroe类型错误，那么就会显示给用户“Invalid expression”的信息；否则，用户得到信息“Cannot uate”。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>
+   　　Error.name的取值一共有六种，如下： 
+  <br> 
+  <br>　　Error：()的使用与定义不一致 
+  <br>　　RangeError：数值越界 
+  <br>　　ReferenceError：非法或不能识别的引用数值 
+  <br>　　SyntaxError：发生语法解析错误 
+  <br>　　TypeError：操作数类型错误 
+  <br>　　URIError：URI处理函数使用不当 
+ </div> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'>Error具有下面一些主要属性：</p> 
+ <ul style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Arial;'> 
+  <li>description: 错误描述 (仅IE可用).&nbsp;&nbsp;</li> 
+  <li>fileName: 出错的文件名 (仅Mozilla可用).&nbsp;&nbsp;</li> 
+  <li>lineNumber: 出错的行数 (仅Mozilla可用).&nbsp;&nbsp;</li> 
+  <li>message: 错误信息 (在IE下同description)&nbsp;&nbsp;</li> 
+  <li>name: 错误类型.&nbsp;&nbsp;</li> 
+  <li>number: 错误代码 (仅IE可用).&nbsp;&nbsp;</li> 
+  <li>stack: 像Java中的Stack Trace一样的错误堆栈信息 (仅Mozilla可用). &nbsp;</li> 
+ </ul> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　六、定制例外信息</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　上述的六种Error类型基本上覆盖了脚本程序运行时所可能发生的错误。除了这些类型以外，我们还可以使用Error构造器来自定义例外类型，其语法如下：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>
+   　　myError = new Error(msg) 
+ </div> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　其中msg参数表示所定义的新例外的message属性值。同时，我们还可以创建新的对象类型以作为Error的子类型：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>
+   　　function MyError(msg) { 
+  <br>　　this.name = 'MyError' 
+  <br>　　this.message = msg 
+  <br>　　} 
+  <br>　　MyError.prototype = new Error; 
+ </div> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　然后，我们就可以创建自定义错误子类的实例：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>
+   　　myError = new MyError('My error message') 
+ </div> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　七、触发例外</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　创建一个Error对象后，就可以使用throw语句来触发相应的例外。Throw的语法如下：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　throw errObj</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　errObj必须是一个Error对象或者Error的子类型。在try块代码中触发一个例外后，控制将直接转入catch块。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　下面的代码中，在try块中触发了一个例外，设置例外信息为“oops”，然后控制转移到catch块：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>
+   　　var s 
+  <br>　　try { 
+  <br>　　　　s = 'one ' 
+  <br>　　　　throw new Error('oops') 
+  <br>　　　　s += 'two' 
+  <br>　　} catch(err) { 
+  <br>　　　　s += err.message 
+  <br>　　} 
+  <br>　　s += ' three' 
+  <br>　　alert(s) 
+ </div> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　编写代码来触发例外的优点很多，比如有利于自定义错误类型，快速转入catch块执行，以及下面要介绍的在嵌套例外中将错误传递到外层。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　八、嵌套例外处理</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　JavaScript支持多层次的嵌套例外处理。一般情况下，我们可以在内部例外处理的catch代码块中捕捉并处理错误，然后再次触发例外，这样就可进一步在外部例外处理的catch代码块中做更加深入的处理。下面来看看一个嵌套例外处理的例子：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>
+   　　var inner; 
+  <br>　　var outer; 
+  <br>　　try { 
+  <br>　　　　document.writeln('Beginning outer try block, no exceptions yet'); 
+  <br>　　try{ 
+  <br>　　　　document.writeln('Beginning inner try block, no exceptions yet'); 
+  <br>　　　　// 生成一个引用错误 
+  <br>　　　　document.writeln(undefinedVariable) 
+  <br>　　　　document.writeln('Finished inner try block with no exceptions'); 
+  <br>　　} catch(inner) { 
+  <br>　　// 内部例外处理 
+  <br>　　　　document.writeln('Exception caught, beginning inner catch block'); 
+  <br>　　　　document.writeln('Error type: ' + inner.name); 
+  <br>　　　　document.writeln('Error message: ' + inner.message); 
+  <br>　　　　throw inner; 
+  <br>　　　　document.writeln('No exceptions thrown in inner catch block'); 
+  <br>　　} finally { 
+  <br>　　　　document.writeln('Executing inner finally block'); 
+  <br>　　} 
+  <br>　　　　document.writeln('Finished outer try block with no exceptions'); 
+  <br>　　} catch(outer) { 
+  <br>　　　　// 外部例外处理 
+  <br>　　　　document.writeln('Exception caught, beginning outer catch block'); 
+  <br>　　　　document.writeln('Error type: ' + outer.name); 
+  <br>　　　　document.writeln('Error message: ' + outer.message); 
+  <br>　　} finally { 
+  <br>　　　　document.writeln('Executing outer finally block'); 
+  <br>　　} 
+ </div> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　执行后的输出结果如下：</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>
+   　　Beginning outer try block, no exceptions yet 
+  <br>　　Beginning inner try block, no exceptions yet 
+  <br>　　Exception caught, beginning inner catch block 
+  <br>　　Error type: ReferenceError 
+  <br>　　Error message: undefinedVariable is not defined 
+  <br>　　Executing inner finally block 
+  <br>　　Exception caught, beginning outer catch block 
+  <br>　　Error type: ReferenceError 
+  <br>　　Error message: undefinedVariable is not defined 
+  <br>　　Executing outer finally block 
+ </div> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　嵌套例外处理的好处在于使我们能够很好地分阶段处理错误，内部例外处理可以负责解决由错误引发的脚本代码问题，外部例外处理则用于负责提供给用户的反馈信息或者对例外信息进行日志记录。</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　九、结语</span> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <br style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'> 
+ <span style='background-color: rgb(255, 255, 255); font-family: Verdana, 'Lucida Grande', Arial, Helvetica, sans-serif; font-size: 12px;'>　　本文详细讨论了JavaScript语言的一个很重要的特征“例外处理”，Web开发人员应该很好地掌握它并在实际应用中灵活处理，从而使包含脚本代码的HTML页面真正地不出例外、善解人意。</span> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-479.html">json</a>
+				|
+				 <a href="http://onelose.com/post-482.html">手机号码和电话号码的正则表达式</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="486" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-483.html">JavaScript数组添加remove()方法</a></li>
+		<li><a href="http://onelose.com/post-23.html">史上最强女游戏程序员：Corrinne Yu</a></li>
+		<li><a href="http://onelose.com/post-287.html">PHP的curl实现get，post和cookie（几个实例）</a></li>
+		<li><a href="http://onelose.com/post-257.html">PHP扩展编写点滴技巧收集</a></li>
+		<li><a href="http://onelose.com/post-369.html">如何查看某个端口被谁占用</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

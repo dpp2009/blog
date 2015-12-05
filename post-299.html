@@ -1,0 +1,429 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>PHP中”单例模式“实例讲解</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>PHP中”单例模式“实例讲解</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-5 7:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <div style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:14px;font-style:normal;font-weight:normal;text-align:left;'> 
+  <p>假设我们需要写一个类用来操作数据库，并同时满足以下要求：</p> 
+  <p>①SqlHelper类只能有一个实例（不能多）<br>②SqlHelper类必须能够自行创建这个实例<br>③必须自行向整个系统提供这个实例,换句话说：多个对象共享一块内存区域，比如，对象A设置了某些属性值，则对象B,C也可以访问这些属性值（结尾的例子很好的说明了这个问题）</p> 
+  <p><img src='http://note.youdao.com/yws/res/2377/738E1643C1A14FE598526C5079B6CDEF' data-media-type='image'></p> 
+  <div style='background-color:rgb(245, 245, 245);color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> 
+   <div style='background-color:rgb(245, 245, 245);'> 
+    <span style='font-family:'Courier New' !important;font-size:12px !important;'><img src='http://note.youdao.com/yws/res/2378/0AD24378FACB4F45A3D499327658072D' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'></span> 
+   </div> 
+   <pre style='font-family:'Courier New' !important;font-size:12px !important;'><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 1</span> &lt;?<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>php
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 2</span>     <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>class</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> SqlHelper{
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 3</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>private</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>static</span> <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$_instance</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>;
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 4</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>public</span> <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$_dbname</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>;
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 5</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>private</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>function</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> __construct(){
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 6</span>             
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 7</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>        }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 8</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>public</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>function</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> getDbName(){
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 9</span>             <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>echo</span> <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$this</span>-&gt;<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>_dbname;
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>10</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>        }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>11</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>public</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>function</span> setDbName(<span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$dbname</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>){
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>12</span>             <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$this</span>-&gt;_dbname=<span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$dbname</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>;
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>13</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>        }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>14</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>public</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>function</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> clear(){
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>15</span>             <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>unset</span>(<span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$this</span>-&gt;<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>_dbname);
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>16</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>        }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>17</span>         
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>18</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>    }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>19</span>     <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$sqlHelper</span>=<span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>new</span> SqlHelper();<span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>//</span><span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>打印：Fatal error: Call to private SqlHelper::__construct() from invalid context </span>
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>20</span> ?&gt;</pre> 
+   <div style='background-color:rgb(245, 245, 245);'> 
+    <span style='font-family:'Courier New' !important;font-size:12px !important;'><img src='http://note.youdao.com/yws/res/2378/0AD24378FACB4F45A3D499327658072D' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'></span> 
+   </div> 
+  </div> 
+  <p>以上的SqlHelper类是无法从自身的类外部创建实例的，因为我们将构造函数设为了private，所以通过new SqlHelper()是无法从类外部使用私有的构造函数的，如果强制使用，将会报如下错误：<br>Fatal error: Call to private SqlHelper::__construct() from invalid context<span>&nbsp;</span><br>严重错误：从上下文中调用了一个私有的构造函数SqlHelper::__construct()</p> 
+  <p>按照已往的思维逻辑，实例化一个类都是直接在类外部使用new操作符的，但是既然这里讲构造函数设为private了，我们知道，私有的成员属性或函数只能在类的内部被访问，所以我们可以通过在类SqlHelper内部再创建一个函数（比如：getInstance()），而且必须是public的,getInstance（）函数中主要进行的是实例化SqlHelper类<br>比如：</p> 
+  <div style='background-color:rgb(245, 245, 245);color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> 
+   <div style='background-color:rgb(245, 245, 245);'> 
+    <span style='font-family:'Courier New' !important;font-size:12px !important;'><img src='http://note.youdao.com/yws/res/2378/0AD24378FACB4F45A3D499327658072D' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'></span> 
+   </div> 
+   <pre style='font-family:'Courier New' !important;font-size:12px !important;'><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 1</span> &lt;?<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>php
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 2</span>     <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>class</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> SqlHelper{
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 3</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>private</span> <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$_instance</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>;
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 4</span>         <span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>//</span><span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>......省略</span>
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 5</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>public</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>function</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> getInstance(){
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 6</span>             <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$this</span>-&gt;_instance=<span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>new</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> SqlHelper();
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 7</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>        }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 8</span>         <span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>//</span><span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>......省略</span>
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 9</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>    }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>10</span> ?&gt;</pre> 
+   <div style='background-color:rgb(245, 245, 245);'> 
+    <span style='font-family:'Courier New' !important;font-size:12px !important;'><img src='http://note.youdao.com/yws/res/2378/0AD24378FACB4F45A3D499327658072D' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'></span> 
+   </div> 
+  </div> 
+  <p>但是问题出现了，<br>①我们在调用getInstance（）之前没有实例化SqlHelper对象，所以也就无法通过对象的方式来调用getInstance（）函数了，<br>②既然在调用getInstance的时候还未实例化出对象，所以在getInstance函数中使用$this肯定也会报错（Fatal error: Using $this when not in object context）<br>那如何解决呢？</p> 
+  <p>解决途径：我们可以讲getInstance（）方法设为静态的，根据静态的定义，她只能被类而不是对象调用，将$_instance也设为静态的即可。所以这个方法正好符合我们的口味。<br>所以我们进一步将代码修改如下：</p> 
+  <div style='background-color:rgb(245, 245, 245);color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> 
+   <div style='background-color:rgb(245, 245, 245);'> 
+    <span style='font-family:'Courier New' !important;font-size:12px !important;'><img src='http://note.youdao.com/yws/res/2378/0AD24378FACB4F45A3D499327658072D' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'></span> 
+   </div> 
+   <pre style='font-family:'Courier New' !important;font-size:12px !important;'><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 1</span> &lt;?<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>php
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 2</span>     <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>class</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> SqlHelper{
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 3</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>private</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>static</span> <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$_instance</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>;
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 4</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>private</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>function</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> __construct(){
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 5</span>             <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>echo</span> '构造函数被调用'<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>;
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 6</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>        }        
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 7</span>         <span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>//</span><span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>......省略</span>
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 8</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>public</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>static</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>function</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> getInstance(){
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 9</span>             <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>if</span> (self::<span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$_instance</span>===<span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>null</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>) {
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>10</span> <span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>//</span><span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>                self::$_instance=new SqlHelper();//方式一</span>
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>11</span>                 self::<span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$_instance</span>=<span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>new</span> self();<span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>//</span><span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>方式二                </span>
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>12</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>            }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>13</span>             <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>return</span> self::<span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$_instance</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>;
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>14</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>        }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>15</span>         <span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>//</span><span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>......省略</span>
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>16</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>    }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>17</span>     <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$sqlHelper</span>=SqlHelper::getInstance();<span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>//</span><span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>打印：构造函数被调用</span>
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>18</span> ?&gt;</pre> 
+   <div style='background-color:rgb(245, 245, 245);'> 
+    <span style='font-family:'Courier New' !important;font-size:12px !important;'><img src='http://note.youdao.com/yws/res/2378/0AD24378FACB4F45A3D499327658072D' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'></span> 
+   </div> 
+  </div> 
+  <p>通过在getInstance函数中对当前内存中有误存在当类类的一个实例进行判断，如果没有则实例化，并返回对象句柄，如果有则直接返回该对象句柄<br>至此，完整代码如下所示：</p> 
+  <div style='background-color:rgb(245, 245, 245);color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> 
+   <div style='background-color:rgb(245, 245, 245);'> 
+    <span style='font-family:'Courier New' !important;font-size:12px !important;'><img src='http://note.youdao.com/yws/res/2378/0AD24378FACB4F45A3D499327658072D' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'></span> 
+   </div> 
+   <pre style='font-family:'Courier New' !important;font-size:12px !important;'><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 1</span> &lt;?<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>php
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 2</span>     <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>class</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> SqlHelper{
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 3</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>private</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>static</span> <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$_instance</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>;
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 4</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>public</span> <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$_dbname</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>;
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 5</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>private</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>function</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> __construct(){
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 6</span>             
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 7</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>        }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 8</span>         <span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>//</span><span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>getInstance()方法必须设置为公有的,必须调用此方法</span>
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'> 9</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>public</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>static</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>function</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> getInstance(){
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>10</span>             <span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>//</span><span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>对象方法不能访问普通的对象属性，所以$_instance需要设为静态的</span>
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>11</span>             <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>if</span> (self::<span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$_instance</span>===<span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>null</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>) {
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>12</span> <span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>//</span><span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>                self::$_instance=new SqlHelper();//方式一    </span>
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>13</span>                 self::<span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$_instance</span>=<span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>new</span> self();<span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>//</span><span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>方式二        </span>
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>14</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>            }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>15</span>             <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>return</span> self::<span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$_instance</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>;
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>16</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>        }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>17</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>public</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>function</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'> getDbName(){
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>18</span>             <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>echo</span> <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$this</span>-&gt;<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>_dbname;
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>19</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>        }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>20</span>         <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>public</span> <span style='color:rgb(0, 0, 255);font-family:'Courier New' !important;font-size:12px !important;'>function</span> setDbName(<span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$dbname</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>){
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>21</span>             <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$this</span>-&gt;_dbname=<span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$dbname</span><span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>;
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>22</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>        }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>23</span> <span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>    }
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>24</span> <span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>//</span><span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>    $sqlHelper=new SqlHelper();//打印：Fatal error: Call to private SqlHelper::__construct() from invalid context </span>
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>25</span>     <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$A</span>=SqlHelper::<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>getInstance();
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>26</span>     <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$A</span>-&gt;setDbName('数据库名'<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>);
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>27</span>     <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$A</span>-&gt;<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>getDbName();
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>28</span> <span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>//</span><span style='color:rgb(0, 128, 0);font-family:'Courier New' !important;font-size:12px !important;'>    unset($A);//移除引用</span>
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>29</span>     <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$B</span>=SqlHelper::<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>getInstance();
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>30</span>     <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$B</span>-&gt;<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>getDbName();
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>31</span>     <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$C</span>=SqlHelper::<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>getInstance();
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>32</span>     <span style='color:rgb(128, 0, 128);font-family:'Courier New' !important;font-size:12px !important;'>$C</span>-&gt;<span style='color:rgb(0, 0, 0);font-family:'Courier New' !important;font-size:12px !important;'>getDbName();
+</span><span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>33</span>     
+<span style='color:rgb(0, 128, 128);font-family:'Courier New' !important;font-size:12px !important;'>34</span> ?&gt;</pre> 
+   <div style='background-color:rgb(245, 245, 245);'> 
+    <span style='font-family:'Courier New' !important;font-size:12px !important;'><img src='http://note.youdao.com/yws/res/2378/0AD24378FACB4F45A3D499327658072D' alt='复制代码' style='background-color:rgb(245, 245, 245) !important;' data-media-type='image'></span> 
+   </div> 
+  </div> 
+  <p>以上代码的执行结果：<br>数据库名<span style='font-size:12px;'>//$A-&gt;getDbName();</span></p> 
+  <p>数据库名<span style='font-size:12px;'>//$B-&gt;getDbName();</span><br>数据库名<span style='font-size:12px;'>//$C-&gt;getDbName();</span><br>也就是说，对象A,B,C实际上都是使用同一个对象实例，访问的都是同一块内存区域<br>所以，即使unset($A),对象B和C还是照样能够通过getDbName()方法输出“数据库名”的<br>unset($A)实际上只是将对象A与某块内存地址（该对象的实例所在的地址）之间的联系方式断开而已，跟对象B和对象C无关，可以用用一张图表示如下</p> 
+  <p>&nbsp;</p> 
+  <p><img src='http://note.youdao.com/yws/res/2376/D60B49D013F04024A919A7A907106C67' data-media-type='image'></p> 
+  <p>原创文章：<strong><a href='http://www.cnblogs.com/hongfei/' style='color:black;'>MarcoFly</a></strong></p> 
+  <p>转载请注明出处：<a href='http://www.cnblogs.com/hongfei/archive/2012/07/07/2580994.html' style='color:black;'>http://www.cnblogs.com/hongfei/archive/2012/07/07/2580994.html</a></p> 
+ </div> 
+ <div style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:14px;font-style:normal;font-weight:normal;text-align:left;'> 
+  <div>
+    分类: 
+   <span>&nbsp;</span> 
+   <a href='http://www.cnblogs.com/hongfei/category/336623.html' style='color:black;'>PHP</a> 
+  </div> 
+ </div> 
+ <br> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-291.html">详解MySQL中EXPLAIN解释命令</a>
+				|
+				 <a href="http://onelose.com/post-300.html">[SQL] UPDATE `ts_user`SET`location`=\'澳门\',`city`=</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="299" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-149.html">名人像</a></li>
+		<li><a href="http://onelose.com/post-496.html">AjaxFileUpload</a></li>
+		<li><a href="http://onelose.com/post-452.html">判断是否是微信</a></li>
+		<li><a href="http://onelose.com/post-173.html">笔记4</a></li>
+		<li><a href="http://onelose.com/post-82.html">2010.12.6 c++ 上机</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

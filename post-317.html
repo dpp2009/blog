@@ -1,0 +1,1265 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>浅谈PHPExtension的开发——基础篇第1/2页</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>浅谈PHPExtension的开发——基础篇第1/2页</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-23 7:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <h2 style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 微软雅黑, sans-serif; font-size: 18px; font-weight: normal;'><a href='http://www.cnblogs.com/leoo2sk/archive/2010/12/09/talk-about-php-ext-develop-basic.html' style='color:rgb(102, 153, 204);'>PHP Extension的开发基础</a></h2> 
+<h1 style='color: rgb(102, 153, 0); font-family: Tahoma, Helvetica, Arial, 宋体, sans-serif; font-size: 18px;'><small style='background-color: rgb(255, 255, 255); color: rgb(171, 171, 171); font-family: Verdana, 'Lucida Grande', Geneva, Arial, sans-serif; font-size: 12px; font-weight: normal;'>2010-12-09 16:20 by T2噬菌体,&nbsp;6899&nbsp;阅读,&nbsp;15&nbsp;评论,&nbsp;<a href='http://www.cnblogs.com/leoo2sk/archive/2010/12/09/talk-about-php-ext-develop-basic.html#' style='color:rgb(171, 171, 171);'>收藏</a>,&nbsp;<a href='http://i.cnblogs.com/EditPosts.aspx?postid=1900736' style='color:rgb(171, 171, 171);'>编辑</a></small></h1> 
+<h1 style='background-color: rgb(153, 153, 153); color: rgb(255, 255, 255); font-family: 微软雅黑, sans-serif; font-size: 28px;'>摘要&amp;引言</h1> 
+<h1 style='color: rgb(102, 153, 0); font-family: Tahoma, Helvetica, Arial, 宋体, sans-serif; font-size: 18px;'> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Georgia, 'Times New Roman', Times, sans-serif; font-size: 14px; font-weight: normal;'> 
+  <div> 
+   <p>PHP是当前应用非常广泛的一门语言，从国外的Facebook、Twitter到国内的淘宝、腾讯、百度再到互联网上林林总总的各种大中小型网站都能见到它的身影。PHP的成功，应该说很大程度上依赖于其开放的扩展API机制和丰富的扩展组件（PHP Extension），正是这些扩展组件使得PHP从各种数据库操作到XML、JSON、加密、文件处理、图形处理、Socket等领域无所不能。有时候开发人员可能需要开发自己的PHP扩展，当前PHP5的扩展机制是基于Zend API的，Zend API提供了丰富的接口和宏定义，加上一些实用工具，使得PHP扩展开发起来难度并不算特别大。本文将介绍关于PHP扩展组件开发的基本知识，并通过一个实例展示开发PHP扩展的基本过程。</p> 
+   <p>PHP扩展组件的开发过程在Unix和Windows环境下有所不同，但基本是互通的，本文将基于Unix环境（具体使用Linux）。阅读本文需要简单了解Unix环境、PHP和C语言的一些基础知识，只要简单了解就行，我会尽量不涉及太过具体的操作系统和语言特性，并在必要的地方加以解释，以便读者阅读。</p> 
+   <p>本文的具体开发环境为Ubuntu 10.04 + PHP 5.3.3。</p> 
+  </div> 
+ </div></h1> 
+<h1 style='background-color: rgb(153, 153, 153); color: rgb(255, 255, 255); font-family: 微软雅黑, sans-serif; font-size: 28px;'>下载PHP源代码</h1> 
+<h1 style='color: rgb(102, 153, 0); font-family: Tahoma, Helvetica, Arial, 宋体, sans-serif; font-size: 18px;'> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Georgia, 'Times New Roman', Times, sans-serif; font-size: 14px; font-weight: normal;'> 
+  <div> 
+   <p>要开发PHP扩展，第一步要下载PHP源代码，因为里面有开发扩展需要的工具。我下载的是PHP最新版本5.3.3，格式为tar.bz2压缩包。下载地址为：<a href='http://cn.php.net/get/php-5.3.3.tar.bz2/from/a/mirror' style='color:rgb(61, 129, 238);'>http://cn.php.net/get/php-5.3.3.tar.bz2/from/a/mirror</a>。</p> 
+   <p>下载后，将源代码移动到合适的目录并解压。解压命令为：</p> 
+   <div style='background-color:rgb(255, 255, 255) !important;font-size:10pt !important;'> 
+    <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 12px !important;'> 
+     <tbody> 
+      <tr> 
+       <td style='color: rgb(175, 175, 175) !important; width: 35px !important; height: auto !important;'> 
+        <div>
+          1 
+        </div></td> 
+       <td style='width: auto !important; height: auto !important;'> 
+        <div> 
+         <div> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>tar</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>-jxvf 源码包名称</code> 
+         </div> 
+        </div></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+   </div> 
+   <p>若下载的是tar.gz压缩包，解压命令为</p> 
+   <div style='background-color:rgb(255, 255, 255) !important;font-size:10pt !important;'> 
+    <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 12px !important;'> 
+     <tbody> 
+      <tr> 
+       <td style='color: rgb(175, 175, 175) !important; width: 35px !important; height: auto !important;'> 
+        <div>
+          1 
+        </div></td> 
+       <td style='width: auto !important; height: auto !important;'> 
+        <div> 
+         <div> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>tar</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>-zxvf 源码包名称</code> 
+         </div> 
+        </div></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+   </div> 
+   <p>解压后，在源代码目录中有个ext目录，这里便是和PHP扩展有关的目录。进入目录后用ls查看，可以看到许多已经存在的扩展。下图是在我的环境下查看的结果：</p> 
+   <p><a href='http://images.cnblogs.com/cnblogs_com/leoo2sk/Windows-Live-Writer/PHP_D76E/image_2.png' style='color:rgb(61, 129, 238);'><img title='image' src='http://note.youdao.com/yws/res/2038/979F973636F745E794FAB5011CB08EDD' alt='image' width='639' height='257' style='background-color:rgb(255, 255, 255);' data-media-type='image'></a></p> 
+   <p>其中蓝色的均是扩展包目录，其中可以看到我们很熟悉的mysql、iconv和gd等等。而ext_skel是Unix环境下用于自动生成PHP扩展框架的脚本工具，后面我们马上会用到，ext_skel_win32.php是windows下对应的脚本。</p> 
+  </div> 
+ </div></h1> 
+<h1 style='background-color: rgb(153, 153, 153); color: rgb(255, 255, 255); font-family: 微软雅黑, sans-serif; font-size: 28px;'>开发自己的PHP扩展——say_hello</h1> 
+<h1 style='color: rgb(102, 153, 0); font-family: Tahoma, Helvetica, Arial, 宋体, sans-serif; font-size: 18px;'> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Georgia, 'Times New Roman', Times, sans-serif; font-size: 14px; font-weight: normal;'> 
+  <div> 
+   <p>下面我们开发一个PHP扩展：say_hello。这个扩展很简单，只是接受一个字符串参数，然后输出“Hello xxx!”。这个例子只是为了介绍PHP扩展组件的开发流程，不承担实际功能。</p> 
+  </div> 
+ </div></h1> 
+<h2 style='color: rgb(51, 102, 153); font-family: 微软雅黑, sans-serif; font-size: 21px;'>生成扩展组件框架</h2> 
+<h1 style='color: rgb(102, 153, 0); font-family: Tahoma, Helvetica, Arial, 宋体, sans-serif; font-size: 18px;'> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Georgia, 'Times New Roman', Times, sans-serif; font-size: 14px; font-weight: normal;'> 
+  <div> 
+   <p>PHP的扩展组件开发目录和文件是有固定组织结构的，你可以随便进入一个已有扩展组件目录，查看其所有文件，我想你一定眼花缭乱了。当然你可以选择手工完成框架的搭建，不过我相信你更希望有什么东西来帮你完成。上文提到的ext_skel脚本就是用来自动构建扩展包框架的工具。ext_skel的完整命令为：</p> 
+   <div style='background-color:rgb(255, 255, 255) !important;font-size:10pt !important;'> 
+    <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 12px !important;'> 
+     <tbody> 
+      <tr> 
+       <td style='color: rgb(175, 175, 175) !important; width: 35px !important; height: auto !important;'> 
+        <div>
+          1 
+        </div></td> 
+       <td style='width: auto !important; height: auto !important;'> 
+        <div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>ext_skel --extname=module [--proto=</code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>file</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>] [--stubs=</code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>file</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>] [--xml[=</code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>file</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>]] [--skel=</code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dir</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>] [--full-xml] [--no-help]</code> 
+         </div> 
+        </div></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+   </div> 
+   <p>作为初学者，我们不必了解所有命令参数，实际上，大多数情况下只需要提供第一个参数就可以了，也就是扩展模块的名字。因此，我们在ext目录中键入如下命令：</p> 
+   <div style='background-color:rgb(255, 255, 255) !important;font-size:10pt !important;'> 
+    <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 12px !important;'> 
+     <tbody> 
+      <tr> 
+       <td style='color: rgb(175, 175, 175) !important; width: 35px !important; height: auto !important;'> 
+        <div>
+          1 
+        </div></td> 
+       <td style='width: auto !important; height: auto !important;'> 
+        <div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>.</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>/ext_skel</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>--extname=say_hello</code> 
+         </div> 
+        </div></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+   </div> 
+   <p>（如果你希望详细了解ext_skel的各项命令参数，请<a href='http://www.php.net/manual/en/internals2.buildsys.skeleton.php' target='_blank' style='color:rgb(61, 129, 238);'>参考这里</a>）</p> 
+   <p>这时再用ls查看，会发现多了一个“say_hello”目录，进入这个目录，会发现ext_skel已经为我们建立好了say_hello的基本框架，如下图：</p> 
+   <p><a href='http://images.cnblogs.com/cnblogs_com/leoo2sk/Windows-Live-Writer/PHP_D76E/image_4.png' style='color:rgb(61, 129, 238);'><img title='image' src='http://note.youdao.com/yws/res/2040/2D7D7744B53A41488A993135F3745B36' alt='image' width='462' height='54' style='background-color:rgb(255, 255, 255);' data-media-type='image'></a></p> 
+   <p>如果你懒得弄清楚PHP扩展包目录结构的全部内容，那么里面有三个文件你必须注意：</p> 
+   <p>config.m4：这是Unix环境下的Build System配置文件，后面将会通过它生成配置和安装。</p> 
+   <p>php_say_hello.h：这个文件是扩展模块的头文件。遵循C语言一贯的作风，这个里面可以放置一些自定义的结构体、全局变量等等。</p> 
+   <p>say_hello.c：这个就是扩展模块的主程序文件了，最终的扩展模块各个函数入口都在这里。当然，你可以将所有程序代码都塞到这里面，也可以遵循模块化思想，将各个功能模块放到不同文件中。</p> 
+   <p>下面的内容主要围绕这三个文件展开。</p> 
+  </div> 
+ </div></h1> 
+<h2 style='color: rgb(51, 102, 153); font-family: 微软雅黑, sans-serif; font-size: 21px;'>Unix Build System配置</h2> 
+<h1 style='color: rgb(102, 153, 0); font-family: Tahoma, Helvetica, Arial, 宋体, sans-serif; font-size: 18px;'> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Georgia, 'Times New Roman', Times, sans-serif; font-size: 14px; font-weight: normal;'> 
+  <div> 
+   <p>开发PHP扩展组件的第一步不是写实现代码，而是要先配置好Build System选项。由于我们是在Linux下开发，所以这里的配置主要与config.m4有关。</p> 
+   <p>关于Build System配置这一块，要是写起来能写一大堆，而且与Unix系统很多东西相关，就算我有兴趣写估计大家也没兴趣看，所以这里我们从略，只拣关键地方说一下，关于config.m4更多细节可以<a href='http://www.php.net/manual/en/internals2.buildsys.configunix.php' target='_blank' style='color:rgb(61, 129, 238);'>参考这里</a>。</p> 
+   <p>打开生成的config.m4文件，内容大致如下：</p> 
+   <div style='background-color:rgb(255, 255, 255) !important;font-size:10pt !important;'> 
+    <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 12px !important;'> 
+     <tbody> 
+      <tr> 
+       <td style='color: rgb(175, 175, 175) !important; width: 35px !important; height: auto !important;'> 
+        <div>
+          1 
+        </div> 
+        <div>
+          2 
+        </div> 
+        <div>
+          3 
+        </div> 
+        <div>
+          4 
+        </div> 
+        <div>
+          5 
+        </div> 
+        <div>
+          6 
+        </div> 
+        <div>
+          7 
+        </div> 
+        <div>
+          8 
+        </div> 
+        <div>
+          9 
+        </div> 
+        <div>
+          10 
+        </div> 
+        <div>
+          11 
+        </div> 
+        <div>
+          12 
+        </div> 
+        <div>
+          13 
+        </div> 
+        <div>
+          14 
+        </div> 
+        <div>
+          15 
+        </div> 
+        <div>
+          16 
+        </div> 
+        <div>
+          17 
+        </div> 
+        <div>
+          18 
+        </div> 
+        <div>
+          19 
+        </div> 
+        <div>
+          20 
+        </div> 
+        <div>
+          21 
+        </div> 
+        <div>
+          22 
+        </div> 
+        <div>
+          23 
+        </div> 
+        <div>
+          24 
+        </div> 
+        <div>
+          25 
+        </div> 
+        <div>
+          26 
+        </div> 
+        <div>
+          27 
+        </div> 
+        <div>
+          28 
+        </div> 
+        <div>
+          29 
+        </div> 
+        <div>
+          30 
+        </div> 
+        <div>
+          31 
+        </div> 
+        <div>
+          32 
+        </div> 
+        <div>
+          33 
+        </div> 
+        <div>
+          34 
+        </div> 
+        <div>
+          35 
+        </div> 
+        <div>
+          36 
+        </div> 
+        <div>
+          37 
+        </div> 
+        <div>
+          38 
+        </div> 
+        <div>
+          39 
+        </div> 
+        <div>
+          40 
+        </div> 
+        <div>
+          41 
+        </div> 
+        <div>
+          42 
+        </div> 
+        <div>
+          43 
+        </div> 
+        <div>
+          44 
+        </div> 
+        <div>
+          45 
+        </div> 
+        <div>
+          46 
+        </div> 
+        <div>
+          47 
+        </div> 
+        <div>
+          48 
+        </div> 
+        <div>
+          49 
+        </div> 
+        <div>
+          50 
+        </div> 
+        <div>
+          51 
+        </div> 
+        <div>
+          52 
+        </div> 
+        <div>
+          53 
+        </div> 
+        <div>
+          54 
+        </div> 
+        <div>
+          55 
+        </div> 
+        <div>
+          56 
+        </div> 
+        <div>
+          57 
+        </div> 
+        <div>
+          58 
+        </div> 
+        <div>
+          59 
+        </div> 
+        <div>
+          60 
+        </div> 
+        <div>
+          61 
+        </div> 
+        <div>
+          62 
+        </div> 
+        <div>
+          63 
+        </div></td> 
+       <td style='width: auto !important; height: auto !important;'> 
+        <div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl $Id$</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl config.m4 </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>for</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>extension say_hello</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl Comments </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>in</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>this </code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>file</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>start with the string </code> 
+          <code style='color: blue !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>'dnl'</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>.</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl Remove where necessary. This </code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>file</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>will not work</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl without editing.</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl If your extension references something external, use with:</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl PHP_ARG_WITH(say_hello, </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>for</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>say_hello support,</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl Make sure that the comment is aligned:</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl [&nbsp; --with-say_hello&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Include say_hello support])</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl Otherwise use </code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>enable</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>:</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl PHP_ARG_ENABLE(say_hello, whether to </code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>enable</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>say_hello support,</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl Make sure that the comment is aligned:</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl [&nbsp; --</code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>enable</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>-say_hello&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Enable say_hello support])</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>if</code>&nbsp; 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>test</code>&nbsp; 
+          <code style='color: blue !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>'$PHP_SAY_HELLO'</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>!= </code> 
+          <code style='color: blue !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>'no'</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>; </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>then</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl Write </code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>more</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>examples of tests here...</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl </code> 
+          <code style='color: rgb(0, 130, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'># --with-say_hello -&gt; check with-path</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl SEARCH_PATH=</code> 
+          <code style='color: blue !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>'/usr/local /usr'</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+          <code style='color: rgb(0, 130, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'># you might want to change this</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl SEARCH_FOR=</code> 
+          <code style='color: blue !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>'/include/say_hello.h'</code>&nbsp;&nbsp; 
+          <code style='color: rgb(0, 130, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'># you most likely want to change this</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>if</code>&nbsp; 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>test</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>-r $PHP_SAY_HELLO/$SEARCH_FOR; </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>then</code>&nbsp; 
+          <code style='color: rgb(0, 130, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'># path given as parameter</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl&nbsp;&nbsp; SAY_HELLO_DIR=$PHP_SAY_HELLO</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>else</code>&nbsp; 
+          <code style='color: rgb(0, 130, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'># search default path list</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl&nbsp;&nbsp; AC_MSG_CHECKING([</code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>for</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>say_hello files </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>in</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>default path])</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl&nbsp;&nbsp; </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>for</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>i </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>in</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>$SEARCH_PATH ; </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>do</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl&nbsp;&nbsp;&nbsp;&nbsp; </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>if</code>&nbsp; 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>test</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>-r $i/$SEARCH_FOR; </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>then</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SAY_HELLO_DIR=$i</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AC_MSG_RESULT(found </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>in</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>$i)</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl&nbsp;&nbsp;&nbsp;&nbsp; </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>fi</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl&nbsp;&nbsp; </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>done</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>fi</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>if</code>&nbsp; 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>test</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>-z </code> 
+          <code style='color: blue !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>'$SAY_HELLO_DIR'</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>; </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>then</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl&nbsp;&nbsp; AC_MSG_RESULT([not found])</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl&nbsp;&nbsp; AC_MSG_ERROR([Please reinstall the say_hello distribution])</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>fi</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl </code> 
+          <code style='color: rgb(0, 130, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'># --with-say_hello -&gt; add include path</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl PHP_ADD_INCLUDE($SAY_HELLO_DIR</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>/include</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>)</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl </code> 
+          <code style='color: rgb(0, 130, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'># --with-say_hello -&gt; check for lib and symbol presence</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl LIBNAME=say_hello </code> 
+          <code style='color: rgb(0, 130, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'># you may want to change this</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl LIBSYMBOL=say_hello </code> 
+          <code style='color: rgb(0, 130, 0) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'># you most likely want to change this </code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl PHP_CHECK_LIBRARY($LIBNAME,$LIBSYMBOL,</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl [</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl&nbsp;&nbsp; PHP_ADD_LIBRARY_WITH_PATH($LIBNAME, $SAY_HELLO_DIR</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>/lib</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>, SAY_HELLO_SHARED_LIBADD)</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl&nbsp;&nbsp; AC_DEFINE(HAVE_SAY_HELLOLIB,1,[ ])</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl ],[</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl&nbsp;&nbsp; AC_MSG_ERROR([wrong say_hello lib version or lib not found])</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl ],[</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl&nbsp;&nbsp; -L$SAY_HELLO_DIR</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>/lib</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>-lm</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl ])</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl PHP_SUBST(SAY_HELLO_SHARED_LIBADD)</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>PHP_NEW_EXTENSION(say_hello, say_hello.c, $ext_shared)</code> 
+         </div> 
+         <div> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>fi</code> 
+         </div> 
+        </div></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+   </div> 
+   <p>不要看这么多，因为所有以“dnl”开头的全是注释，所以真正起作用没几行。这里需要配置的只有下面几行：</p> 
+   <div style='background-color:rgb(255, 255, 255) !important;font-size:10pt !important;'> 
+    <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 12px !important;'> 
+     <tbody> 
+      <tr> 
+       <td style='color: rgb(175, 175, 175) !important; width: 35px !important; height: auto !important;'> 
+        <div>
+          1 
+        </div> 
+        <div>
+          2 
+        </div> 
+        <div>
+          3 
+        </div> 
+        <div>
+          4 
+        </div> 
+        <div>
+          5 
+        </div> 
+        <div>
+          6 
+        </div> 
+        <div>
+          7 
+        </div> 
+        <div>
+          8 
+        </div> 
+        <div>
+          9 
+        </div> 
+        <div>
+          10 
+        </div> 
+        <div>
+          11 
+        </div></td> 
+       <td style='width: auto !important; height: auto !important;'> 
+        <div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl If your extension references something external, use with:</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl PHP_ARG_WITH(say_hello, </code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>for</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>say_hello support,</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl Make sure that the comment is aligned:</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl [&nbsp; --with-say_hello&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Include say_hello support])</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl Otherwise use </code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>enable</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>:</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl PHP_ARG_ENABLE(say_hello, whether to </code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>enable</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>say_hello support,</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl Make sure that the comment is aligned:</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl [&nbsp; --</code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>enable</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>-say_hello&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Enable say_hello support])</code> 
+         </div> 
+        </div></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+   </div> 
+   <p>我想大家也都能看明白，意思就是“如果你的扩展引用了外部组件，使用…，否则使用…”。我们的say_hello扩展并没有引用外部组件，所以将“Otherwise use enable”下面三行的“dnl”去掉，改为：</p> 
+   <div style='background-color:rgb(255, 255, 255) !important;font-size:10pt !important;'> 
+    <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 12px !important;'> 
+     <tbody> 
+      <tr> 
+       <td style='color: rgb(175, 175, 175) !important; width: 35px !important; height: auto !important;'> 
+        <div>
+          1 
+        </div> 
+        <div>
+          2 
+        </div> 
+        <div>
+          3 
+        </div> 
+        <div>
+          4 
+        </div> 
+        <div>
+          5 
+        </div></td> 
+       <td style='width: auto !important; height: auto !important;'> 
+        <div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>dnl Otherwise use </code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>enable</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>:</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>PHP_ARG_ENABLE(say_hello, whether to </code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>enable</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>say_hello support,</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>Make sure that the comment is aligned:</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>[&nbsp; --</code> 
+          <code style='color: rgb(255, 20, 147) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>enable</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>-say_hello&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Enable say_hello support])</code> 
+         </div> 
+        </div></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+   </div> 
+   <p>保存，这样关于Build System配置就大功告成了。</p> 
+  </div> 
+ </div></h1> 
+<h2 style='color: rgb(51, 102, 153); font-family: 微软雅黑, sans-serif; font-size: 21px;'>PHP Extension及Zend_Module结构分析</h2> 
+<h1 style='color: rgb(102, 153, 0); font-family: Tahoma, Helvetica, Arial, 宋体, sans-serif; font-size: 18px;'> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Georgia, 'Times New Roman', Times, sans-serif; font-size: 14px; font-weight: normal;'> 
+  <div> 
+   <p>以上可以看成是为开发PHP扩展而做的准备工作，下面就要编写核心代码了。上文说过，编写PHP扩展是基于Zend API和一些宏的，所以如果要编写核心代码，我们首先要弄清楚PHP Extension的结构。因为一个PHP Extension在C语言层面实际上就是一个zend_module_entry结构体，这点可以从“php_say_hello.h”中得到证实。打开“php_say_hello.h”，会看到里面有怎么一行：</p> 
+   <div style='background-color:rgb(255, 255, 255) !important;font-size:10pt !important;'> 
+    <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 12px !important;'> 
+     <tbody> 
+      <tr> 
+       <td style='color: rgb(175, 175, 175) !important; width: 35px !important; height: auto !important;'> 
+        <div>
+          1 
+        </div></td> 
+       <td style='width: auto !important; height: auto !important;'> 
+        <div> 
+         <div> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>extern</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>zend_module_entry say_hello_module_entry;</code> 
+         </div> 
+        </div></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+   </div> 
+   <p>say_hello_module_entry就是say_hello扩展的C语言对应元素，而关于其类型zend_module_entry的定义可以在PHP源代码的“Zend/zend_modules.h”文件里找到，下面代码是zend_module_entry的定义：</p> 
+   <div style='background-color:rgb(255, 255, 255) !important;font-size:10pt !important;'> 
+    <table border='1' cellpadding='2' cellspacing='0' style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-size: 12px !important;'> 
+     <tbody> 
+      <tr> 
+       <td style='color: rgb(175, 175, 175) !important; width: 35px !important; height: auto !important;'> 
+        <div>
+          1 
+        </div> 
+        <div>
+          2 
+        </div> 
+        <div>
+          3 
+        </div> 
+        <div>
+          4 
+        </div> 
+        <div>
+          5 
+        </div> 
+        <div>
+          6 
+        </div> 
+        <div>
+          7 
+        </div> 
+        <div>
+          8 
+        </div> 
+        <div>
+          9 
+        </div> 
+        <div>
+          10 
+        </div> 
+        <div>
+          11 
+        </div> 
+        <div>
+          12 
+        </div> 
+        <div>
+          13 
+        </div> 
+        <div>
+          14 
+        </div> 
+        <div>
+          15 
+        </div> 
+        <div>
+          16 
+        </div> 
+        <div>
+          17 
+        </div> 
+        <div>
+          18 
+        </div> 
+        <div>
+          19 
+        </div> 
+        <div>
+          20 
+        </div> 
+        <div>
+          21 
+        </div> 
+        <div>
+          22 
+        </div> 
+        <div>
+          23 
+        </div> 
+        <div>
+          24 
+        </div> 
+        <div>
+          25 
+        </div> 
+        <div>
+          26 
+        </div> 
+        <div>
+          27 
+        </div> 
+        <div>
+          28 
+        </div> 
+        <div>
+          29 
+        </div> 
+        <div>
+          30 
+        </div> 
+        <div>
+          31 
+        </div> 
+        <div>
+          32 
+        </div></td> 
+       <td style='width: auto !important; height: auto !important;'> 
+        <div> 
+         <div> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>typedef</code>&nbsp; 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>struct</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>_zend_module_entry zend_module_entry;</code> 
+         </div> 
+         <div>
+           &nbsp; 
+         </div> 
+         <div> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>struct</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>_zend_module_entry {</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>unsigned </code> 
+          <code style='color: gray !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-weight: bold !important;'>short</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>size;</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>unsigned </code> 
+          <code style='color: gray !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-weight: bold !important;'>int</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>zend_api;</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>unsigned </code> 
+          <code style='color: gray !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-weight: bold !important;'>char</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>zend_debug;</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>unsigned </code> 
+          <code style='color: gray !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-weight: bold !important;'>char</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>zts;</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>const</code>&nbsp; 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>struct</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>_zend_ini_entry *ini_entry;</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>const</code>&nbsp; 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>struct</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>_zend_module_dep *deps;</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>const</code>&nbsp; 
+          <code style='color: gray !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-weight: bold !important;'>char</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>*name;</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>const</code>&nbsp; 
+          <code style='color: rgb(0, 0, 255) !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>struct</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>_zend_function_entry *functions;</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+          <code style='color: gray !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-weight: bold !important;'>int</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>(*module_startup_func)(INIT_FUNC_ARGS);</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+          <code style='color: gray !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-weight: bold !important;'>int</code>&nbsp; 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>(*module_shutdown_func)(SHUTDOWN_FUNC_ARGS);</code> 
+         </div> 
+         <div> 
+          <code style='font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important;'>&nbsp;&nbsp;&nbsp;&nbsp;</code> 
+          <code style='color: gray !important; font-family: Consolas, 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace !important; font-weight: bold !important;'>in	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-313.html">Linux下SVN部署/安全及权限配置，实现web同步更新</a>
+				|
+				 <a href="http://onelose.com/post-316.html">Youaskedmetopullwithouttellingmewhichbranchyou</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="317" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-261.html">在Ubuntu下进行MongoDB安装步骤</a></li>
+		<li><a href="http://onelose.com/post-281.html">【问底】王帅：深入PHP内核（二）——SAPI探究</a></li>
+		<li><a href="http://onelose.com/post-548.html">CentOS下Redis2.2.14安装配置详解</a></li>
+		<li><a href="http://onelose.com/post-135.html">如何下载迅雷所有被屏蔽的最新电影</a></li>
+		<li><a href="http://onelose.com/post-376.html">适合PHPER们书单</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

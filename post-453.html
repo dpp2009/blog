@@ -1,0 +1,402 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Git使用笔记-飞鸿影~</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>Git使用笔记-飞鸿影~</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-11-19 7:00 Wednesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'> 
+  <p><strong>1、第一次使用github</strong></p> 
+  <p>=============================================</p> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>1)github注册账号 使用邮箱注册账号</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>先不要创建版本库</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>2)安装git</p> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'> 
+  <p>Linux请参考网上教程，这里演示windows操作。</p> 
+  <p>msysgit</p> 
+  <p>是Windows版的Git，从http://msysgit.github.io/下载，然后按默认选项安装即可。</p> 
+ </div> 
+ <pre style='background-color: rgb(246, 246, 246); color: rgb(51, 51, 51); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'>说明：git命令操作和Linux命令差不多，很多命令可以直接使用,比如cd,<span style='color:rgb(0, 0, 255);'>vi</span></pre> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>3)安装完成后，还需要最后一步设置，在命令行输入：</p> 
+ <pre style='background-color: rgb(246, 246, 246); color: rgb(51, 51, 51); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'><span style='color:rgb(0, 128, 128);'>$ </span>git config --global user.name <span style='color:rgb(128, 0, 0);'><span style='color:rgb(221, 17, 68);'>'</span></span><span style='color:rgb(221, 17, 68);'><span style='color:rgb(128, 0, 0);'>Your Name</span><span style='color:rgb(128, 0, 0);'>'</span></span><span style='color:rgb(0, 0, 0);'>
+<span style='color:rgb(0, 128, 128);'>$ </span>git config </span>--global user.email <span style='color:rgb(128, 0, 0);'><span style='color:rgb(221, 17, 68);'>'</span></span><span style='color:rgb(221, 17, 68);'><span style='color:rgb(128, 0, 0);'>email@example.com</span><span style='color:rgb(128, 0, 0);'>'</span></span></pre> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>4)创建SSH Key</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：</p> 
+ <pre style='background-color: rgb(246, 246, 246); color: rgb(51, 51, 51); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'><span style='color:rgb(0, 128, 128);'>$ </span><span style='color:rgb(0, 0, 255);'>ssh-keygen</span> -t rsa -C <span style='color:rgb(128, 0, 0);'><span style='color:rgb(221, 17, 68);'>'</span></span><span style='color:rgb(221, 17, 68);'><span style='color:rgb(128, 0, 0);'>youremail@example.com</span><span style='color:rgb(128, 0, 0);'>'</span></span></pre> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'> 
+  <p>会让你输入</p> 
+  <p>.&nbsp;ssh&nbsp;/id_rsa</p>文件的路径,默认即可 
+  <p>然后输入新密码，确认即可。</p> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'> 
+  <p>5)登陆GitHub，打开'Account settings'，'SSH Keys'页面：</p> 
+  <p>然后，点'Add SSH Key'，填上任意Title，在Key文本框里粘贴&nbsp;</p> 
+  <p>id_rsa.pub</p> 
+  <p>文件的内容：</p> 
+ </div> 
+ <pre style='background-color: rgb(246, 246, 246); color: rgb(51, 51, 51); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'><span style='color:rgb(0, 0, 0);'>　　为什么GitHub需要SSH Key呢？因为GitHub需要识别出你推送的提交确实是你推送的，而不是别人冒充的，而Git支持SSH协议，所以，GitHub只要知道了你的公钥，就可以确认只有你自己才能推送。
+　　当然，GitHub允许你添加多个Key。假定你有若干电脑，你一会儿在公司提交，一会儿在家里提交，只要把每台电脑的Key都添加到GitHub，就可以在每台电脑上往GitHub推送了。</span></pre> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>6)创建本地版本库(我选的D盘)</p> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'> 
+  <pre style='background-color: rgb(246, 246, 246); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'><span style='color:rgb(0, 128, 128);'>$ </span>cd /d/phpsetup/www/git/<span style='color:rgb(0, 0, 0);'>
+<span style='color:rgb(0, 128, 128);'>$ </span></span><span style='color:rgb(0, 0, 255);'>mkdir</span><span style='color:rgb(0, 0, 0);'> fhyblog
+<span style='color:rgb(0, 128, 128);'>$ </span>cd fhyblog
+<span style='color:rgb(0, 128, 128);'>$ </span></span><span style='color:rgb(0, 0, 255);'>pwd
+</span></pre> 
+  <pre style='background-color: rgb(246, 246, 246); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'>/d/phpsetup/www/git/fhyblog</pre> 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>7)通过&nbsp;git init&nbsp;命令把这个目录变成Git可以管理的仓库：</p> 
+ <pre style='background-color: rgb(246, 246, 246); color: rgb(51, 51, 51); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'><span style='color:rgb(0, 0, 0);'><span style='color:rgb(0, 128, 128);'>$ </span>git init
+
+Initialized empty Git repository </span><span style='color:rgb(0, 0, 255);'><span style='color:rgb(51, 51, 51);font-weight:bold;'>in</span></span> /Users/<span style='color:rgb(0, 153, 153);'>52</span>fhy/fhyblog/.git/</pre> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>瞬间Git就把仓库建好了，而且告诉你是一个空的仓库（empty Git repository），细心的读者可以发现当前目录下多了一个&nbsp;.git&nbsp;的目录，这个目录是Git来跟踪管理版本库的，没事千万不要手动修改这个目录里面的文件，不然改乱了，就把Git仓库给破坏了。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>8)在本地版本库fhyblog里放入一些代码或文件</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>我放了src目录和一个readme.txt文件</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>9)进入版本库目录：</p> 
+ <pre style='background-color: rgb(246, 246, 246); color: rgb(51, 51, 51); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'><span style='color:rgb(0, 128, 128);'>$ </span>cd /d/phpsetup/www/git/fhyblog/<span style='color:rgb(0, 0, 0);'>
+</span></pre> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>10)更新本地版本库(.指当前所有目录及文件)</p> 
+ <pre style='background-color: rgb(246, 246, 246); color: rgb(51, 51, 51); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'><span style='color:rgb(0, 128, 128);'>$ </span>git add .</pre> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>当然,如果你仅仅是提交一个文件,可以这样写</p> 
+ <pre style='background-color: rgb(246, 246, 246); color: rgb(51, 51, 51); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'><span style='color:rgb(0, 128, 128);'>$ </span>git add readme.txt</pre> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>更新一个目录这样写：</p> 
+ <pre style='background-color: rgb(246, 246, 246); color: rgb(51, 51, 51); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'><span style='color:rgb(0, 128, 128);'>$ </span>git add src/</pre> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>此时还没有真正提交到版本库,只是放在暂存区。提交请继续往下看：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>11)执行更新操作：</p> 
+ <pre style='background-color: rgb(246, 246, 246); color: rgb(51, 51, 51); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'>$ git <span style='font-weight: bold;'>commit</span> -m <span style='color:rgb(128, 0, 0);'><span style='color:rgb(221, 17, 68);'>'</span></span><span style='color:rgb(221, 17, 68);'><span style='color:rgb(128, 0, 0);'>相关说明</span><span style='color:rgb(128, 0, 0);'>'</span></span><span style='color:rgb(0, 0, 0);'>
+
+[master <span style='color:rgb(0, 153, 153);'>91115</span>af] .
+</span><span style='color:rgb(128, 0, 128);'><span style='color:rgb(0, 153, 153);'>1</span></span> <span style='color:rgb(0, 0, 255);'>file</span> changed, <span style='color:rgb(128, 0, 128);'><span style='color:rgb(0, 153, 153);'>53</span></span> insertions(+<span style='color:rgb(0, 0, 0);'>)
+<span style='color:rgb(51, 51, 51);font-weight:bold;'>create</span> mode </span><span style='color:rgb(128, 0, 128);'><span style='color:rgb(0, 153, 153);'>100644</span></span> <span style='color:rgb(128, 0, 0);'><span style='color:rgb(221, 17, 68);'>'</span></span><span style='color:rgb(221, 17, 68);'><span style='color:rgb(128, 0, 0);'>\345\215\207\347\272\247\346\227\245\345\277\227.txt</span><span style='color:rgb(128, 0, 0);'>'</span></span></pre> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'> 
+  <p>12)更新至远程(Github):</p> 
+  <p>要关联一个远程库，使用命令&nbsp;</p> 
+ </div> 
+ <pre style='background-color: rgb(246, 246, 246); color: rgb(51, 51, 51); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'><span style='color:rgb(0, 128, 128);'>$ </span>git remote add origin git<span style='color:rgb(0, 128, 128);'>@github</span>.<span style='color:rgb(153, 0, 115);'>com:</span>yourname/yourgit.git</pre> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>关联后，使用命令</p> 
+ <pre style='background-color: rgb(246, 246, 246); color: rgb(51, 51, 51); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'>git <span style='font-weight: bold;'>push</span> -u origin master</pre> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>进行第一次推送master分支的所有内容；</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>所以，远程github上确保你的版本库是空的，否则你在这一步可能会不成功。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>此后，每次本地提交后，只要有必要，就可以使用命令&nbsp;git push origin master&nbsp;推送最新修改；</p> 
+ <pre style='background-color: rgb(246, 246, 246); color: rgb(51, 51, 51); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'><span style='color:rgb(0, 0, 0);'>$ git push origin master
+
+Warning: Permanently added the RSA host key </span><span style='color:rgb(0, 0, 255);'><span style='color:rgb(51, 51, 51);font-weight:bold;'>for</span></span> IP address <span style='color:rgb(128, 0, 0);'><span style='color:rgb(221, 17, 68);'>'</span></span><span style='color:rgb(221, 17, 68);'><span style='color:rgb(128, 0, 0);'>192.30.252.129</span><span style='color:rgb(128, 0, 0);'>'</span></span><span style='color:rgb(0, 0, 0);'> to the list of known hosts.
+Enter passphrase </span><span style='color:rgb(0, 0, 255);'><span style='color:rgb(51, 51, 51);font-weight:bold;'>for</span></span> key <span style='color:rgb(128, 0, 0);'><span style='color:rgb(221, 17, 68);'>'</span></span><span style='color:rgb(221, 17, 68);'><span style='color:rgb(128, 0, 0);'>/c/Users/YJC/.ssh/id_rsa</span><span style='color:rgb(128, 0, 0);'>'</span></span><span style='color:rgb(0, 0, 0);'>:
+Counting objects: </span><span style='color:rgb(128, 0, 128);'>3</span>, <span style='color:rgb(0, 0, 255);'><span style='color:rgb(51, 51, 51);font-weight:bold;'>done</span></span><span style='color:rgb(0, 0, 0);'>.
+Delta compression using up to </span><span style='color:rgb(128, 0, 128);'>4</span><span style='color:rgb(0, 0, 0);'> threads.
+Compressing objects: </span><span style='color:rgb(128, 0, 128);'>100</span>% (<span style='color:rgb(128, 0, 128);'>2</span>/<span style='color:rgb(128, 0, 128);'>2</span>), <span style='color:rgb(0, 0, 255);'><span style='color:rgb(51, 51, 51);font-weight:bold;'>done</span></span><span style='color:rgb(0, 0, 0);'>.
+Writing objects: </span><span style='color:rgb(128, 0, 128);'>100</span>% (<span style='color:rgb(128, 0, 128);'>2</span>/<span style='color:rgb(128, 0, 128);'>2</span>), <span style='color:rgb(128, 0, 128);'>292</span> bytes | <span style='color:rgb(128, 0, 128);'>0</span> bytes/s, <span style='color:rgb(0, 0, 255);'><span style='color:rgb(51, 51, 51);font-weight:bold;'>done</span></span><span style='color:rgb(0, 0, 0);'>.
+Total </span><span style='color:rgb(128, 0, 128);'>2</span> (delta <span style='color:rgb(128, 0, 128);'>0</span>), reused <span style='color:rgb(128, 0, 128);'>0</span> (delta <span style='color:rgb(128, 0, 128);'>0</span><span style='color:rgb(0, 0, 0);'>)
+To git@github.com:52fhy</span>/<span style='color:rgb(0, 0, 0);'>fhyblog.git
+efe4969..91115af master </span>-&gt;<span style='color:rgb(0, 0, 0);'> master
+Branch master <span style='color:rgb(51, 51, 51);font-weight:bold;'>set</span> up to track remote branch master from origin.
+
+Admin@YJC</span>-PC /d/phpsetup/www/git/fhyblog (master)</pre> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'> 
+  <p>如果完成到这里,恭喜你!你已经有了本地和远程版本库了。</p> 
+  <p>===================================================</p> 
+  <p><strong>2、再次使用git</strong></p> 
+  <p>以后本地版本库里有更新,使用&nbsp;&nbsp;git add&nbsp;添加,使用命令&nbsp;</p> 
+  <p>git commit</p>提交。 
+  <p>更新至远程使用命令&nbsp;</p> 
+  <p>git push origin master</p>推送 
+  <p>===================================================</p> 
+  <p><strong>3、从远程更新至本地版本库</strong></p> 
+  <p>要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令克隆。</p> 
+ </div> 
+ <pre style='background-color: rgb(246, 246, 246); color: rgb(51, 51, 51); font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; font-size: 14px;'>$ git clone git@github.com:52fhy/<span style='color:rgb(0, 0, 0);'>fhyBlog.git
+
+Cloning into </span><span style='color:rgb(128, 0, 0);'><span style='color:rgb(221, 17, 68);'>'</span></span><span style='color:rgb(221, 17, 68);'><span style='color:rgb(128, 0, 0);'>fhyBlog</span><span style='color:rgb(128, 0, 0);'>'</span></span><span style='color:rgb(0, 0, 0);'>...
+Enter passphrase </span><span style='color:rgb(0, 0, 255);'><span style='color:rgb(51, 51, 51);font-weight:bold;'>for</span></span> key <span style='color:rgb(128, 0, 0);'><span style='color:rgb(221, 17, 68);'>'</span></span><span style='color:rgb(221, 17, 68);'><span style='color:rgb(128, 0, 0);'>/c/Users/YJC/.ssh/id_rsa</span><span style='color:rgb(128, 0, 0);'>'</span></span><span style='color:rgb(0, 0, 0);'>:
+remote: Counting objects: </span><span style='color:rgb(128, 0, 128);'>284</span>, <span style='color:rgb(0, 0, 255);'><span style='color:rgb(51, 51, 51);font-weight:bold;'>done</span></span><span style='color:rgb(0, 0, 0);'>.
+remote: Compressing objects: </span><span style='color:rgb(128, 0, 128);'>100</span>% (<span style='color:rgb(128, 0, 128);'>238</span>/<span style='color:rgb(128, 0, 128);'>238</span>), <span style='color:rgb(0, 0, 255);'><span style='color:rgb(51, 51, 51);font-weight:bold;'>done</span></span><span style='color:rgb(0, 0, 0);'>.
+remote: Total </span><span style='color:rgb(128, 0, 128);'>284</span> (delta <span style='color:rgb(128, 0, 128);'>28</span>), reused <span style='color:rgb(128, 0, 128);'>283</span> (delta <span style='color:rgb(128, 0, 128);'>27</span><span style='color:rgb(0, 0, 0);'>)R
+Receiving objects: </span><span style='color:rgb(128, 0, 128);'>94</span>% (<span style='color:rgb(128, 0, 128);'>267</span>/<span style='color:rgb(128, 0, 128);'>284</span>), <span style='color:rgb(128, 0, 128);'>644.00</span> KiB | <span style='color:rgb(128, 0, 128);'>12.00</span> KiB/<span style='color:rgb(0, 0, 0);'>
+Receiving objects: </span><span style='color:rgb(128, 0, 128);'>100</span>% (<span style='color:rgb(128, 0, 128);'>284</span>/<span style='color:rgb(128, 0, 128);'>284</span>), <span style='color:rgb(128, 0, 128);'>676.81</span> KiB | <span style='color:rgb(128, 0, 128);'>12.00</span> KiB/s, <span style='color:rgb(0, 0, 255);'><span style='color:rgb(51, 51, 51);font-weight:bold;'>done</span></span><span style='color:rgb(0, 0, 0);'>.
+Resolving deltas: </span><span style='color:rgb(128, 0, 128);'>100</span>% (<span style='color:rgb(128, 0, 128);'>28</span>/<span style='color:rgb(128, 0, 128);'>28</span>), <span style='color:rgb(0, 0, 255);'><span style='color:rgb(51, 51, 51);font-weight:bold;'>done</span></span>.</pre> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Tahoma, Arial, STXihei, 'Microsoft YaHei', 微软雅黑, sans-serif; font-size: 16px;'>觉得不错，推荐一下哦！</p> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-450.html">运用JS设置cookie、读取cookie、删除cookie</a>
+				|
+				 <a href="http://onelose.com/post-455.html">Swipe</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="453" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-515.html">正则过滤jscsshtml回车、空格</a></li>
+		<li><a href="http://onelose.com/post-164.html">概率论与数理统计试题</a></li>
+		<li><a href="http://onelose.com/post-461.html">MYSQL自定义排序</a></li>
+		<li><a href="http://onelose.com/post-532.html">linux卸载mysql</a></li>
+		<li><a href="http://onelose.com/post-355.html">phptrace</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

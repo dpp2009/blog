@@ -1,0 +1,806 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>MySQL编程指南</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>MySQL编程指南</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-6 7:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <p><span style='font-family:Arial;font-size:16.0000pt;font-weight:bold;'>&nbsp;</span><span style='font-family: 宋体; font-size: 24pt; text-align: center; line-height: 1.5;'>&nbsp;</span><span style='font-family: 宋体; font-size: 42pt; text-align: center; line-height: 1.5;'>MySQL</span><font face='宋体' style='font-family: 宋体; font-size: 42pt; text-align: center; line-height: 1.5;'>编程指南</font></p> 
+ <p style='text-align:center;'><span style='font-family:Arial;font-size:10.5000pt;'><br></span><span style='font-family:Arial;font-size:13.0000pt;'>更改履历</span></p> 
+ <table border='1' cellpadding='2' cellspacing='0'> 
+  <tbody> 
+   <tr> 
+    <td style='background-color:rgb(192,192,192);width:41.0000pt;'><p style='text-align:center;'><span style='font-family:Arial;font-size:10.0000pt;'>版本号</span></p></td> 
+    <td style='background-color:rgb(192,192,192);width:67.5500pt;'><p style='text-align:center;'><span style='font-family:Arial;font-size:10.0000pt;'>更改时间</span></p></td> 
+    <td style='background-color:rgb(192,192,192);width:72.6500pt;'><p style='text-align:center;'><span style='font-family:Arial;font-size:10.0000pt;'>更改的</span></p><p style='text-align:center;'><span style='font-family:Arial;font-size:10.0000pt;'>图表和章节号</span></p></td> 
+    <td style='background-color:rgb(192,192,192);width:25.5000pt;'><p style='text-align:center;'><span style='font-family:Arial;font-size:10.0000pt;'>状态</span></p></td> 
+    <td style='background-color:rgb(192,192,192);width:76.5000pt;'><p style='text-align:center;'><span style='font-family:Arial;font-size:10.0000pt;'>更改简要描述</span></p></td> 
+    <td style='background-color:rgb(192,192,192);width:51.0000pt;'><p style='text-align:center;'><span style='font-family:Arial;font-size:10.0000pt;'>&nbsp;</span></p><p style='text-align:center;'><span style='font-family:Arial;font-size:10.0000pt;'>更改申请</span></p><p style='text-align:center;'><span style='font-family:Arial;font-size:10.0000pt;'>编号</span></p></td> 
+    <td style='background-color:rgb(192,192,192);width:42.5000pt;'><p style='text-align:center;'><span style='font-family:Arial;font-size:10.0000pt;'>&nbsp;</span></p><p style='text-align:center;'><span style='font-family:Arial;font-size:10.0000pt;'>&nbsp;</span></p><p style='text-align:center;'><span style='font-family:Arial;font-size:10.0000pt;'>更改人</span></p></td> 
+    <td style='background-color:rgb(192,192,192);width:42.6000pt;'><p style='text-align:center;'><span style='font-family:Arial;font-size:10.0000pt;'>批准人</span></p></td> 
+   </tr> 
+   <tr> 
+    <td style='width:41.0000pt;'><p><span style='font-family:宋体;font-size:10.0000pt;'>0.5</span></p></td> 
+    <td style='width:67.5500pt;'><p><span style='font-family:Arial;font-size:10.0000pt;'>2007-5-</span><span style='font-family:宋体;font-size:10.0000pt;'>29</span></p></td> 
+    <td style='width:72.6500pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:25.5000pt;'><p><span style='font-family:宋体;font-size:10.0000pt;'>N</span></p></td> 
+    <td style='width:76.5000pt;'><p><span style='font-family:宋体;font-size:10.0000pt;'>创建文档</span></p></td> 
+    <td style='width:51.0000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:42.5000pt;'><p><span style='font-family:宋体;font-size:10.0000pt;'>王春凝</span></p></td> 
+    <td style='width:42.6000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+   </tr> 
+   <tr> 
+    <td style='width:41.0000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:67.5500pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:72.6500pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:25.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:76.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:51.0000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:42.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:42.6000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+   </tr> 
+   <tr> 
+    <td style='width:41.0000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:67.5500pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:72.6500pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:25.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:76.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:51.0000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:42.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:42.6000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+   </tr> 
+   <tr> 
+    <td style='width:41.0000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:67.5500pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:72.6500pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:25.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:76.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:51.0000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:42.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:42.6000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+   </tr> 
+   <tr> 
+    <td style='width:41.0000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:67.5500pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:72.6500pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:25.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:76.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:51.0000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:42.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:42.6000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+   </tr> 
+   <tr> 
+    <td style='width:41.0000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:67.5500pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:72.6500pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:25.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:76.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:51.0000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:42.5000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+    <td style='width:42.6000pt;'> 
+     <div> 
+      <br> 
+     </div></td> 
+   </tr> 
+  </tbody> 
+ </table> 
+ <p style='line-height:2.25;'><span style='font-family:Arial;font-size:10.5000pt;'>注：<font face='Arial'>N-</font><font face='宋体'>新建&nbsp;&nbsp;&nbsp;</font><font face='Arial'>A-</font><font face='宋体'>增加&nbsp;&nbsp;&nbsp;</font><font face='Arial'>M-</font><font face='宋体'>更改&nbsp;&nbsp;</font><font face='Arial'>D-</font><font face='宋体'>删除</font></span></p> 
+</div> 
+<span style='font-family:Arial;font-size:12.0000pt;'><br></span> 
+<p><span style='font-family:Arial;font-size:12.0000pt;'>目&nbsp;&nbsp;&nbsp;录</span></p> 
+<p><a href='#_Toc168226258'><span style='color:rgb(0,0,255);font-family:Arial;'>1</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='color:rgb(0,0,255);font-family:Arial;'>SQL</span><span style='color:rgb(0,0,255);font-family:宋体;'>编程原则</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='font-family:'Times New Roman';font-size:10.5000pt;'>4</span></a></p> 
+<p><a href='#_Toc168226259'><span style='color:rgb(0,0,255);font-family:Arial;'>2</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='color:rgb(0,0,255);font-family:宋体;'>如何利用索引</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='font-family:'Times New Roman';font-size:10.5000pt;'>5</span></a></p> 
+<p><a href='#_Toc168226260'><span style='color:rgb(0,0,255);font-family:Arial;'>3</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='color:rgb(0,0,255);font-family:宋体;'>使用正确的数据类型</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='font-family:'Times New Roman';font-size:10.5000pt;'>6</span></a></p> 
+<p><a href='#_Toc168226261'><span style='color:rgb(0,0,255);font-family:Arial;'>4</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='color:rgb(0,0,255);font-family:宋体;'>对必要的字段操作</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='font-family:'Times New Roman';font-size:10.5000pt;'>7</span></a></p> 
+<p><a href='#_Toc168226262'><span style='color:rgb(0,0,255);font-family:Arial;'>5</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='color:rgb(0,0,255);font-family:宋体;'>连接</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='font-family:'Times New Roman';font-size:10.5000pt;'>7</span></a></p> 
+<p><a href='#_Toc168226263'><span style='color:rgb(0,0,255);font-family:Arial;'>6</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='color:rgb(0,0,255);font-family:宋体;'>查询条件</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='font-family:'Times New Roman';font-size:10.5000pt;'>8</span></a></p> 
+<p><a href='#_Toc168226264'><span style='color:rgb(0,0,255);font-family:Arial;'>7</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='color:rgb(0,0,255);font-family:Arial;'>DISTINCT</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='font-family:'Times New Roman';font-size:10.5000pt;'>9</span></a></p> 
+<p><a href='#_Toc168226265'><span style='color:rgb(0,0,255);font-family:Arial;'>8</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='color:rgb(0,0,255);font-family:Arial;'>GROUP&nbsp;BY</span><span style='color:rgb(0,0,255);font-family:宋体;'>，</span><span style='color:rgb(0,0,255);font-family:Arial;'>HAVING</span><span style='font-family:'Times New Roman';font-size:10.5000pt;'></span><span style='font-family:'Times New Roman';font-size:10.5000pt;'>9</span></a></p> 
+<p><span style='font-family:Arial;font-size:12.0000pt;'><br></span></p> 
+<h1 style='line-height:2.25;text-align:justify;'><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>1&nbsp;</span><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'><a>SQL<font face='黑体'>编程原则</font></a></span></h1> 
+<ol> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>尽量少用<font face='Arial'>COUNT,&nbsp;DISTINCT,&nbsp;GROUP&nbsp;BY,&nbsp;ORDER&nbsp;BY</font><font face='宋体'>和聚集函数等费时操作。尽量在应用程序中实现相同的功能。</font></span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>使用<font face='Arial'>EXPLAIN</font><font face='宋体'>查看执行计划。优化器远比我们想象的要弱。</font></span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>减少数据库的访问次数。尽量用一条高效的<font face='Arial'>SQL</font><font face='宋体'>解决所有问题。</font></span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>各种操作尽量利用主索引查找记录，其次是辅助索引。使用索引的具体原则，请参见下节内容。</span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>尽量按照主键顺序操作记录。可以利用数据缓存。</span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>对于<font face='Arial'>INNODB</font><font face='宋体'>类型的表，</font><font face='Arial'>COUNT</font><font face='宋体'>操作要有</font><font face='Arial'>WHERE</font><font face='宋体'>条件。</font></span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>当无法确定表中是否存在某条待插入的记录时，使用<font face='Arial'>REPLACE</font><font face='宋体'>代替</font><font face='Arial'>DELETE</font><font face='宋体'>和</font><font face='Arial'>INSERT</font><font face='宋体'>，提高执行效率。但前提是</font><font face='Arial'>REPLACE</font><font face='宋体'>语句包含主键或唯一性索引列。</font></span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>BEGIN;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>DELETE&nbsp;FROM&nbsp;SF_Word.wordshelve&nbsp;&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;shelve&nbsp;=&nbsp;'128'&nbsp;AND&nbsp;keywid&nbsp;=&nbsp;'7931976'</span><span style='font-family:宋体;font-size:10.5000pt;'>;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>INSERT&nbsp;INTO&nbsp;SF_Word.wordshelve&nbsp;(userid,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>shelvetime,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>keywid,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>shelve)&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>VALUES&nbsp;('541172','2007-04-10&nbsp;18:28:40','7931976','128')</span><span style='font-family:宋体;font-size:10.5000pt;'>;</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>COMMIT;</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【建议写法】：</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>REPLACE</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;INTO&nbsp;SF_Word.wordshelve&nbsp;(userid,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>shelvetime,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>keywid,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>shelve)</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>VALUES&nbsp;(541172,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>'2007-04-10&nbsp;18:28:40',</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>7931976,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>128)</span><span style='font-family:宋体;font-size:10.5000pt;'>;</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<ol start='8'> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>避免表扫描。如果涉及到表扫描的操作，请考虑是否有其他的方法代替。</span></li> 
+ <li><span style='color:rgb(51,51,51);font-family:ˎ̥;font-size:10.5000pt;'>多表</span><span style='color:rgb(51,51,51);font-family:宋体;font-size:10.5000pt;'>连接</span><span style='color:rgb(51,51,51);font-family:ˎ̥;font-size:10.5000pt;'>时，</span><span style='color:rgb(51,51,51);font-family:宋体;font-size:10.5000pt;'>请为每个</span><span style='color:rgb(51,51,51);font-family:ˎ̥;font-size:10.5000pt;'>表</span><span style='color:rgb(51,51,51);font-family:宋体;font-size:10.5000pt;'>使用</span><span style='color:rgb(51,51,51);font-family:ˎ̥;font-size:10.5000pt;'>别名</span><span style='color:rgb(51,51,51);font-family:宋体;font-size:10.5000pt;'>，</span><span style='color:rgb(51,51,51);font-family:ˎ̥;font-size:10.5000pt;'>并把别名前缀于每</span><span style='color:rgb(51,51,51);font-family:宋体;font-size:10.5000pt;'>一列</span><span style='color:rgb(51,51,51);font-family:ˎ̥;font-size:10.5000pt;'>上</span><span style='color:rgb(51,51,51);font-family:宋体;font-size:10.5000pt;'>，即使该列在所有表中都是唯一的。</span><span style='color:rgb(51,51,51);font-family:ˎ̥;font-size:10.5000pt;'>这样可以减少解析时间并</span><span style='color:rgb(51,51,51);font-family:宋体;font-size:10.5000pt;'>避免</span><span style='color:rgb(51,51,51);font-family:ˎ̥;font-size:10.5000pt;'>由</span><span style='color:rgb(51,51,51);font-family:宋体;font-size:10.5000pt;'>列</span><span style='color:rgb(51,51,51);font-family:ˎ̥;font-size:10.5000pt;'>歧义引起的语法错误</span><span style='color:rgb(51,51,51);font-family:宋体;font-size:10.5000pt;'>。</span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>与事务无关的操作放到事务外面<font face='Arial'>,&nbsp;</font><font face='宋体'>以减少锁资源的占用。</font></span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>在不破坏一致性的前提下，使用多个短事务代替长事务。</span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>UPDATE&nbsp;SF_Word.wordattr</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SET&nbsp;status&nbsp;=&nbsp;'2',&nbsp;efftime&nbsp;=&nbsp;'2007-04-11&nbsp;00:14:00'&nbsp;&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;status&nbsp;=&nbsp;'4'&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>AND&nbsp;userid&nbsp;IN&nbsp;('550271','550272','550273',</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;条件很多……<font face='Arial'>);</font></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>当上面语句的<font face='Arial'>IN</font><font face='宋体'>中条件过多时，会导致锁资源的长时间占用，可以考虑减少</font><font face='Arial'>IN</font><font face='宋体'>中条件数。</font></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【建议写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>UPDATE&nbsp;SF_Word.wordattr</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SET&nbsp;status&nbsp;=&nbsp;'2',&nbsp;efftime&nbsp;=&nbsp;'2007-04-11&nbsp;00:14:00'&nbsp;&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;status&nbsp;=&nbsp;'4'&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>AND&nbsp;userid&nbsp;IN&nbsp;('550271','550272','550273',</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;较少条件……<font face='Arial'>);</font></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<h1 style='line-height:2.25;text-align:justify;'><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>2&nbsp;</span><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>如何利用索引</span></h1> 
+<ol> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>索引可以利用的操作符。</span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【<font face='Arial'>HASH</font><font face='宋体'>索引列】：</font></span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>=,&nbsp;&lt;=&gt;,&nbsp;IN,&nbsp;IS&nbsp;NULL</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【<font face='Arial'>B</font><font face='宋体'>树索引列】：</font></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>=,&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>&lt;=&gt;</span><span style='font-family:宋体;font-size:10.5000pt;'>,&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>&gt;,&nbsp;&lt;,&nbsp;&gt;=,&nbsp;&lt;=,&nbsp;BETWEEN,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>IN</span><span style='font-family:宋体;font-size:10.5000pt;'>,&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>!=,&nbsp;&lt;&gt;</span><span style='font-family:宋体;font-size:10.5000pt;'>,&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>IS&nbsp;NULL,&nbsp;IS&nbsp;NOT&nbsp;NULL</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;以及</span><span style='font-family:Arial;font-size:10.5000pt;'>LIKE</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>'pattern'</span><span style='font-family:宋体;font-size:10.5000pt;'>（</span><span style='font-family:Arial;font-size:10.5000pt;'>pattern</span><span style='font-family:宋体;font-size:10.5000pt;'>不以通配符<font face='Arial'>%,&nbsp;_</font><font face='宋体'>开头）</font></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<ol start='2'> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>尽量不要使用<font face='Arial'>LIKE&nbsp;</font></span><span style='font-family:Arial;font-size:10.5000pt;'>‘</span><span style='font-family:宋体;font-size:10.5000pt;'>%like%</span><span style='font-family:Arial;font-size:10.5000pt;'>’</span><span style='font-family:宋体;font-size:10.5000pt;'>。以通配符开头的字符串不会使用索引。</span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>如果某个多维索引是<font face='Arial'>HASH</font><font face='宋体'>索引，那么只有当该多维索引的所有索引列都出现在查询条件中时，</font><font face='Arial'>MySQL</font><font face='宋体'>才会利用该多维索引。</font></span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>对于<font face='Arial'>B</font><font face='宋体'>树多维索引，只有条件中包含</font></span><span style='font-family:Arial;font-size:10.5000pt;'>最左前缀</span><span style='font-family:宋体;font-size:10.5000pt;'>（多维索引中的第一列）时，<font face='Arial'>MySQL</font><font face='宋体'>才会利用该多维索引，除非索引列全部为数值类型列。例如：某多维索引包含列（</font></span><span style='font-family:Arial;font-size:10.5000pt;'>key_part1</span><span style='font-family:Arial;font-size:10.5000pt;'>，</span><span style='font-family:Arial;font-size:10.5000pt;'>key_part2</span><span style='font-family:Arial;font-size:10.5000pt;'>，</span><span style='font-family:Arial;font-size:10.5000pt;'>key_part3</span><span style='font-family:宋体;font-size:10.5000pt;'>），则可以用到索引的条件为：</span></li> 
+</ol> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>key_part1</span><span style='font-family:宋体;font-size:10.5000pt;'>，</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>key_part1</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>key_part2</span><span style='font-family:宋体;font-size:10.5000pt;'>，</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>key_part1</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>key_part3</span><span style='font-family:宋体;font-size:10.5000pt;'>，</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>key_part1</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>key_part2</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>key_part3</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<ol start='5'> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>使索引列独立。<font face='Arial'>MySQL</font><font face='宋体'>不会利用计算后的索引列，除非该索引为数值类型的主索引。</font></span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>col</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;FROM&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>t1</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;WHERE&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>index_column</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>-</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;128&nbsp;&gt;&nbsp;0</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>当索引列<font face='Arial'>index_column</font><font face='宋体'>用于某种计算时，</font><font face='Arial'>MySQL</font><font face='宋体'>不会利用该索引。可以将其转换为等价的表达式：</font></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【建议写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>col</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;FROM&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>t1</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;WHERE&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>index_column</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>&gt;</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;128&nbsp;</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<ol start='6'> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>MySQL<font face='宋体'>只能优化一个</font><font face='Arial'>IS&nbsp;NULL</font><font face='宋体'>。下面的查询中</font></span><span style='font-family:Arial;font-size:10.5000pt;'>t2.b&nbsp;IS&nbsp;NULL</span><span style='font-family:宋体;font-size:10.5000pt;'>将不会利用索引。因此，当存在多个<font face='Arial'>IS&nbsp;NULL</font><font face='宋体'>条件时，请权衡要使用哪列作为索引。</font></span></li> 
+</ol> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>t1.col,&nbsp;t2.col</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;t1,&nbsp;t2</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;(t1.a</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>=</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>t2.a&nbsp;AND&nbsp;t2.a&nbsp;IS&nbsp;NULL)&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>OR&nbsp;(t1.b</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>=</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>t2.b&nbsp;AND&nbsp;t2.b&nbsp;IS&nbsp;NULL);</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<ol start='7'> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>使<font face='Arial'>ORDER&nbsp;BY</font></span><span style='font-family:宋体;font-size:10.5000pt;'></span><span style='font-family:宋体;font-size:10.5000pt;'>利用索引。同时满足下面条件才会利用到索引：</span></li> 
+ <ol> 
+  <li><span style='font-family:宋体;font-size:10.5000pt;'>如果查询中包含<font face='Arial'>GROUP&nbsp;BY</font><font face='宋体'>，则</font></span><span style='font-family:Arial;font-size:10.5000pt;'>ORDER&nbsp;BY</span><span style='font-family:宋体;font-size:10.5000pt;'>必须与</span><span style='font-family:Arial;font-size:10.5000pt;'>GROUP&nbsp;BY</span><span style='font-family:宋体;font-size:10.5000pt;'>的表达式相同。</span></li> 
+  <li><span style='font-family:宋体;font-size:10.5000pt;'>出现在<font face='Arial'>ORDER&nbsp;BY</font><font face='宋体'>子句中的所有列都属于同一索引，且同时为</font><font face='Arial'>ASC</font><font face='宋体'>或</font><font face='Arial'>DESC</font><font face='宋体'>。</font></span></li> 
+ </ol> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【示例】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>col</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;t1&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>ORDER&nbsp;BY&nbsp;key_part1&nbsp;DESC,&nbsp;key_part2&nbsp;DESC;</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：</span><span style='font-family:Arial;font-size:10.5000pt;'>key_part1</span><span style='font-family:宋体;font-size:10.5000pt;'>和</span><span style='font-family:Arial;font-size:10.5000pt;'>key_part2</span><span style='font-family:宋体;font-size:10.5000pt;'>属于同一个多维索引。</span></p> 
+<ol start='8'> 
+ <ol> 
+  <li><span style='font-family:宋体;font-size:10.5000pt;'>如果某多维索引只有部分索引列出现在<font face='Arial'>ORDER&nbsp;BY</font><font face='宋体'>子句中，那么没有出现在</font><font face='Arial'>ORDER&nbsp;BY</font><font face='宋体'>子句中其他索引列必须出现在</font><font face='Arial'>WHERE</font><font face='宋体'>子句中，且与常值比较。</font></span></li> 
+ </ol> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【示例】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>col</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;t1&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;key_part1</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>=</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>constant&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>ORDER&nbsp;BY&nbsp;key_part2;</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<ol start='8'> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>使<font face='Arial'>GROUP&nbsp;BY</font></span><span style='font-family:宋体;font-size:10.5000pt;'></span><span style='font-family:宋体;font-size:10.5000pt;'>利用索引。<font face='Arial'>GROUP&nbsp;BY</font><font face='宋体'>只能使用</font><font face='Arial'>B</font><font face='宋体'>树索引，且同时满足如下条件：</font></span></li> 
+ <ol> 
+  <li><span style='font-family:宋体;font-size:10.5000pt;'>出现在<font face='Arial'>GROUP&nbsp;BY</font><font face='宋体'>子句中的所有列都属于同一索引。</font></span></li> 
+  <li><span style='font-family:宋体;font-size:10.5000pt;'>如果某多维索引只有部分索引列出现在<font face='Arial'>GROUP&nbsp;BY</font><font face='宋体'>子句中，那么没有出现在</font><font face='Arial'>GROUP&nbsp;BY</font><font face='宋体'>子句中其他索引列必须出现在</font><font face='Arial'>WHERE</font><font face='宋体'>子句中，且与常值比较。</font></span></li> 
+ </ol> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<ol start='9'> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>一定为表创建主索引，即使不能创建主索引也要创建唯一性索引。</span></li> 
+ <li><span style='font-family:Arial;font-size:10.5000pt;'>适合</span><span style='font-family:宋体;font-size:10.5000pt;'>添加</span><span style='font-family:Arial;font-size:10.5000pt;'>索引的列</span><span style='font-family:宋体;font-size:10.5000pt;'>应尽量满足如下条件：</span></li> 
+ <ol> 
+  <li><span style='font-family:Arial;font-size:10.5000pt;'>出现在<font face='Arial'>WHERE</font><font face='宋体'>或</font></span><span style='font-family:宋体;font-size:10.5000pt;'>ON</span><span style='font-family:Arial;font-size:10.5000pt;'>中的列</span><span style='font-family:宋体;font-size:10.5000pt;'>。</span></li> 
+  <li><span style='font-family:宋体;font-size:10.5000pt;'>具有较少的重复值。</span></li> 
+  <li><span style='font-family:宋体;font-size:10.5000pt;'>以查询操作为主。对于更新操作远远大于查询操作的列，请不要创建索引。</span></li> 
+ </ol> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<ol start='11'> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>如果</span><span style='font-family:Arial;font-size:10.5000pt;'>某列中值的分布</span><span style='font-family:宋体;font-size:10.5000pt;'>具有唯一性</span><span style='font-family:Arial;font-size:10.5000pt;'>，</span><span style='font-family:宋体;font-size:10.5000pt;'>则唯一性</span><span style='font-family:Arial;font-size:10.5000pt;'>索引的效果最好，而具有重复值的列</span><span style='font-family:宋体;font-size:10.5000pt;'>不能使用唯一性索引。</span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>对于多维索引，请将需要单独索引的列作为该多维索引的</span><span style='font-family:Arial;font-size:10.5000pt;'>最左前缀</span><span style='font-family:宋体;font-size:10.5000pt;'>，参见<font face='Arial'>4</font><font face='宋体'>）。</font></span></li> 
+ <li><span style='font-family:Arial;font-size:10.5000pt;'>使用短索引</span><span style='font-family:宋体;font-size:10.5000pt;'>。如果</span><span style='font-family:Arial;font-size:10.5000pt;'>对</span><span style='font-family:宋体;font-size:10.5000pt;'>字符</span><span style='font-family:Arial;font-size:10.5000pt;'>串列进行索引，</span><span style='font-family:宋体;font-size:10.5000pt;'>尽量</span><span style='font-family:Arial;font-size:10.5000pt;'>指定一个前缀长度。例如，如果</span><span style='font-family:宋体;font-size:10.5000pt;'>能够保证某串</span><span style='font-family:Arial;font-size:10.5000pt;'>在前<font face='Arial'>20</font><font face='宋体'>个字符内</font></span><span style='font-family:宋体;font-size:10.5000pt;'>的</span><span style='font-family:Arial;font-size:10.5000pt;'>值是</span><span style='font-family:宋体;font-size:10.5000pt;'>唯一</span><span style='font-family:Arial;font-size:10.5000pt;'>的，那么就不要对整列进行索引。</span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>选择适当的索引类型。<font face='Arial'>HASH</font><font face='宋体'>索引的等值查询优于</font><font face='Arial'>B</font><font face='宋体'>树索引，</font><font face='Arial'>B</font><font face='宋体'>树索引更适用于范围查询。</font></span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>保证所有的</span><span style='font-family:Arial;font-size:10.5000pt;'>索引</span><span style='font-family:宋体;font-size:10.5000pt;'>都是必要的</span><span style='font-family:Arial;font-size:10.5000pt;'>。</span><span style='font-family:宋体;font-size:10.5000pt;'>过多的索引会导致插入、更新、删除，甚至于查询性能的下降。</span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<h1 style='line-height:2.25;text-align:justify;'><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>3&nbsp;</span><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>使用正确的数据类型</span></h1> 
+<ol> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>如果能够保证等号右侧为数值类型，那么对数值类型列的计算不要使用单引号。</span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>keyword</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;FROM&nbsp;SF_Word.wordlist&nbsp;WHERE&nbsp;wordid&nbsp;=&nbsp;'999184'</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>MySQL<font face='宋体'>认为单引号中的内容是字符类型，因此不同类型间的赋值或比较要进行类型转换。当数值列与字符类型比较时，默认将两种类型同时转换为双精度类型。</font></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【建议写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>keyword</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;FROM&nbsp;SF_Word.wordlist&nbsp;WHERE&nbsp;wordid&nbsp;=&nbsp;999184</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<ol start='2'> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>字符类型列的比较要使用单引号。</span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>SELECT</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>wordid</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>FROM</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;SF_Word.wordlist&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>WHERE</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;keyword</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>=</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>4</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>当字符列与数值类型比较时，<font face='Arial'>MySQL</font><font face='宋体'>（</font><font face='Arial'>4.0.16</font><font face='宋体'>）会产生错误的结果，且不会利用索引。</font><font face='Arial'>MySQL</font><font face='宋体'>默认会将</font></span><span style='font-family:Arial;font-size:10.5000pt;'>keyword</span><span style='font-family:宋体;font-size:10.5000pt;'>列中非数值字符截断，将其转换为数值类型，因此上面语句查询的是以数字<font face='Arial'>4</font><font face='宋体'>开头的</font></span><span style='font-family:Arial;font-size:10.5000pt;'>keyword</span><span style='font-family:宋体;font-size:10.5000pt;'>（如<font face='Arial'>4a,&nbsp;004b</font><font face='宋体'>等）。由于每个数值可能对应多个字符列，因此</font><font face='Arial'>MySQL</font><font face='宋体'>不会使用索引查询。</font></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【建议写法】：</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>SELECT</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>wordid</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>FROM</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;SF_Word.wordlist&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>WHERE</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;keyword</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>=</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>‘4’</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<h1 style='line-height:2.25;text-align:justify;'><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>4&nbsp;</span><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>对必要的字段操作</span></h1> 
+<ol> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>选择未知且需要的字段，不要使用&nbsp;<font face='Arial'>*&nbsp;</font><font face='宋体'>。某些字段的值在程序上下文中已经知道，可以不从数据库中获取。</font></span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'><a>SELECT&nbsp;*&nbsp;FROM&nbsp;SF_Word.wordlist&nbsp;WHERE&nbsp;wordid&nbsp;=&nbsp;999184</a></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：<font face='Arial'>wordid</font><font face='宋体'>的值是已知的，不必查询数据库</font></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【建议写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>keyword</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;FROM&nbsp;SF_Word.wordlist&nbsp;WHERE&nbsp;wordid&nbsp;=&nbsp;999184</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<ol start='2'> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>只更新修改过的字段。</span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>如果某个字段的值没有改变，那么该字段可以不必更新。</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>UPDATE&nbsp;SF_User.userfund&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SET&nbsp;`balance`&nbsp;=&nbsp;`balance`&nbsp;-&nbsp;1.29,&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>`turncash`&nbsp;=&nbsp;`turncash`&nbsp;-&nbsp;0.00000000</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;`userid`&nbsp;=&nbsp;603588</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：</span><span style='font-family:Arial;font-size:10.5000pt;'>turncash</span><span style='font-family:宋体;font-size:10.5000pt;'>的值并没有修改，可以不必更新</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【建议写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>UPDATE&nbsp;SF_User.userfund&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SET&nbsp;`balance`&nbsp;=&nbsp;`balance`&nbsp;-&nbsp;1.29,&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;`userid`&nbsp;=&nbsp;603588</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<h1 style='line-height:2.25;text-align:justify;'><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>5&nbsp;</span><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>连接</span></h1> 
+<ol> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>恰当的使用连接可以加快查询速度。</span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>SELECT&nbsp;*&nbsp;FROM&nbsp;SF_Word.wdckinfo&nbsp;WHERE&nbsp;keywid&nbsp;=&nbsp;16052803</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>SELECT&nbsp;*&nbsp;FROM&nbsp;SF_Word.wordattr&nbsp;WHERE&nbsp;keywid&nbsp;=&nbsp;16052803</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【建议写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>info.title,&nbsp;info.url,&nbsp;info.abst,&nbsp;attr.price,&nbsp;attr.status,&nbsp;<font face='宋体'>……</font></span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;SF_Word.wdckinfo&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>info</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>NATURAL&nbsp;JOIN&nbsp;SF_Word.wordattr&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>attr</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;SF_Word.wordattr.keywid&nbsp;=&nbsp;16052803</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：用一次查询实现相同的功能，减少了数据库的并发访问量</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<ol start='2'> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>只连接必要的表。</span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;COUNT&nbsp;(SF_Word.wordattr.keywid)&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;SF_Word.wordattr,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>SF_Word.wordlist&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>SF_Word.wordattr.wordid&nbsp;=&nbsp;SF_Word.wordlist.wordid&nbsp;AND</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>userid&nbsp;=&nbsp;522297</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：</span><span style='font-family:Arial;font-size:10.5000pt;'>wordattr</span><span style='font-family:宋体;font-size:10.5000pt;'>表中的关键词是</span><span style='font-family:Arial;font-size:10.5000pt;'>wordlist</span><span style='font-family:宋体;font-size:10.5000pt;'>表的子集，这里的连接是多余的</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【建议写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;COUNT&nbsp;(SF_Word.wordattr.keywid)&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;SF_Word.wordattr</span></p> 
+<p><span style='font-family:'Times New Roman';font-size:12.0000pt;'>WHERE</span><span style='font-family:宋体;font-size:12.0000pt;'>&nbsp;</span><span style='font-family:'Times New Roman';font-size:12.0000pt;'>userid&nbsp;=&nbsp;522297</span></p> 
+<p><span style='font-family:宋体;font-size:12.0000pt;'>&nbsp;</span></p> 
+<ol start='3'> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>只在需要时使用左连接。</span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;COUNT</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>(DISTINCT(username))&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;SF_User.useracct&nbsp;LEFT&nbsp;JOIN&nbsp;SF_User.userfund&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>ON&nbsp;SF_User.useracct.userid&nbsp;=&nbsp;SF_User.userfund.userid</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>userfund</span><span style='font-family:宋体;font-size:10.5000pt;'>是</span><span style='font-family:Arial;font-size:10.5000pt;'>useracct</span><span style='font-family:宋体;font-size:10.5000pt;'>的子集，而计算列<font face='Arial'>username</font><font face='宋体'>只与</font><font face='Arial'>useracct</font><font face='宋体'>有关，这里的左连接是多余的</font></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【建议写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;COUNT</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>(username)&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;SF_User.useracct</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<h1 style='line-height:2.25;text-align:justify;'><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>6&nbsp;</span><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>查询条件</span></h1> 
+<ol> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>如果查询条件中包含多个索引列，则不要对主键使用<font face='Arial'>IN</font><font face='宋体'>条件；查询条件中不包含主键时，不要对索引列使用</font><font face='Arial'>IN</font><font face='宋体'>条件，除非能够确定该索引列不用于查找。可以使用</font><font face='Arial'>FORCE&nbsp;INDEX</font><font face='宋体'>强制指定要使用的索引。</font></span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;COUNT(DISTINCT(username))&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;SF_User.useracct&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;SF_User.useracct.userid&nbsp;IN&nbsp;(354441</span><span style='font-family:宋体;font-size:10.5000pt;'>,&nbsp;0</span><span style='font-family:Arial;font-size:10.5000pt;'>)&nbsp;and&nbsp;ustatid</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>=</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>2;</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【建议写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;COUNT(DISTINCT(username))&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;SF_User.useracct&nbsp;</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>FORCE&nbsp;INDEX(PRIMARY)</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>SF_User.useracct.userid&nbsp;IN&nbsp;(354441</span><span style='font-family:宋体;font-size:10.5000pt;'>,&nbsp;0</span><span style='font-family:Arial;font-size:10.5000pt;'>)&nbsp;and&nbsp;ustatid</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>=</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>2;&nbsp;&nbsp;</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>当条件中包含其他索引时，<font face='Arial'>MySQL</font><font face='宋体'>（</font><font face='Arial'>4.0.16</font><font face='宋体'>）会利用</font><font face='Arial'>IN</font><font face='宋体'>条件以外的索引进行查找。</font></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<ol start='2'> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>如果查询条件中仅包含<font face='Arial'>IN</font><font face='宋体'>条件，则可以对索引列使用</font><font face='Arial'>IN</font><font face='宋体'>，这时</font><font face='Arial'>MySQL</font><font face='宋体'>会利用到</font><font face='Arial'>IN</font><font face='宋体'>条件列的索引。</font></span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>减少<font face='Arial'>AND</font><font face='宋体'>和</font><font face='Arial'>OR</font><font face='宋体'>条件的嵌套层次。</font><font face='Arial'>MySQL</font><font face='宋体'>不会优化嵌套较深</font><font face='Arial'>AND</font><font face='宋体'>和</font><font face='Arial'>OR</font><font face='宋体'>条件。</font></span></li> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>如果<font face='Arial'>WHERE</font><font face='宋体'>条件中包含多个</font><font face='Arial'>OR</font><font face='宋体'>或</font><font face='Arial'>AND</font><font face='宋体'>条件，</font><font face='Arial'>MySQL</font><font face='宋体'>通常会进行表扫描，可以使用</font><font face='Arial'>UNION</font><font face='宋体'>子句代替</font><font face='Arial'>OR</font><font face='宋体'>，或使用</font><font face='Arial'>FORCE&nbsp;INDEX</font><font face='宋体'>强制使用主索引。</font></span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;price&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;SF_Word.wordattr&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;(keywid&nbsp;=&nbsp;25&nbsp;AND&nbsp;status&nbsp;=&nbsp;2)&nbsp;OR&nbsp;userid</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>=</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>35;&nbsp;&nbsp;</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：尽管<font face='Arial'>OR</font><font face='宋体'>条件中的字段都有索引，但还是会进行表扫描。</font></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【建议写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;price&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;SF_Word.wordattr&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;keywid&nbsp;=&nbsp;25&nbsp;AND&nbsp;status&nbsp;=&nbsp;2</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>UNION&nbsp;ALL</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;price&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;SF_Word.wordattr&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;userid</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>=</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>35;</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<h1 style='line-height:2.25;text-align:justify;'><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>7&nbsp;</span><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>DISTINCT</span></h1> 
+<ol> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>唯一约束列不使用<font face='Arial'>DISTINCT</font><font face='宋体'>。</font></span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;COUNT(DISTINCT(username))&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;useracct&nbsp;LEFT&nbsp;JOIN&nbsp;userfund&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>ON&nbsp;useracct.userid&nbsp;=&nbsp;userfund.userid&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;useracct.userid&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>IN(</span><span style='font-family:Arial;font-size:10.5000pt;'>0</span><span style='font-family:宋体;font-size:10.5000pt;'>,&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>348605</span><span style='font-family:宋体;font-size:10.5000pt;'>,&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>34860</span><span style='font-family:宋体;font-size:10.5000pt;'>9)&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>AND&nbsp;ustatid&nbsp;=&nbsp;2</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：<font face='Arial'>username</font><font face='宋体'>列具有唯一性索引，</font><font face='Arial'>DISTINCT</font><font face='宋体'>操作是多余的。</font></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<ol start='5'> 
+ <ol> 
+  <li><span style='font-family:宋体;font-size:10.5000pt;'>对于<font face='Arial'>PHP</font><font face='宋体'>应用，不使用</font><font face='Arial'>DISTINCT</font><font face='宋体'>操作，使用数组的映射关系去除重复。</font></span></li> 
+ </ol> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;DISTINCT(url)&nbsp;AS&nbsp;qurl&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;SF_Word.wordinfo,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>SF_Word.wordattr</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;SF_Word.wordinfo.keywid&nbsp;=&nbsp;SF_Word.wordattr.keywid&nbsp;AND&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SF_Word.wordattr.status&nbsp;=&nbsp;</span><span style='font-family:宋体;font-size:10.5000pt;'>2</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;AND&nbsp;SF_Word.wordattr.userid&nbsp;=&nbsp;407200</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：<font face='Arial'>url</font><font face='宋体'>列的去重可以转向应用程序</font></span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<h1 style='line-height:2.25;text-align:justify;'><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>8&nbsp;</span><span style='font-family:黑体;font-size:14.0000pt;font-weight:normal;'>GROUP&nbsp;BY<font face='黑体'>，</font><font face='Arial'>HAVING</font></span></h1> 
+<ol> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>不包含<font face='Arial'>ORDER&nbsp;BY</font><font face='宋体'>的</font><font face='Arial'>GROUP&nbsp;BY</font><font face='宋体'>语句要添加</font></span><span style='font-family:Arial;font-size:10.5000pt;'>ORDER&nbsp;BY&nbsp;NULL</span><span style='font-family:宋体;font-size:10.5000pt;'>。</span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;cityid,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>SUM(invest)&nbsp;AS&nbsp;ia,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>SUM(refund)&nbsp;AS&nbsp;ra&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;SF_Finan.agtcstrec&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;pmtid&nbsp;NOT&nbsp;IN&nbsp;(26,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>27,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>9)&nbsp;AND&nbsp;userid&nbsp;=&nbsp;344219&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>GROUP&nbsp;BY&nbsp;cityid</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>默认情况下，<font face='Arial'>MySQL</font><font face='宋体'>会对</font><font face='Arial'>GROUP&nbsp;BY</font><font face='宋体'>的列进行排序，如果对该列没有排序的要求可以添加</font></span><span style='font-family:Arial;font-size:10.5000pt;'>ORDER&nbsp;BY&nbsp;NULL</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【建议写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;cityid,&nbsp;SUM(invest)&nbsp;AS&nbsp;ia,&nbsp;SUM(refund)&nbsp;AS&nbsp;ra</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;SF_Finan.agtcstrec</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>WHERE&nbsp;pmtid&nbsp;NOT&nbsp;IN&nbsp;(26,&nbsp;27,&nbsp;9)</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>AND&nbsp;userid&nbsp;=&nbsp;344219</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>GROUP&nbsp;BY&nbsp;cityid</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>ORDER&nbsp;BY&nbsp;NULL</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span></p> 
+<ol start='2'> 
+ <li><span style='font-family:宋体;font-size:10.5000pt;'>将<font face='Arial'>HAVING</font><font face='宋体'>转换为</font><font face='Arial'>WHERE</font><font face='宋体'>条件。</font></span></li> 
+</ol> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【不恰当的写法】：</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>SELECT&nbsp;cityid,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>SUM(invest)&nbsp;AS&nbsp;ia,</span><span style='font-family:宋体;font-size:10.5000pt;'>&nbsp;</span><span style='font-family:Arial;font-size:10.5000pt;'>SUM(refund)&nbsp;AS&nbsp;ra&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>FROM&nbsp;SF_Finan.agtcstrec&nbsp;</span></p> 
+<p><span style='font-family:Arial;font-size:10.5000pt;'>GROUP&nbsp;BY&nbsp;cityid</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>HAVING</span><span style='font-family:Arial;font-size:10.5000pt;'>&nbsp;userid&nbsp;=&nbsp;344219&nbsp;</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>【说明】：</span></p> 
+<p><span style='font-family:宋体;font-size:10.5000pt;'>HAVING<font face='宋体'>的操作位于</font><font face='Arial'>GROUP&nbsp;BY</font><font face='宋体'>之后，所以上面的语句先按照</font><font face='Arial'>cityid</font><font face='宋体'>分组再过虑结果。而</font><font face='Arial'>W	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-286.html">关于PHP程序员解决问题的能力</a>
+				|
+				 <a href="http://onelose.com/post-299.html">PHP中”单例模式“实例讲解</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="294" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-394.html">Win8.1玩《战地4》“DirectXError”无法进入游戏的解决方法</a></li>
+		<li><a href="http://onelose.com/post-294.html">MySQL编程指南</a></li>
+		<li><a href="http://onelose.com/post-373.html">卸载服务</a></li>
+		<li><a href="http://onelose.com/post-147.html">让子弹飞一会儿    漫画搞笑版</a></li>
+		<li><a href="http://onelose.com/post-264.html">Linux查看进程和删除进程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

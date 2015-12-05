@@ -1,0 +1,298 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>facebook工具xhprof的安装与使用-分析php执行性能</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>facebook工具xhprof的安装与使用-分析php执行性能</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-11 7:00 Wednesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <h1 style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Verdana, Arial, Helvetica, sans-serif;font-size:14px;font-style:normal;font-weight:bold;text-align:start;'><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>下载源码包的网址<br>&nbsp;<br>http://pecl.php.net/package/xhprof</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAApMAAADFCAIAAACHPO5pAAAABmJLR…CAJ1/P5/PsbQAAAFbMlgMA4AnJDQCAJyQ3AACekNwAAHjyf8MPZfH4+lt7AAAAAElFTkSuQmCC' data-media-type='image'><br><br>上面说了，每个版本适用的php版本。</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><br>规划(预先搞清楚思路)<br><br><br><br>一、这是一个php扩展的形式。我们安装gd2，curl都是php的扩展形式。只不过有的时候编译的时候就安装进去了。<br>像操作mysql数据库，也是一个mysql.so这样的扩展，安装了扩展，就能调用mysql_query()这些函数。<br>要操作oracle数据库，也有对应的oracle扩展加到php引擎中去。<br><br><br><br>现在要把xhprof扩展加到php中去。<br><br><br>很久没使用phpize安装扩展了。我自己忘得差不多了。于是重新去自己的博客找到以前写的文章复习一下。<br><br>http://www.cnblogs.com/wangtao_20/archive/2011/03/16/1986508.html<br><br><br><br><br>ps：我也在思考，这个东西怎么这么容易忘记。我只知道他的作用。但是完全不记得他的操作步骤。要注意的细节。<br><br>看我得想办法以通俗的方式来理解记住它。<br><br><br><br><br><br>二、php.ini需要进行配置的项<br><br><br>[xhprof]<br>extension=xhprof.so;<br>; directory used by default implementation of the iXHProfRuns<br>; interface (namely, the XHProfRuns_Default class) for storing<br>; XHProf runs.<br>;<br>;xhprof.output_dir=&lt;directory_for_storing_xhprof_runs&gt;<br>;储存 XHProf 运行数据的默认目录<br>xhprof.output_dir=/tmp/xhprof<br><br><br><br>三、有了这个扩展后，就能在自己的php代码中调用这个扩展内置的函数来做性能监控了，像下面这样子<br><br><br>xhprof_enable(XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY);<br><br>................这里是要被监控的代码块<br><br><br>$data = xhprof_disable();<br><br>include_once 'xhprof_lib/utils/xhprof_lib.php'; &nbsp;<br>include_once 'xhprof_lib/utils/xhprof_runs.php'; &nbsp;<br>$objXhprofRun = new XHProfRuns_Default();//数据会保存在php.ini中xhprof.output_dir设置的目录去中&nbsp;<br>$run_id = $objXhprofRun-&gt;save_run($data, 'test');<br><br><br>=====================================================</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>几个扩展函数如下</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjMAAACkCAIAAADtzDhHAAAABmJLR…kJAJALmQkAkAuZCQCQC5kJAJALmQkAkAuZCQCQC5kJAJDLf5X7R5leOK9kAAAAAElFTkSuQmCC' data-media-type='image'></p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><br><br><br>步骤实施<br><br><br>1、先找到我服务器上php的安装目录，phpize一般都是在安装目录中，如下：<br><br>/usr/local/php/bin/phpize<br><br>2、找出php-config在哪个目录(下面会用到)，我的服务器在：<br><br>/usr/local/php/bin/php-config<br><br>目的：在下面进行编译的时候，会用到这个文件<br><br>./configure --with-php-config=/usr/local/php/bin/php-config<br><br><br><br>3、找到我服务器上php扩展在哪个目录，不确定的话，我觉得去php.ini中也能看到，如下<br><br><br>extension_dir = '/usr/local/php/lib/php/extensions/no-debug-non-zts-20060613/' 这个路径感觉有点长。不用去改了php.ini中的设置，目前我觉得没必要(商业与时间成本,这部分还不是制约因素)。按原来的继续放扩展。<br><br><br><br><br>现在知道扩展目录为：/usr/local/php/lib/php/extensions/no-debug-non-zts-20060613/<br><br>也就是说，我要把xhprof的源码包解压到这个目录下去(解压后会生成一个新的文件夹)。<br><br><br>那我就要去这个目录下运行phpize(这样方便在这个目录下面生成configure文件),<br><br>phpize的特点：在a目录下运行phpize，就会在a目录下生成configure。<br><br><br><br><br><br><br><br><br><br><br><br>得到上面路径，shell命令实践<br><br><br><br>cd&nbsp; /usr/local/php/lib/php/extensions/no-debug-non-zts-20060613/<br><br>解压下载到的xhprof压缩包(我不是通过wget下载的，我是把这个压缩直接通过ftp上传到no-debug-non-zts-20060613目录中去)。<br><br><br><br>tar zxf xhprof-0.9.3.tgz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #解压后，里面有个extension文件夹，进入里面去(目的是进入里面去运行phpize)，解压后的目录结构如下</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcwAAADFCAIAAABWwVWtAAAABmJLR…vArwEZ2arFW9u3iwIxAH7xqz8BkywAAAAAAAAAAAAAYCn/AGeKAsqX8vDCAAAAAElFTkSuQmCC' data-media-type='image'><br><br><br>cd xhprof-0.9.3/extension/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #切换到这个扩展的源码目录去<br><br></p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>在这个目录下面运行phpize，就会在extension目录下生成一个configure文件(这是phpize的机制)</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><br>/usr/local/php/bin/phpize<br>&nbsp;&nbsp;<br>去看一下扩展目录，会发现在extension目录生成了一个configure文件。运行它</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA5gAAAIyCAIAAAAhWvLWAAAABmJLR…wAANDtjESWBKIP/QYAAL5YfWUvAAAA4IFIZAEAAHCk/wdIFrg+l2I6nAAAAABJRU5ErkJggg==' width='700' height='427' data-media-type='image'></p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><br>======================================</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><br>./configure --with-php-config=/usr/local/php/bin/php-config #用到了前面找到的php-config文件。<br><br>make &amp;&amp; make install<br><br>make test<br>======================================<br><br><br><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvcAAAGKCAIAAAAHSfluAAAABmJLR…Vrip/Ulo5njPdqmrQ+Mi5T+XZGfunqBeR8dtnDfQcAgP8HPjqJe/i39vsAAAAASUVORK5CYII=' width='617' height='320' data-media-type='image'><br><br>运行成功后，会提示生成的xhprof.so文件在哪个位置，提示信息：<br><br>Libraries have been installed in:<br>&nbsp;&nbsp; /usr/local/php/lib/php/extensions/no-debug-non-zts-20060613/xhprof-0.9.3/extension/modules<br><br><br>这个目录下已经存在一个文件：<br>/usr/local/php/lib/php/extensions/no-debug-non-zts-20060613/xhprof.so<br><br></p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><br><br>刚才生成了xhprof.so这个模块文件，现在要在php.ini中加载刚才生成xhprof.so模块才能生效：<br><br>[xhprof]<br>extension=xhprof.so;<br>; directory used by default implementation of the iXHProfRuns<br>; interface (namely, the XHProfRuns_Default class) for storing<br>; XHProf runs.<br>;<br>;xhprof.output_dir=&lt;directory_for_storing_xhprof_runs&gt;<br>xhprof.output_dir=/tmp/xhprof<br><br><br><br><br><br><br>平滑重新加载php.ini文件：/usr/local/php/sbin/php-fpm reload<br>提示：<br><br>Reload service php-fpm&nbsp; done<br><br>说明成功。<br><br>现在去phpinfo中看xhprof扩展是否加载成功了<br><br><br><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyYAAAFDCAIAAABA842lAAAABmJLR…kAAMJJLgCAcJILACCc5AIACCe5AADCSS4AgHCSCwAg3P8BXqDQtShitSUAAAAASUVORK5CYII=' data-media-type='image'><br><br><br><br>安装作图工具(选填,可以后续再安装)<br><br>yum install -y graphviz<br><br><br><br><br><br></p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>================================================</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>工具的使用实践</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>================================================</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>index.php中的代码：</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&lt;?php<br>error_reporting(-1);</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><br><strong>xhprof_enable(XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY);</strong><br>&nbsp;<br>$begin_time = microtime_float();<br><br><br><br><br>///////////////统计执行速度代码<br>$end_time = microtime_float();<br><br>$exec_time&nbsp; = $end_time-$begin_time;<br><br>//@save_stat($exec_time);<br><br>for($i=0;$i&lt;10;$i++){<br><br><br>for($j=0;$j&lt;10;$j++){<br><br>}<br><br>}<br><br><br><br><strong>$data = xhprof_disable();</strong><br><br><strong>include_once 'xhprof_lib/utils/xhprof_lib.php';//</strong><span style='color:rgb(255, 0, 0);'>从源码包中拷贝</span><span style='color:rgb(255, 0, 0);'>xhprof_lib</span><span style='color:rgb(255, 0, 0);'>这个文件夹过来直接可以调用</span><br><strong>include_once 'xhprof_lib/utils/xhprof_runs.php'; &nbsp;</strong><br><strong>$objXhprofRun = new XHProfRuns_Default();</strong>//数据会保存在php.ini中xhprof.output_dir设置的目录去中&nbsp;<br><strong>$run_id = $objXhprofRun-&gt;save_run($data, 'test');</strong><br>//第二个参数是定义文件名称。名称如果为'xhprof',则在xhprof.output_dir设置的目录生成的文件：522ab85f40229.xhprof.xhprof。<br>//格式为：'id标识.组名称.xhprof',id标识就是$run_id得到的结果。</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>//<strong>id标识是每次运行的时候就生成一个新的标识，也就是生成一个新的文件，记录每次运行的数据</strong><br><br><br><br><br><br>var_dump($run_id);<br><br>echo 'http://www.xxxx.com/xhprof_html/index.php?run={$run_id}&amp;source=test\n';//source的值必须是save_run中指定的名称。这个其实就是根据编号和名称才能定位到对应的文件'522ab85f40229.xhprof.xhprof'</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>//将这个地址输出来，是为了直接可以去查看分析结果。<br><br><br><br><br>function save_stat($time)<br>{<br>&nbsp;&nbsp; &nbsp;static $call_count=1;<br>&nbsp;&nbsp; &nbsp;$call_limit = 10;<br>&nbsp;&nbsp; &nbsp;if(!$time) return ;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $date = date('Y-m-d');//暂时按照天来生成文件。方便查阅<br>&nbsp;&nbsp; &nbsp;$exec_stat_file = './exec_stat'.DIRECTORY_SEPARATOR.'exec_stat_file-'.$date.'.txt';<br>&nbsp;&nbsp; &nbsp;$fp = fopen($exec_stat_file,'ab');<br>&nbsp;&nbsp; &nbsp;if(flock($fp,LOCK_EX))<br>&nbsp;&nbsp; &nbsp;{<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$s = 'access:'.date('Y-m-d H:i:s').',execute time:'.$time.'s,request_url:http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'||'.PHP_EOL;<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; fwrite($fp,$s);<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; flock($fp,LOCK_UN);<br>&nbsp;&nbsp; &nbsp;}else{<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;usleep(1000);<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;if($call_count&lt;$call_limit)<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;{<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$call_count++;<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; save_stat($time);<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br>&nbsp;&nbsp; &nbsp;}<br><br>&nbsp;&nbsp; &nbsp;@fcolse($fp);<br>&nbsp;&nbsp; &nbsp;//var_dump($fp);<br><br>}<br>function microtime_float()<br>{<br>&nbsp;&nbsp;&nbsp; list($usec, $sec) = explode(' ', microtime());<br>&nbsp;&nbsp;&nbsp; return ((float)$usec + (float)$sec);<br>}<br>?&gt;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>加粗的黑体，就是分析用到的代码。</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>其中用到了源码包中的xhprof_lib中的代码，代码中'XHProfRuns_Default'这个类就是里面的。</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABDMAAAD1CAIAAADCqylWAAAABmJLR…CSR2YCAAAAIHlkJgAAAACSR2YCAAAAIHlkJgAAAACS9/8BUQFaNlI52gMAAAAASUVORK5CYII=' width='934' height='185' data-media-type='image'></p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>生成了分析结果后，现在可以去使用源码包中提供的web版的工具查看了。</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>xhprof_html这个文件夹随便放到哪里，只要放到能够通过web访问的目录下即可，不过这个里面会用到xhprof_lib中的类，所以还是一起复制过去，跟源码包中保持一样的结构才好。xhprof_html与xhprof_lib要保持平行</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>我这里，这个工具的访问方式是：http://www.xxxx.com/xhprof_html/index.php?run=xxx&amp;source=xxx\n</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>source的值必须是save_run中指定的名称。这个其实就是根据编号和名称才能定位到对应的文件'522ab85f40229.xhprof.xhprof'</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>访问看到的结果如下</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABPIAAAIPCAIAAAB2QGefAAAABmJLR…lKGpTzX5f0SFU9ewYYFb2qtdKtF+i7GbpMGgZvi6ptFf4/Kj+kWR6Ca4QAAAAASUVORK5CYII=' width='906' height='377' data-media-type='image'></p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAr0AAAI2CAIAAADSMaeUAAAABmJLR…IFC/8bUHzIxLBgwYIFCxYs/D1h+SksWLBgwYIFC9eL/wf4jU8GygE4+wAAAABJRU5ErkJggg==' width='632' height='511' data-media-type='image'></p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>图中，红色的表示最耗费性能的，黄色的其次。</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>只了解这么多了。具体的分析结果怎么看，在文件夹xhprof_html中有个docs目录，里面是说明文档。说了一些专用术语的定义</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>注意点：在php.ini中xhprof.output_dir设置的目录，<strong>要自己手动去创建。这个工具不会自动去创建。没有该文件夹。就不会生成。</strong>另外，在linux下还要保证权限设置好，我设置的属主是www就可以用了。</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;单位：1s(秒)=1000ms(毫秒)</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;官方解释</p> 
+  <ol style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'> 
+   <li><strong>Inclusive Time (or Subtree Time)</strong>: Includes time spent in the function as well as in descendant functions called from a given function.</li> 
+   <li><strong>Exclusive Time/Self Time</strong>: Measures time spent in the function itself. Does not include time in descendant functions.</li> 
+   <li><strong>Wall Time</strong>: a.k.a. Elapsed time or wall clock time.</li> 
+   <li><strong>CPU Time</strong>: CPU time in user space + CPU time in kernel space</li> 
+  </ol><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'><strong>Exclusive Time</strong>表示函数本身的执行时间。这个时间并不包含里面调用其他函数的耗时(其实就是去掉里面其他函数的耗时,因为函数里面调用到的函数也会进行单独统计)。</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>而<strong>Inclusive Time</strong>则是包括了里面调用的子函数时间(descendant functions)</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>所以，我的理解是<strong>Exclusive Time</strong>&lt;=<strong>Inclusive Time</strong></p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p><p style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-size: 13.3333330154419px; font-weight: normal;'>&nbsp;</p></h1> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-278.html">MySql中explain的时候出现usingfilesort，优化之</a>
+				|
+				 <a href="http://onelose.com/post-290.html">Linuxtcpdump命令详解</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="302" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-418.html">HTML5中使用js控制audio标签的方法</a></li>
+		<li><a href="http://onelose.com/post-268.html">ubuntumemcached安装与配置</a></li>
+		<li><a href="http://onelose.com/post-221.html">TortoiseSVN文件夹及文件图标不显示解决方法</a></li>
+		<li><a href="http://onelose.com/post-394.html">Win8.1玩《战地4》“DirectXError”无法进入游戏的解决方法</a></li>
+		<li><a href="http://onelose.com/post-178.html">加水印imagecopymerge</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

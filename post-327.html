@@ -1,0 +1,649 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Larbin的安装与配置</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>Larbin的安装与配置</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-16 7:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <span style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'>&nbsp;</span> 
+ <font style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'>由于以前没有接触过网络爬虫，对网络爬虫仅仅停留在听过，具体怎么样不天清楚。正好，需要完成某作业，我想这样可以了解了解这方面的知识了。</font> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><br></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp; &nbsp;从网上看了很多网络爬虫，最后，选择了Larbin，因为这是用C++写的，对于源码可以相对比较容易的看懂。</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp; &nbsp;</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp; &nbsp;现在，把安装过程和相关的配置记录下来，省的以后用的时候还得查找资料。</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <br> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><b>一、Larbin的安装</b></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><br></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp; &nbsp;从官网上获取源码包：larbin.2.6.3。</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp; &nbsp;</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp; &nbsp;现在开始正式安装。</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp; &nbsp;1、 ./configure</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp; &nbsp;2、 gmake debug（debug：调试安装，当然，也可以不使用该选项）</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><br></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp; &nbsp;但是，安装过程中出现了错误，如下所示。</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><br></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp; &nbsp;1&gt; 错误1</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <div style='background-color: rgb(255, 255, 255); font-family: Consolas, monospace; font-size: 12px;'> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);'>parse<span style='color:rgb(0, 0, 204);'>.</span>c<span style='color:rgb(0, 0, 204);'>:</span>115<span style='color:rgb(0, 0, 204);'>:</span>&nbsp;<span style='color:rgb(0, 0, 255);'>error</span><span style='color:rgb(0, 0, 204);'>:</span>&nbsp;conflicting types&nbsp;<span style='color:rgb(0, 0, 255);'>for</span>&nbsp;<span style='color:rgb(0, 0, 204);'>'</span>adns__parse_domain<span style='color:rgb(0, 0, 204);'>'</span><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>internal<span style='color:rgb(0, 0, 204);'>.</span>h<span style='color:rgb(0, 0, 204);'>:</span>571<span style='color:rgb(0, 0, 204);'>:</span>&nbsp;<span style='color:rgb(0, 0, 255);'>error</span><span style='color:rgb(0, 0, 204);'>:</span>&nbsp;previous declaration of&nbsp;<span style='color:rgb(0, 0, 204);'>'</span>adns__parse_domain<span style='color:rgb(0, 0, 204);'>'</span>&nbsp;was here<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>parse<span style='color:rgb(0, 0, 204);'>.</span>c<span style='color:rgb(0, 0, 204);'>:</span>115<span style='color:rgb(0, 0, 204);'>:</span>&nbsp;<span style='color:rgb(0, 0, 255);'>error</span><span style='color:rgb(0, 0, 204);'>:</span>&nbsp;conflicting types&nbsp;<span style='color:rgb(0, 0, 255);'>for</span>&nbsp;<span style='color:rgb(0, 0, 204);'>'</span>adns__parse_domain<span style='color:rgb(0, 0, 204);'>'</span><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>internal<span style='color:rgb(0, 0, 204);'>.</span>h<span style='color:rgb(0, 0, 204);'>:</span>571<span style='color:rgb(0, 0, 204);'>:</span>&nbsp;<span style='color:rgb(0, 0, 255);'>error</span><span style='color:rgb(0, 0, 204);'>:</span>&nbsp;previous declaration of&nbsp;<span style='color:rgb(0, 0, 204);'>'</span>adns__parse_domain<span style='color:rgb(0, 0, 204);'>'</span>&nbsp;was here<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>gmake<span style='color:rgb(0, 0, 204);'>[</span>1<span style='color:rgb(0, 0, 204);'>]</span><span style='color:rgb(0, 0, 204);'>:</span>&nbsp;<span style='color:rgb(0, 0, 204);'>*</span><span style='color:rgb(0, 0, 204);'>*</span><span style='color:rgb(0, 0, 204);'>*</span>&nbsp;<span style='color:rgb(0, 0, 204);'>[</span>parse<span style='color:rgb(0, 0, 204);'>.</span>o<span style='color:rgb(0, 0, 204);'>]</span>&nbsp;错误 1<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>gmake<span style='color:rgb(0, 0, 204);'>[</span>1<span style='color:rgb(0, 0, 204);'>]</span><span style='color:rgb(0, 0, 204);'>:</span>&nbsp;Leaving directory `<span style='color:rgb(0, 0, 204);'>/</span>home<span style='color:rgb(0, 0, 204);'>/</span>leo<span style='color:rgb(0, 0, 204);'>/</span>leo<span style='color:rgb(0, 0, 204);'>/</span>larbin<span style='color:rgb(0, 0, 204);'>-</span>2<span style='color:rgb(0, 0, 204);'>.</span>6<span style='color:rgb(0, 0, 204);'>.</span>3<span style='color:rgb(0, 0, 204);'>/</span>adns<span style='color:rgb(0, 0, 204);'>'</span><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>make<span style='color:rgb(0, 0, 204);'>:</span>&nbsp;<span style='color:rgb(0, 0, 204);'>*</span><span style='color:rgb(0, 0, 204);'>*</span><span style='color:rgb(0, 0, 204);'>*</span>&nbsp;<span style='color:rgb(0, 0, 204);'>[</span>all<span style='color:rgb(0, 0, 204);'>]</span>&nbsp;错误 2</li> 
+   </ol> 
+  </div>&nbsp; &nbsp; 
+  <font size='3'>&nbsp;解决方案：</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp; &nbsp; 函数原型和定义不一致这个好改：</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp; &nbsp; 打开./adns/internal.h文件，把568－571行直接注释掉就行了。</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <br> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'>
+   &nbsp; &nbsp; 
+  <font size='3'>2&gt; 错误2&nbsp;</font>&nbsp; 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Consolas, monospace; font-size: 12px;'> 
+  <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+   <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>-</span>bash<span style='color:rgb(0, 0, 204);'>:</span><span style='color:rgb(0, 0, 204);'>.</span><span style='color:rgb(0, 0, 204);'>/</span>configure<span style='color:rgb(0, 0, 204);'>:</span>command&nbsp;<span style='color:rgb(0, 0, 255);'>not</span>&nbsp;found</li> 
+  </ol> 
+ </div> 
+ <span style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'>&nbsp; &nbsp;&nbsp;</span> 
+ <font style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'>解决方案：</font> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp; &nbsp; 我上网查了查，执行了命令：chmod +x configure，然后就可以了。不晓得为什么。</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><br></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><b>二、Larbin的配置说明</b></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><br></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><b>1、larbin.conf文件</b></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <br> 
+  <div style='background-color: rgb(255, 255, 255); font-family: Consolas, monospace; font-size: 12px;'> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);'>###############################################<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//客户端标记，当对其他网站抓取时，被抓取的网站知道是什么抓取的</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'><br></font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>UserAgent larbin_2<span style='color:rgb(0, 0, 204);'>.</span>6<span style='color:rgb(0, 0, 204);'>.</span>3<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>############################################<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'># What are the inputs&nbsp;<span style='color:rgb(0, 0, 255);'>and</span>&nbsp;ouputs of larbin<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'># port&nbsp;<span style='color:rgb(0, 0, 255);'>on</span>&nbsp;which&nbsp;<span style='color:rgb(0, 0, 255);'>is</span>&nbsp;launched the http statistic webserver<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#&nbsp;<span style='color:rgb(0, 0, 255);'>if</span>&nbsp;unset&nbsp;<span style='color:rgb(0, 0, 255);'>or</span>&nbsp;<span style='color:rgb(0, 0, 255);'>set</span>&nbsp;<span style='color:rgb(0, 0, 255);'>to</span>&nbsp;0<span style='color:rgb(0, 0, 204);'>,</span>&nbsp;no webserver&nbsp;<span style='color:rgb(0, 0, 255);'>is</span>&nbsp;launched<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//用于运行的http web服务器的端口号（larbin运行时访问http://localhost:8081/，设置为http_port 8081）.如果将端口设为0，则不会启动web服务器。通过这个可以查看爬行结果。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'><br></font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>httpPort 8081<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'># port&nbsp;<span style='color:rgb(0, 0, 255);'>on</span>&nbsp;which you can submit urls&nbsp;<span style='color:rgb(0, 0, 255);'>to</span>&nbsp;fetch<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'># no input&nbsp;<span style='color:rgb(0, 0, 255);'>is</span>&nbsp;possible&nbsp;<span style='color:rgb(0, 0, 255);'>if</span>&nbsp;you comment this line&nbsp;<span style='color:rgb(0, 0, 255);'>or</span>&nbsp;use port 0<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><br></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//你要爬取url的端口。如果注释掉或设为0，则可能没有任何输入。如果通过手动或者程序提交爬取的//urls，则必须练就到计算机的TCP端口1976,即设为:inputPort 1976,可以添加爬行的url。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'><br></font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#inputPort 1976<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>############################################<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'># parameters&nbsp;<span style='color:rgb(0, 0, 255);'>to</span>&nbsp;adapt depending&nbsp;<span style='color:rgb(0, 0, 255);'>on</span>&nbsp;your network<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'># Number of connexions&nbsp;<span style='color:rgb(0, 0, 255);'>in</span>&nbsp;parallel&nbsp;<span style='color:rgb(0, 0, 204);'>(</span><span style='color:rgb(0, 0, 255);'>to</span>&nbsp;adapt depending of your network speed<span style='color:rgb(0, 0, 204);'>)</span><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'><b>//并行爬取网页的数量，根据自己环境的网速调解，如果超时太多，则要降低这个并行数量</b></span></li> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'><b><br></b></span></li> 
+    <li style='background-color:rgb(255, 255, 255);'>pagesConnexions 100<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'># Number of dns calls&nbsp;<span style='color:rgb(0, 0, 255);'>in</span>&nbsp;parallel<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//并行DNS域名解析的数量。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'><br></font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>dnsConnexions 5<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'># How deep&nbsp;<span style='color:rgb(0, 0, 255);'>do</span>&nbsp;you want&nbsp;<span style='color:rgb(0, 0, 255);'>to</span>&nbsp;go&nbsp;<span style='color:rgb(0, 0, 255);'>in</span>&nbsp;a site<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//对一个站点的爬取的深度</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'><br></font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>depthInSite 5<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#&nbsp;<span style='color:rgb(0, 0, 255);'>do</span>&nbsp;you want&nbsp;<span style='color:rgb(0, 0, 255);'>to</span>&nbsp;follow external links<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//不允许访问外部链接。如果设置则只可访问同一主机的连接</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#noExternalLinks<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#&nbsp;<span style='color:rgb(255, 0, 0);'>time</span>&nbsp;between 2 calls&nbsp;<span style='color:rgb(0, 0, 255);'>on</span>&nbsp;the same server&nbsp;<span style='color:rgb(0, 0, 204);'>(</span><span style='color:rgb(0, 0, 255);'>in</span>&nbsp;sec<span style='color:rgb(0, 0, 204);'>)</span>&nbsp;<span style='color:rgb(0, 0, 204);'>:</span>&nbsp;NEVER less than 30<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//访问同一服务器的时间间隔。不可低于30s，建议60s</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>waitDuration 60<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'># Make requests through a proxy&nbsp;<span style='color:rgb(0, 0, 204);'>(</span>use with care<span style='color:rgb(0, 0, 204);'>)</span><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><font color='#0000cc'><b>//是否用代理连接，如果用，则要设置、可以不用尽量不要用，这个选项要谨慎</b></font></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#proxy www 8080<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>##############################################<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#&nbsp;<span style='color:rgb(255, 0, 0);'>now</span><span style='color:rgb(0, 0, 204);'>,</span>&nbsp;<span style='color:rgb(0, 0, 255);'>let</span><span style='color:rgb(0, 0, 204);'>'</span>s customize the search<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'># first page&nbsp;<span style='color:rgb(0, 0, 255);'>to</span>&nbsp;fetch&nbsp;<span style='color:rgb(0, 0, 204);'>(</span>you can specify several urls<span style='color:rgb(0, 0, 204);'>)</span><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'><b>//开始爬取的URL</b></span></li> 
+    <li style='background-color:rgb(255, 255, 255);'>startUrl http<span style='color:rgb(0, 0, 204);'>:</span><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>/</span>slashdot<span style='color:rgb(0, 0, 204);'>.</span>org<span style='color:rgb(0, 0, 204);'>/</span><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#&nbsp;<span style='color:rgb(0, 0, 255);'>Do</span>&nbsp;you want&nbsp;<span style='color:rgb(0, 0, 255);'>to</span>&nbsp;limit your search&nbsp;<span style='color:rgb(0, 0, 255);'>to</span>&nbsp;a specific domain&nbsp;<span style='color:rgb(0, 0, 204);'>?</span><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#&nbsp;<span style='color:rgb(0, 0, 255);'>if</span>&nbsp;yes<span style='color:rgb(0, 0, 204);'>,</span>&nbsp;uncomment the following line<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//这个选项设置了，则不可以爬行指定的特殊域名</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#limitToDomain&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>fr&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>dk&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>uk&nbsp;<span style='color:rgb(0, 0, 255);'>end</span><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'># What are the extensions you surely don<span style='color:rgb(0, 0, 204);'>'</span>t want<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'># never forbid&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>html<span style='color:rgb(0, 0, 204);'>,</span>&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>htm&nbsp;<span style='color:rgb(0, 0, 255);'>and</span>&nbsp;so&nbsp;<span style='color:rgb(0, 0, 255);'>on</span>&nbsp;<span style='color:rgb(0, 0, 204);'>:</span>&nbsp;larbin needs them<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//不想要的扩展名文件。一定不要禁止.html、.htm.larbin爬取的就是它们。禁止也是无效的</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>forbiddenExtensions<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>.</span>tar&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>gz&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>tgz&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>zip&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>Z&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>rpm&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>deb<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>.</span>ps&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>dvi&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>pdf<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>.</span>png&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>jpg&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>jpeg&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>bmp&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>smi&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>tiff&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>gif<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>.</span>mov&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>avi&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>mpeg&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>mpg&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>mp3&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>qt&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>wav&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>ram&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>rm<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>.</span>jar&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>java&nbsp;<span style='color:rgb(0, 0, 204);'>.</span><span style='color:rgb(0, 0, 255);'>class</span>&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>diff<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>.</span>doc&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>xls&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>ppt&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>mdb&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>rtf&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>exe&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>pps&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>so&nbsp;<span style='color:rgb(0, 0, 204);'>.</span>psd<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 255);'>end</span></li> 
+   </ol> 
+  </div> 
+  <br> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><b>2、options.h</b></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><b><br></b></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><b>2.1 输出模式</b></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <br> 
+  <div style='background-color: rgb(255, 255, 255); font-family: Consolas, monospace; font-size: 12px;'> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>/</span>&nbsp;<span style='color:rgb(0, 0, 255);'>Select</span>&nbsp;the output module you want&nbsp;<span style='color:rgb(0, 0, 255);'>to</span>&nbsp;use<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><font color='#0000f0'><b>//默认模式。什么也不输出，不要选择这个</b></font></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define DEFAULT_OUTPUT&nbsp;<span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>/</span>&nbsp;<span style='color:rgb(0, 0, 255);'>do</span>&nbsp;<span style='color:rgb(0, 0, 255);'>nothing</span><span style='color:rgb(0, 0, 204);'>.</span><span style='color:rgb(0, 0, 204);'>.</span><span style='color:rgb(0, 0, 204);'>.</span><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><font color='#0000cc'><b>//简单保存，存在save/dxxxxx/fyyyyy文件中，每个目录下2000个文件</b></font></li> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>#</span>define SIMPLE_SAVE&nbsp;<span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>/</span>&nbsp;save&nbsp;<span style='color:rgb(0, 0, 255);'>in</span>&nbsp;files named save<span style='color:rgb(0, 0, 204);'>/</span>dxxxxxx<span style='color:rgb(0, 0, 204);'>/</span>fyyyyyy<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b>//镜像方式存储。按网页的层次存储，可以作为网页的字典。</b></li> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>#</span>define MIRROR_SAVE&nbsp;<span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>/</span>&nbsp;save&nbsp;<span style='color:rgb(0, 0, 255);'>in</span>&nbsp;files&nbsp;<span style='color:rgb(0, 0, 204);'>(</span>respect sites hierarchy<span style='color:rgb(0, 0, 204);'>)</span><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'><b>//状态输出。在网页上进行状态输出，可以查看http://localhost:8081/output.html查看结果</b></span></li> 
+    <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>#</span>define STATS_OUTPUT&nbsp;<span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>/</span>&nbsp;<span style='color:rgb(0, 0, 255);'>do</span>&nbsp;some stats&nbsp;<span style='color:rgb(0, 0, 255);'>on</span>&nbsp;pages</li> 
+   </ol> 
+  </div>&nbsp; &nbsp;&nbsp; 
+  <font size='3'><b>这些模式被定制在src/type.h中，可以在src/interf/useroutput.cc中定制自己的输出模式。</b></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp; &nbsp;这个文件中还有很多相关配置，更改后，需要重新编译。</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'>&nbsp;&nbsp;</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><b>2.2 特定查询</b></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <br> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Consolas, monospace; font-size: 12px;'> 
+  <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+   <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>/</span>&nbsp;<span style='color:rgb(0, 0, 255);'>Set</span>&nbsp;up a specific search</li> 
+   <li style='background-color:rgb(255, 255, 255);'>//设置特定的查询</li> 
+   <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>#</span>define SPECIFICSEARCH<br></li> 
+   <li style='background-color:rgb(255, 255, 255);'>//内容类型</li> 
+   <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>#</span>define contentTypes&nbsp;<span style='color:rgb(0, 0, 204);'>(</span><span style='color:rgb(0, 0, 204);'>(</span>char&nbsp;<span style='color:rgb(0, 0, 204);'>*</span><span style='color:rgb(0, 0, 204);'>[</span><span style='color:rgb(0, 0, 204);'>]</span><span style='color:rgb(0, 0, 204);'>)</span>&nbsp;<span style='color:rgb(0, 0, 204);'>{</span>&nbsp;<span style='color:rgb(255, 0, 255);'>'audio/mpeg'</span><span style='color:rgb(0, 0, 204);'>,</span>&nbsp;<span style='color:rgb(0, 0, 255);'>NULL</span>&nbsp;<span style='color:rgb(0, 0, 204);'>}</span><span style='color:rgb(0, 0, 204);'>)</span><br></li> 
+   <li style='background-color:rgb(255, 255, 255);'><font color='#0000cc'>//文件扩展。用于查询速度，不涉及类型，类型由上一个决定</font></li> 
+   <li style='background-color:rgb(255, 255, 255);'><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>/</span><span style='color:rgb(0, 0, 204);'>#</span>define privilegedExts&nbsp;<span style='color:rgb(0, 0, 204);'>(</span><span style='color:rgb(0, 0, 204);'>(</span>char&nbsp;<span style='color:rgb(0, 0, 204);'>*</span><span style='color:rgb(0, 0, 204);'>[</span><span style='color:rgb(0, 0, 204);'>]</span><span style='color:rgb(0, 0, 204);'>)</span>&nbsp;<span style='color:rgb(0, 0, 204);'>{</span>&nbsp;<span style='color:rgb(255, 0, 255);'>'.mp3'</span><span style='color:rgb(0, 0, 204);'>,</span>&nbsp;<span style='color:rgb(0, 0, 255);'>NULL</span>&nbsp;<span style='color:rgb(0, 0, 204);'>}</span><span style='color:rgb(0, 0, 204);'>)</span></li> 
+  </ol> 
+ </div> 
+ <b style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'><font size='3'><br></font></b> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <b><font size='3'>2.3 设置完要设置特定文件的管理</font></b> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <br> 
+  <div style='background-color: rgb(255, 255, 255); font-family: Consolas, monospace; font-size: 12px;'> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);'>#define DEFAULT_SPECIFIC //<font color='#0000f0'><b>默认管理方式。 作为html有限制除了被解析。</b></font><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>// 存储特定文件。 允许将文件存储在硬盘上 文件可以很大在src/types.h 可以具体设置。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define SAVE_SPECIFIC&nbsp;<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//动态存储模式。对于较大的文件动态的分配buffer。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define DYNAMIC_SPECIFIC&nbsp;</li> 
+   </ol> 
+  </div>&nbsp;&nbsp; 
+  <font size='3'>&nbsp; &nbsp;可以通过'src/fetch/specbuf.cc' and 'src/fetch/specbuf.h' 定义特定文件的管理方式。</font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><br></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <font size='3'><b>2.4 你要爬虫做什么</b></font> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <br> 
+  <div style='background-color: rgb(255, 255, 255); font-family: Consolas, monospace; font-size: 12px;'> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//不继续子链接。不设置此项则html页不被解析链接也不会爬子链接。通过输入系统添加url时很有用</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define FOLLOW_LINKS<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'><br></font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//每个网页中包含的子链接的列表。在'useroutput.cc'&nbsp;用page-&gt;getLinks()&nbsp;访问此信息。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define LINKS_INFO&nbsp;<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//url标签。设置此项url有一个int(默认为0)。使用输入系统统时应该给定一个int。可以通过其获取u//rl。可以重定向。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define URL_TAGS<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//不允许重复。如果设置则遇到相同网页但已遇到过时则不管。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define NO_DUP<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//结束退出。没有url可爬取时是否退出。设置则退出。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define EXIT_AT_END&nbsp;<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//抓取网页中的图片。设置了此项则要更新larbin.conf中禁止项。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define IMAGES<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//抓取任何类型网页不管其的类型。设置要更新larbin.conf。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define ANYTYPE<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//要larbin管理cookies。只简单实现但很有用。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define COOKIES</li> 
+   </ol> 
+  </div> 
+  <br> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <b><font size='3'>2.5 其他选项说明</font></b> 
+  <br> 
+  <br> 
+  <div style='background-color: rgb(255, 255, 255); font-family: Consolas, monospace; font-size: 12px;'> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);'>#define CGILEVEL 1 &nbsp;<span style='color:rgb(0, 0, 0);'> </span>&nbsp; &nbsp; &nbsp;<b><font color='#0000f0'>//定于选项及其参数。用于对爬行的url的限制。</font></b><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define MAXBANDWIDTH 200000 &nbsp;<font color='#0000f0'><b>//larbin使用的带宽大小。不设置则不限带宽。</b></font><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define DEPTHBYSITE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<b><font color='#0000f0'>//当url链接到其他站点时新rul的深度是已被初始化的。</font></b></li> 
+   </ol> 
+  </div> 
+  <br> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <b><font size='3'>2.6 效率和特征</font></b> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <br> 
+  <div style='background-color: rgb(255, 255, 255); font-family: Consolas, monospace; font-size: 12px;'> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//是否为输入制定一个专用线程。当你在useroutput.cc定义自己的代码时必须设置此项。</font></b><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define THREAD_OUTPUT</li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><b><font color='#0000f0'>//重启位置记录表。设置此项时可以从上次终止处继续爬取。使用-scratch 选项从上次结束处重启。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define RELOAD</li> 
+   </ol> 
+  </div> 
+  <br> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <b><font size='3'>2.7 Larbin怎么工作</font></b> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <br> 
+  <div style='background-color: rgb(255, 255, 255); font-family: Consolas, monospace; font-size: 12px;'> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);'>#define NOWEBSERVER &nbsp;&nbsp;<span style='color:rgb(0, 0, 0);'> </span><b><font color='#0000f0'>//不启动服务器。不运行线程时很有用</font></b><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define GRAPH<span style='color:rgb(0, 0, 0);'> </span><b><font color='#0000f0'>//是否在状态也使用柱状图。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define NDEBUG<span style='color:rgb(0, 0, 0);'> </span><b><font color='#0000f0'>//不启动调试信息。</font></b></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define NOSTATS<span style='color:rgb(0, 0, 0);'> </span><b><font color='#0000f0'>//不启动状态输出。</font></b><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define STATS<span style='color:rgb(0, 0, 0);'> </span><b><font color='#0000f0'>//启动状态输出。运行时每个一段时间就会输出抓取的状态</font></b>。<br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define BIGSTATS<span style='color:rgb(0, 0, 0);'> </span><b><font color='#0000f0'>//在标准输出上显示每个被抓去的网页名字。会降低larbin速度</font></b><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'><br></li> 
+    <li style='background-color:rgb(255, 255, 255);'>#define CRASH<span style='color:rgb(0, 0, 0);'> </span><b><font color='#0000f0'>//用于报告严重的bugs用。以gmake debug模式编译时使用。</font></b></li> 
+   </ol> 
+  </div> 
+  <br> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'>
+   &nbsp; &nbsp; 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <br> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'>
+   &nbsp; &nbsp;备注：关于larbin配置文件详解，转自： 
+  <a href='http://terry831010.blog.163.com/blog/static/69161171201227111635189/' target='_blank' style='color:rgb(86, 86, 86);'>http://terry831010.blog.163.com/blog/static/69161171201227111635189/</a> 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'>
+   &nbsp; &nbsp;感谢作者。 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: 宋体, Arial; font-size: 16px;'> 
+  <br> 
+ </div> 
+ <br> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-323.html">解密搜索引擎技术之爬虫Larbin</a>
+				|
+				 <a href="http://onelose.com/post-342.html">Chrome扩展及应用开发</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="327" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-6.html">大学要做的事情</a></li>
+		<li><a href="http://onelose.com/post-460.html">MySQL按指定字段自定义列表排序</a></li>
+		<li><a href="http://onelose.com/post-531.html">yum 安装mysqlyum -y installmysql-server</a></li>
+		<li><a href="http://onelose.com/post-266.html">PHP扩展开发进阶</a></li>
+		<li><a href="http://onelose.com/post-203.html">四种集群方案</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

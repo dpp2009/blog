@@ -1,0 +1,438 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Linux查看进程和删除进程</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>Linux查看进程和删除进程</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-18 7:00 Wednesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <h1 style='background-color:rgb(216, 223, 234);color:rgb(0, 0, 0);font-family:verdana, 'ms song', 宋体, Arial, 微软雅黑, Helvetica, sans-serif;font-size:12px;font-style:normal;font-weight:normal;text-align:left;'><a href='http://www.cnblogs.com/lucyjiayou/archive/2012/02/24/2366194.html' style='color:rgb(51, 51, 51);font-size:13px;font-weight:bold;'></a></h1> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>1. 在 LINUX 命令平台输入 1-2 个字符后按 Tab 键会自动补全后面的部分(前提是要有这个东西，例如在装了 tomcat 的前提下, 输入 tomcat 的 to 按 tab)。</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>2. ps 命令用于查看当前正在运行的进程。</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>grep 是搜索</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>例如： ps -ef | grep java</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>表示查看所有进程里 CMD 是 java 的进程信息</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>ps -aux | grep java</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>-aux 显示所有状态</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>ps</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>3. kill 命令用于终止进程</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>例如： kill -9 [PID]</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>-9 表示强迫进程立即停止</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>通常用 ps 查看进程 PID ，用 kill 命令终止进程</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>网上关于这两块的内容</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>-----------------------------------------------------------------------------------</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>PS</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>-----------------------------------------------------------------------------------</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>1. ps 简介</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>ps 命令就是最根本相应情况下也是相当强大地进程查看命令.运用该命令可以确定有哪些进程正在运行和运行地状态、 进程 是否结束、进程有没有僵死、哪些进程占用了过多地资源等等.总之大部分信息均为可以通过执行该命令得到地.</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>2. ps 命令及其参数</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>ps 命令最经常使用地还是用于监控后台进程地工作情况,因为后台进程是不和屏幕键盘这些标准输入/输出设</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>备进行通信地,所以如果需要检测其情况,便可以运用 ps 命令了.</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>该命令语法格式如下：</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>ps [选项]</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>-e 显示所有进程,环境变量</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>-f 全格式</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>-h 不显示标题</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>-l 长格式</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>-w 宽输出</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>a</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>显示终端上地所有进程,包括其他用户地进程</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>r</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>只显示正在运行地进程</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>x</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>显示没有控制终端地进程</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>O[+|-] k1 [,[+|-] k2 [,…]] 根据 SHORT KEYS、k1、k2 中快捷键指定地多级排序顺序显示进程列表.</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>对于 ps 地不同格式都存在着默认地顺序指定.这些默认顺序可以被用户地指定所覆盖.在这里面“+”字符是可选地,“-” 字符是倒转指定键地方向.</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>pids 只列出进程标识符,之间运用逗号分隔.该进程列表必须在命令行参数地最后一个选项后面紧接着给出,中间不能插入 空格.比如：ps -f1,4,5.</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>以下介绍长命令行选项,这些选项都运用“--”开头：</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>--sort X[+|-] key [,[+|-] key [,…]] 从 SORT KEYS 段中选一个多字母键.“+”字符是可选地,因为默认地方向就是按 数字升序或者词典顺序.比如： ps -jax -sort=uid,-ppid,+pid.</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>--help 显示帮助信息.</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>--version 显示该命令地版本信息.</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>在前面地选项说明中提到了排序键,接下来对排序键作进一步说明.需要注意地是排序中运用地值是 ps 运用地内部值,并非 仅用于某些输出格式地伪值.排序键列表见表 4-3.</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>表 4-3 排序键列表</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>c</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>cmd</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>可执行地简单名称</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>C</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>cmdline</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>完整命令行</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>f</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>flags</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>长模式标志</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>g</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>pgrp</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>进程地组 ID</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>G</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>tpgid</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>控制 tty 进程组 ID</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>j</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>cutime</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>累计用户时间</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>J</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>cstime</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>累计系统时间</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>k</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>utime</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>用户时间</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>K</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>stime</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>系统时间</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>m</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>min_flt</span> 
+ <br style='color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'> 
+ <span style='background-color:rgb(255, 255, 255);color:rgb(0, 0, 0);font-family:Simsun;font-size:medium;font-style:normal;font-weight:normal;text-align:left;'>次要页错</span> 
+ <br> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-197.html">TIPI: 深入理解PHP内核PDF最新版下载</a>
+				|
+				 <a href="http://onelose.com/post-273.html">wkhtmltopdf中文参数详解</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="264" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-249.html">HTTP请求报文和HTTP响应报文</a></li>
+		<li><a href="http://onelose.com/post-512.html">JS怎么刷新当前页面location.replace(location.href);</a></li>
+		<li><a href="http://onelose.com/post-255.html">Ubuntu管理开机启动项（服务）sysv-rc-conf</a></li>
+		<li><a href="http://onelose.com/post-280.html">PHP性能分析工具xhprof介绍、安装、使用说明</a></li>
+		<li><a href="http://onelose.com/post-84.html">为何你应该假装自己是一个电脑白痴</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

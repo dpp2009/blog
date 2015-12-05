@@ -1,0 +1,437 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>WebAPI设计方法论</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="为Web设计、实现和维护API不仅仅是一项挑战；对很多..." />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>WebAPI设计方法论</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-16 7:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>为Web设计、实现和维护API不仅仅是一项挑战；对很多公司来说，这是一项势在必行的任务。<a href='http://www.infoq.com/articles/web-apis-from-start-to-finish' style='color:rgb(40, 106, 178);'>本系列</a>&nbsp;将带领读者走过一段旅程，从为API确定业务用例到设计方法论，解决实现难题，并从长远的角度看待在Web上维护公共API。沿途将会有对有影响力的人物的访谈，甚至还有API及相关主题的推荐阅读清单。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>这篇&nbsp;InfoQ文章是<b>&nbsp;Web API</b><b>从开始到结束</b>系列文章中的一篇。你可以在<a href='http://www.infoq.com/feed/web-apis-from-start-to-finish' style='color:rgb(40, 106, 178);'>这里</a>进行订阅，以便能在有新文章发布时收到通知。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>设计Web API不止是URL、HTTP状态码、头信息和有效负载。设计的过程--基本上是为了你的API“观察和感受” -- 这非常重要，并且值得你付出努力。本文简要概括了一种同时发挥HTTP和Web两者优势的API设计方法论。并且它不仅对HTTP有效。如果有时你还需要通过WebSockets、XMPP、MQTT等实现同样的服务，大部分API设计的结果同样可用。可以让未来支持多种协议更容易实现和维护。</p> 
+ <h2 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-family: Arial, sans-serif; font-size: 20px; font-weight: normal;'>优秀的设计超越了URL、状态码、头信息和有效负载</h2> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>一般来说， Web API设计指南的重点是通用的功能特性，比如URL设计，正确使用状态码、方法、头信息之类的HTTP功能特性，以及持有序列化的对象或对象图的有效负载设计。这些都是重要的实现细节，但不太算得上API设计。并且正是API的设计--服务的基本功能特性的表达和描述方式--为Web API的成功和可用性做出了重要贡献。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>一个优秀的设计过程或方法论定义了一组一致的、可重复的步骤集，可以在将一个服务器端服务组件输出为一个可访问的、有用的Web API时使用。那就是说，一个清晰的方法论可以由开发人员、设计师和软件架构师共享，以便在整个实现周期内帮助大家协同活动。一个成熟的方法论还可以随着时间的发展，随着每个团队不断发现改善和精简过程的方式而得到精炼，却不会对实现细节产生不利的影响。实际上，当实现细节和设计过程两者都有清晰的定义并相互分离时，实现细节的改变（比如采用哪个平台、OS、框架和UI样式）可以独立于设计过程。</p> 
+ <h2 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-family: Arial, sans-serif; font-size: 20px; font-weight: normal;'>API设计七步法</h2> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>接下来我们要对Richardson和Amundsen合著的《<a href='http://restfulwebapis.com/' style='color:rgb(40, 106, 178);'>REST风格的Web API</a>》一书中所介绍的设计方法论做简要地概述。因为篇幅所限，我们不能深入探讨这一过程中的每一步骤，但这篇文章可以让你有个大概的认识。另外，读者可以用这篇概述作为指南，根据自己组织的技能和目标开发一个独有的Web API设计过程。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>说明：是的，7步看起来有点儿多。实际上清单中有5个步骤属于设计，额外还有两个条目是实现和发布。最后这两个设计过程之外的步骤是为了提供一个从头到尾的体验。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>你应该计划好根据需要重新迭代这些步骤。通过步骤2（绘制状态图）意识到在步骤1（列出所有组成部分）有更多工作要做。当你接近于写代码（步骤6）时，可能会发现第5步（创建语义档案）中漏了一些东西。关键是用这个过程暴露尽可能多的细节，并愿意回退一步或者两步，把前面漏掉的补上。迭代是构建更加完整的服务画面以及澄清如何将它暴露给客户端程序的关键。</p> 
+ <h3 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-family: Arial, sans-serif; font-size: 18px; font-weight: normal;'>步骤1 : 列出所有组成部分</h3> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>第一步是列出客户端程序可能要从我们的服务中获取的，或要放到我们的服务中的所有数据片段。我们将这些称为语义描述符。语义是指它们处理数据在应用程序中的含义，描述符是指它们描述了在应用程序自身中发生了什么。注意，这里的视点是客户端，不是服务器端。将API设计成客户端使用的东西很重要。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>比如说，在一个简单的待办事项列表应用中，你可能会找到下面这些语义描述符：</p> 
+ <ul style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'> 
+  <li>id : 系统中每条记录的唯一标识符</li> 
+  <li>title : 每个待办事项的标题</li> 
+  <li>dateDue : 待办事项应该完成的日期</li> 
+  <li>complete : 一个是/否标记，表明待办事项是否已经完成了。</li> 
+ </ul> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>在一个功能完备的应用程序中，可能还会有很多语义描述符，涉及待办事项的分类（工作、家庭、园艺等），用户信息（用于多用户的实现）等等。不过为了突出过程本身，我们会保持它的简单性。</p> 
+ <h3 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-family: Arial, sans-serif; font-size: 18px; font-weight: normal;'>步骤2 : 绘制状态图</h3> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>下一步是根据建议的API绘制出状态图。图中的每个框都表示一种可能的表示--一个包含在步骤1中确定的一或多个语义描述符的文档。你可以用箭头表示从一个框到下一个的转变--从一个状态到下一个状态。这些转变是由协议请求触发的。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>在每次变化中还不用急着指明用哪个协议方法。只要标明变化是安全的（比如HTTP GET），还是不安全/非幂等的（比如HTTP.POST），或者不安全/幂等的（PUT）。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>说明：幂等动作是指重复执行时不会有无法预料的副作用。比如HTTP&nbsp;<a href='https://tools.ietf.org/html/rfc7231#section-4.3.4' style='color:rgb(40, 106, 178);'>PUT</a>&nbsp;，因为规范说服务器应该用客户端传来的状态值替换目标资源的已有值，所以说它是幂等的。而&nbsp;HTTP&nbsp;<a href='https://tools.ietf.org/html/rfc7231#section-4.3.3' style='color:rgb(40, 106, 178);'>POST</a>&nbsp;是非幂等的，因为规范指出提交的值应该是追加到已有资源集合上的，而不是替换。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>在这个案例中，我们这个简单的待办事项服务的客户端应用程序可能需要访问可用条目的清单，能过滤这个清单，能查看单个条目，并且能将条目标记为已完成。这些动作中很多都用状态值在客户端和服务器之间传递数据。比如add-item 动作允许客户端传递状态值title和dueDate。下面是一个说明那些动作的状态图。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'><img src='http://note.youdao.com/yws/res/1967/E232319A90954854BCBBDEED2BADDA3D' width='400' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>这个状态图中展示的这些动作（也在下面列出来了）也是语义描述符-- 它们描述了这个服务的语义动作。</p> 
+ <ul style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'> 
+  <li>read-list</li> 
+  <li>filter-list</li> 
+  <li>read-item</li> 
+  <li>create-item</li> 
+  <li>mark-complete</li> 
+ </ul> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>在你做这个状态图的过程中，你可能会发现自己漏掉了客户端真正想要或需要的动作或数据项。这是退回到步骤1的机会，添加一些新的描述符，并/或者在步骤2中改进状态图。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>在你重新迭代过这两步之后，你应该对客户端跟服务交互所需的所有数据点和动作有了好的认识和想法。</p> 
+ <h3 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-family: Arial, sans-serif; font-size: 18px; font-weight: normal;'>步骤 3 : 调和魔法字符串</h3> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>下一步是调和服务接口中的所有“魔法字符串”。“魔法字符串” 全是描述符的名称--它们没有内在的含义，只是表示客户端跟你的服务通讯时将要访问的动作或数据元素。调和这些描述符名称的意思是指采用源自下面这些地方的，知名度更高的公共名称：</p> 
+ <ul style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'> 
+  <li><a href='http://schema.org/' style='color:rgb(40, 106, 178);'>Schema.org</a></li> 
+  <li><a href='http://microformats.org/' style='color:rgb(40, 106, 178);'>microformats.org</a></li> 
+  <li><a href='http://dublincore.org/documents/dces/' style='color:rgb(40, 106, 178);'>Dublin Core</a></li> 
+  <li><a href='http://www.iana.org/assignments/link-relations/link-relations.xhtml' style='color:rgb(40, 106, 178);'>IANA Link Relation Values</a></li> 
+ </ul> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>这些全是明确定义的、共享的名称库。当你服务接口使用来自这些源头的名称时，开发人员很可能之前见过并知道它们是什么意思。这可以提高API的可用性。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>说明：尽管在服务接口上使用共享名称是个好主意，但在内部实现里可以不用（比如数据库里的数据域名称）。服务自身可以毫不困难地将公共接口名称映射为内部存储名称。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>以待办事项服务为例，除了一个语义描述符- create-item，我能找到所有可接受的已有名称。为此我根据<a href='https://tools.ietf.org/html/rfc5988' style='color:rgb(40, 106, 178);'>Web Linking RFC5988</a>中的规则创建了一个具有唯一性的URI。在给接口描述符选择知名的名称时需要折中。它们极少能跟你的内部数据存储元素完美匹配，不过那没关系。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>这里是我的结果：</p> 
+ <ul style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'> 
+  <li>id -&gt;&nbsp;<a href='http://purl.org/dc/elements/1.1/identifier' style='color:rgb(40, 106, 178);'>来自Dublin Core的identifier</a></li> 
+  <li>title -&nbsp;<a href='https://schema.org/name' style='color:rgb(40, 106, 178);'>来自Schema.org的name</a></li> 
+  <li>dueDate -&gt;&nbsp;<a href='https://schema.org/scheduledtime' style='color:rgb(40, 106, 178);'>来自Schema.org的scheduledTime</a></li> 
+  <li>complete -&gt;&nbsp;<a href='https://schema.org/status' style='color:rgb(40, 106, 178);'>来自Schema.org的status</a></li> 
+  <li>read-list -&gt;&nbsp;<a href='http://www.iana.org/assignments/link-relations/link-relations.xhtml' style='color:rgb(40, 106, 178);'>来自IANA Link Relation Values的collection</a></li> 
+  <li>filter-list -&gt;&nbsp;<a href='http://www.iana.org/assignments/link-relations/link-relations.xhtml' style='color:rgb(40, 106, 178);'>来自IANA Link Relation Values的search</a></li> 
+  <li>read-item -&gt;&nbsp;<a href='http://www.iana.org/assignments/link-relations/link-relations.xhtml' style='color:rgb(40, 106, 178);'>来自IANA Link Relation Values的item</a></li> 
+  <li>create-item -&gt;用RFC5988的http://mamund.com/rels/create-item</li> 
+  <li>mark-complete -&nbsp;<a href='http://www.iana.org/assignments/link-relations/link-relations.xhtml' style='color:rgb(40, 106, 178);'>来自IANA Link Relation Values的edit</a></li> 
+ </ul> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>经过名称调和，我的状态图变成了下面这样：</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'><img src='http://note.youdao.com/yws/res/1966/3E24E1CE0C884570888905228CCA027D' width='400' data-media-type='image'></p> 
+ <h3 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-family: Arial, sans-serif; font-size: 18px; font-weight: normal;'>步骤 4 : 选一个媒体类型</h3> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>API设计过程的下一步是选一个媒体类型，用来在客户端和服务器端之间传递消息。Web的特点之一是数据是通过统一的接口作为标准化文档传输的。选择同时支持数据描述符（比如'identifier'、'status'等）和动作描述符（比如'search'、'edit'等）的媒体类型很重要。有相当多可用的格式。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>在我写这篇文章时，一些顶尖的超媒体格式是 (排名不分先后)：</p> 
+ <ul style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'> 
+  <li>超文本标记语言 (<a href='http://www.w3.org/tr/html5/' style='color:rgb(40, 106, 178);'>HTML</a>)</li> 
+  <li>超文本应用程序语言(<a href='http://stateless.co/hal_specification.html' style='color:rgb(40, 106, 178);'>HAL</a>)</li> 
+  <li>Collection+JSON (<a href='http://amundsen.com/media-types/collection/' style='color:rgb(40, 106, 178);'>Cj</a>)</li> 
+  <li><a href='https://github.com/kevinswiber/siren/blob/master/readme.md' style='color:rgb(40, 106, 178);'>Siren</a></li> 
+  <li><a href='http://jsonapi.org/' style='color:rgb(40, 106, 178);'>JSON-API</a></li> 
+  <li>交换表达式的统一基础 (<a href='http://g.mamund.com/uber' style='color:rgb(40, 106, 178);'>UBER</a>)</li> 
+ </ul> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>让所选择的媒体类型适用于你的目标协议也很重要。大多数开发人员喜欢用<a href='https://tools.ietf.org/html/rfc7230' style='color:rgb(40, 106, 178);'>HTTP</a>&nbsp;协议做服务接口。然而<a href='https://tools.ietf.org/html/rfc6455' style='color:rgb(40, 106, 178);'>WebSockets</a>、<a href='http://xmpp.org/rfcs/rfc6120.html' style='color:rgb(40, 106, 178);'>XMPP</a>、<a href='http://public.dhe.ibm.com/software/dw/webservices/ws-mqtt/mqtt-v3r1.html' style='color:rgb(40, 106, 178);'>MQTT</a>和<a href='https://tools.ietf.org/html/rfc7252' style='color:rgb(40, 106, 178);'>CoAP</a>&nbsp;也会用--特别是对于高速、短消息、端到端的实现。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>在这个例子中，我会以HTML为消息格式，并采用HTTP协议。HTML有所有数据描述符所需的支持(&lt;UL&gt;用于列表， &lt;LI&gt;用于条目， &lt;SPAN&gt;用于数据元素)。它也有足够的动作描述符支持 (&lt;A&gt;用于安全链接， &lt;FORM method='get'&gt;用于安全转变， &lt;FORM method='post'&gt;用于非安全转变）。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>注意：在这个状态图中，&nbsp;“编辑”动作是幂等的（比如HTTP PUT），并且HTML仍然没有对PUT的原生支持。在这个例子中，我会添加一个域来将HTML的POST做成幂等的。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>好了，现在我可以基于那个状态图创建一些样例表示来“试试”这个接口了。对我们的例子而言，只有两个表示要渲染：“待办事项列表”和“待办事项条目”表示：</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'><b>图</b><b>1&nbsp;</b><b>：用</b><b>HTML</b><b>表示待办事项列表集合</b></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'><img src='http://note.youdao.com/yws/res/1964/80055EA545AC4967BF8C03261137240F' width='500' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'><img src='http://note.youdao.com/yws/res/1965/07C5B191971540F1831B2C6554551EF4' width='500' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'><b>图2</b><b>&nbsp;</b><b>：用</b><b>HTML</b><b>表示待办事项条目</b></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'><img src='http://note.youdao.com/yws/res/1963/551F75DE6BDB4F9BB0776AAEC4F8C065' width='500' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>记住，在你做状态图的表示样例时，可能会发现之前的步骤中有所遗漏（比如漏掉描述符，动作描述符中有幂等之类的变化等）。那也没关系。现在就是解决所有这些问题的时机-- 在你把这个设计变成代码之前。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>等你对表示完全满意之后，在开始写代码之前还有一个步骤--创建语义档案。</p> 
+ <h3 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-family: Arial, sans-serif; font-size: 18px; font-weight: normal;'>步骤 5 : 创建语义档案</h3> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>语义档案是一个文档，其中列出了设计中的所有描述符，包括对开发人员构建客户端和服务器端实现有帮助的所有细节。这个档案是一个实现指南，不是实现描述。这个差别很重要。</p> 
+ <h5 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-family: Georgia, 'Times New Roman', Times, serif; font-size: 17px; font-weight: normal;'>服务描述符的格式</h5> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>服务描述文档格式已经出现了相当长一段时间了，并且当你想给已有的服务实现生产代码或文档时很方便。确实有很多种格式。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>在我写这篇文章时，顶级竞争者有：</p> 
+ <ul style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'> 
+  <li>Web服务定义语言(<a href='http://www.w3.org/tr/wsdl' style='color:rgb(40, 106, 178);'>WSDL</a>)</li> 
+  <li>原子服务描述(<a href='https://tools.ietf.org/html/rfc5023#section-8' style='color:rgb(40, 106, 178);'>AtomSvc</a>)</li> 
+  <li>Web应用程序描述语言(<a href='http://www.w3.org/submission/wadl/' style='color:rgb(40, 106, 178);'>WADL</a>)</li> 
+  <li><a href='https://github.com/apiaryio/api-blueprint/blob/master/api%2520blueprint%2520specification.md' style='color:rgb(40, 106, 178);'>Blueprint</a></li> 
+  <li><a href='https://github.com/wordnik/swagger-spec/blob/master/readme.md' style='color:rgb(40, 106, 178);'>Swagger</a></li> 
+  <li>REST风格的应用程序建模语言(<a href='http://raml.org/spec.html' style='color:rgb(40, 106, 178);'>RAML</a>)</li> 
+ </ul> 
+ <h5 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-family: Georgia, 'Times New Roman', Times, serif; font-size: 17px; font-weight: normal;'>档案的格式</h5> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>现在只有几种档案格式。我们推荐下面两种：</p> 
+ <ul style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'> 
+  <li>应用级语义档案 (<a href='http://tools.ietf.org/html/draft-amundsen-richardson-foster-alps-00' style='color:rgb(40, 106, 178);'>ALPS</a>)</li> 
+  <li><a href='http://www.w3.org/tr/json-ld/' style='color:rgb(40, 106, 178);'>JSON-LD</a>&nbsp;+&nbsp;<a href='http://www.hydra-cg.com/' style='color:rgb(40, 106, 178);'>Hydra</a></li> 
+ </ul> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>这两个都比较新。JSON-LD规范在2014年早期达成了W3C推荐状态。Hydra仍是一个非官方草案（本文写成时还是），有一个活跃的开发者社区。ALPS仍处于IETF的早期草案阶段。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>因为档案文档的理念是要描述一个问题空间的现实生活方面（不只是那一空间中的单一实现），所以其格式跟典型的描述格式十分不同：</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'><b>图</b><b>3 : ALPS</b><b>格式的待办事项列表语义档案</b></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'><img src='http://note.youdao.com/yws/res/1962/916849EA434B47FB8EA2BAFDBDA35616' width='500' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>你会注意到，这个文档就像一个基本的词汇表，包含了待办事项服务接口中所有可能的数据值和动作--就是这个理念。同意遵循这个档案的服务可以自行决定它们的协议、消息格式甚至URL。同意接受这个档案的客户端将会构建为可以识别，如果合适的话，启用这个文档中的描述符。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>这种格式也很适合生成人类可读的文档，分析相似的档案，追踪哪个档案用得最广泛，甚至生成状态图。但那是另外一篇文章的课题了。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>现在你有完整的已调和名称的描述符清单，已标记的状态图，以及一个语义档案文档，可以开始准备编码实现样例服务器和客户端了。</p> 
+ <h3 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-family: Arial, sans-serif; font-size: 18px; font-weight: normal;'>步骤 6 : 写代码</h3> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>到了这一步，你应该可以将设计文档（状态图和语义档案）交给服务器和客户端程序的开发人员了，让他们开始做具体的实现。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>HTTP服务器应该实现在第2步中创建的状态图，并且来自客户端的请求应该触发正确的状态转变。服务发送的每个表示都应该用第3步中选好的格式，并且应该包含一个第4步中创建的指向一个档案的链接。响应中应该包含相应的超媒体控件，实现了在状态图中显示、并在档案文档中描述的动作。客户端和服务器端开发人员在这时可以创建相对独立的实现，并用测试验证其是否遵守了状态图和档案。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>有了稳定的可运行代码，还有一步要做：发布。</p> 
+ <h3 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-family: Arial, sans-serif; font-size: 18px; font-weight: normal;'>步骤 7 : 发布你的API</h3> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>Web API应该至少发布一个总能给客户端响应的URL -- 即便是在遥远的将来。我将其称为“看板URL” --每个人都知道的。发布档案文档也是个好主意，服务的新实现可以在响应中链接它。你还可以发布人类可读的文档、教程等，以帮助开发人员理解和使用你的服务。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>做好这个之后，你应该有了一个设计良好的、稳定的、可访问的服务运行起来了，随时可以用。</p> 
+ <h2 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-family: Arial, sans-serif; font-size: 20px; font-weight: normal;'>总结</h2> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>本文讨论了为Web设计API的一组步骤。重点是让数据和动作描述正确，并以机器可读的方式记录它们，以便让人类开发人员即便不直接接触也能轻松为这个设计实现客户端和服务器端。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>这些步骤是：</p> 
+ <ol style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'> 
+  <li>列出所有组成部分<br>收集客户端跟服务交互所需的所有数据元素。</li> 
+  <li>绘制状态图<br>记录服务提供的所有动作（状态变化）</li> 
+  <li>调和魔法字符串<br>整理你的公开接口以符合（尽可能）知名的名称</li> 
+  <li>选择媒体类型<br>评审消息格式，找到跟目标协议的服务转变最贴近的那个。</li> 
+  <li>创建语义档案<br>编写一个档案文档，定义服务中用的所有描述符。</li> 
+  <li>写代码<br>跟客户端和服务器端开发人员分享档案文档，并开始写代码测试跟档案/状态图的一致性，并在有必要时进行调整。</li> 
+  <li>发布你的API<br>发布你的'看板URL'和档案文档，以便其他人可以用他们创建新的服务以及/或者客户端程序。</li> 
+ </ol> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>在你的设计过程中，你可能会发现有遗漏的元素，需要重做某些步骤，以及要做一些折中的决定。这在设计过程中出现得越早越好。将来开发人员要求用新的格式和协议实现时，你还有可能用这个API设计。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>最后，这个方法论只是为Web API设计过程创建一种可靠、可重复、一致的设计过程的一种可能方式。在你做这个例子时，可能会发现插入一些额外的步骤，或者缩减一些会更好用，并且-- 当然 -- 消息格式和协议决策在不同案例中可能也会发生变化。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>希望这篇文章能给你一些启发，让你知道如何给自己的组织以及/或者团队创建一个最佳的API设计方法论。</p> 
+ <h2 style='background-color: rgb(255, 255, 255); color: rgb(34, 34, 34); font-family: Arial, sans-serif; font-size: 20px; font-weight: normal;'>关于作者</h2> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'><img src='http://note.youdao.com/yws/res/1968/CD84632B1C804FAEBF1D2032F0F9E6B7' data-media-type='image'><b>Mike Amundsen</b>&nbsp;是Layer 7科技的首席API架构师，帮助人们为Web创建优秀的API。国际知名作者和讲师，Mike 在欧美四处旅行，就分布式网络架构、Web应用程序开发、云计算和其他题目提供咨询和演讲。他的名下有十多本书。</p> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>
+   &nbsp; 
+ </div> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>为Web设计、实现和维护API不仅仅是一项挑战；对很多公司来说，这是一项势在必行的任务。<a href='http://www.infoq.com/articles/web-apis-from-start-to-finish' style='color:rgb(40, 106, 178);'>本系列</a>&nbsp;将带领读者走过一段旅程，从为API确定业务用例到设计方法论，解决实现难题，并从长远的角度看待在Web上维护公共API。沿途将会有对有影响力的人物的访谈，甚至还有API及相关主题的推荐阅读清单。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>这篇&nbsp;InfoQ文章是<b>&nbsp;Web API</b><b>从开始到结束</b>系列文章中的一篇。你可以在<a href='http://www.infoq.com/feed/web-apis-from-start-to-finish' style='color:rgb(40, 106, 178);'>这里</a>进行订阅，以便能在有新文章发布时收到通知。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'><strong>查看英文原文：</strong><a href='http://www.infoq.com/articles/web-api-design-methodology' style='color:rgb(40, 106, 178);'>A Web API Design Methodology</a></p> 
+ <hr style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>感谢<a href='http://www.infoq.com/cn/author/%E5%B4%94%E5%BA%B7' style='color:rgb(40, 106, 178);'>崔康</a>对本文的审校。</p> 
+ <p style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>给InfoQ中文站投稿或者参与内容翻译工作，请邮件至<a href='mailto:editors@cn.infoq.com' style='color:rgb(40, 106, 178);'>editors@cn.infoq.com</a>。也欢迎大家通过新浪微博（<a href='http://www.weibo.com/infoqchina' style='color:rgb(40, 106, 178);'>@InfoQ</a>）或者腾讯微博（<a href='http://t.qq.com/infoqchina' style='color:rgb(40, 106, 178);'>@InfoQ</a>）关注我们，并与我们的编辑和其他读者朋友交流。</p> 
+ <div style='background-color: rgb(255, 255, 255); font-family: Arial, sans-serif;'>
+   【QCon北京2015大会】把握趋势，邀请国内外顶级专家，设计涵盖大数据、云计算、移动开发、技术创业、前端和敏捷等热点领域的18个专题，IT领域的技术盛宴。 
+  <a href='http://qconbeijing.com/' target='_blank' style='color:rgb(40, 106, 178);'>了解详情</a>。 
+ </div> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-323.html">解密搜索引擎技术之爬虫Larbin</a>
+				|
+				 <a href="http://onelose.com/post-342.html">Chrome扩展及应用开发</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="332" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-334.html">使用scrapy进行大规模抓取</a></li>
+		<li><a href="http://onelose.com/post-178.html">加水印imagecopymerge</a></li>
+		<li><a href="http://onelose.com/post-461.html">MYSQL自定义排序</a></li>
+		<li><a href="http://onelose.com/post-333.html">快速构建实时抓取集群</a></li>
+		<li><a href="http://onelose.com/post-332.html">WebAPI设计方法论</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

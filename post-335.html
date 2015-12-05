@@ -1,0 +1,4334 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>七个习惯助你编写更安全的PHP程序</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>七个习惯助你编写更安全的PHP程序</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-1-16 7:00 Friday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>本文是一篇翻译文章，原文信息如下：</p> 
+ <ul style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <li>原文：<a href='http://www.ibm.com/developerworks/opensource/library/os-php-secure-apps/index.html#author1' target='_blank' style='color:rgb(0, 102, 153);'>Seven habits for writing secure PHP applications, Increase the security of your Web applications</a></li> 
+  <li>作者：<a href='https://www.ibm.com/developerworks/community/profiles/user/nathan.a.good' target='_blank' style='color:rgb(0, 102, 153);'>Nathan A. Good</a></li> 
+ </ul> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>当谈到安全的时候，我们至少要从三方面入手，平台的、系统的，以及你所编写的程序。而在编写PHP程序时，只有做到了以下七个方面，才能算得上保证了安全：</p> 
+ <ul style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <li>验证输入</li> 
+  <li>保护文件系统</li> 
+  <li>保护数据库</li> 
+  <li>保护会话数据（$_SESSION）</li> 
+  <li>防范跨站脚本攻击（XSS）</li> 
+  <li>防范伪造表单</li> 
+  <li>防范CSRF</li> 
+ </ul> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>1、验证输入</h3> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>对输入的数据进行验证是安全中最重要防线，想要保证输入的安全，其实很简单，只要不相信你程序的“用户”即可。你的用户可以是普通 的正常用户，他们基本上会按你的设想来使用你的程序，但是，只有涉及到输入，那就很有可能会有恶意的输入，作为一个开发人员，务必保证你的程序能够应对那些恶意的输入，只有考虑到了这一点，你才有可能构建一个健壮而又安全的程序。</p> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>对于一个验证，一般遵循以下几个原则：</p> 
+ <ul style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <li>使用白名单</li> 
+  <li>对于限制性选项进行重复验证</li> 
+  <li>使用退出函数</li> 
+  <li>验证输入类型<br>白名单是一个可能的合法值的列表，与之对应的是黑名单，大多数情况下后者要长得多，其内包含很多不可能的和意料之外的值。</li> 
+ </ul> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>在进行验证的时候，通常情况下，验证允许的值要比验证非法的值要简单得多，比如，当一个输入可能是任意数字，那会验证时确保输入是一个数字即可，千万别试着去一个一个验证那些输入的非数字情况。</p> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>2、保护文件系统</h3> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>2000年7月，一个网站将它的客户资料泄露在一台服务器的web目录中，普通的访客都可以通过一个url来查看这个文件中的数据这个案例告诉我们保护文件系统的重要性。</p> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>如果你的php程序准备要对文件做一些操作，并且需要用户输入一些数据，那一定要保证用户的输入不会对文件系统做一些让你开心不起来的操作。<br><span style='color:rgb(0, 0, 0);font-weight:700;'>代码一：一个下载文件的例子</span></p> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        4
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        5
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        6
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        7
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        8
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        9
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        10
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        11
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        12
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        13
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        14
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        15
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        16
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        17
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        18
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        19
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        20
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        21
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        22
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        23
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(203, 75, 22);'>&lt;?php</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>if</span> (
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$_POST</span>[
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'submit'</span>] == 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Download'</span>) {
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$file</span> = 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$_POST</span>[
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'fileName'</span>];
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+            header(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Content-Type: application/x-octet-stream'</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+            header(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Content-Transfer-Encoding: binary'</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+            header(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Content-Disposition: attachment; filename=\''</span> . 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$file</span> . 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'\';'</span> );
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$fh</span> = fopen(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$file</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'r'</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>while</span> (! feof(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$fh</span>))
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+            {
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span>(fread(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$fh</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>1024</span>));
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+            }
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+            fclose(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$fh</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        } 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>else</span> {
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span>(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;html&gt;&lt;head&gt;&lt;'</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span>(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'title&gt;Guard your filesystem&lt;/title&gt;&lt;/head&gt;'</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span>(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;body&gt;&lt;form id=\'myFrom\' action=\''</span> . 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$_SERVER</span>[
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'PHP_SELF'</span>] .
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'\' method=\'post\'&gt;'</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span>(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;div&gt;&lt;input type=\'text\' name=\'fileName\' value=\''</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span>(
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>isset</span>(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$_REQUEST</span>[
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'fileName'</span>]) ? 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$_REQUEST</span>[
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'fileName'</span>] : 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>''</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span>(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'\' /&gt;'</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span>(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;input type=\'submit\' value=\'Download\' name=\'submit\' /&gt;&lt;/div&gt;'</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span>(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;'</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        }
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>上面的代码最危险的部分在于只要web服务能够读取的文件，用户都可以将它下载回来，包括SESSION存储目录，还有系统的一些敏感文件，比如/etc/passwd。代码例子中，文件名是通过用户在文本框中的输入来获取，但也可以轻易的进行伪造提交。</p> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>仅仅通过用户的输入来进行文件系统的访问是危险的，最好的办法是，程序将文件名和位置通过一个伪造的路径来进行对应，并将这些对应关系存储在数据库中。当然，要实现这个还是有点儿麻烦的，简单的办法是，对输入的文件路径进行验证，确保没有特殊字符（如“..”）且只能访问有限的文件，下面的代码利用正则来达到这个目的。<br><span style='color:rgb(0, 0, 0);font-weight:700;'>代码二：检查文件名字符串</span></p> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        4
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>function</span> 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>isValidFileName</span>(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$file</span>) {
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>/* don't allow .. and allow any 'word' character \ / */</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>return</span> preg_match(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'/^(((?:\.)(?!\.))|\w)+$/'</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$file</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        }
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <h3 style='background-color: rgb(222, 222, 222); color: rgb(73, 73, 73); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;'>3、保护数据库</h3> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>2008年4月，发生在美国某部（<a href='http://en.wikipedia.org/wiki/Department_of_Corrections' target='_blank' style='color:rgb(0, 102, 153);'>Department of Corrections</a>，实在不知道咋翻译，对美国的监狱和羁押制度都不了解，而且查了一下几个熟悉的名字都不是，只好学学某部。<span style='color:rgb(0, 0, 0);font-weight:700;'>2012-12-2 18:51更新</span>：刚刚在看电影<em>The Life of David Gale</em>中看到字幕组将“Ellies Unit, Texas Department of Corrections”翻译为“德州惩治所，艾利斯分所”）的安全事故中，一个漏洞使得恶意攻击者可以通过页面提交他们所想要显示的列名，并获取数据库中存储的敏感数据。这就是一次典型的利用SQL注入实行的攻击，即通过提交一些特殊的字符或者指令使程序在数据库中的查询得到一些开发人员没有意料到的结果。</p> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>下面的代码示例中，将重现上述的那个攻击，动态生成一段sql语句，看上去这是一段比较安全的代码，因为它通过一个下拉菜单来指定需要显示的列名，虽然看起来下拉菜单选项里是有限制的，但是POST数据可以轻易的来伪造和提交，这里甚至连星号都没有过滤。</p> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'><span style='color:rgb(0, 0, 0);font-weight:700;'>代码示例三：执行sql</span></p> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        4
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        5
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        6
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        7
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        8
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        9
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        10
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        11
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        12
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        13
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        14
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        15
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        16
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        17
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        18
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        19
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        20
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        21
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        22
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        23
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        24
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        25
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        26
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        27
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        28
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        29
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        30
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        31
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        32
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        33
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        34
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        35
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        36
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        37
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>html</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>head</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>title</span>&gt;SQL Injection Example&lt;/
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>title</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;/
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>head</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>body</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>form</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>id</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'myFrom'</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>action</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;?php echo $_SERVER['PHP_SELF']; ?&gt;'</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>method</span>='post'&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>div</span>&gt;&lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>input</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>type</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'text'</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>name</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'account_number'</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>value</span>='&lt;?php echo(isset($_POST['account_number']) ? $_POST['account_number'] : ''); ?&gt;' /&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>select</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>name</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'col'</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>option</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>value</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'account_number'</span>&gt;Account Number&lt;/
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>option</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>option</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>value</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'name'</span>&gt;Name&lt;/
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>option</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>option</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>value</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'address'</span>&gt;Address&lt;/
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>option</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;/
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>select</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>input</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>type</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'submit'</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>value</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Save'</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>name</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'submit'</span> /&gt;&lt;/
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>div</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;/
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>form</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(203, 75, 22);'>&lt;?php</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>if</span> (
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$_POST</span>[
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'submit'</span>] == 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Save'</span>) {
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>/* do the form processing */</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$link</span> = mysql_connect(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'hostname'</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'user'</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'password'</span>) 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>or</span> 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>die</span> (
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Could not connect'</span> . mysql_error());
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+            mysql_select_db(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'test'</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$link</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$col</span> = 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$_POST</span>[
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'col'</span>];
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$select</span> = 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'SELECT '</span> . 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$col</span> . 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>' FROM account_data WHERE account_number = '</span> . 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$_POST</span>[
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'account_number'</span>] . 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>';'</span> ;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span> 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;p&gt;'</span> . 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$select</span> . 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;/p&gt;'</span>;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$result</span> = mysql_query(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$select</span>) 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>or</span> 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>die</span>(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;p&gt;'</span> . mysql_error() . 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;/p&gt;'</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span> 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;table&gt;'</span>;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>while</span> (
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$row</span> = mysql_fetch_assoc(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$result</span>)) {
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span> 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;tr&gt;'</span>;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span> 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;td&gt;'</span> . 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$row</span>[
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$col</span>] . 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;/td&gt;'</span>;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span> 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;/tr&gt;'</span>;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+            }
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span> 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;/table&gt;'</span>;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+            mysql_close(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$link</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        }
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(203, 75, 22);'>?&gt;</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;/
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>body</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;/
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>html</span>&gt;
+       
+       
+       
+       
+       </div></pre></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+ </figure> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'>如果单从表单上讲如何保护数据库的安全，那最重要的便是尽量避免动态组装SQL，如果实在需要，也尽量不要让用户能够直接对显示的列进行指定。下面的代码演示了一个简单的验证过程。</p> 
+ <p style='background-color: rgb(222, 222, 222); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'><span style='color:rgb(0, 0, 0);font-weight:700;'>代码四：利用验证和mysql_real__excape_string()来保护数据库</span></p> 
+ <figure style='background-color: rgb(58, 60, 66); color: rgb(51, 51, 51); font-family: 'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px;'> 
+  <table border='1' cellpadding='2' cellspacing='0'> 
+   <tbody> 
+    <tr> 
+     <td style='width:40px;'><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        1
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        2
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        3
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        4
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        5
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        6
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        7
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        8
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        9
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        10
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        11
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        12
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        13
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        14
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        15
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        16
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        17
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        18
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        19
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        20
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        21
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        22
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        23
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        24
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        25
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        26
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        27
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        28
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        29
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        30
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        31
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        32
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        33
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        34
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        35
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        36
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        37
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        38
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        39
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        40
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        41
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        42
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        43
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        44
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        45
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        46
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        47
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        48
+       
+       
+       
+       
+       </div></pre></td> 
+     <td><pre style='background-color:rgb(58, 60, 66);color:rgb(248, 248, 242);font-family:Monaco, 'Bitstream Vera Sans Mono', 'Lucida Console', Terminal;font-size:0.8em;'>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>html</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>head</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>title</span>&gt;SQL Injection Example&lt;/
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>title</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;/
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>head</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>body</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>form</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>id</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'myFrom'</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>action</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;?php echo $_SERVER['PHP_SELF']; ?&gt;'</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>method</span>='post'&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>div</span>&gt;&lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>input</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>type</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'text'</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>name</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'account_number'</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>value</span>='&lt;?php echo(isset($_POST['account_number']) ? 
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+                $_POST['account_number'] : ''); ?&gt;' /&gt; &lt;
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>input</span> 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>type</span>=
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'submit'</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>value</span>='Save' 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>name</span>='submit' /&gt;&lt;/
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>div</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        &lt;/
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>form</span>&gt;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(203, 75, 22);'>&lt;?php</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>function</span> 
+        
+        
+        
+        
+        <span style='color:rgb(38, 139, 210);'>isValidAccountNumber</span>(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$number</span>) 
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        {
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>return</span> is_numeric(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$number</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        }
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>if</span> (
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$_POST</span>[
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'submit'</span>] == 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Save'</span>) {
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>/* Remember habit #1--validate your data! */</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>    
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>if</span> (
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>isset</span>(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$_POST</span>[
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'account_number'</span>]) &amp;&amp;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+            isValidAccountNumber(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$_POST</span>[
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'account_number'</span>])) {
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(147, 161, 161);font-style:italic;'>/* do the form processing */</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$link</span> = mysql_connect(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'hostname'</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'user'</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'password'</span>) 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>or</span>
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>die</span> (
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'Could not connect'</span> . mysql_error());
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+                mysql_select_db(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'test'</span>, 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$link</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$select</span> = sprintf(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'SELECT account_number, name, address '</span> .
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>' FROM account_data WHERE account_number = %s;'</span>,
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>
+        
+        
+        
+        
+                mysql_real_escape_string(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$_POST</span>[
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'account_number'</span>]));
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span> 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;p&gt;'</span> . 
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$select</span> . 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;/p&gt;'</span>;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$result</span> = mysql_query(
+        
+        
+        
+        
+        <span style='color:rgb(181, 137, 0);'>$select</span>) 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>or</span> 
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>die</span>(
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;p&gt;'</span> . mysql_error() . 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;/p&gt;'</span>);
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>echo</span> 
+        
+        
+        
+        
+        <span style='color:rgb(42, 161, 152);'>'&lt;table&gt;'</span>;
+       
+       
+       
+       
+       </div>
+       
+       
+       
+       
+       <div>        
+        
+        
+        
+        
+        <span style='color:rgb(133, 153, 0);'>while</span> (
+        
+        
+  	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-323.html">解密搜索引擎技术之爬虫Larbin</a>
+				|
+				 <a href="http://onelose.com/post-342.html">Chrome扩展及应用开发</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="335" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-175.html">笔记6</a></li>
+		<li><a href="http://onelose.com/post-450.html">运用JS设置cookie、读取cookie、删除cookie</a></li>
+		<li><a href="http://onelose.com/post-532.html">linux卸载mysql</a></li>
+		<li><a href="http://onelose.com/post-197.html">TIPI: 深入理解PHP内核PDF最新版下载</a></li>
+		<li><a href="http://onelose.com/post-445.html">windows下编译php扩展memcache</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

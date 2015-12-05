@@ -1,0 +1,711 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>【问底】王帅：深入PHP内核（一）——弱类型变量原理探究</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>【问底】王帅：深入PHP内核（一）——弱类型变量原理探究</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-11 7:00 Wednesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <h1 style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: 'Microsoft YaHei'; font-size: 28px; font-weight: normal;'>【问底】王帅：深入PHP内核（一）——弱类型变量原理探究</h1> 
+ <h4 style='background-color: rgb(255, 255, 255); color: rgb(153, 153, 153); font-family: Helvetica, Tahoma, Arial, sans-serif; font-size: 12px; font-weight: normal;'> 
+  <div>
+    发表于2014-09-19 09:00|&nbsp;9960次阅读| 来源CSDN|&nbsp; 
+   <font style='color: rgb(204, 0, 0);'>36</font>&nbsp;条评论| 作者王帅 
+  </div></h4> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Helvetica, Tahoma, Arial, sans-serif;'> 
+  <a href='http://www.csdn.net/tag/%E9%97%AE%E5%BA%95/news' style='background-color:rgb(243, 243, 243);color:rgb(51, 51, 51);'>问底</a> 
+  <a href='http://www.csdn.net/tag/php/news' style='background-color:rgb(243, 243, 243);color:rgb(51, 51, 51);'>PHP</a> 
+  <a href='http://www.csdn.net/tag/%E7%8E%8B%E5%B8%85/news' style='background-color:rgb(243, 243, 243);color:rgb(51, 51, 51);'>王帅</a> 
+ </div> 
+ <div style='background-color: rgb(247, 247, 247); color: rgb(51, 51, 51); font-family: Helvetica, Tahoma, Arial, sans-serif;'> 
+  <strong>摘要：</strong>PHP作为一门简单而强大的语言，能够提供很多Web适用的语言特性，而从本期《问底》开始，王帅将从实践出发，带你弄清PHP内核中一些常用的部分，比如这里的“弱类型变量原理”。 
+ </div> 
+ <div style='background-color: rgb(255, 255, 255); color: rgb(51, 51, 51); font-family: Helvetica, Tahoma, Arial, sans-serif;'> 
+  <p>PHP是一门简单而强大的语言，提供了很多Web适用的语言特性，其中就包括了变量弱类型，在弱类型机制下，你能够给一个变量赋任意类型的值。&nbsp;<br><br>PHP的执行是通过Zend Engine（下面简称ZE），ZE是使用C编写，在底层实现了一套弱类型机制。ZE的内存管理使用写时拷贝、引用计数等优化策略，减少再变量赋值时候的内存拷贝。</p> 
+  <p>下面不光带你探索PHP弱类型的原理，也会在写PHP扩展角度，介绍如何操作PHP的变量。&nbsp;<br></p> 
+  <h2><strong>1. PHP的变量类型</strong></h2> 
+  <p>PHP的变量类型有8种：</p> 
+  <ul> 
+   <li>标准类型：布尔boolen，整型integer，浮点float，字符string</li> 
+   <li>复杂类型：数组array，对象object</li> 
+   <li>特殊类型：资源resource &nbsp;</li> 
+  </ul> 
+  <p>PHP不会严格检验变量类型，变量可以不显示的声明其类型，而在运行期间直接赋值。也可以将变量自由的转换类型。如下例，没有实现声明的情况下，$i可以赋任意类型的值。</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>copy</a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&lt;?&nbsp;php&nbsp;&nbsp;<span style='color: rgb(221, 0, 0);'>$i</span>&nbsp;=&nbsp;1;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//int&nbsp;$i&nbsp;=&nbsp;'show&nbsp;me&nbsp;the&nbsp;money';&nbsp;&nbsp;//string&nbsp;$i&nbsp;=&nbsp;0.02;&nbsp;&nbsp;//&nbsp;float&nbsp;$i&nbsp;=&nbsp;array(1,&nbsp;2,&nbsp;3);&nbsp;&nbsp;//&nbsp;array&nbsp;$i&nbsp;=&nbsp;new&nbsp;Exception('test',&nbsp;123);&nbsp;//&nbsp;object&nbsp;$i&nbsp;=&nbsp;fopen('/tmp/aaa.txt',&nbsp;'a')&nbsp;//&nbsp;resource&nbsp;?&gt;&nbsp;</span>&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p>如果你对弱类型原理理解不深刻，在变量比较时候，会出现“超出预期”的惊喜。</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>copy</a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&lt;?&nbsp;PHP&nbsp;<span style='color: rgb(221, 0, 0);'>$str1</span>&nbsp;=&nbsp;null;&nbsp;&nbsp;<span style='color: rgb(221, 0, 0);'>$str2</span>&nbsp;=&nbsp;false;&nbsp;&nbsp;echo&nbsp;<span style='color: rgb(221, 0, 0);'>$str1</span>==<span style='color: rgb(221, 0, 0);'>$str2</span>&nbsp;?&nbsp;<span style='color: rgb(0, 0, 255);'>'相等'</span>&nbsp;:&nbsp;<span style='color: rgb(0, 0, 255);'>'不相等'</span>;&nbsp;&nbsp;<span style='color: rgb(221, 0, 0);'>$str3</span>&nbsp;=&nbsp;<span style='color: rgb(0, 0, 255);'>''</span>;&nbsp;&nbsp;<span style='color: rgb(221, 0, 0);'>$str4</span>&nbsp;=&nbsp;0;&nbsp;&nbsp;echo&nbsp;<span style='color: rgb(221, 0, 0);'>$str3</span>==<span style='color: rgb(221, 0, 0);'>$str4</span>&nbsp;?&nbsp;<span style='color: rgb(0, 0, 255);'>'相等'</span>&nbsp;:&nbsp;<span style='color: rgb(0, 0, 255);'>'不相等'</span>;&nbsp;&nbsp;<span style='color: rgb(221, 0, 0);'>$str5</span>&nbsp;=&nbsp;0;&nbsp;&nbsp;<span style='color: rgb(221, 0, 0);'>$str6</span>&nbsp;=&nbsp;<span style='color: rgb(0, 0, 255);'>'0'</span>;&nbsp;&nbsp;echo&nbsp;<span style='color: rgb(221, 0, 0);'>$str5</span>==<span style='color: rgb(221, 0, 0);'>$str6</span>&nbsp;?&nbsp;<span style='color: rgb(0, 0, 255);'>'相等'</span>&nbsp;:&nbsp;<span style='color: rgb(0, 0, 255);'>'不相等'</span>;&nbsp;&nbsp;?&gt;&nbsp;&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p>以上三个结果全部是相等，因为在变量比较的时候，PHP内部做了变量转换。如果希望值和类型同时判断，请使用三个=（如，$a===0）来判断。也许你会觉得司空见惯，也许你会觉得很神奇，那么请跟我一起深入PHP内核，探索PHP变量原理。</p> 
+  <h2><b>2. 变量的存储及标准类型介绍</b></h2> 
+  <p>PHP的所有变量，都是以结构体zval来实现，在Zend/zend.h中我们能看到zval的定义：</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>copy</a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>typedef&nbsp;union&nbsp;_zvalue_value&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;long&nbsp;lval;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;long&nbsp;value&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;dval;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;double&nbsp;value&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char&nbsp;*val;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;len;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;this&nbsp;will&nbsp;always&nbsp;be&nbsp;set&nbsp;for&nbsp;strings&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;str;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;string&nbsp;(always&nbsp;has&nbsp;length)&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HashTable&nbsp;*ht;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;an&nbsp;array&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zend_object_value&nbsp;obj;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;stores&nbsp;an&nbsp;object&nbsp;store&nbsp;handle,&nbsp;and&nbsp;handlers&nbsp;*/</span>&nbsp;&nbsp;}&nbsp;zvalue_value;&nbsp;&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <div> 
+   <table border='1' cellpadding='2' cellspacing='0' width='500' style='background-color:rgb(248, 248, 248);color:rgb(0, 0, 0);font-size:14px;'> 
+    <thead> 
+     <tr> 
+      <td>属性名</td> 
+      <td>含义</td> 
+      <td>默认值</td> 
+     </tr> 
+    </thead> 
+    <tbody> 
+     <tr> 
+      <td>refcount__gc</td> 
+      <td>表示引用计数</td> 
+      <td>1</td> 
+     </tr> 
+     <tr> 
+      <td>is_ref__gc</td> 
+      <td>表示是否为引用</td> 
+      <td>0</td> 
+     </tr> 
+     <tr> 
+      <td>value</td> 
+      <td>存储变量的值</td> 
+      <td> 
+       <div> 
+        <br> 
+       </div></td> 
+     </tr> 
+     <tr> 
+      <td>type</td> 
+      <td>变量具体的类型</td> 
+      <td> 
+       <div> 
+        <br> 
+       </div></td> 
+     </tr> 
+    </tbody> 
+   </table> 
+  </div> 
+  <p>其中refcount__gc和is_ref__gc表示变量是否是一个引用。type字段标识变量的类型，type的值可以是：IS_NULL，IS_BOOL，IS_LONG，IS_FLOAT，IS_STRING，IS_ARRAY，IS_OBJECT，IS_RESOURCE。PHP根据type的类型，来选择如何存储到zvalue_value。&nbsp;<br><br>zvalue_value能够实现变量弱类型的核心，定义如下：</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>copy</a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>typedef&nbsp;union&nbsp;_zvalue_value&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;long&nbsp;lval;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;long&nbsp;value&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;dval;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;double&nbsp;value&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char&nbsp;*val;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;len;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;this&nbsp;will&nbsp;always&nbsp;be&nbsp;set&nbsp;for&nbsp;strings&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;str;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;string&nbsp;(always&nbsp;has&nbsp;length)&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HashTable&nbsp;*ht;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;an&nbsp;array&nbsp;*/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zend_object_value&nbsp;obj;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>/*&nbsp;stores&nbsp;an&nbsp;object&nbsp;store&nbsp;handle,&nbsp;and&nbsp;handlers&nbsp;*/</span>&nbsp;&nbsp;}&nbsp;zvalue_value;&nbsp;&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p>布尔型，zval.type=IS_BOOL，会读取zval.value.lval字段，值为1/0。如果是字符串，zval.type=IS_STRING，会读取zval.value.str，这是一个结构体，存储了字符串指针和长度。</p> 
+  <p>C语言中，用'\0'作为字符串结束符。也就是说一个字符串'Hello\0World'在C语言中，用printf来输出的话，只能输出hello，因为'\0'会认为字符已经结束。PHP中是通过结构体的_zval_value.str.len来控制字符串长度，相关函数不会遇到'\0'结束。所以PHP的字符串是二进制安全的。</p> 
+  <p>如果是NULL，只需要zval.type=IS_NULL，不需要读取值。</p> 
+  <p>通过对zval的封装，PHP实现了弱类型，对于ZE来说，通过zval可以存取任何类型。</p> 
+  <h2><b>3. 高级类型Array和Object数组Array</b></h2> 
+  <p>数组是PHP语言中非常强大的一个数据结构，分为索引数组和关联数组，zval.type=IS_ARRAY。在关联数组中每个key可以存储任意类型的数据。PHP的数组是用Hash Table实现的，数组的值存在zval.value.ht中。&nbsp;</p> 
+  <p>后面会专门讲到PHP哈希表的实现。</p> 
+  <p>对象类型的zval.type=IS_OBJECT，值存在zval.value.obj中。</p> 
+  <h2><b>4. 特殊类型——资源类型(Resource)介绍</b></h2> 
+  <p>资源类型是个很特殊的类型，zval.type=IS_RESOURCE，在PHP中有一些很难用常规类型描述的数据结构，比如文件句柄，对于C语言来说是一个指针，不过PHP中没有指针的概念，也不能用常规类型来约束，因此PHP通过资源类型概念，把C语言中类似文件指针的变量，用zval结构来封装。资源类型值是一个整数，ZE会根据这个值去资源的哈希表中获取。 &nbsp;</p> 
+  <p>资源类型的定义：</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>copy</a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>typedefstruct_zend_rsrc_list_entry&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;*ptr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;type;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;refcount;&nbsp;&nbsp;}zend_rsrc_list_entry;&nbsp;&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p>其中，ptr是一个指向资源的最终实现的指针，例如一个文件句柄，或者一个数据库连接结构。type是一个类型标记，用于区分不同的资源类型。refcount用于资源的引用计数。</p> 
+  <p>内核中，资源类型是通过函数ZEND_FETCH_RESOURCE获取的。</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>copy</a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>ZEND_FETCH_RESOURCE(con,&nbsp;type,&nbsp;zval&nbsp;*,&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>default</span>,&nbsp;resource_name,&nbsp;resource_type);&nbsp;&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <h2><b>5. 变量类型的转换</b></h2> 
+  <p>按照现在我们对PHP语言的了解，变量的类型依赖于zval.type字段指示，变量的内容按照zval.type存储到zval.value。当PHP中需要变量的时候，只需要两个步骤：把zval.value的值或指针改变，再改变zval.type的类型。不过对于PHP的一些高级变量Array/Object/Resource，变量转换要进行更多操作。</p> 
+  <p>变量转换原理分为3种：</p> 
+  <h3><b>5.1 标准类型相互转换</b></h3> 
+  <p>比较简单，按照上述的步骤转化即可。</p> 
+  <h3><b>5.2 标准类型与资源类型转换</b></h3> 
+  <p>资源类型可以理解为是int，比较方便转换标准类型。转换后资源会被close或回收。</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>copy</a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&lt;?&nbsp;php&nbsp;<span style='color: rgb(221, 0, 0);'>$var</span>&nbsp;=&nbsp;fopen(<span style='color: rgb(0, 0, 255);'>'/tmp/aaa.txt'</span>,&nbsp;<span style='color: rgb(0, 0, 255);'>'a'</span>);　<span style='color: rgb(0, 130, 0);'>//&nbsp;资源&nbsp;#1&nbsp;$var&nbsp;=&nbsp;(int)&nbsp;$var;&nbsp;var_dump($var);&nbsp;&nbsp;//&nbsp;输出1&nbsp;?&gt;</span>&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p>5.3 标准类型与复杂类型转换</p> 
+  <p>Array转换整型int/浮点型float会返回元素个数；转换bool返回Array中是否有元素；转换成string返回'Array'，并抛出warning。&nbsp;<br>详细内容取决于经验，请阅读PHP手册：&nbsp;<a href='http://php.net/manual/en/language.types.type-juggling.php' target='_blank' style='color:rgb(0, 102, 204);'>http://php.net/manual/en/language.types.type-juggling.php</a>&nbsp;<br></p> 
+  <h3><b>5.4 复杂类型相互转换</b></h3> 
+  <p>array和object可以互转。如果其它任何类型的值被转换成对象，将会创建一个内置类<i>stdClass</i>的实例。</p> 
+  <p>在我们写PHP扩展的时候，PHP内核提供了一组函数用于类型转换： &nbsp;</p> 
+  <div> 
+   <table border='1' cellpadding='2' cellspacing='0' width='500' style='background-color:rgb(248, 248, 248);color:rgb(0, 0, 0);font-size:14px;'> 
+    <tbody> 
+     <tr> 
+      <td>void convert_to_long(zval* pzval)</td> 
+     </tr> 
+     <tr> 
+      <td>void convert_to_double(zval* pzval)</td> 
+     </tr> 
+     <tr> 
+      <td>void convert_to_long_base(zval* pzval, int base)</td> 
+     </tr> 
+     <tr> 
+      <td>void convert_to_null(zval* pzval)</td> 
+     </tr> 
+     <tr> 
+      <td>void convert_to_boolean(zval* pzval)</td> 
+     </tr> 
+     <tr> 
+      <td>void convert_to_array(zval* pzval)</td> 
+     </tr> 
+     <tr> 
+      <td>void convert_to_object(zval* pzval)</td> 
+     </tr> 
+     <tr> 
+      <td>void convert_object_to_type(zval* pzval, convert_func_t converter)</td> 
+     </tr> 
+    </tbody> 
+   </table> 
+  </div> 
+  <p>PHP内核提供的一组宏来方便的访问zval，用于更细粒度的获取zval的值：</p> 
+  <div> 
+   <table border='1' cellpadding='2' cellspacing='0' width='500' style='background-color:rgb(248, 248, 248);color:rgb(0, 0, 0);font-size:14px;'> 
+    <tbody> 
+     <tr> 
+      <td colspan='2' style='text-align:center;'>内核访问zval容器的API</td> 
+     </tr> 
+     <tr> 
+      <td>宏</td> 
+      <td>访问变量</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_LVAL(zval)</i></td> 
+      <td>(zval).value.lval</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_DVAL(zval)</i></td> 
+      <td>(zval).value.dval</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_STRVAL(zval)</i></td> 
+      <td>(zval).value.str.val</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_STRLEN(zval)</i></td> 
+      <td>(zval).value.str.len</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_ARRVAL(zval)</i></td> 
+      <td>(zval).&nbsp;<a href='http://value.ht/' style='color:rgb(0, 102, 204);'>value.ht</a></td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_TYPE(zval)</i></td> 
+      <td>(zval).type</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_LVAL_P(zval)</i></td> 
+      <td>(*zval).value.lval</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_DVAL_P(zval)</i></td> 
+      <td>(*zval).value.dval</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_STRVAL_P(zval_p)</i></td> 
+      <td>(*zval).value.str.val</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_STRLEN_P(zval_p)</i></td> 
+      <td>(*zval).value.str.len</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_ARRVAL_P(zval_p)</i></td> 
+      <td>(*zval).&nbsp;<a href='http://value.ht/' style='color:rgb(0, 102, 204);'>value.ht</a></td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_OBJ_HT_P(zval_p)</i></td> 
+      <td>(*zval).value.obj.handlers</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_LVAL_PP(zval_pp)</i></td> 
+      <td>(**zval).value.lval</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_DVAL_PP(zval_pp)</i></td> 
+      <td>(**zval).value.dval</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_STRVAL_PP(zval_pp)</i></td> 
+      <td>(**zval).value.str.val</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_STRLEN_PP(zval_pp)</i></td> 
+      <td>(**zval).value.str.len</td> 
+     </tr> 
+     <tr> 
+      <td><i>Z_ARRVAL_PP(zval_pp)</i></td> 
+      <td>(**zval).&nbsp;<a href='http://value.ht/' style='color:rgb(0, 102, 204);'>value.ht</a></td> 
+     </tr> 
+    </tbody> 
+   </table> 
+  </div> 
+  <h2><b>6. 变量的符号表与作用域</b></h2> 
+  <p>PHP的变量符号表与zval值的映射，是通过HashTable（哈希表，又叫做散列表，下面简称HT），HashTable在ZE中广泛使用，包括常量、变量、函数等语言特性都是HT来组织，在PHP的数组类型也是通过HashTable来实现。&nbsp;<br>举个例子：</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>copy</a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&lt;?&nbsp;php&nbsp;<span style='color: rgb(221, 0, 0);'>$var</span>&nbsp;=&nbsp;<span style='color: rgb(0, 0, 255);'>'Hello&nbsp;World'</span>;&nbsp;?&gt;&nbsp;&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p>$var的变量名会存储在变量符号表中，代表$var的类型和值的zval结构存储在哈希表中。内核通过变量符号表与zval地址的哈希映射，来实现PHP变量的存取。</p> 
+  <p>为什么要提作用域呢？因为函数内部变量保护。按照作用域PHP的变量分为全局变量和局部变量，每种作用域PHP都会维护一个符号表的HashTable。当在PHP中创建一个函数或类的时候，ZE会创建一个新的符号表，表明函数或类中的变量是局部变量，这样就实现了局部变量的保护--外部无法访问函数内部的变量。当创建一个PHP变量的时候，ZE会分配一个zval，并设置相应type和初始值，把这个变量加入当前作用域的符号表，这样用户才能使用这个变量。&nbsp;<br>内核中使用ZEND_SET_SYMBOL来设置变量：</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>copy</a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>ZEND_SET_SYMBOL(&nbsp;EG(active_symbol_table),&nbsp;<span style='color: rgb(0, 0, 255);'>'foo'</span>,&nbsp;foo);&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p>查看_zend_executor_globals结构</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>copy</a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>Zend/zend_globals.h&nbsp;&nbsp;</span></li> 
+    <li style='background-color: rgb(248, 248, 248);'><span style='color: rgb(0, 0, 0);'>&nbsp;struct&nbsp;_zend_executor_globals&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(0, 130, 0);'>//略&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HashTable&nbsp;symbol_table;//全局变量的符号表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HashTable&nbsp;*active_symbol_table;//局部变量的符号表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//略&nbsp;&nbsp;};&nbsp;</span>&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p>在写PHP扩展时候，可以通过EG宏来访问PHP的变量符号表。EG(symbol_table)访问全局作用域的变量符号表，EG(active_symbol_table)访问当前作用域的变量符号表，局部变量存储的是指针，在对HashTable进行操作的时候传递给相应函数。</p> 
+  <p>为了更好的理解变量的哈希表与作用域，举个简单的例子：</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>copy</a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>&lt;?&nbsp;php&nbsp;<span style='color: rgb(221, 0, 0);'>$temp</span>&nbsp;=&nbsp;<span style='color: rgb(0, 0, 255);'>'global'</span>;&nbsp;<span style='color: rgb(0, 102, 153); font-weight: 700;'>function</span>&nbsp;test()&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color: rgb(221, 0, 0);'>$temp</span>&nbsp;=&nbsp;<span style='color: rgb(0, 0, 255);'>'active'</span>;&nbsp;}&nbsp;test();&nbsp;var_dump(<span style='color: rgb(221, 0, 0);'>$temp</span>);&nbsp;?&gt;&nbsp;&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p>创建函数外的变量$temp，会把这个它加入全局符号表，同时在全局符号表的HashTable中，分配一个字符类型的zval，值为‘global‘。创建函数test内部变量$temp，会把它加入属于函数test的符号表，分配字符型zval，值为’active' 。</p> 
+  <h2><b>7. PHP扩展中变量操作</b></h2> 
+  <h3><b>创建PHP变量</b></h3> 
+  <p>我们可以在扩展中调用函数MAKE_STD_ZVAL(pzv)来创建一个PHP可调用的变量，MAKE_STD_ZVAL应用到的宏有：</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>copy</a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>#define&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAKE_STD_ZVAL(zv)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ALLOC_ZVAL(zv);INIT_PZVAL(zv)&nbsp;&nbsp;&nbsp;#define&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ALLOC_ZVAL(z)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZEND_FAST_ALLOC(z,&nbsp;zval,&nbsp;ZVAL_CACHE_LIST)&nbsp;&nbsp;&nbsp;#define&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZEND_FAST_ALLOC(p,&nbsp;type,&nbsp;fc_type)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(p)&nbsp;=&nbsp;(type&nbsp;*)&nbsp;emalloc(sizeof(type))&nbsp;&nbsp;&nbsp;#define&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INIT_PZVAL(z)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(z)-&gt;refcount__gc&nbsp;=&nbsp;1;(z)-&gt;is_ref__gc&nbsp;=&nbsp;0;&nbsp;&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p>MAKE_STD_ZVAL(foo)展开后得到：</p> 
+  <div style='background-color: rgb(231, 229, 220); font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px;'> 
+   <div style='background-color: rgb(248, 248, 248); color: silver; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;'> 
+    <b>[php]</b>&nbsp; 
+    <a title='view plain' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>view plain</a> 
+    <a title='copy' href='http://www.csdn.net/article/2014-09-19/2821685-exploring-of-the-php#' style='color: rgb(160, 160, 160);'>copy</a> 
+   </div> 
+   <ol start='1' style='background-color:rgb(255, 255, 255);color:rgb(92, 92, 92);'> 
+    <li style='background-color:rgb(255, 255, 255);color:inherit;'><span style='color: rgb(0, 0, 0);'>(foo)&nbsp;=&nbsp;(zval&nbsp;*)&nbsp;emalloc(sizeof(zval));&nbsp;&nbsp;&nbsp;(foo)-&gt;refcount__gc&nbsp;=&nbsp;1;&nbsp;&nbsp;&nbsp;(foo)-&gt;is_ref__gc&nbsp;=&nbsp;0;&nbsp;&nbsp;&nbsp;</span></li> 
+   </ol> 
+  </div> 
+  <p>可以看出，MAKE_STD_ZVAL做了三件事：分配内存、初始化zval结构中的refcount、is_ref。&nbsp;</p> 
+  <p>内核中提供一些宏来简化我们的操作，可以只用一步便设置好zval的类型和值。</p> 
+  <div> 
+   <table border='1' cellpadding='2' cellspacing='0' width='500' style='background-color:rgb(248, 248, 248);color:rgb(0, 0, 0);font-size:14px;'> 
+    <tbody> 
+     <tr> 
+      <td colspan='2' style='text-align:center;'>API Macros for Accessing&nbsp;zval&nbsp;</td> 
+     </tr> 
+     <tr> 
+      <td>宏</td> 
+      <td>实现方法</td> 
+     </tr> 
+     <tr> 
+      <td><i>ZVAL_NULL(pvz)</i></td> 
+      <td>Z_TYPE_P(pzv) = IS_NULL</td> 
+     </tr> 
+     <tr> 
+      <td><i>ZVAL_BOOL(pvz)</i></td> 
+      <td>Z_TYPE_P(pzv) = IS_BOOL;&nbsp;<br>Z_BVAL_P(pzv) = b ? 1 : 0;</td> 
+     </tr> 
+     <tr> 
+      <td><i>ZVAL_TRUE(pvz)</i></td> 
+      <td>ZVAL_BOOL(pzv, 1);</td> 
+     </tr> 
+     <tr> 
+      <td><i>ZVAL_FALSE(pvz)</i></td> 
+      <td>ZVAL_BOOL(pzv, 0);</td> 
+     </tr> 
+     <tr> 
+      <td><i>ZVAL_LONG(pvz, l)(l 是值)</i></td> 
+      <td>Z_TYPE_P(pzv) = IS_LONG;Z_LVAL_P(pzv) = l;</td> 
+     </tr> 
+     <tr> 
+      <td><i>ZVAL_DOUBLE(pvz, d)</i></td> 
+      <td>Z_TYPE_P(pzv) = IS_DOUBLE;Z_LVAL_P(pzv) = d;</td> 
+     </tr> 
+     <tr> 
+      <td><i>ZVAL_STRINGL(pvz, str, len, dup)</i></td> 
+      <td>Z_TYPE_P(pzv) = IS_STRING;Z_STRLEN_P(pzv) = len;&nbsp;<br>if (dup) {&nbsp;<br>&nbsp; &nbsp; {Z_STRVAL_P(pzv) =estrndup(str, len + 1);}&nbsp;&nbsp;<br>}else {&nbsp;<br>&nbsp; &nbsp; {Z_STRVAL_P(pzv) = str;}&nbsp;<br>}</td> 
+     </tr> 
+     <tr> 
+      <td><i>ZVAL_STRING(pvz, str, len)</i></td> 
+      <td>ZVAL_STRINGL(pzv, str,strlen(str), dup);</td> 
+     </tr> 
+     <tr> 
+      <td><i>ZVAL_RESOURCE(pvz, res)</i></td> 
+      <td>Z_TYPE_P(pzv) = IS_RESOURCE;Z_RESVAL_P(pzv) = res;&nbsp;</td> 
+     </tr> 
+    </tbody> 
+   </table> 
+  </div> 
+  <p><br><b>ZVAL_STRINGL(pzv,str,len,dup)中的dup参数</b></p> 
+  <p>先阐述一下ZVAL_STRINGL(pzv,str,len,dup); str和len两个参数很好理解，因为我们知道内核中保存了字符串的地址和它的长度，后面的dup的意思其实很简单，它指明了该字符串是否需要被复制。值为 1 将先申请一块新内存并赋值该字符串，然后把新内存的地址复制给pzv，为 0 时则是直接把str的地址赋值给zval。</p> 
+  <p><b>ZVAL_STRINGL与ZVAL_STRING的区别</b></p> 
+  <p>如果你想在某一位置截取该字符串或已经知道了这个字符串的长度，那么可以使用宏 ZVAL_STRINGL(zval, string, length, duplicate) ，它显式的指定字符串长度，而不是使用strlen()。这个宏该字符串长度作为参数。但它是二进制安全的，而且速度也比ZVAL_STRING快，因为少了个strlen。&nbsp;<br><br><b>ZVAL_RESOURCE约等于ZVAL_LONG</b></p> 
+  <p>在章节4中我们说过，PHP中的资源类型的值是一个整数，所以ZVAL_RESOURCE和ZVAL_LONG的工作差不多，只不过它会把zval的类型设置为 IS_RESOURCE。</p> 
+  <h2><b>8. 总结</b></h2> 
+  <p>PHP的弱类型是通过ZE的zval容器转换完成，通过哈希表来存储变量名和zval数据，在运行效率方面有一定牺牲。另外因为变量类型的隐性转换，在开发过程中对变量类型检测力度不够，可能会导致问题出现。&nbsp;</p> 
+  <p>不过PHP的弱类型、数组、内存托管、扩展等语言特性，非常适合Web开发场景，开发效率很高，能够加快产品迭代周期。在海量服务中，通常瓶颈存在于数据访问层，而不是语言本身。在实际使用PHP不仅担任逻辑层和展现层的任务，我们甚至用PHP开发的UDPServer/TCPServer作为数据和cache的中间层。</p> 
+  <p><b><span style='color:rgb(192, 145, 0);'>关于作者：王帅，腾讯企业QQ SaaS团队Leader。</span></b></p> 
+  <p><b><span style='color:rgb(192, 145, 0);'>推荐阅读：<a href='http://www.csdn.net/article/2014-08-20/2821302-interview-tencent-b-qq-shuai-wang' style='color:rgb(0, 102, 204);'>专访企业QQ SaaS团队，谈企业级LNMP架构设计</a></span></b></p> 
+  <p><b>更多《问底》内容</b></p> 
+  <ul> 
+   <li><a href='http://www.csdn.net/article/2014-09-11/2821642-data-mining-by-Lanceyan' style='color:rgb(0, 102, 204);'>【问底】严澜：数据挖掘入门（一）——分词</a></li> 
+   <li><a href='http://www.csdn.net/article/2014-09-10/2821615-how-twitter-uses-redis-to-scale-105tb-ram-39mm-qps-10000-ins' style='color:rgb(0, 102, 204);'>【问底】Yao Yu谈Twitter的百TB级Redis缓存实践</a></li> 
+   <li><a href='http://www.csdn.net/article/2014-09-15/2821685-exploring-of-the-php' style='color:rgb(0, 102, 204);'>【问底】王帅：深入PHP内核（一）——弱类型变量原理探究</a>&nbsp;<br></li> 
+  </ul> 
+  <p><b><span style='color:rgb(0, 128, 255);'>《问底》</span>是<span style='color:rgb(192, 80, 77);'>CSDN云计算频道</span>新建栏目，以实践为本，分享个人对于新时代软件架构与研发的深刻见解。在含有“【问底】”字样标题的文章中，你会看到某个国外IT巨头的架构分享，会看到国内资深工程师对某个技术的实践总结，更会看到一系列关于某个新技术的探索。</b><b><span style='color:rgb(192, 80, 77);'>《问底》邀请对技术具有独特/深刻见解的你一起打造一片只属于技术的天空，详情可邮件至<a href='http://zhonghao@csdn.net/' target='_blank' style='color:rgb(0, 102, 204);'>zhonghao@csdn.net</a>。</span></b></p> 
+  <hr> 
+  <p><b>免费订阅“<span style='color:rgb(0, 128, 255);'>CSDN云计算（左）</span>和<span style='color:rgb(255, 0, 0);'>CSDN大数据（右）</span>”微信公众号，实时掌握第一手云中消息，<b>了解最新的大数据进展！</b></b></p> 
+ </div> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-278.html">MySql中explain的时候出现usingfilesort，优化之</a>
+				|
+				 <a href="http://onelose.com/post-290.html">Linuxtcpdump命令详解</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="283" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-351.html">MySQL的分页技术总结</a></li>
+		<li><a href="http://onelose.com/post-20.html">算式计算器-----江苏科技大学计算机协会陈嘉生软件作品</a></li>
+		<li><a href="http://onelose.com/post-384.html">&gt;/dev/null2&gt;&amp;1</a></li>
+		<li><a href="http://onelose.com/post-465.html">http://mm.wanggou.com/category_m.shtml</a></li>
+		<li><a href="http://onelose.com/post-343.html">Scrapy</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

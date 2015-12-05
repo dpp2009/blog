@@ -1,0 +1,481 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>InstallingtheMongoDBCDriver</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="" />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>InstallingtheMongoDBCDriver</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-3-19 7:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <div style='color: rgb(46, 52, 54); font-family: sans-serif; font-size: medium;'> 
+  <h1 style='font-size: 2em;'>Installing the MongoDB C Driver</h1> 
+ </div> 
+ <div style='font-family: sans-serif; font-size: medium;'> 
+  <p>The following guide will step you through the process of downloading, building, and installing the current release of the MongoDB C Driver.</p> 
+  <div style='color:rgb(46, 52, 54);'> 
+   <h2 style='font-size: 1.44em;'>Supported Platforms</h2> 
+  </div> 
+  <p>The MongoDB C Driver currently supports the following operating systems and CPU architectures.</p> 
+  <div> 
+   <table border='1' cellpadding='2' cellspacing='0'> 
+    <tbody> 
+     <tr> 
+      <td> 
+       <div style='color:rgb(46, 52, 54);font-weight:bold;'> 
+        <h3 style='color:inherit;font-size:inherit;font-weight:inherit;'>Operating Systems</h3> 
+       </div></td> 
+      <td> 
+       <div style='color:rgb(46, 52, 54);font-weight:bold;'> 
+        <h3 style='color:inherit;font-size:inherit;font-weight:inherit;'>CPU Architectures</h3> 
+       </div></td> 
+      <td> 
+       <div style='color:rgb(46, 52, 54);font-weight:bold;'> 
+        <h3 style='color:inherit;font-size:inherit;font-weight:inherit;'>Compiler Toolchain</h3> 
+       </div></td> 
+     </tr> 
+     <tr> 
+      <td> 
+       <div> 
+        <ul> 
+         <li><p>GNU/Linux</p></li> 
+         <li><p>Solaris 10 and 11</p></li> 
+         <li><p>Mac OS X 10.6 and newer</p></li> 
+         <li><p>Windows Vista, 7, and 8</p></li> 
+         <li><p>FreeBSD</p></li> 
+         <li><p>OpenBSD 5.4</p></li> 
+         <li><p>Dragonfly BSD</p></li> 
+        </ul> 
+       </div></td> 
+      <td> 
+       <div> 
+        <ul> 
+         <li><p>x86 and x86_64</p></li> 
+         <li><p>ARM</p></li> 
+         <li><p>PPC</p></li> 
+         <li><p>SPARC</p></li> 
+        </ul> 
+       </div></td> 
+      <td> 
+       <div> 
+        <ul> 
+         <li><p>GCC 4.1 and newer</p></li> 
+         <li><p>Clang 3.3 and newer</p></li> 
+         <li><p><a title='http://www.visualstudio.com/en-us/downloads/download-visual-studio-vs#DownloadFamilies_4' href='http://www.visualstudio.com/en-us/downloads/download-visual-studio-vs#DownloadFamilies_4' style='color:rgb(92, 53, 102);'>Microsoft Visual Studio 2010 Express</a></p></li> 
+         <li><p><a title='http://www.oracle.com/technetwork/server-storage/solarisstudio/downloads/index.html' href='http://www.oracle.com/technetwork/server-storage/solarisstudio/downloads/index.html' style='color:rgb(92, 53, 102);'>Oracle Solaris Studio 12</a></p></li> 
+         <li><p>MinGW</p></li> 
+        </ul> 
+       </div></td> 
+     </tr> 
+    </tbody> 
+   </table> 
+  </div> 
+  <div style='color:rgb(46, 52, 54);font-weight:bold;'> 
+   <h3 style='color:inherit;font-size:inherit;font-weight:inherit;'>More Information</h3> 
+  </div> 
+  <div> 
+   <ul> 
+    <li><a title='Installation' href='http://api.mongodb.org/c/current/index.html#installation' style='color:rgb(92, 53, 102);'>Installation</a></li> 
+   </ul> 
+  </div> 
+  <div style='background-color:rgba(1, 1, 1, 0);'> 
+   <div style='color:rgb(46, 52, 54);'> 
+    <h2 style='font-size: 1.44em;'>Installing from Source</h2> 
+   </div> 
+   <p>The following instructions are for UNIX-like systems such as GNU/Linux, FreeBSD, and Solaris. To build on Windows, see the instructions for&nbsp;<a title='Building on Windows' href='http://api.mongodb.org/c/current/installing.html#building-windows' style='color:rgb(92, 53, 102);'>Building on Windows</a>.</p> 
+   <p>The most recent release of the mongo-c-driver is 1.1.0 and can be&nbsp;<a title='https://github.com/mongodb/mongo-c-driver/releases/download/1.1.0/mongo-c-driver-1.1.0.tar.gz' href='https://github.com/mongodb/mongo-c-driver/releases/download/1.1.0/mongo-c-driver-1.1.0.tar.gz' style='color:rgb(92, 53, 102);'>downloaded here</a>. The following snippet will download and extract the current release of the driver.</p> 
+   <div style='background-color:rgb(243, 243, 240);'> 
+    <pre><span style='color:rgb(46, 52, 54);font-family:monospace;'>$ </span><span style='color:rgb(46, 52, 54);font-family:monospace;font-weight:bold;'>wget https://github.com/mongodb/mongo-c-driver/releases/download/1.1.0/mongo-c-driver-1.1.0.tar.gz</span>
+<span style='color:rgb(46, 52, 54);font-family:monospace;'>$ </span><span style='color:rgb(46, 52, 54);font-family:monospace;font-weight:bold;'>tar -xzf mongo-c-driver-1.1.0.tar.gz</span>
+<span style='color:rgb(46, 52, 54);font-family:monospace;'>$ </span><span style='color:rgb(46, 52, 54);font-family:monospace;font-weight:bold;'>cd mongo-c-driver-1.1.0/</span></pre> 
+   </div> 
+   <p>Minimal dependencies are needed to build the MongoDB C driver. Optionally, if you want Kerberos (GSSAPI) or SSL support, you need to install&nbsp;<span style='font-family:monospace;'>libsasl2</span>&nbsp;and&nbsp;<span style='font-family:monospace;'>OpenSSL</span>&nbsp;libraries and development headers respectively.</p> 
+   <p>Make sure you have access to a&nbsp;<a title='Supported Platforms' href='http://api.mongodb.org/c/current/installing.html#supported-platforms' style='color:rgb(92, 53, 102);'>supported toolchain</a>&nbsp;such as GCC, Clang, SolarisStudio, or MinGW. Optionally,&nbsp;<span style='font-family:monospace;'>pkg-config</span>&nbsp;can be used if your system supports it to simplify locating proper compiler and linker arguments when compiling your program.</p> 
+   <p>The following will configure for a typical 64-bit Linux system such as RedHat Enterprise Linux 6 or CentOS 6. Note that not all systems place 64-bit libraries in&nbsp;<span style='font-family:monospace;'>/usr/lib64</span>. Check your system to see what the convention is if you are building 64-bit versions of the library.</p> 
+   <div style='background-color:rgb(243, 243, 240);'> 
+    <pre>./configure --prefix=/usr --libdir=/usr/lib64</pre> 
+   </div> 
+   <div title='Advanced' style='background-color:rgb(243, 243, 240);'> 
+    <p>If you require&nbsp;<span style='font-family:monospace;'>SSL</span>&nbsp;add&nbsp;<span style='font-family:monospace;'>--enable-ssl</span>&nbsp;to the above configuration. This will require the&nbsp;<span style='font-family:monospace;'>openssl-devel</span>&nbsp;on RedHat Entrprise Linux. Other Linux-based operating systems may have another name for this package such as&nbsp;<span style='font-family:monospace;'>libssl-dev</span>on Debian.</p> 
+   </div> 
+   <div title='Advanced' style='background-color:rgb(243, 243, 240);'> 
+    <p>If you require&nbsp;<span style='font-family:monospace;'>Kerberos</span>&nbsp;add&nbsp;<span style='font-family:monospace;'>--enable-sasl</span>&nbsp;to the above configuration. This will require the&nbsp;<span style='font-family:monospace;'>cyris-sasl-devel</span>&nbsp;on RedHat Entrprise Linux. Other Linux-based operating systems may have another name for this package.</p> 
+   </div> 
+   <p>If&nbsp;<span style='font-family:monospace;'>configure</span>&nbsp;completed successfully, you'll see something like the following describing your build configuration.</p> 
+   <div style='background-color:rgb(243, 243, 240);'> 
+    <pre>libmongoc was configured with the following options:
+
+Build configuration:
+Enable debugging (slow)                          : no
+Compile with debug symbols (slow)                : no
+Enable GCC build optimization                    : yes
+Enable automatic binary hardening                : yes
+Code coverage support                            : no
+Cross Compiling                                  : no
+Fast counters                                    : no
+SASL                                             : sasl2
+SSL                                              : yes
+Libbson                                          : bundled
+
+Documentation:
+Generate man pages                               : yes
+Install man pages                                : yes</pre> 
+   </div> 
+   <p>We can now build the driver with the venerable&nbsp;<span style='font-family:monospace;'>make</span>&nbsp;program.</p> 
+   <div style='background-color:rgb(243, 243, 240);'> 
+    <pre><span style='color:rgb(46, 52, 54);font-family:monospace;'>$ </span><span style='color:rgb(46, 52, 54);font-family:monospace;font-weight:bold;'>make</span></pre> 
+   </div> 
+   <div title='Note' style='background-color:rgb(243, 243, 240);'> 
+    <p>You can optionally build code objects in parallel using the&nbsp;<span style='font-family:monospace;'>-j</span>&nbsp;option to GNU make. Some implementations of&nbsp;<span style='font-family:monospace;'>make</span>do not support this option, such as Sun's make on Solaris 10. To build in parallel on an 8 core machine, you might use:</p> 
+    <div style='background-color:rgb(243, 243, 240);'> 
+     <pre><span style='color:rgb(46, 52, 54);font-family:monospace;'>$ </span><span style='color:rgb(46, 52, 54);font-family:monospace;font-weight:bold;'>gmake -j8</span></pre> 
+    </div> 
+   </div> 
+   <p>To install the driver, we use&nbsp;<span style='font-family:monospace;'>make</span>&nbsp;with the&nbsp;<span style='font-family:monospace;'>install</span>&nbsp;target.</p> 
+   <div style='background-color:rgb(243, 243, 240);'> 
+    <pre><span style='color:rgb(46, 52, 54);font-family:monospace;'>$ </span><span style='color:rgb(46, 52, 54);font-family:monospace;font-weight:bold;'>sudo make install</span></pre> 
+   </div> 
+   <div title='Note' style='background-color:rgb(243, 243, 240);'> 
+    <p>On systems that do not support the&nbsp;<span style='font-family:monospace;'>sudo</span>&nbsp;command, we can use&nbsp;<span style='font-family:monospace;'>su -c 'make install'</span>.</p> 
+   </div> 
+   <div style='color:rgb(46, 52, 54);font-weight:bold;'> 
+    <h3 style='color:inherit;font-size:inherit;font-weight:inherit;'>More Information</h3> 
+   </div> 
+   <div> 
+    <ul> 
+     <li><a title='Installation' href='http://api.mongodb.org/c/current/index.html#installation' style='color:rgb(92, 53, 102);'>Installation</a></li> 
+    </ul> 
+   </div> 
+  </div> 
+  <div style='color:rgb(46, 52, 54);'> 
+   <h2 style='font-size: 1.44em;'>Installing on Solaris 10</h2> 
+  </div> 
+  <p>MongoDB provides two ways to install the MongoDB C driver on Solaris 10. You can either&nbsp;<a title='Installing from Source' href='http://api.mongodb.org/c/current/installing.html#build-yourself' style='color:rgb(92, 53, 102);'>build the driver yourself</a>from a source code release, or install the precompiled binary driver as provided by MongoDB as follows.</p> 
+  <p>Binary releases of the MongoDB C driver include support for both 32-bit and 64-bit architectures for both&nbsp;<span style='font-family:monospace;'>i386</span>&nbsp;and<span style='font-family:monospace;'>sparc</span>.</p> 
+  <div title='Warning' style='background-color:rgb(243, 243, 240);'> 
+   <p>Solaris 11 packaging is not compatible with Solaris 10. For Solaris 11, please follow the directions to&nbsp;<a title='Installing from Source' href='http://api.mongodb.org/c/current/installing.html#build-yourself' style='color:rgb(92, 53, 102);'>build the driver yourself</a>.</p> 
+  </div> 
+  <p>The following commands will download the most recent MongoDB binary release and install it using the&nbsp;<span style='font-family:monospace;'>pkgadd</span>&nbsp;command on Solaris 10.</p> 
+  <div style='background-color:rgb(243, 243, 240);'> 
+   <pre><span style='color:rgb(46, 52, 54);font-family:monospace;'>$ </span><span style='color:rgb(46, 52, 54);font-family:monospace;font-weight:bold;'>bash</span>
+<span style='color:rgb(46, 52, 54);font-family:monospace;'>bash-3.2$ </span><span style='color:rgb(46, 52, 54);font-family:monospace;font-weight:bold;'>export ARCH=`uname -m`</span>
+<span style='color:rgb(46, 52, 54);font-family:monospace;'>bash-3.2$ </span><span style='color:rgb(46, 52, 54);font-family:monospace;font-weight:bold;'>/usr/sfw/bin/wget --no-check-certificate 'https://github.com/mongodb/mongo-c-driver/releases/download/1.1.0/MONGOmongo-c-driver-1.1.0.${ARCH}.pkg.tar.gz'</span>
+<span style='color:rgb(46, 52, 54);font-family:monospace;'>bash-3.2$ </span><span style='color:rgb(46, 52, 54);font-family:monospace;font-weight:bold;'>gunzip -c 'MONGOmongo-c-driver-1.1.0.${ARCH}.pkg.tar.gz' | tar -xf -</span>
+<span style='color:rgb(46, 52, 54);font-family:monospace;'>bash-3.2$ </span><span style='color:rgb(46, 52, 54);font-family:monospace;font-weight:bold;'>pkgadd -d . MONGOmongo-c-driver</span></pre> 
+  </div> 
+  <div style='color:rgb(46, 52, 54);font-weight:bold;'> 
+   <h3 style='color:inherit;font-size:inherit;font-weight:inherit;'>More Information</h3> 
+  </div> 
+  <div> 
+   <ul> 
+    <li><a title='Installation' href='http://api.mongodb.org/c/current/index.html#installation' style='color:rgb(92, 53, 102);'>Installation</a></li> 
+   </ul> 
+  </div> 
+  <div style='color:rgb(46, 52, 54);'> 
+   <h2 style='font-size: 1.44em;'>Building on Windows</h2> 
+  </div> 
+  <p>Building on Windows requires Windows Vista or newer and Visual Studio 2010 or newer. Additionally,&nbsp;<span style='font-family:monospace;'>cmake</span>&nbsp;is required to generate Visual Studio project files.</p> 
+  <p>Let's start by generating Visual Studio project files for libbson, a dependency of the C driver. The following assumes we are compiling for 64-bit Windows using Visual Studio 2010 Express which can be freely downloaded from Microsoft.</p> 
+  <div style='background-color:rgb(243, 243, 240);'> 
+   <pre>cd mongo-c-driver-1.1.0\src\libbson
+cmake -G 'Visual Studio 10 Win64' '-DCMAKE_INSTALL_PREFIX=C:\mongo-c-driver'</pre> 
+  </div> 
+  <p>Now that we have project files generated, we can either open the project in Visual Studio or compile from the command line. Let's build using the command line program&nbsp;<span style='font-family:monospace;'>msbuild.exe</span></p> 
+  <div style='background-color:rgb(243, 243, 240);'> 
+   <pre>msbuild.exe ALL_BUILD.vcxproj</pre> 
+  </div> 
+  <p>Now that libbson is compiled, let's install it using msbuild. It will be installed to the path specified by<span style='font-family:monospace;'>CMAKE_INSTALL_PREFIX</span>.</p> 
+  <div style='background-color:rgb(243, 243, 240);'> 
+   <pre>msbuild.exe INSTALL.vcxproj</pre> 
+  </div> 
+  <p>You should now see libbson installed in&nbsp;<span style='font-family:monospace;'>C:\mongo-c-driver</span></p> 
+  <p>Now let's do the same for the MongoDB C driver.</p> 
+  <div style='background-color:rgb(243, 243, 240);'> 
+   <pre>cd mongo-c-driver-1.1.0
+cmake -G 'Visual Studio 2010 Win64' '-DCMAKE_INSTALL_PREFIX=C:\mongo-c-driver' '-DBSON_ROOT_DIR=C:\mongo-c-driver'
+msbuild.exe ALL_BUILD.vcxproj
+msbuild.exe INSTALL.vcxproj</pre> 
+  </div> 
+  <p>All of the MongoDB C Driver's components will now be found in&nbsp;<span style='font-family:monospace;'>C:\mongo-c-driver</span>.</p> 
+ </div> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-251.html">PHP中的魔术方法总结:__construct,__destruct,__call,__callSt</a>
+				|
+				 <a href="http://onelose.com/post-197.html">TIPI: 深入理解PHP内核PDF最新版下载</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="260" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-120.html">《大叔》电影图片</a></li>
+		<li><a href="http://onelose.com/post-357.html">重磅资料！Github上的PHP资源汇总大全</a></li>
+		<li><a href="http://onelose.com/post-9.html">《茗记》</a></li>
+		<li><a href="http://onelose.com/post-398.html">linuxwget命令用法详解(附实例说明)</a></li>
+		<li><a href="http://onelose.com/post-64.html">浅唱</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

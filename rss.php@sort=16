@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+<channel>
+<title><![CDATA[迷茫者]]></title> 
+<description><![CDATA[迷茫者王者归来。]]></description>
+<link>http://onelose.com/</link>
+<language>zh-cn</language>
+<generator>www.emlog.net</generator>
+<item>
+	<title>概率论与数理统计试题</title>
+	<link>http://onelose.com/post-164.html</link>
+	<description><![CDATA[<p>一、单项选择题(本大题共10小题，每小题2分，共20分)</p>
+<p>1.设A、B为随机事件，且 ，则 等于（ B &nbsp;）</p>
+<p>至少发生一个的事件的对立事件为一个也不发生，那么又因为B包含A，那么答案应该是B</p>
+<p>A. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;B.</p>
+<p>C. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;D.</p>
+<p>2.设A与B满足P（A）=0.5,P(B)=0.6,P(B|A)=0.8,则P(A&cup;B)=（ A &nbsp; ）</p>
+<p>A.0.7 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;B.0.8 &nbsp;</p>
+<p>C.0.6 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; D.0.5</p>
+<p>3.设连续型随机变量X的分布函数是F（x）(-&infin;&lt;x&lt;&infin;)，则以下描述正确的是（ D &nbsp;）</p>
+<p>A.F(1)=1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; B.F(-&infin;)=0</p>
+<p>C.F(&infin;)=&infin; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; D.F(0)=0</p>
+<p>4.设随机变量X的概率密度为 ，则常数a＝（ C ）</p>
+<p>根据R上的积分等于1可以求出</p>
+<p>A.3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; B.2 &nbsp; &nbsp;&nbsp;</p>
+<p>C.1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; D.0</p>
+<p>5.设任意二维随机变量（X，Y）的两个边缘概率密度函数分别为fX(x)和fY(y)，则以下结论正确的是（ A &nbsp;）根据联合概率密度的性质，即规范性</p>
+<p>A. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; B.</p>
+<p>C. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; D.</p>
+<p>6.设随机变量X和Y独立同分布，X~N(&mu;,&sigma;2)，则（ &nbsp;B ）根据方差的性质D(2X+Y)=4D(X)+D(Y)=5&hellip;</p>
+<p>A.2X~N(2&mu;,2&sigma;2) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; B.2X-Y~N(&mu;,5&sigma;2)</p>
+<p>C.X+2Y~N(3&mu;,3&sigma;2) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;D.X-2Y~N(3&mu;,5&sigma;2)</p>
+<p>7.设随机变量X和Y相互独立，它们的分布律分别为，</p>
+<p>X</p>
+<p>0</p>
+<p>1</p>
+<p>Y</p>
+<p>0</p>
+<p>1</p>
+<p>P</p>
+<p>0.5</p>
+<p>0.5</p>
+<p>P</p>
+<p>0.5</p>
+<p>0.5</p>
+<p>则概率P(X&ne;Y)=（ &nbsp;C）</p>
+<p>A.0.25 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; B.0.75</p>
+<p>C.0.5 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; D.1</p>
+<p>8.设E(X2)=8，D(X)=4,则E(2X)=（ &nbsp;B &nbsp;）</p>
+<p>A.1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; B.2 &nbsp; &nbsp;&nbsp;</p>
+<p>C.3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; D.4</p>
+<p>9.对任意两个随机变量X和Y，由D（X＋Y）＝D(X)＋D(Y)可以推断（ &nbsp;B ）</p>
+<p>A.X和Y不相关 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;B.X和Y相互独立</p>
+<p>C.X和Y的相关系数等于-1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;D.D（XY）＝D(X)D(Y)</p>
+<p>10.假设检验时，若增加样本容量，则犯两类错误的概率（ &nbsp; &nbsp; &nbsp;）</p>
+<p>A.不变 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;B.都减小 &nbsp;&nbsp;</p>
+<p>C.都增大 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; D.一个增大一个减小</p>
+<p>二、填空题(本大题共15小题，每小题2分，共30分)</p>
+<p>请在每小题的空格中填上正确答案。错填、不填均无分。</p>
+<p>11.某地区成年人患结核病的概率为0.015，患高血压的概率为0.08.设这两种病的发生是相互独立的，则该地区内任一成年人同时患有这两种病的概率为______.</p>
+<p>12.设P(A)=0.3,P(A-B)=0.2,则P( A)=______.</p>
+<p>13.设P(A)=0.3，P(B)=0.6，若A与B独立，则 =______.</p>
+<p>14.独立抛掷硬币3次，则3次均出现正面的概率是______.</p>
+<p>15.若X服从参数为&lambda;＝1的泊松分布，则P{X=0}＝______.</p>
+<p>16.设随机变量X～N（0，1），&Phi;(x)为其分布函数，已知P{X&gt;1}=0.1587，则&Phi;(1)＝______.</p>
+<p>17.已知二维随机变量(X,Y)的分布律为</p>
+<p>Y</p>
+<p>X</p>
+<p>0</p>
+<p>2</p>
+<p>5</p>
+<p>0</p>
+<p>0.1</p>
+<p>0.1</p>
+<p>0.3</p>
+<p>1</p>
+<p>0.25</p>
+<p>0</p>
+<p>0.25</p>
+<p>则P(X&le;0,Y=2)＝______.</p>
+<p>18.设X~N(0,1)，Y~N(1,1)，且X与Y相互独立，则P{X+Y&le;1}＝______.</p>
+<p>19.设二维随机变量(X,Y)的概率密度为 ，则当y&gt;0时，随机变量Y的概率密度fY(y)的表达式为______.</p>
+<p>20.设随机变量X~B(3,0.3)，且Y=X2，则P{Y=4}=______.</p>
+<p>21.设随机变量X，Y相互独立，且X~&chi;2(n1)，Y~&chi;2(n2)，则随机变量 ~______.</p>
+<p>22.设总体X服从［-a，a］上的均匀分布(a&gt;0)，x1，x2，&hellip;，xn为其样本，且 ，则E( )=______.</p>
+<p>23.设总体X的分布律为</p>
+<p>X</p>
+<p>0</p>
+<p>1</p>
+<p>P</p>
+<p>1-p</p>
+<p>p</p>
+<p>其中p为未知参数，且x1，x2，&hellip;，xn为其样本，则p的矩估计 =______.</p>
+<p>24.设总体X~N(&mu;,&sigma;2)(&sigma;&gt;0)，x1,x2,x3为来自该总体的样本，若 是参数&mu;无偏估计，则常数a＝______.</p>
+<p>25.设总体X~N(&mu;,&sigma;2)(&sigma;&gt;0)，x1,x2,&hellip;,xn为来自该总体的样本，其中&sigma;2未知.对假设检验问题H0：&mu;=&mu;0，H1：&mu;&ne;&mu;0，应采用的检验统计量为______.</p>
+<p>三、计算题（本大题8分）</p>
+<p>26.已知投资一项目的收益率R是一随机变量，其分布为：</p>
+<p>R</p>
+<p>1%</p>
+<p>2%</p>
+<p>3%</p>
+<p>4%</p>
+<p>5%</p>
+<p>6%</p>
+<p>P0</p>
+<p>0.1</p>
+<p>0.1</p>
+<p>0.2</p>
+<p>0.3</p>
+<p>0.2</p>
+<p>0.1</p>
+<p>一位投资者在该项目上投资10万元，求他预期获得多少收入？收入的方差是多大？</p>
+<p>四、证明题（本大题8分）</p>
+<p>27.设X1,X2,&hellip;Xn是来自总体X的样本，且E(X)=&mu;,D(X)=&sigma;2,证明 是&sigma;2的无偏估计量.</p>
+<p>五、综合题（本大题共2小题，每小题12分，共24分）</p>
+<p>28.设随机变量X的分布律为</p>
+<p>X</p>
+<p>-1</p>
+<p>0</p>
+<p>1</p>
+<p>P</p>
+<p>记Y=X2，求：（1）D(X)，D(Y)；（2）&rho;XY.</p>
+<p>29.设二维随机变量(X,Y)的联合概率密度为</p>
+<p>求：（1）常数A；（2）求X与Y的边缘概率密度fX(x)与fY(y)；（3）判断X与Y的独立性.</p>
+<p>六、应用题（本大题10分）</p>
+<p>30.某互联网站有10000个相互独立的用户，已知每个用户在平时任一时刻访问该网站的概率为0.2，求在任一时刻有2100个以上的用户访问该网站的概率.(取&Phi;(2.5)=0.9938).</p>]]></description>
+	<pubDate>Mon, 23 May 2011 09:54:01 +0000</pubDate>
+	<author>迷茫者</author>
+	<guid>http://onelose.com/post-164.html</guid>
+
+</item></channel>
+</rss>

@@ -1,0 +1,356 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>MySQL UDF（自定义函数）</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="背景：select count(*) from table;  上述count是mysql内部的方法，但是毕竟是mysql自己定义的，有时候不能满足我们自己的需求，所以mysql..." />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>MySQL UDF（自定义函数）</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2015-4-2 6:00 Thursday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <p>背景：select count(*) from table;</p> 
+<p>上述count是mysql内部的方法，但是毕竟是mysql自己定义的，有时候不能满足我们自己的需求，所以mysql对外提供了这样的接口，允许用户自己定义相应的功能函数；</p> 
+<p>&nbsp;</p> 
+<p>开发UDF需要使用c/c++,我使用的是c++，IDE是vc++6.0，然后呢编写UDF需要MYSQL提供的文件头，当然你要是用c++编写过访问mysql数据库的程序的话，这个就不是问题；这几个文件头是my_alloc.h，my_global.h，my_list.h，mysql.h，mysql_com.h，mysql_time.h，mysql_version.h，typelib.h；这几个头文件可以从你安装的mysql数据库服务器的include文件夹下找到，当然要是你安装mysql的时候没有选择安装开发包的话，那么你就找不到这个文件夹，所以你就是个悲剧，从网上下相应的头文件，结果没吓到自己想要的，反而下下来一些恶意软件，我也没有安装，所以我很悲剧的把数据库搞崩了，然后重新安装了一个完整版的；</p> 
+<p>&nbsp;</p> 
+<p>好的，打开vc++新建一个win2动态链接库工程；</p> 
+<p>在新建一个source file；</p> 
+<p>考入如下简单代码做测试，当然别忘了在工程下考上上面提到的几个头文件；</p> 
+<p>// Encode.cpp : Defines the entry point for the DLL application.<br>//</p> 
+<p>#include 'winsock2.h'<br>#include 'mysql.h'<br>using namespace std;<br>#define SAFE_DELETE(p) if(p!=NULL){delete p;p=NULL;}<br>#define CDLLEXPORT extern 'C' __declspec(dllexport)<br>typedef __int64 longlong;<br>typedef unsigned long ulong;</p> 
+<p>CDLLEXPORT my_bool saas_init(UDF_INIT *initid, UDF_ARGS *args, char *message)<br>{<br>&nbsp;longlong* i = new longlong; // 建立变量<br>&nbsp;*i = 0; // 设初值&nbsp;&nbsp;&nbsp;<br>&nbsp;//指针变量中保存为一个字符指针<br>&nbsp;//确认你不会遇到类型问题<br>&nbsp;initid-&gt;ptr = (char*)i;<br>&nbsp;&nbsp;&nbsp;<br>&nbsp;if(args-&gt;arg_count!=1) //参数个数为1<br>&nbsp;{<br>&nbsp;&nbsp;strcpy(message,'args count wrong');<br>&nbsp;&nbsp;return 1;<br>&nbsp;}<br>&nbsp;if(args-&gt;arg_type[0]!=REAL_RESULT&amp;&amp;args-&gt;arg_type[0]!=INT_RESULT) //参数类别为整型或double<br>&nbsp;{<br>&nbsp;&nbsp;strcpy(message,'args wrong');&nbsp;&nbsp;<br>&nbsp;&nbsp;return 1;<br>&nbsp;}<br>&nbsp;return 0;<br>}<br>CDLLEXPORT void saas_deinit(UDF_INIT *initid)<br>{<br>&nbsp;delete (longlong*)initid-&gt;ptr;<br>}<br>CDLLEXPORT __int64 saas(UDF_INIT *initid, UDF_ARGS *args,char *is_null, char *error)<br>{<br>&nbsp;longlong int_val;<br>&nbsp;</p> 
+<p>&nbsp;if(args-&gt;arg_type[0]==INT_RESULT)<br>&nbsp;{<br>&nbsp;&nbsp;int_val = *((longlong*) args-&gt;args[0]);<br>&nbsp;}<br>&nbsp;return int_val+5;<br>}</p> 
+<p>很好，现在你可以生成一个动态链库了，将其考到你的mysql安装目录下的bin目录，当然这里其实只要考到系统路径下都是可以找到的；</p> 
+<p>然后需要在mysql中注册你定义的函数；</p> 
+<pre>CREATE [AGGREGATE] FUNCTION&nbsp;<span>function_name</span>&nbsp;RETURNS {STRING|INTEGER|REAL} SONAME&nbsp;<span>shared_library_name</span>DROP FUNCTION&nbsp;<span>function_name</span></pre> 
+<pre>第一句的意思是创建一个聚合或者是非聚合的函数，sql中调用的名称是<span>function_name，</span>返回类型是{STRING|INTEGER|REAL}其中的一种，然后<span>shared_library_name</span>是你生成的动态链接库的名称，貌似但是还没有确定的是你的函数名和上述的源代码中的方法必须一致，这点不用怀疑，另外貌似动态链接库的，名称也得喝函数的名称一致；</pre> 
+<pre>创建成功后会从mysql服务器的mysql数据库的func表中找到对应的一条记录的添加，；如果想要删除这个自定义函数那么就用第二条语句删之；</pre> 
+<pre>至于上述的代码运行时没有问题，但关键是其中的参数是怎么一个情况，在此不做过多介绍，可参考</pre> 
+<pre><span>http://dev.mysql.com/doc/refman/5.1/zh/extending-mysql.html</span></pre> 
+<pre><span><span>记录下我需要的信息：</span></span></pre> 
+<pre>说明主函数xxx()。注意返回值和参数会有所不同，这取决于你说明的SQL函数xxx()在CREATE FUNCTION声明中返回的是STRING，INTEGER类型还是REAL类型示：</pre> 
+<pre>对于STRING 型函数：</pre> 
+<pre>char *xxx(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long *length, char *is_null, char *error);</pre> 
+<pre>对于INTEGER型函数：</pre> 
+<pre>long long xxx(UDF_INIT *initid, UDF_ARGS *args, char *is_null, char *error);</pre> 
+<pre>对于REAL型函数：</pre> 
+<pre>double xxx(UDF_INIT *initid, UDF_ARGS *args, char *is_null, char *error);</pre> 
+<pre>&nbsp;</pre> 
+<pre>对主函数的每次调用，args-&gt;args 包含为每个当前处理的行传递的实际参量。</pre> 
+<pre>如下使用参量i的函数：</pre> 
+<div> 
+ <div>
+   &nbsp;&nbsp;&nbsp;&nbsp;-&nbsp; 
+  <p>给一个STRING_RESULT 型的参量作为一个字符串加一个长度，可以允许所有二进制数或任意长度的数处理。字符串内容作为args-&gt;args[i] 而字符串长度为args-&gt;lengths[i]。你不能采用null结尾的字符串。</p> 
+ </div> 
+ <div>
+   &nbsp;&nbsp;&nbsp;&nbsp;-&nbsp; 
+  <p>对一个INT_RESULT型的参量，你必须转换args-&gt;args[i] 为一个long long 值：</p> 
+  <pre>longlong int_val; int_val = *((longlong*) args-&gt;args[i]);</pre> 
+ </div> 
+ <div>
+   &nbsp;&nbsp;&nbsp;&nbsp;-&nbsp; 
+  <p>对一个REAL_RESULT型参量，你必须转换args-&gt;args[i]为一个双精度值：</p> 
+  <pre>double real_val; real_val = *((double*) args-&gt;args[i]);</pre> 
+ </div> 
+</div> 
+<div> 
+ <p>unsigned long *lengths</p> 
+ <p>对初始化函数，lengths数列表示对每个参量的最大字符串长度。你不要改变它。对主函数的每次调用，lengths包含了对当前处理行传递的任何字符串 参量的实际长度。对于INT_RESULT 或 REAL_RESULT类型的参量，lengths 仍包含参量的最大长度（对初始化函数）。</p> 
+</div> 
+<pre>&nbsp;</pre> 
+<pre>好的，到此为止！</pre> 
+<pre>下面是上述定义的函数的注册操作和相应的删除过程，上述定义的函数仅仅是一个简单的对结果加5的操作，可从下面的操作具体看出；</pre> 
+<p>Enter password: ****<br>Welcome to the MySQL monitor.&nbsp;&nbsp;Commands end with ; or \g.<br>Your MySQL connection id is 13<br>Server version: 5.2.3-falcon-alpha-community-nt MySQL Community Server (GPL)</p> 
+<p>Type 'help;' or '\h' for help. Type '\c' to clear the buffer.</p> 
+<p>mysql&gt; use saas<br>Database changed<br>mysql&gt; --with-mysqld-ldflags=-rdynamic<br>mysql&gt; CREATE FUNCTION saas RETURNS INTEGER SONAME 'saas.dll';<br>Query OK, 0 rows affected (0.02 sec)</p> 
+<p>&nbsp;</p> 
+<p>mysql&gt; select appid from dataobjects;<br>+-------+<br>| appid |<br>+-------+<br>|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 |<br>|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 |<br>+-------+<br>2 rows in set (0.02 sec)</p> 
+<p>&nbsp;</p> 
+<p>&nbsp;</p> 
+<p>mysql&gt; select saas(appid) from dataobjects;<br>+-------------+<br>| saas(appid) |<br>+-------------+<br>|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6 |<br>|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6 |<br>+-------------+<br>2 rows in set (0.00 sec)</p> 
+<p><br>mysql&gt; drop function saas;<br>Query OK, 0 rows affected (0.00 sec)</p> 
+<p>&nbsp;</p> 
+<p>mysql&gt;</p> 
+<div> 
+ <br> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-215.html">[PHP]识别图片主色调</a>
+				|
+				 <a href="http://onelose.com/post-227.html">Subversion简明手册--使用hooksvn</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="226" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-361.html">./configure--with-php-config=/www/wdlinux/php/bin/</a></li>
+		<li><a href="http://onelose.com/post-344.html">Larbin的安装与配置</a></li>
+		<li><a href="http://onelose.com/post-347.html">优化MySQL的21个建议</a></li>
+		<li><a href="http://onelose.com/post-170.html">笔记1</a></li>
+		<li><a href="http://onelose.com/post-175.html">笔记6</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>

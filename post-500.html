@@ -1,0 +1,342 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>各种浏览器的Hack写法(chromefirefoxie等)</title>
+<meta name="keywords" content="迷茫,dpp,丁盼盼,迷茫者" />
+<meta name="description" content="&nbsp..." />
+<meta name="generator" content="emlog" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://onelose.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://onelose.com/wlwmanifest.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS"  href="http://onelose.com/rss.php" />
+<link href="http://onelose.com/content/templates/dpp_icecream_02/main.css" rel="stylesheet" type="text/css" />
+<link href="http://onelose.com/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" />
+<script src="http://onelose.com/admin/editor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="http://onelose.com/include/lib/js/common_tpl.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/nav.js" type="text/javascript"></script>
+<script src="http://onelose.com/content/templates/dpp_icecream_02/js/jquery-1.10.2.min.js"></script>
+<script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/cbca8680e2150f433cb28b942e85ec26/allmobilize.min.js"></script><meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+<script src="http://onelose.com/include/lib/js/jquery/jquery-1.7.1.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href ="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_style.min.css" />
+	<script type="text/javascript" src="http://onelose.com/content/plugins/et_highlighter51/scripts/brush.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="http://onelose.com/content/plugins/et_highlighter51/styles/shThemeDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.config.clipboardSwf = 'http://onelose.com/content/plugins/et_highlighter51/scripts/clipboard.swf';SyntaxHighlighter.all();</script>
+	</head>
+<body>
+
+<div id="wrap">
+<div id="hm">
+	<div id="header">
+	<div><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/logo.jpg" alt="迷茫者 " title="迷茫者"></a></div>
+	<h3>迷茫者王者归来。</h3>
+	</div>
+	<!-- <div id="banner"><a href="http://onelose.com/"><img src="http://onelose.com/content/templates/default/images/top/terrace.jpg" height="134" width="960" /></a></div> -->
+	<div id="nav" >	<ul>
+			<li class="common"><a href="http://onelose.com/" >首页</a></li>
+			<li class="common"><a href="http://onelose.com/t" >微语</a></li>
+			<li class="common"><a href="http://onelose.com/post-113.html" >留言</a></li>
+			<li class="common"><a href="http://onelose.com/admin" >登录</a></li>
+		</ul>
+</div>
+</div>
+<div id="content">
+<div id="contentleft">
+	<h2>各种浏览器的Hack写法(chromefirefoxie等)</h2>
+	<p class="date">作者：<a href="http://onelose.com/author/1" title="及尽繁华 不过一掬细沙 只望淡泊名利 自在一生 奈何凡尘俗世之杂碎琐事 竟有我舍之不去的牵挂 故 始终俗人！ 1064490567@qq.com">迷茫者</a> 发布于：2014-8-5 6:00 Tuesday 
+			分类：<a href="http://onelose.com/sort/youdao">有道云笔记</a>
+	 	</p>
+	
+ <div> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>&nbsp; &nbsp; Hack是针对不同的浏览器去写不同的CSS样式，从而让各浏览器能达到一致的渲染效果，那么针对不同的浏览器写不同的CSS CODE的过程，就叫CSS HACK，同时也叫写CSS Hack。然后将Hack放在浏览器特定的CSS文件中，让其符合条件的浏览器解析这些代码，就如前面所说的条件样式，我们将CSS Hack代码放入条件样式文件中，符合条件的浏览器就解析，不符合的将不解析，从面达到您所需要的页面渲染效果。总的一句话来说使用CSS Hack将会使用你的CSS代码部分失去作用，然后借助条件样式，使用其原CSS代码在一些浏览器解析，而CSS Hack代码在符合条件要求的浏览器中替代原CSS那部分代码。常见的就是在IE6下使用，不具体说，我想大家都有碰到过了。下面我们就一起来看看所有浏览器都具有什么Hack，换句话说，各种浏览器都能识别哪些CSS的写法。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>下面是我收集有关于各浏览器下Hack的写法</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>1、Firefox</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>@-moz-document url-prefix() { .selector { property: value; } }<br>上面是仅仅被Firefox浏览器识别的写法，具体如：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>@-moz-document url-prefix() { .demo { color:lime; } }<br>支持Firefox的还有几种写法：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>/* 支持所有firefox版本 */ #selector[id=selector] { property: value; } 或者： @-moz-document url-prefix() { .selector { property: value; } } /* 支持所有Gecko内核的浏览器 (包括Firefox) */ *&gt;.selector { property: value; }<br>2、Webkit枘核浏览器(chrome and safari)</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>@media screen and (-webkit-min-device-pixel-ratio:0) { Selector { property: value; } }<br>上面写法主要是针对Webkit内核的浏览器，如Google Chrome 和 Safari浏览器：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>@media screen and (-webkit-min-device-pixel-ratio:0) { .demo { color: #f36; } }<br>3、Opera浏览器</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>html:first-child&gt;body Selector {property:value;} 或者： @media all and (min-width:0) { Selector {property: value;} } 或者： @media all and (-webkit-min-device-pixel-ratio:10000), not all and (-webkit-min-device-pixel-ratio:0) { head~body Selector { property: value; } }<br>上面则是Opera浏览器的Hack写法：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>@media all and (-webkit-min-device-pixel-ratio:10000), not all and (-webkit-min-device-pixel-ratio:0) { head~body .demo { background: green; } }<br>4、IE9浏览器</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>:root Selector {property: value9;}<br>上面是IE9的写法，具体应用如下：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>:root .demo {color: #ff09;}<br>5、IE9以及IE9以下版本</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>Selector {property:value9;}<br>这种写法只有IE9以及IE9以下版本能识别，这里需要注意此处“9”只能是“9”不能是别的，比如说“8”，不然会失去效果的，如：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>.demo {background: lime9;}<br>6、IE8浏览器</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>Selector {property: value/;} 或者： @media �screen{ Selector {property: value;} }<br>上面写法只有IE能识别，如：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>.color {color: #fff/;} 或者： @media �screen{ .color {color: #fff;} }<br>7、IE8以及IE8以上的版本</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>Selector {property: value�;}<br>这种写法只有IE8以及IE8以上版本支持，如</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>.demo {color: #ff0�;}<br>8、IE7浏览器</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>*+html Selector{property:value;} 或 *:first-child+html Selector {property:value;}<br>上面两种是IE7浏览器下才能识别，如：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>*+html .demo {background: green;} 或者： *:first-child+html .demo {background: green;}<br>9、IE7及IE7以下版本浏览器</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>Selector {*property: value;}<br>上面的写法在IE7以及其以下版本都可以识别，如：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>.demo {*background: red;}<br>10、IE6浏览器</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>Selector {_property/**/:/**/value;} 或者： Selector {_property: value;} 或者： *html Selector {property: value;}<br>具体应用如下：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>.demo {_width/**/:/**/100px;} 或者： .demo {_width: 100px;} 或者： *html .demo {width: 100px;}<br>上面具体介绍了各种版本浏览器下如何识别各种的Hack写法，包括了IE6-9以及现代版本的浏览器写法。综合上面的所述，我们针对不同浏览器的Hack写法主要分为两种从CSS选择器和CSS属性上来区别不同的Hack写法。下面我们分别来看这两种的不同写法：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>CSS选择器的Hack写法<br>下面我们主要来看CSS选择器和CSS属性选择器在不同浏览器的支持情况。下面先来看CSS选择器支持情况。</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>CSS选择器的Hack写法</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>1、IE6以及IE6以下版本浏览器</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>* html .demo {color: green;}<br>2、仅仅IE7浏览器</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>*:first-child+html .demo {color: green;}<br>3、除IE6之外的所有浏览器（IE7-9, Firefox,Safari,Opera）</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>html&gt;body .demo {color: green;}<br>4、IE8-9,Firefox,Safari,Opear</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>html&gt;/**/body .demo {color: green;}<br>5、IE9+</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>:root .demo {color: red;}<br>6、Firefox浏览器</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>@-moz-document url-prefix() { .demo { color: red; } }<br>6、Webkit内核浏览器（Safari和Google Chrome）</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>@media screen and (-webkit-min-device-pixel-ratio:0) { .demo { color: red; } }<br>7、Opera浏览器</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>@media all and (-webkit-min-device-pixel-ratio:10000), not all and (-webkit-min-device-pixel-ratio:0) { head~body .demo { color: red; } }<br>8、iPhone / mobile webkit</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>@media screen and (max-device-width: 480px) { .demo { color: red } }<br>CSS属性Hack写法<br>1、IE6浏览器</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>.demo {_color: red;}<br>2、IE6-7浏览器识别</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>.demo {*color: red;}<br>3、所有浏览器除IE6浏览外</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>.demo {color/**/:red;}<br>4、IE6-9浏览器</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>.demo {color: red9;}<br>5、IE7-8浏览器</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>.demo {color/***/:red9;}<br>上面罗列的都是各种浏览器下的有关于CSS的Hack的写法，基中有针对于现代浏览器Safari,Google Chrome和Firefox的写法，而且也有针对于我们前端人员最讨厌的IE6-9的各版本浏览器的Hack的写法，而且这些Hack我们又分为CSS选择器的Hack写法和CSS属性的Hack写法。然而具体何种适用，大家可以要据自己的需求来定，下面列出我个人的两种写法：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>一、经济实惠型定法：<br>这种写法注重单独的CSS的Hack写法。不同的浏览器使用不同的Hack写法，其实也只是以IE的Hack写法比较多（因为我们写Hack也主要是针对IE的浏览器）特别是IE6下的浏览器。单独为各种浏览器写Hack的好处是：针对各种浏览顺的Hack写法省力易记。因为其他的浏览器主要是针对现代浏览器，相对来说是比较少的。针对于这种Hack的使用，我推荐使用下面的方法：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>.demo { color: red;/*所有现代浏览器*/ color: green9;/*所有IE浏览器*/ color: lime�;/*IE8-9浏览器*/ *color: red;/*IE6-7浏览器*/ +color: blue;/*IE7浏览器*/ _color: orange;/*IE6浏览器*/ } @media all and (min-width:0px){ color: #000;/*Webkit和Opera浏览器*/ } @media screen and (-webkit-min-device-pixel-ratio:0) { color: #f36;/*Webkit内核浏览器*/ } @media all and (-wekit-min-device-pixel-ratio:10000), not all and (-webkit-min-device-pixel-ratio:0) { head~body .demo {color: #369;} /*Opera*/ } @-moz-document url-prefix(){ .demo{color:#ccc;}/* all firefox */ }<br>二、完美主义写法<br>这种方法是追求完美主义的写法，主要是配合我们上一节所说的IE条件注释，全部采用选择器Hack的写法。这种写法分两步：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>1、创建条件样式表，并在HTML中body里添加相应的class类名：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>&lt;!–[if IE6]–&gt;&lt;&lt;!–[if IE7]–&gt;&lt;!–[if IE8]–&gt;&lt;!–[if IE9]–&gt;&lt;!–[if !IE]–&gt;<br>2、接着创建对应的样式</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>.demo {color: blue;}/*现代浏览器*/ .non-ie .demo {color: red;}/*除IE外浏览器*/ .ie9 .demo {color: yellow;}/*IE9浏览器*/ .ie8 .demo{color: green;}/*IE8浏览器*/ .ie7 .demo {color: orange;}/*IE7浏览器*/ .ie6 .demo {color: lime;}/*IE6浏览器*/ @media all and (min-width: 0px){ .demo {color:black;} /* webkit and opera */ } @media screen and (-webkit-min-device-pixel-ratio:0){ .demo{color:#369;}/* webkit */ } @media all and (-webkit-min-device-pixel-ratio:10000), not all and (-webkit-min-device-pixel-ratio:0) { head~body .demo{color:#cf6;}/* opera */ } @-moz-document url-prefix(){ .demo{color:#963;}/* firefox * / }<br>上面就是目前各种浏览器下，相关CSS的Hack的写法，下面我们具体来看一个实例：</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>HTML Markup</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>test color</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>CSS Code</p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>.demo { color: red;/*所有现代浏览器*/ color: green9;/*所有IE浏览器*/ color: lime�;/*IE8-9浏览器*/ *color: red;/*IE6-7浏览器*/ +color: blue;/*IE7浏览器*/ _color: orange;/*IE6浏览器*/ } :root .demo {color: #9639;} @-moz-document url-prefix(){ .demo{color:#897;}/* all firefox */ } @media screen and (-webkit-min-device-pixel-ratio:0) { .demo { color: #000; }/*webkit*/ } @media all and (-webkit-min-device-pixel-ratio:10000), not all and (-webkit-min-device-pixel-ratio:0) { head~body .demo { color: red; }/*opera*/ }<br>请看最终效果图：<br>&gt;<img src='http://note.youdao.com/yws/res/640/1DA508B44A7241A6A55BA02574493B12' width='300' height='300' data-media-type='image'></p> 
+ <p style='background-color: rgb(255, 255, 255); color: rgb(102, 102, 102); font-family: Arial;'>请面罗列了各浏览器下的Hack的写法，大家写浏览的CSS Hack时也可以参考下面的图表</p> 
+</div>
+ 	<p class="tag"></p>
+	<div style="display:none;">et_highlighter51</div>	<div class="nextlog">		&laquo; <a href="http://onelose.com/post-495.html">ZendStudio文件头和方法注释设置</a>
+				|
+				 <a href="http://onelose.com/post-496.html">AjaxFileUpload</a>&raquo;
+	</div>
+				    <div id="pagenavi">
+	        </div>
+		<div id="comment-place">
+	<div class="comment-post" id="comment-post">
+		<div class="cancel-reply" id="cancel-reply" style="display:none"><a href="javascript:void(0);" onclick="cancelReply()">取消回复</a></div>
+		<p class="comment-header"><b>发表评论：</b><a name="respond"></a></p>
+		<form method="post" name="commentform" action="http://onelose.com/index.php?action=addcom" id="commentform">
+			<input type="hidden" name="gid" value="500" />
+						<p>
+				<input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1">
+				<label for="author"><small>昵称</small></label>
+			</p>
+			<p>
+				<input type="text" name="commail"  maxlength="128"  value="" size="22" tabindex="2">
+				<label for="email"><small>邮件地址 (选填)</small></label>
+			</p>
+			<p>
+				<input type="text" name="comurl" maxlength="128"  value="" size="22" tabindex="3">
+				<label for="url"><small>个人主页 (选填)</small></label>
+			</p>
+						<p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p>
+			<p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p>
+			<input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1"/>
+		</form>
+	</div>
+	</div>
+		<div style="clear:both;"></div>
+</div><!--end #contentleft-->
+<ul id="sidebar">
+	<li>
+	<h3><span>搜索</span></h3>
+	<ul id="logsearch">
+	<form name="keyform" method="get" action="http://onelose.com/index.php">
+	<input name="keyword" class="search" type="text" />
+	</form>
+	</ul>
+	</li>
+	<li>
+	<h3><span>最新微语</span></h3>
+	<ul id="twitter">
+			<li>诺基亚ceo可以对比尔盖茨说，主公，幸不辱命<p>2013-09-03 16:22</p></li>
+			<li>换空间了<p>2013-09-02 23:28</p></li>
+			<li>玩上古剑奇谭2了，画质非常好<p>2013-08-20 14:08</p></li>
+			<li>最打算更新这个模板，估计会用上php<p>2013-08-16 23:10</p></li>
+			<li>模板在emlog官网已经下载超过100次~\(≧▽≦)/~啦啦啦<p>2013-08-02 21:33</p></li>
+	    	<p><a href="http://onelose.com/t/">更多&raquo;</a></p>
+		</ul>
+	</li>
+	<li>
+	<h3><span>随机文章</span></h3>
+	<ul id="randlog">
+		<li><a href="http://onelose.com/post-231.html">MYSQLEXPLAIN语句的extended选项学习体会</a></li>
+		<li><a href="http://onelose.com/post-329.html">Larbin的配置和使用</a></li>
+		<li><a href="http://onelose.com/post-22.html">史上最强女游戏程序员Corrinne Yu</a></li>
+		<li><a href="http://onelose.com/post-115.html">换主机啦！</a></li>
+		<li><a href="http://onelose.com/post-517.html">jqueryJSON的解析方式</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新文章</span></h3>
+	<ul id="newlog">
+		<li><a href="http://onelose.com/post-204.html">Redis数据库安全手册</a></li>
+		<li><a href="http://onelose.com/post-200.html">MongoDB服务器端的JavaScript注入</a></li>
+		<li><a href="http://onelose.com/post-202.html">http://www.freebuf.com/author/unshell</a></li>
+		<li><a href="http://onelose.com/post-211.html">mysql性能优化方向</a></li>
+		<li><a href="http://onelose.com/post-209.html">开源消息队列MemcacheQ在Linux中编译安装教程</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>最新评论</span></h3>
+	<ul id="newcomment">
+		<li id="comment">你大爷	<br /><a href="http://onelose.com/post-216.html#5096">我搞定了哈哈,不告诉你我是谁</a></li>
+		<li id="comment">网络精灵	<br /><a href="http://onelose.com/post-113.html#4948">我想问改一下你的魔板的问题，能加下我QQ...</a></li>
+		<li id="comment">9格购	<br /><a href="http://onelose.com/post-169.html#4698">很不错的模板</a></li>
+		<li id="comment">陈正杰博客	<br /><a href="http://onelose.com/post-113.html#4649">好像很就没有更新内容了哟</a></li>
+		<li id="comment">迷茫者	<br /><a href="http://onelose.com/post-113.html#4647">@彼岸时光网：O(∩_∩)O~&nbsp;&nbsp; 欢迎...</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>分类</span></h3>
+	<ul id="blogsort">
+		<li>
+	<a href="http://onelose.com/sort/youdao">有道云笔记(305)</a>
+	<a href="http://onelose.com/rss.php?sort=19"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/notes">学习笔记(8)</a>
+	<a href="http://onelose.com/rss.php?sort=18"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/4">生活(1)</a>
+	<a href="http://onelose.com/rss.php?sort=4"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/5">网站(7)</a>
+	<a href="http://onelose.com/rss.php?sort=5"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/6">服务器(1)</a>
+	<a href="http://onelose.com/rss.php?sort=6"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/7">动画片(1)</a>
+	<a href="http://onelose.com/rss.php?sort=7"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/16">作业(1)</a>
+	<a href="http://onelose.com/rss.php?sort=16"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			<li>
+	<a href="http://onelose.com/sort/17">大学(1)</a>
+	<a href="http://onelose.com/rss.php?sort=17"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.png" alt="订阅该分类"/></a>
+			</ul>
+	</li>
+	<li>
+	<h3><span>存档</span></h3>
+	<ul id="record">
+		<li><a href="http://onelose.com/record/201504">2015年4月(23)</a></li>
+		<li><a href="http://onelose.com/record/201503">2015年3月(69)</a></li>
+		<li><a href="http://onelose.com/record/201502">2015年2月(9)</a></li>
+		<li><a href="http://onelose.com/record/201501">2015年1月(57)</a></li>
+		<li><a href="http://onelose.com/record/201412">2014年12月(46)</a></li>
+		<li><a href="http://onelose.com/record/201411">2014年11月(16)</a></li>
+		<li><a href="http://onelose.com/record/201410">2014年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201409">2014年9月(9)</a></li>
+		<li><a href="http://onelose.com/record/201408">2014年8月(10)</a></li>
+		<li><a href="http://onelose.com/record/201407">2014年7月(17)</a></li>
+		<li><a href="http://onelose.com/record/201406">2014年6月(5)</a></li>
+		<li><a href="http://onelose.com/record/201405">2014年5月(7)</a></li>
+		<li><a href="http://onelose.com/record/201404">2014年4月(21)</a></li>
+		<li><a href="http://onelose.com/record/201402">2014年2月(7)</a></li>
+		<li><a href="http://onelose.com/record/201401">2014年1月(2)</a></li>
+		<li><a href="http://onelose.com/record/201309">2013年9月(3)</a></li>
+		<li><a href="http://onelose.com/record/201308">2013年8月(5)</a></li>
+		<li><a href="http://onelose.com/record/201307">2013年7月(4)</a></li>
+		<li><a href="http://onelose.com/record/201105">2011年5月(2)</a></li>
+		<li><a href="http://onelose.com/record/201104">2011年4月(3)</a></li>
+		<li><a href="http://onelose.com/record/201103">2011年3月(8)</a></li>
+		<li><a href="http://onelose.com/record/201102">2011年2月(4)</a></li>
+		<li><a href="http://onelose.com/record/201101">2011年1月(7)</a></li>
+		<li><a href="http://onelose.com/record/201012">2010年12月(18)</a></li>
+		<li><a href="http://onelose.com/record/201011">2010年11月(4)</a></li>
+		<li><a href="http://onelose.com/record/201010">2010年10月(18)</a></li>
+		<li><a href="http://onelose.com/record/201009">2010年9月(1)</a></li>
+		<li><a href="http://onelose.com/record/201008">2010年8月(1)</a></li>
+		<li><a href="http://onelose.com/record/201003">2010年3月(1)</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>链接</span></h3>
+	<ul id="link">
+		<li><a href="http://www.swoole.com/" title="Swoole：重新定义PHP" target="_blank">Swoole</a></li>
+		<li><a href="http://rango.swoole.com/" title="" target="_blank">韩天峰(Rango)</a></li>
+		<li><a href="http://www.laruence.com/" title="" target="_blank">风雪之隅</a></li>
+		<li><a href="http://blog.csdn.net/ldy3243942" title="" target="_blank">ldy3243942的专栏</a></li>
+		<li><a href="http://programmer.csdn.net/" title="" target="_blank">程序员</a></li>
+		<li><a href="http://www.mysqlsupport.cn/" title="" target="_blank">mysqlsupport</a></li>
+		<li><a href="http://www.ttlsa.com/" title="" target="_blank">运维生存时间</a></li>
+		<li><a href="http://imysql.com/" title="" target="_blank">MySQL中文网</a></li>
+		<li><a href="http://jinnianshilongnian.iteye.com/" title="" target="_blank">开涛的博客</a></li>
+		<li><a href="http://www.imsiren.com/" title="Where Amaze happen，Where I Am !" target="_blank">斯人-吴帅</a></li>
+		<li><a href="http://blog.41ms.com/" title="" target="_blank">松鼠先生</a></li>
+		</ul>
+	</li>
+	<li>
+	<h3><span>日历</span></h3>
+	<div id="calendar">
+	</div>
+	<script>sendinfo('http://onelose.com:80/?action=cal','calendar');</script>
+	</li>
+	<li>
+	<h3><span>蝴蝶</span></h3>
+	<ul>
+	<CENTER><EMBED style="RIGHT: 10px; POSITION: absolute; TOP: -40px" align=right src=http://onelose.com/butterfly.swf width=160 height=200 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>水滴</span></h3>
+	<ul>
+	<CENTER><EMBED style="LEFT: 10px; POSITION: absolute; TOP: -30px" align=right src=http://onelose.com/1.swf width=700 height=160 type=application/x-shockwave-flash wmode="transparent" quality="high" ;></CENTER>	</ul>
+	</li>
+	<li>
+	<h3><span>标签</span></h3>
+	<ul id="blogtags">
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/php" title="1 篇文章">php</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp" title="1 篇文章">asp</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c" title="1 篇文章">c</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/c%2B%2B" title="1 篇文章">c++</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/access" title="1 篇文章">access</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/pr" title="1 篇文章">pr</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mssql2000" title="1 篇文章">mssql2000</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/msql2005" title="1 篇文章">msql2005</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/asp.net" title="1 篇文章">asp.net</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/javascript" title="1 篇文章">javascript</a></span>
+			<span style="font-size:10pt; line-height:30px;">
+		<a href="http://onelose.com/tag/emlog" title="1 篇文章">emlog</a></span>
+			<span style="font-size:22pt; line-height:30px;">
+		<a href="http://onelose.com/tag/mysql" title="2 篇文章">mysql</a></span>
+		</ul>
+	</li>
+<div class="rss">
+<a href="http://onelose.com/rss.php" title="RSS订阅"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/rss.gif" alt="订阅Rss"/></a>
+</div>
+</ul><!--end #siderbar-->
+</div><!--end #content-->
+<div style="clear:both;"></div>
+<div id="footerbar">
+	Design By blogbus | Theme By <a href="http://onelose.com" title="迷茫者博客">迷茫者</a> | Powered by <a href="http://www.emlog.net" title="emlog 5.1.2">emlog</a> |  
+	<a href="http://www.miibeian.gov.cn" target="_blank">苏ICP备10020146号-1</a> | <!-- Piwik -->
+<script type="text/javascript"> 
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.onelose.com//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+
+</script>
+<noscript><p><img src="http://piwik.onelose.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+	<script type="text/javascript">XMLHttp.sendReq('GET','http://onelose.com/content/plugins/kl_auto_backup_and_mail/kl_auto_backup_and_mail_do.php','',function(obj){return;});</script>
+<script type="text/javascript">$(function(){$.get("http://onelose.com/?plugin=autopub");})</script>
+<script type="text/javascript" src="http://onelose.com/content/plugins/SHJS_for_Emlog/sh_main.min.js"></script><a href="http://onelose.com/sitemap.xml" rel="sitemap">sitemap</a></div><!--end #footerbar-->
+</div><!--end #wrap-->
+<script>prettyPrint();</script>
+
+<div id="returnhome"><a href="#"><img src="http://onelose.com/content/templates/dpp_icecream_02/images/home.png" title="返回" alt="header" id="returnhome_img"></a></div>
+
+</body>
+</html>
